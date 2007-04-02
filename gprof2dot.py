@@ -13,7 +13,7 @@ import optparse
 
 
 class Struct:
-	"""Masquerade a dict with a structure-like behavior."""
+	"""Masquerade a dictionary with a structure-like behavior."""
 
 	def __init__(self, attrs = None):
 		if attrs is None:
@@ -74,61 +74,29 @@ class GprofParser:
 			attrs[name] = (value)
 		return Struct(attrs)
 
-	_fp_header1_re = re.compile('^\s*%\s+cumulative\s+self\s+self\s+total\s*$')
-
-	_fp_header2_re = re.compile('^\s*time\s+seconds\s+seconds\s+calls\s+ms/call\s+ms/call\s+name\s*$')
-
-	_fp_entry_re = re.compile(
-		r'^\s*(?P<percentage_time>\d+\.\d+)' + 
-		r'\s+(?P<cumulative_seconds>\d+\.\d+)' + 
-		r'\s+(?P<self_seconds>\d+\.\d+)' + 
-		r'\s+(?P<calls>\d+)?' + 
-		r'\s+(?P<self_ms_per_call>\d+\.\d+)?' + 
-		r'\s+(?P<total_ms_per_call>\d+\.\d+)?' + 
-		r'\s+(?P<name>\S.*)$'
-	)
-
-	def parse_fp(self):
-		"""Parse the flat profile."""
-		readline = self.readline
-
-		while not self._fp_header1_re.match(readline()):
-			pass
-		line = readline()
-		if not self._fp_header2_re.match(line):
-			sys.stderr.write('warning: unrecognized flat profile header: %s\n' % line)
-		line = readline()
-		while line:
-			mo = self._fp_entry_re.match(line)
-			if not mo:
-				sys.stderr.write('warning: unrecognized flat profile entry: %r\n' % line)
-				sys.exit(1)
-			else:
-				# TODO: store the flat profile information
-				pass
-			line = readline()
-
 	_cg_granularity_re = re.compile(
-		r'^granularity: each sample hit covers \d+ byte\(s\) for \d*\.\d*% of (?P<total>\d+\.\d+) seconds$'
+		r'n?granularity:.*\s(?P<total>\d+\.\d+)\sseconds$'
 	)
 
-	_cg_header_re = re.compile('^\s*index\s+%\s+time\s+self\s+children\s+called\s+name\s*$')
+	_cg_header_re = re.compile(
+		# original gprof header
+		r'^\s+called/total\s+parents\s*$|' +
+		r'^index\s+%time\s+self\s+descendents\s+called\+self\s+name\s+index\s*$|' +
+		r'^\s+called/total\s+children\s*$|' +
+		# GNU gprof header
+		r'^index\s+%\s+time\s+self\s+children\s+called\s+name\s*$'
+	)
 
 	_cg_spontaneous_re = re.compile(r'^\s+<spontaneous>\s*$')
-	_cg_recursive_re = re.compile(
-		r'^\s+(?P<called>\d+)' + 
-		r'\s+(?P<name>\S.*)' +
-		r'\s\[(?P<index>\d+)\]$'
-	)
 
 	_cg_primary_re = re.compile(
 		r'^\[(?P<index>\d+)\]' + 
 		r'\s+(?P<percentage_time>\d+\.\d+)' + 
 		r'\s+(?P<self>\d+\.\d+)' + 
-		r'\s+(?P<children>\d+\.\d+)' + 
+		r'\s+(?P<descendants>\d+\.\d+)' + 
 		r'\s+(?:(?P<called>\d+)(?:\+(?P<called_recursive>\d+))?)?' + 
 		r'\s+(?:' +
-			r'<cycle (?P<cycle_whole>\d+) as a whole>' +
+			r'<cycle\s(?P<cycle_whole>\d+)\sas\sa\swhole>' +
 		r'|' +
 			r'(?P<name>\S.*?)' +
 			r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
@@ -136,99 +104,99 @@ class GprofParser:
 		r'\s\[(\d+)\]$'
 	)
 
-	_cg_caller_re = re.compile(
+	_cg_parent_re = re.compile(
 		r'^\s+(?P<self>\d+\.\d+)?' + 
-		r'\s+(?P<children>\d+\.\d+)?' + 
-		r'\s+(?:(?P<called>\d+)(?:/(?P<called_total>\d+))?)?' + 
+		r'\s+(?P<descendants>\d+\.\d+)?' + 
+		r'\s+(?P<called>\d+)(?:/(?P<called_total>\d+))?' + 
 		r'\s+(?P<name>\S.*?)' +
 		r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
 		r'\s\[(?P<index>\d+)\]$'
 	)
 
-	_cg_callee_re = _cg_caller_re
+	_cg_child_re = _cg_parent_re
 
-	_cg_sep_re = re.compile(r'^-+$')
+	_cg_sep_re = re.compile(r'^--+$')
+
+	def parse_cg_entry(self, lines):
+		parents = []
+		children = []
+
+		while True:
+			if not lines:
+				sys.stderr.write('warning: unexpected end of entry\n')
+			line = lines.pop(0)
+			if line.startswith('['):
+				break
+		
+			# read function parent line
+			mo = self._cg_parent_re.match(line)
+			if not mo:
+				if self._cg_spontaneous_re.match(line):
+					continue
+				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+			else:
+				call = self.translate(mo)
+				parents.append(call)
+
+		# read primary line
+		mo = self._cg_primary_re.match(line)
+		if not mo:
+			sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+			return
+		else:
+			function = self.translate(mo)
+
+		while lines:
+			line = lines.pop(0)
+			
+			# read function subroutine line
+			mo = self._cg_child_re.match(line)
+			if not mo:
+				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+			else:
+				call = self.translate(mo)
+				children.append(call)
+		
+		function.parents = parents
+		function.children = children
+
+		if function.cycle_whole:
+			self.cycles[function.cycle_whole] = function
+		else:
+			self.functions[function.index] = function
 
 	def parse_cg(self):
 		"""Parse the call graph."""
-		readline = self.readline
 
 		# read total time from granularity line
 		while True:
-			line = readline()
+			line = self.readline()
 			mo = self._cg_granularity_re.match(line)
 			if mo:
 				break
 		self.total = float(mo.group('total'))
 
-		while not self._cg_header_re.match(readline()):
+		# skip call graph header
+		while not self._cg_header_re.match(self.readline()):
 			pass
-		line = readline()
-		while line:
-			callers = []
-			callees = []
-			while True:
-				if line.startswith('['):
-					break
-			
-				# read function caller line
-				mo = self._cg_caller_re.match(line)
-				if not mo:
-					if self._cg_spontaneous_re.match(line) or self._cg_recursive_re.match(line):
-						line = readline()
-						continue
-					if self._cg_sep_re.match(line):
-						sys.stderr.write('warning: unexpected end of call graph entry: %r\n' % line)
-						line = readline()
-						break
-					else:
-						sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
-				else:
-					call = self.translate(mo)
-					callers.append(call)
-				line = readline()
+		line = self.readline()
+		while self._cg_header_re.match(line):
+			line = self.readline()
 
-			# read primary line
-			mo = self._cg_primary_re.match(line)
-			if not mo:
+		# process call graph entries
+		entry_lines = []
+		while line != '\014': # form feed
+			if line and not line.isspace():
 				if self._cg_sep_re.match(line):
-					sys.stderr.write('warning: unexpected end of call graph entry: %r\n' % line)
-					line = readline()
-					continue
+					self.parse_cg_entry(entry_lines)
+					entry_lines = []
 				else:
-					sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
-			else:
-				function = self.translate(mo)
-
-			line = readline()
-			while not self._cg_sep_re.match(line):
-				
-				# read function subroutine line
-				mo = self._cg_callee_re.match(line)
-				if not mo:
-					if self._cg_recursive_re.match(line):
-						line = readline()
-						continue
-					sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
-				else:
-					call = self.translate(mo)
-					callees.append(call)
-				line = readline()
-			
-			function.callers = callers
-			function.callees = callees
-
-			if function.cycle_whole:
-				self.cycles[function.cycle_whole] = function
-			else:
-				self.functions[function.index] = function
-
-			line = readline()
+					entry_lines.append(line)			
+			line = self.readline()
 	
 	def parse(self):
-		# NOTE: actually the flat profile information is not being used
-		#self.parse_fp()
 		self.parse_cg()
+		self.fp.close()
 
 
 class DotWriter:
@@ -427,10 +395,10 @@ class Main:
 		else:
 			parser.error('invalid colormap \'%s\'' % options.colormap)
 	
-		self.parse()
-		self.write()
+		self.read_data()
+		self.write_graph()
 
-	def parse(self):
+	def read_data(self):
 		self.parser = GprofParser(self.input)
 		self.parser.parse()
 
@@ -438,9 +406,9 @@ class Main:
 		if function.cycle:
 			# TODO: better handling the cycles
 			cycle = self.parser.cycles[function.cycle]
-			return cycle.self + cycle.children
+			return cycle.self + cycle.descendants
 		else:
-			return function.self + function.children
+			return function.self + function.descendants
 	
 	def compress_function_name(self, name):
 		"""Compress function name removing (usually) unnecessary information from C++ names."""
@@ -469,7 +437,7 @@ class Main:
 	fontname = "Helvetica"
 	fontsize = "10"
 
-	def write(self):
+	def write_graph(self):
 		dot = DotWriter(self.output)
 		dot.begin_graph()
 		dot.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
@@ -485,8 +453,8 @@ class Main:
 			name = function.name
 			name = self.compress_function_name(name)
 			
-			called = function.called + function.called_recursive
-			label = "%s\n%.02f%% (%.02f%%)\n%i" % (name, total_perc, self_perc, called) 
+			total_called = function.called + function.called_recursive
+			label = "%s\n%.02f%% (%.02f%%)\n%i" % (name, total_perc, self_perc, total_called) 
 			color = self.colormap.color_from_percentage(total_perc)
 			dot.node(function.index, label=label, color=color)
 			
@@ -494,26 +462,25 @@ class Main:
 				label = "%i" % function.called_recursive
 				dot.edge(function.index, function.index, label=label, color=color, fontcolor=color)
 
-			# NOTE: function.callers is not used
-			for callee in function.callees:
-				callee_ = self.parser.functions[callee.index]
-				callee_perc = (callee_.self + callee_.children)/self.parser.total*100.0
+			# NOTE: function.parents is not used
+			for child in function.children:
+				child_ = self.parser.functions[child.index]
 
-				if self.function_total(callee_)/self.parser.total*100.0 < self.node_thres:
+				if self.function_total(child_)/self.parser.total*100.0 < self.node_thres:
 					continue
 
-				if function.cycle != 0 and function.cycle == callee.cycle:
-					assert callee.self == 0
-					assert callee.children == 0
-					perc = callee_perc
+				if function.cycle != 0 and function.cycle == child.cycle:
+					assert child.self == 0
+					assert child.descendants == 0
+					perc = (child_.self + child_.descendants)/self.parser.total*100.0
 				else:
-					perc = (callee.self + callee.children)/self.parser.total*100.0
+					perc = (child.self + child.descendants)/self.parser.total*100.0
 					if perc < self.edge_thres:
 						continue
 
-				label = "%.02f%%\n%i" % (perc, callee.called) 
+				label = "%.02f%%\n%i" % (perc, child.called) 
 				color = self.colormap.color_from_percentage(perc)
-				dot.edge(function.index, callee.index, label=label, color=color, fontcolor=color)
+				dot.edge(function.index, child.index, label=label, color=color, fontcolor=color)
 		dot.end_graph()
 	
 
