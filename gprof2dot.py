@@ -66,7 +66,7 @@ class GprofParser:
 		groupdict = mo.groupdict()
 		for name, value in groupdict.iteritems():
 			if value is None:
-				value = 0
+				value = None
 			elif self._int_re.match(value):
 				value = int(value)
 			elif self._float_re.match(value):
@@ -403,11 +403,14 @@ class Main:
 		self.parser.parse()
 
 	def function_total(self, function):
-		if function.cycle:
-			# TODO: better handling the cycles
+		"""Calculate total time spent in function and descendants."""
+		if function.cycle is not None:
+			# function is part of a cycle so return total time spent in the cycle
 			cycle = self.parser.cycles[function.cycle]
 			return cycle.self + cycle.descendants
 		else:
+			assert function.self is not None
+			assert function.descendants is not None
 			return function.self + function.descendants
 	
 	def compress_function_name(self, name):
@@ -444,41 +447,46 @@ class Main:
 		dot.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
 		dot.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
 		for function in self.parser.functions.itervalues():
+			name = function.name
 			total_perc = self.function_total(function)/self.parser.total*100.0
 			self_perc = function.self/self.parser.total*100.0
 
 			if total_perc < self.node_thres:
 				continue
 			
-			name = function.name
 			name = self.compress_function_name(name)
-			
-			total_called = function.called + function.called_recursive
-			label = "%s\n%.02f%% (%.02f%%)\n%i" % (name, total_perc, self_perc, total_called) 
+			label = "%s\n%.02f%% (%.02f%%)" % (name, total_perc, self_perc) 
+
+			# number of invocations
+			if function.called is not None:
+				total_called = function.called
+				if function.called_recursive is not None:
+					total_called += function.called_recursive
+				label += "\n%i" % (total_called)
+
 			color = self.colormap.color_from_percentage(total_perc)
 			dot.node(function.index, label=label, color=color)
 			
-			if function.called_recursive:
-				label = "%i" % function.called_recursive
-				dot.edge(function.index, function.index, label=label, color=color, fontcolor=color)
-
 			# NOTE: function.parents is not used
 			for child in function.children:
+				# only draw edge if destination node is not pruned
 				child_ = self.parser.functions[child.index]
-
 				if self.function_total(child_)/self.parser.total*100.0 < self.node_thres:
 					continue
 
-				if function.cycle != 0 and function.cycle == child.cycle:
-					assert child.self == 0
-					assert child.descendants == 0
-					perc = (child_.self + child_.descendants)/self.parser.total*100.0
-				else:
+				label = "%i"  % (child.called)
+
+				if child.self is not None:
+					assert child.descendants is not None
 					perc = (child.self + child.descendants)/self.parser.total*100.0
 					if perc < self.edge_thres:
 						continue
+					label = ("%.02f%%" % perc) + "\n" + label
+				else:
+					# recursive or intra-cycle call
+					# no percentage value available but use parent's color
+					perc = total_perc
 
-				label = "%.02f%%\n%i" % (perc, child.called) 
 				color = self.colormap.color_from_percentage(perc)
 				dot.edge(function.index, child.index, label=label, color=color, fontcolor=color)
 		dot.end_graph()
