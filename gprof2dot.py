@@ -94,13 +94,9 @@ class GprofParser:
 		r'\s+(?P<percentage_time>\d+\.\d+)' + 
 		r'\s+(?P<self>\d+\.\d+)' + 
 		r'\s+(?P<descendants>\d+\.\d+)' + 
-		r'\s+(?:(?P<called>\d+)(?:\+(?P<called_recursive>\d+))?)?' + 
-		r'\s+(?:' +
-			r'<cycle\s(?P<cycle_whole>\d+)\sas\sa\swhole>' +
-		r'|' +
-			r'(?P<name>\S.*?)' +
-			r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
-		r')' +
+		r'\s+(?:(?P<called>\d+)(?:\+(?P<called_self>\d+))?)?' + 
+		r'\s+(?P<name>\S.*?)' +
+		r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
 		r'\s\[(\d+)\]$'
 	)
 
@@ -115,9 +111,28 @@ class GprofParser:
 
 	_cg_child_re = _cg_parent_re
 
+	_cg_cycle_header_re = re.compile(
+		r'^\[(?P<index>\d+)\]' + 
+		r'\s+(?P<percentage_time>\d+\.\d+)' + 
+		r'\s+(?P<self>\d+\.\d+)' + 
+		r'\s+(?P<descendants>\d+\.\d+)' + 
+		r'\s+(?:(?P<called>\d+)(?:\+(?P<called_self>\d+))?)?' + 
+		r'\s+<cycle\s(?P<cycle>\d+)\sas\sa\swhole>' +
+		r'\s\[(\d+)\]$'
+	)
+
+	_cg_cycle_member_re = re.compile(
+		r'^\s+(?P<self>\d+\.\d+)?' + 
+		r'\s+(?P<descendants>\d+\.\d+)?' + 
+		r'\s+(?P<called>\d+)(?:\+(?P<called_self>\d+))?' + 
+		r'\s+(?P<name>\S.*?)' +
+		r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
+		r'\s\[(?P<index>\d+)\]$'
+	)
+
 	_cg_sep_re = re.compile(r'^--+$')
 
-	def parse_cg_entry(self, lines):
+	def parse_function_entry(self, lines):
 		parents = []
 		children = []
 
@@ -160,10 +175,34 @@ class GprofParser:
 		function.parents = parents
 		function.children = children
 
-		if function.cycle_whole:
-			self.cycles[function.cycle_whole] = function
+		self.functions[function.index] = function
+
+	def parse_cycle_entry(self, lines):
+
+		# read cycle header line
+		mo = self._cg_cycle_header_re.match(lines[0])
+		if not mo:
+			sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+			return
+		cycle = self.translate(mo)
+
+		# read cycle member lines
+		cycle.members = []
+		for line in lines[1:]:
+			mo = self._cg_cycle_member_re.match(line)
+			if not mo:
+				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+				continue
+			call = self.translate(mo)
+			cycle.members.append(call)
+		
+		self.cycles[cycle.cycle] = cycle
+
+	def parse_cg_entry(self, lines):
+		if lines[0].startswith("["):
+			self.parse_cycle_entry(lines)
 		else:
-			self.functions[function.index] = function
+			self.parse_function_entry(lines)
 
 	def parse_cg(self):
 		"""Parse the call graph."""
@@ -460,9 +499,9 @@ class Main:
 			# number of invocations
 			if function.called is not None:
 				total_called = function.called
-				if function.called_recursive is not None:
-					total_called += function.called_recursive
-				label += "\n%i" % (total_called)
+				if function.called_self is not None:
+					total_called += function.called_self
+				label += "\n%i" % (total_called,)
 
 			color = self.colormap.color_from_percentage(total_perc)
 			dot.node(function.index, label=label, color=color)
