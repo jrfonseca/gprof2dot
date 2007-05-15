@@ -396,7 +396,17 @@ class Main:
 			type="choice", choices=('color', 'pink', 'gray'),
 			dest="colormap", default="color", 
 			help="color map: color, pink or gray [default: %default]")
-		(options, args) = parser.parse_args(sys.argv[1:])
+		parser.add_option(
+			'-s', '--strip',
+			action="store_true",
+			dest="strip", default=False, 
+			help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
+		parser.add_option(
+			'-w', '--wrap',
+			action="store_true",
+			dest="wrap", default=False, 
+			help="wrap function names")
+		(self.options, args) = parser.parse_args(sys.argv[1:])
 		
 		if len(args) == 0:
 			self.input = sys.stdin
@@ -405,34 +415,31 @@ class Main:
 		else:
 			parser.error('incorrect number of arguments')
 
-		if options.output is not None:
-			self.output = open(options.output, "wt")
+		if self.options.output is not None:
+			self.output = open(self.options.output, "wt")
 		else:
 			self.output = sys.stdout
 
-		self.node_thres = options.node_thres
-		self.edge_thres = options.edge_thres
-
-		if options.colormap == "color":
+		if self.options.colormap == "color":
 			self.colormap = ColorMap(
 				(2.0/3.0, 0.80, 0.25), # dark blue
 				(0.0, 1.0, 0.5), # satured red
 				(0.5, 1.0, 1.0), # slower hue gradation
 			)
-		elif options.colormap == "pink":
+		elif self.options.colormap == "pink":
 			self.colormap = ColorMap(
 				(0.0, 1.0, 0.90), # pink
 				(0.0, 1.0, 0.5), # satured red
 				(1.0, 1.0, 1.0),
 			)
-		elif options.colormap == "gray":
+		elif self.options.colormap == "gray":
 			self.colormap = ColorMap(
 				(0.0, 0.0, 0.925), # light gray
 				(0.0, 0.0, 0.0), # black
 				(1.0, 1.0, 1.0),
 			)
 		else:
-			parser.error('invalid colormap \'%s\'' % options.colormap)
+			parser.error('invalid colormap \'%s\'' % self.options.colormap)
 	
 		self.read_data()
 		self.write_graph()
@@ -452,16 +459,33 @@ class Main:
 			assert function.descendants is not None
 			return function.self + function.descendants
 	
-	def compress_function_name(self, name):
-		"""Compress function name removing (usually) unnecessary information from C++ names."""
+	_parenthesis_re = re.compile(r'\([^()]*\)')
+	_angles_re = re.compile(r'<[^<>]*>')
+	_const_re = re.compile(r'\s+const$')
+	
+	def strip_function_name(self, name):
+		"""Remove extraneous information from C++ demangled function names."""
 
-		# TODO: control this via command line options
+		# Strip function parameters from name by recursively removing paired parenthesis
+		while True:
+			name, n = self._parenthesis_re.subn('', name)
+			if not n:
+				break
 
-		# Attempt to strip functions parameters from name
-		# TODO: better handling of function types
-		name = re.sub(r'\([^)]*\)$', '', name)
+		# Strip const qualifier
+		name = self._const_re.sub('', name)
 
-		# split name on multiple lines
+		# Strip template parameters from name by recursively removing paired angles
+		while True:
+			name, n = self._angles_re.subn('', name)
+			if not n:
+				break
+
+		return name
+
+	def wrap_function_name(self, name):
+		"""Split the function name on multiple lines."""
+
 		if len(name) > 32:
 			ratio = 2.0/3.0
 			height = max(int(len(name)/(1.0 - ratio) + 0.5), 1)
@@ -475,7 +499,20 @@ class Main:
 		name = name.replace("> >", ">>") # catch consecutive
 
 		return name
-		
+
+	def compress_function_name(self, name):
+		"""Compress function name according to the user preferences."""
+
+		if self.options.strip:
+			name = self.strip_function_name(name)
+
+		if self.options.wrap:
+			name = self.wrap_function_name(name)
+
+		# TODO: merge functions with same resulting name
+
+		return name
+
 	fontname = "Helvetica"
 	fontsize = "10"
 
@@ -490,7 +527,7 @@ class Main:
 			total_perc = self.function_total(function)/self.parser.total*100.0
 			self_perc = function.self/self.parser.total*100.0
 
-			if total_perc < self.node_thres:
+			if total_perc < self.options.node_thres:
 				continue
 			
 			name = self.compress_function_name(name)
@@ -510,7 +547,7 @@ class Main:
 			for child in function.children:
 				# only draw edge if destination node is not pruned
 				child_ = self.parser.functions[child.index]
-				if self.function_total(child_)/self.parser.total*100.0 < self.node_thres:
+				if self.function_total(child_)/self.parser.total*100.0 < self.options.node_thres:
 					continue
 
 				label = "%i"  % (child.called)
@@ -518,7 +555,7 @@ class Main:
 				if child.self is not None:
 					assert child.descendants is not None
 					perc = (child.self + child.descendants)/self.parser.total*100.0
-					if perc < self.edge_thres:
+					if perc < self.options.edge_thres:
 						continue
 					label = ("%.02f%%" % perc) + "\n" + label
 				else:
