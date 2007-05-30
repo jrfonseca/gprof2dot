@@ -3,7 +3,7 @@
 
 __author__ = "Jose Fonseca"
 
-__version__ = 0.2
+__version__ = "0.2"
 
 
 import sys
@@ -42,6 +42,8 @@ class GprofParser:
 	See also:
 	- Chapter "Interpreting gprof's Output" from the GNU gprof manual
 	  http://www.gnu.org/software/binutils/manual/gprof-2.9.1/html_chapter/gprof_5.html#SEC10
+	- File "cg_print.c" from the GNU gprof source code
+	  http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/src/gprof/cg_print.c?rev=1.12&cvsroot=src
 	"""
 
 	def __init__(self, fp):
@@ -87,7 +89,12 @@ class GprofParser:
 		r'^index\s+%\s+time\s+self\s+children\s+called\s+name\s*$'
 	)
 
-	_cg_spontaneous_re = re.compile(r'^\s+<spontaneous>\s*$')
+	_cg_ignore_re = re.compile(
+		# spontaneous
+		r'^\s+<spontaneous>\s*$|'
+		# internal calls (such as "mcount")
+		r'^.*\((\d+)\)$'
+	)
 
 	_cg_primary_re = re.compile(
 		r'^\[(?P<index>\d+)\]' + 
@@ -146,7 +153,7 @@ class GprofParser:
 			# read function parent line
 			mo = self._cg_parent_re.match(line)
 			if not mo:
-				if self._cg_spontaneous_re.match(line):
+				if self._cg_ignore_re.match(line):
 					continue
 				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
 			else:
@@ -167,6 +174,8 @@ class GprofParser:
 			# read function subroutine line
 			mo = self._cg_child_re.match(line)
 			if not mo:
+				if self._cg_ignore_re.match(line):
+					continue
 				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
 			else:
 				call = self.translate(mo)
@@ -180,7 +189,8 @@ class GprofParser:
 	def parse_cycle_entry(self, lines):
 
 		# read cycle header line
-		mo = self._cg_cycle_header_re.match(lines[0])
+		line = lines[0]
+		mo = self._cg_cycle_header_re.match(line)
 		if not mo:
 			sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
 			return
@@ -378,7 +388,7 @@ class Main:
 
 		parser = optparse.OptionParser(
 			usage="\n\t%prog [options] [file]", 
-			version="%%prog %0.1f" % __version__)
+			version="%%prog %s" % __version__)
 		parser.add_option(
 			'-o', '--output', metavar='FILE',
 			type="string", dest="output", 
@@ -452,8 +462,13 @@ class Main:
 		"""Calculate total time spent in function and descendants."""
 		if function.cycle is not None:
 			# function is part of a cycle so return total time spent in the cycle
-			cycle = self.parser.cycles[function.cycle]
-			return cycle.self + cycle.descendants
+			try:
+				cycle = self.parser.cycles[function.cycle]
+			except KeyError:
+				# cycles discovered by gprof's static call graph analysis
+				return 0.0
+			else:
+				return cycle.self + cycle.descendants
 		else:
 			assert function.self is not None
 			assert function.descendants is not None
@@ -490,7 +505,7 @@ class Main:
 			ratio = 2.0/3.0
 			height = max(int(len(name)/(1.0 - ratio) + 0.5), 1)
 			width = max(len(name)/height, 32)
-			import textwrap
+			# TODO: break lines in symbols
 			name = textwrap.fill(name, width, break_long_words=False)
 
 		# Take away spaces
@@ -519,9 +534,12 @@ class Main:
 	def write_graph(self):
 		dot = DotWriter(self.output)
 		dot.begin_graph()
+
 		dot.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
 		dot.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
 		dot.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
+		
+		static_functions = {}
 		for function in self.parser.functions.itervalues():
 			name = function.name
 			total_perc = self.function_total(function)/self.parser.total*100.0
@@ -546,8 +564,16 @@ class Main:
 			# NOTE: function.parents is not used
 			for child in function.children:
 				# only draw edge if destination node is not pruned
-				child_ = self.parser.functions[child.index]
-				if self.function_total(child_)/self.parser.total*100.0 < self.options.node_thres:
+				try:
+					child_ = self.parser.functions[child.index]
+				except KeyError:
+					# NOTE: functions that were never called but were discovered by gprof's 
+					# static call graph analysis dont have a call graph entry
+					perc = 0.0
+					static_functions[child.index] = child.name
+				else:
+					perc = self.function_total(child_)/self.parser.total*100.0
+				if perc < self.options.node_thres:
 					continue
 
 				label = "%i"  % (child.called)
@@ -565,6 +591,26 @@ class Main:
 
 				color = self.colormap.color_from_percentage(perc)
 				dot.edge(function.index, child.index, label=label, color=color, fontcolor=color)
+
+		# identical to the above, but for functions which do not have a call graph entry but appear in the 
+		# other entry callee list
+		for index, name in static_functions.iteritems():
+			total_perc = 0.0
+			self_perc = 0.0
+
+			if total_perc < self.options.node_thres:
+				continue
+			
+			name = self.compress_function_name(name)
+			label = "%s\n%.02f%% (%.02f%%)" % (name, total_perc, self_perc) 
+
+			# number of invocations
+			total_called = 0
+			label += "\n%i" % (total_called,)
+
+			color = self.colormap.color_from_percentage(total_perc)
+			dot.node(index, label=label, color=color)
+
 		dot.end_graph()
 	
 
