@@ -8,9 +8,8 @@ import math
 
 import gtk
 import gtk.gdk
-import pango
+import gtk.keysyms
 import cairo
-import pangocairo
 
 import pydot
 
@@ -79,8 +78,6 @@ class TextShape(Shape):
 		cr.set_source_rgba(*self.pen.color)
 		cr.show_text(self.t)
 		cr.restore()
-
-
 
 
 class EllipseShape(Shape):
@@ -362,6 +359,8 @@ class DotWindow(gtk.Window):
 		self.area.connect("button-press-event", self.on_area_button_press)
 		self.area.add_events(gtk.gdk.POINTER_MOTION_MASK)
 		self.area.connect("motion-notify-event", self.on_area_motion_notify)
+		
+		window.connect('key-press-event', self.on_key_press_event)
 
 		self.zoom_ratio = 1.0
 		self.pixbuf = None
@@ -467,12 +466,14 @@ class DotWindow(gtk.Window):
 		self.area.set_size(width, height)
 		self.area.queue_draw()
 
+	ZOOM_INCREMENT = 1.25
+
 	def on_zoom_in(self, action):
-		self.zoom_ratio *= 1.25
+		self.zoom_ratio *= self.ZOOM_INCREMENT
 		self.zoom_image()
 
 	def on_zoom_out(self, action):
-		self.zoom_ratio *= 1/1.25
+		self.zoom_ratio /= self.ZOOM_INCREMENT
 		self.zoom_image()
 
 	def on_zoom_fit(self, action):
@@ -486,6 +487,33 @@ class DotWindow(gtk.Window):
 	def on_zoom_100(self, action):
 		self.zoom_ratio = 1.0
 		self.zoom_image()
+
+	POS_INCREMENT = 100
+
+	def on_key_press_event(self, widget, event):
+		hadjust = self.scrolled_window.get_hadjustment()
+		vadjust = self.scrolled_window.get_vadjustment()
+		if event.keyval == gtk.keysyms.Left:
+			hadjust.value = max(hadjust.value - self.POS_INCREMENT, hadjust.lower)
+			return True
+		if event.keyval == gtk.keysyms.Right:
+			hadjust.value = min(hadjust.value + self.POS_INCREMENT, hadjust.upper - hadjust.page_size)
+			return True
+		if event.keyval == gtk.keysyms.Up:
+			vadjust.value = max(vadjust.value - self.POS_INCREMENT, vadjust.lower)
+			return True
+		if event.keyval == gtk.keysyms.Down:
+			vadjust.value = min(vadjust.value + self.POS_INCREMENT, vadjust.upper - vadjust.page_size)
+			return True
+		if event.keyval == gtk.keysyms.Page_Up:
+			self.zoom_ratio *= self.ZOOM_INCREMENT
+			self.zoom_image()
+			return True
+		if event.keyval == gtk.keysyms.Page_Down:
+			self.zoom_ratio /= self.ZOOM_INCREMENT
+			self.zoom_image()
+			return True
+		return False
 
 	def on_area_button_press(self, area, event):
 		if event.type not in (gtk.gdk.BUTTON_PRESS, gtk.gdk.BUTTON_RELEASE):
