@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Generate a dot graph from the GNU gprof output."""
+"""Generate a dot graph from gprof/pstats output."""
 
 __author__ = "Jose Fonseca"
 
@@ -7,9 +7,90 @@ __version__ = "0.2"
 
 
 import sys
+import os.path
 import re
 import textwrap
 import optparse
+
+
+class Call:
+
+	def __init__(self, callee_id, ncalls=0):
+		self.callee_id = callee_id
+		self.ncalls = ncalls
+		self.total_time = None
+
+
+class Function:
+
+	def __init__(self, id, name):
+		self.id = id
+		self.name = name
+		self.total_time = 0.0
+		self.self_time = 0.0
+		self.ncalls = 0
+		self.calls = []
+	
+	def add_call(self, call):
+		self.calls = []
+
+
+class Profile:
+
+	def __init__(self):
+		self.functions = {}
+		self.total_time = 0.0
+
+	def add_function(self, function):
+		assert function.id not in self.functions
+		self.functions[function.id] = function
+
+	def estimates(profile):
+		"""Estimate the call times for the calls where this information is not available.
+		
+		These estimates are necessary for pruning and coloring, but they are not shown to the user,
+		except for the rare cases where there is absolute certainty.
+
+		The profile is modified in-place."""
+
+		for function in profile.functions.itervalues():
+			for call in function.calls:
+				callee = profile.functions[call.callee_id]
+
+				# handle exact cases first
+				if callee.ncalls == 0:
+					# no calls made
+					call.total_time = 0.0
+				elif callee.total_time == 0.0:
+					# no time spent on callee
+					call.total_time = 0.0
+				elif call.ncalls == callee.ncalls:
+					# all calls made from this function
+					call.total_time = callee.total_time
+
+				if call.total_time is not None:
+					# exact time is already available
+					call.total_time_estimate = call.total_time 
+				else:
+					# make a safe estimate
+					call.total_time_estimate = min(function.total_time, callee.total_time) 
+
+	def prune(profile, node_thres, edge_thres):
+		node_thres = profile.total_time*node_thres
+		edge_thres = profile.total_time*edge_thres
+
+		for function_id in profile.functions.keys():
+			function = profile.functions[function_id]
+			if function.total_time < node_thres:
+				del profile.functions[function_id]
+
+		for function in profile.functions.itervalues():
+			calls = []
+			for call in function.calls:
+				if call.callee_id in profile.functions:
+					if call.total_time_estimate >= edge_thres:
+						calls.append(call)
+			function.calls = calls
 
 
 class Struct:
@@ -243,9 +324,108 @@ class GprofParser:
 					entry_lines.append(line)			
 			line = self.readline()
 	
+	def function_total(self, function):
+		"""Calculate total time spent in function and descendants."""
+		if function.cycle is not None:
+			# function is part of a cycle so return total time spent in the cycle
+			try:
+				cycle = self.cycles[function.cycle]
+			except KeyError:
+				# cycles discovered by gprof's static call graph analysis
+				return 0.0
+			else:
+				return cycle.self + cycle.descendants
+		else:
+			assert function.self is not None
+			assert function.descendants is not None
+			return function.self + function.descendants
+	
 	def parse(self):
 		self.parse_cg()
 		self.fp.close()
+
+		profile = Profile()
+		profile.total_time = self.total
+
+		static_functions = {}
+		for entry in self.functions.itervalues():
+			function = Function(entry.index, entry.name)
+			function.total_time = self.function_total(entry)
+			function.self_time = entry.self
+			if entry.called is not None:
+				function.ncalls = entry.called
+				if entry.called_self is not None:
+					function.self_calls = entry.called_self
+			
+			# NOTE: entry.parents is not used
+
+			for child in entry.children:
+				if child.index not in self.functions:
+					# NOTE: functions that were never called but were discovered by gprof's 
+					# static call graph analysis dont have a call graph entry
+					profile.functions[child.index] = Function(child.index, child.name)
+
+				call = Call(child.index)
+				call.ncalls = child.called
+				if child.self is not None:
+					assert child.descendants is not None
+					call.total_time = child.self + child.descendants
+
+				function.calls.append(call)
+
+			profile.add_function(function)
+
+		return profile
+
+
+class PstatsParser:
+	"""Parser python profiling statistics saved with te pstats module."""
+
+	def __init__(self, filename):
+		import pstats
+		self.stats = pstats.Stats(filename)
+		self.profile = Profile()
+		self.function_ids = {}
+
+	def get_function_name(self, (filename, line, name)):
+		module = os.path.splitext(filename)[0]
+		module = os.path.basename(module)
+		return "%s:%d:%s" % (module, line, name)
+
+	def get_function(self, key):
+		try:
+			id = self.function_ids[key]
+		except KeyError:
+			id = len(self.function_ids)
+			name = self.get_function_name(key)
+			function = Function(id, name)
+			self.profile.functions[id] = function
+			self.function_ids[key] = id
+		else:
+			function = self.profile.functions[id]
+		return function
+
+	def parse(self):
+		self.profile.total_time = self.stats.total_tt
+		for fn, (cc, nc, tt, ct, callers) in self.stats.stats.iteritems():
+			callee = self.get_function(fn)
+			callee.ncalls = nc
+			callee.total_time = ct
+			callee.self_time = tt
+			self.profile.total_time = max(self.profile.total_time, ct)
+			for fn, value in callers.iteritems():
+				caller = self.get_function(fn)
+				call = Call(callee.id)
+				if isinstance(value, tuple):
+					nc, cc, tt, ct = value
+				else:
+					cc, ct = value, None
+				call.ncalls = cc
+				call.total_time = ct
+				caller.calls.append(call)
+		#self.stats.print_stats()
+		#self.stats.print_callees()
+		return self.profile
 
 
 class DotWriter:
@@ -259,6 +439,52 @@ class DotWriter:
 	def __init__(self, fp):
 		self.fp = fp
 
+	fontname = "Helvetica"
+	fontsize = "10"
+
+	def graph(self, profile, colormap):
+		self.begin_graph()
+
+		self.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
+		self.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
+		self.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
+
+		for function in profile.functions.itervalues():
+			labels = []
+			
+			labels.append(function.name)
+
+			total_ratio = function.total_time/profile.total_time
+			self_ratio = function.self_time/profile.total_time
+			labels.append("%.02f%% (%.02f%%)" % (total_ratio*100.0, self_ratio*100.0))
+
+			# number of invocations
+			if function.ncalls is not None:
+				labels.append("%i" % (function.ncalls,))
+
+			label = '\n'.join(labels)
+			color = self.color(colormap(total_ratio))
+			self.node(function.id, label=label, color=color)
+
+			for call in function.calls:
+				callee = profile.functions[call.callee_id]
+				labels = []
+				
+				if call.total_time is not None:
+					total_ratio = call.total_time/profile.total_time
+					labels.append("%.02f%%" % (total_ratio*100.0),)
+				else:
+					# use the estimate for the color
+					total_ratio = call.total_time_estimate/profile.total_time
+
+				labels.append("%i" % (call.ncalls,))
+
+				label = '\n'.join(labels)
+				color = self.color(colormap(total_ratio))
+				self.edge(function.id, call.callee_id, label=label, color=color, fontcolor=color)
+
+		self.end_graph()
+
 	def begin_graph(self):
 		self.write('digraph {\n')
 
@@ -270,13 +496,13 @@ class DotWriter:
 		self.write(what)
 		self.attr_list(attrs)
 		self.write(";\n")
-	
+
 	def node(self, node, **attrs):
 		self.write("\t")
 		self.id(node)
 		self.attr_list(attrs)
 		self.write(";\n")
-	
+
 	def edge(self, src, dst, **attrs):
 		self.write("\t")
 		self.id(src)
@@ -284,7 +510,7 @@ class DotWriter:
 		self.id(dst)
 		self.attr_list(attrs)
 		self.write(";\n")
-	
+
 	def attr_list(self, attrs):
 		if not attrs:
 			return
@@ -311,14 +537,25 @@ class DotWriter:
 		else:
 			raise TypeError
 		self.write(s)
-	
+
+	def color(self, (r, g, b)):
+
+		def float2int(f):
+			if f <= 0.0:
+				return 0
+			if f >= 1.0:
+				return 255
+			return int(255.0*f + 0.5)
+
+		return "#" + "".join(["%02x" % float2int(c) for c in (r, g, b)])
+
 	def escape(self, s):
 		s = s.replace('\\', r'\\')
 		s = s.replace('\n', r'\n')
 		s = s.replace('\t', r'\t')
 		s = s.replace('"', r'\"')
 		return '"' + s + '"'
-	
+
 	def write(self, s):
 		self.fp.write(s)
 
@@ -331,29 +568,20 @@ class ColorMap:
 		self.hmax, self.smax, self.lmax = cmax
 		self.hpow, self.spow, self.lpow = cpow
 
-	def color_from_percentage(self, p):
-		"""Map a precentage value into a DOT color attribute value."""
-		
-		p /= 100.0
+	def __call__(self, ratio):
+		"""Map a ratio value into a RGB color."""
 
-		h = self.hmin + p**self.hpow*(self.hmax - self.hmin)
-		s = self.smin + p**self.spow*(self.smax - self.smin)
-		l = self.lmin + p**self.lpow*(self.lmax - self.lmin)
+		h = self.hmin + ratio**self.hpow*(self.hmax - self.hmin)
+		s = self.smin + ratio**self.spow*(self.smax - self.smin)
+		l = self.lmin + ratio**self.lpow*(self.lmax - self.lmin)
 
-		r, g, b = self.hsl_to_rgb(h, s, l)
+		return self.hsl_to_rgb(h, s, l)
 
-		r = int(255.0*r + 0.5)
-		g = int(255.0*g + 0.5)
-		b = int(255.0*b + 0.5)
-
-		return "#%02x%02x%02x" % (r, g, b)
-		#return "%.03f+%.03f+%.03f" % (h, s, v)
-
-	def hsl_to_rgb(self, h, s, l): 
+	def hsl_to_rgb(self, h, s, l):
 		"""Convert a color from HSL color-model to RGB.
-		
+
 		See also:
-		- http://www.w3.org/TR/css3-color/#hsl-color 
+		- http://www.w3.org/TR/css3-color/#hsl-color
 		"""
 		if l <= 0.5:
 			m2 = l*(s + 1.0)
@@ -365,119 +593,127 @@ class ColorMap:
 		b = self._hue_to_rgb(m1, m2, h - 1.0/3.0)
 		return (r, g, b)
 
-	def _hue_to_rgb(self, m1, m2, h): 
-		if h < 0.0: 
+	def _hue_to_rgb(self, m1, m2, h):
+		if h < 0.0:
 			h += 1.0
-		elif h > 1.0: 
+		elif h > 1.0:
 			h -= 1.0
-		if h*6 < 1.0: 
+		if h*6 < 1.0:
 			return m1 + (m2 - m1)*h*6.0
-		elif h*2 < 1.0: 
+		elif h*2 < 1.0:
 			return m2
-		elif h*3 < 2.0: 
+		elif h*3 < 2.0:
 			return m1 + (m2 - m1)*(2.0/3.0 - h)*6.0
 		else:
 			return m1
 
 
+temperatureCM = ColorMap(
+	(2.0/3.0, 0.80, 0.25), # dark blue
+	(0.0, 1.0, 0.5), # satured red
+	(0.5, 1.0, 1.0), # sub-linear hue gradation
+)
+
+pinkCM = ColorMap(
+	(0.0, 1.0, 0.90), # pink
+	(0.0, 1.0, 0.5), # satured red
+	(1.0, 1.0, 1.0), # linear gradation
+)
+
+grayCM =  ColorMap(
+	(0.0, 0.0, 0.925), # light gray
+	(0.0, 0.0, 0.0), # black
+	(1.0, 1.0, 1.0), # linear gradation
+)
+
+
 class Main:
 	"""Main program."""
+
+	colormaps = {
+			"color": temperatureCM,
+			"pink": pinkCM,
+			"gray": grayCM,
+	}
 
 	def main(self):
 		"""Main program."""
 
 		parser = optparse.OptionParser(
-			usage="\n\t%prog [options] [file]", 
+			usage="\n\t%prog [options] [file]",
 			version="%%prog %s" % __version__)
 		parser.add_option(
 			'-o', '--output', metavar='FILE',
-			type="string", dest="output", 
+			type="string", dest="output",
 			help="output filename [stdout]")
 		parser.add_option(
-			'-n', '--node-thres', metavar='PERCENTAGE', 
-			type="float", dest="node_thres", default=0.5, 
+			'-n', '--node-thres', metavar='PERCENTAGE',
+			type="float", dest="node_thres", default=0.5,
 			help="eliminate nodes below this threshold [default: %default]")
 		parser.add_option(
 			'-e', '--edge-thres', metavar='PERCENTAGE',
-			type="float", dest="edge_thres", default=0.1, 
+			type="float", dest="edge_thres", default=0.1,
 			help="eliminate edges below this threshold [default: %default]")
+		parser.add_option(
+			'-f', '--format',
+			type="choice", choices=('prof', 'pstats'),
+			dest="format", default="prof",
+			help="profile format: prof or pstats [default: %default]")
 		parser.add_option(
 			'-c', '--colormap',
 			type="choice", choices=('color', 'pink', 'gray'),
-			dest="colormap", default="color", 
+			dest="colormap", default="color",
 			help="color map: color, pink or gray [default: %default]")
 		parser.add_option(
 			'-s', '--strip',
 			action="store_true",
-			dest="strip", default=False, 
+			dest="strip", default=False,
 			help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
 		parser.add_option(
 			'-w', '--wrap',
 			action="store_true",
-			dest="wrap", default=False, 
+			dest="wrap", default=False,
 			help="wrap function names")
 		(self.options, args) = parser.parse_args(sys.argv[1:])
-		
+
 		if len(args) == 0:
-			self.input = sys.stdin
+			self.input = None
 		elif len(args) == 1:
-			self.input = open(args[0], "rt")
+			self.input = args[0]
 		else:
 			parser.error('incorrect number of arguments')
 
-		if self.options.output is not None:
-			self.output = open(self.options.output, "wt")
-		else:
-			self.output = sys.stdout
-
-		if self.options.colormap == "color":
-			self.colormap = ColorMap(
-				(2.0/3.0, 0.80, 0.25), # dark blue
-				(0.0, 1.0, 0.5), # satured red
-				(0.5, 1.0, 1.0), # slower hue gradation
-			)
-		elif self.options.colormap == "pink":
-			self.colormap = ColorMap(
-				(0.0, 1.0, 0.90), # pink
-				(0.0, 1.0, 0.5), # satured red
-				(1.0, 1.0, 1.0),
-			)
-		elif self.options.colormap == "gray":
-			self.colormap = ColorMap(
-				(0.0, 0.0, 0.925), # light gray
-				(0.0, 0.0, 0.0), # black
-				(1.0, 1.0, 1.0),
-			)
-		else:
+		try:
+			self.colormap = self.colormaps[self.options.colormap]
+		except KeyError:
 			parser.error('invalid colormap \'%s\'' % self.options.colormap)
-	
-		self.read_data()
+
+		if self.options.format == 'prof':
+			if self.input is None:
+				fp = sys.stdin
+			else:
+				fp = open(self.input, 'rt')
+			parser = GprofParser(fp)
+		elif self.options.format == 'pstats':
+			if self.input is None:
+				parser.error('a file must be specified for pstats input')
+			parser = PstatsParser(self.input)
+		else:
+			parser.error('invalid format \'%s\'' % self.options.format)
+
+		self.profile = parser.parse()
+		
+		if self.options.output is None:
+			self.output = sys.stdout
+		else:
+			self.output = open(self.options.output, 'wt')
+
 		self.write_graph()
 
-	def read_data(self):
-		self.parser = GprofParser(self.input)
-		self.parser.parse()
-
-	def function_total(self, function):
-		"""Calculate total time spent in function and descendants."""
-		if function.cycle is not None:
-			# function is part of a cycle so return total time spent in the cycle
-			try:
-				cycle = self.parser.cycles[function.cycle]
-			except KeyError:
-				# cycles discovered by gprof's static call graph analysis
-				return 0.0
-			else:
-				return cycle.self + cycle.descendants
-		else:
-			assert function.self is not None
-			assert function.descendants is not None
-			return function.self + function.descendants
-	
 	_parenthesis_re = re.compile(r'\([^()]*\)')
 	_angles_re = re.compile(r'<[^<>]*>')
 	_const_re = re.compile(r'\s+const$')
-	
+
 	def strip_function_name(self, name):
 		"""Remove extraneous information from C++ demangled function names."""
 
@@ -528,91 +764,17 @@ class Main:
 
 		return name
 
-	fontname = "Helvetica"
-	fontsize = "10"
-
 	def write_graph(self):
 		dot = DotWriter(self.output)
-		dot.begin_graph()
+		profile = self.profile
+		profile.estimates()
+		profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
 
-		dot.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
-		dot.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
-		dot.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
-		
-		static_functions = {}
-		for function in self.parser.functions.itervalues():
-			name = function.name
-			total_perc = self.function_total(function)/self.parser.total*100.0
-			self_perc = function.self/self.parser.total*100.0
+		for function in profile.functions.itervalues():
+			function.name = self.compress_function_name(function.name)
 
-			if total_perc < self.options.node_thres:
-				continue
-			
-			name = self.compress_function_name(name)
-			label = "%s\n%.02f%% (%.02f%%)" % (name, total_perc, self_perc) 
+		dot.graph(profile, self.colormap)
 
-			# number of invocations
-			if function.called is not None:
-				total_called = function.called
-				if function.called_self is not None:
-					total_called += function.called_self
-				label += "\n%i" % (total_called,)
-
-			color = self.colormap.color_from_percentage(total_perc)
-			dot.node(function.index, label=label, color=color)
-			
-			# NOTE: function.parents is not used
-			for child in function.children:
-				# only draw edge if destination node is not pruned
-				try:
-					child_ = self.parser.functions[child.index]
-				except KeyError:
-					# NOTE: functions that were never called but were discovered by gprof's 
-					# static call graph analysis dont have a call graph entry
-					perc = 0.0
-					static_functions[child.index] = child.name
-				else:
-					perc = self.function_total(child_)/self.parser.total*100.0
-				if perc < self.options.node_thres:
-					continue
-
-				label = "%i"  % (child.called)
-
-				if child.self is not None:
-					assert child.descendants is not None
-					perc = (child.self + child.descendants)/self.parser.total*100.0
-					if perc < self.options.edge_thres:
-						continue
-					label = ("%.02f%%" % perc) + "\n" + label
-				else:
-					# recursive or intra-cycle call
-					# no percentage value available but use parent's color
-					perc = total_perc
-
-				color = self.colormap.color_from_percentage(perc)
-				dot.edge(function.index, child.index, label=label, color=color, fontcolor=color)
-
-		# identical to the above, but for functions which do not have a call graph entry but appear in the 
-		# other entry callee list
-		for index, name in static_functions.iteritems():
-			total_perc = 0.0
-			self_perc = 0.0
-
-			if total_perc < self.options.node_thres:
-				continue
-			
-			name = self.compress_function_name(name)
-			label = "%s\n%.02f%% (%.02f%%)" % (name, total_perc, self_perc) 
-
-			# number of invocations
-			total_called = 0
-			label += "\n%i" % (total_called,)
-
-			color = self.colormap.color_from_percentage(total_perc)
-			dot.node(index, label=label, color=color)
-
-		dot.end_graph()
-	
 
 if __name__ == '__main__':
 	Main().main()

@@ -2,7 +2,7 @@
 
 PYTHON=python2.5
 
-PROF2DOT=../prof2dot.py
+GPROF2DOT=../gprof2dot.py
 
 for FORMAT in prof pstats
 do
@@ -11,7 +11,7 @@ do
 		NAME=${INPUT%%.$FORMAT}
 		OUTPUT=$NAME.dot
 		echo $INPUT
-		if ! $PYTHON $PROF2DOT -f $FORMAT -o $OUTPUT $INPUT
+		if ! $PYTHON $GPROF2DOT -f $FORMAT -o $OUTPUT $INPUT
 		then
 			echo FAILED
 		else
