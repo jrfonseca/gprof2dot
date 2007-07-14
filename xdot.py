@@ -8,8 +8,14 @@ import math
 
 import gtk
 import gtk.gdk
+import pango
 import cairo
+import pangocairo
+
 import pydot
+
+
+# See http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
 
 
 class Pen:
@@ -49,20 +55,32 @@ class TextShape(Shape):
 		self.t = t
 
 	def draw(self, cr):
-		cr.select_font_face(self.pen.fontname)
+		
+		cr.select_font_face(self.pen.fontname, 0, 0)
 		cr.set_font_size(self.pen.fontsize)
+
+		x_bearing, y_bearing, width, height, x_advance, y_advance = cr.text_extents(self.t)
+
+		cr.move_to(self.x - self.w/2, self.y)
+
+		cr.save()
+		s = self.w/width
+		cr.scale(s, s)
+
 		if self.j == LEFT:
 			x = self.x
+		elif self.j == CENTER:
+			x = self.x - 0.5*width
+		elif self.j == RIGHT:
+			x = self.x - width
 		else:
-			x_bearing, y_bearing, width, height, x_advance, y_advance = cr.text_extents(self.t)
-			if self.j == CENTER:
-				x = self.x - (0.5*width + x_bearing)
-			elif self.j == RIGHT:
-				x = self.x - (width + x_bearing)
-			else:
-				assert 0
-		cr.move_to(x, self.y)
+			assert 0
+
+		cr.set_source_rgba(*self.pen.color)
 		cr.show_text(self.t)
+		cr.restore()
+
+
 
 
 class EllipseShape(Shape):
@@ -125,22 +143,25 @@ class BezierShape(Shape):
 			x2, y2 = self.points[i + 1]
 			x3, y3 = self.points[i + 2]
 			cr.curve_to(x1, y1, x2, y2, x3, y3)
+		cr.set_source_rgba(*self.pen.color)
 		cr.stroke()
 
 
 class XDotAttrParser:
-	# see http://www.graphviz.org/doc/info/output.html#d:xdot
+	# See http://www.graphviz.org/doc/info/output.html#d:xdot
 
 	def __init__(self, parser, buf):
-		buf = buf.replace('\\"', '"')
-		buf = buf.replace('\\n', '\n')
-
 		self.parser = parser
-		self.buf = buf
+		self.buf = self.unescape(buf)
 		self.pos = 0
 
 	def __nonzero__(self):
 		return self.pos < len(self.buf)
+
+	def unescape(self, buf):
+		buf = buf.replace('\\"', '"')
+		buf = buf.replace('\\n', '\n')
+		return buf
 
 	def read_code(self):
 		pos = self.buf.find(" ", self.pos)
@@ -178,6 +199,32 @@ class XDotAttrParser:
 			p.append((x, y))
 		return p
 
+	def read_color(self):
+		# See http://www.graphviz.org/doc/info/attrs.html#k:color
+		c = self.read_text()
+		c1 = c[:1]
+		if c1 == '#':
+			hex2float = lambda h: float(int(h, 16)/255.0)
+			r = hex2float(c[1:3])
+			g = hex2float(c[3:5])
+			b = hex2float(c[5:7])
+			try:
+				a = hex2float(c[7:9])
+			except (IndexError, ValueError):
+				a = 1.0
+			return r, g, b, a
+		elif c1.isdigit():
+			h, s, v = map(float, c[1:].split(","))
+			raise NotImplementedError
+		else:
+			color = gtk.gdk.color_parse(c)
+			s = 1.0/65535.0
+			r = color.red*s
+			g = color.green*s
+			b = color.blue*s
+			a = 1.0
+			return r, g, b, a
+
 	def parse(self):
 		shapes = []
 		pen = Pen()
@@ -186,9 +233,9 @@ class XDotAttrParser:
 		while s:
 			op = s.read_code()
 			if op == "c":
-				s.read_text()
+				pen.color = s.read_color()
 			elif op == "C":
-				s.read_text()
+				pen.fillcolor = s.read_color()
 			elif op == "S":
 				s.read_text()
 			elif op == "F":
@@ -329,8 +376,8 @@ class DotWindow(gtk.Window):
 			shell=False
 		)
 		xdotcode = p.communicate(dotcode)[0]
-		if __name__ == '__main__':
-			sys.stdout.write(xdotcode)
+		#if __name__ == '__main__':
+		#	sys.stdout.write(xdotcode)
 		self.parse(xdotcode)
 		self.zoom_image()
 
@@ -375,9 +422,6 @@ class DotWindow(gtk.Window):
 		return x, y
 
 	def on_expose(self, area, event):
-		# http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
-
-
 		cr = area.bin_window.cairo_create()
 
 		# set a clip region for the expose event
@@ -403,6 +447,14 @@ class DotWindow(gtk.Window):
 		cr.set_line_cap(cairo.LINE_CAP_BUTT)
 		cr.set_line_join(cairo.LINE_JOIN_MITER)
 		cr.set_miter_limit(1.0)
+		
+		# See http://lists.freedesktop.org/archives/cairo/2007-February/009688.html
+		#fo = cairo.FontOptions()
+		fo = cr.get_font_options()
+		fo.set_antialias(cairo.ANTIALIAS_DEFAULT)
+		fo.set_hint_style(cairo.HINT_STYLE_NONE)
+		fo.set_hint_metrics(cairo.HINT_METRICS_OFF)
+		cr.set_font_options(fo)
 
 		for shape in self.shapes:
 			shape.draw(cr)
