@@ -439,7 +439,7 @@ class DotWriter:
 	def __init__(self, fp):
 		self.fp = fp
 
-	fontname = "Helvetica"
+	fontname = "Arial"
 	fontsize = "10"
 
 	def graph(self, profile, colormap):
