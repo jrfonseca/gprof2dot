@@ -1,0 +1,1312 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 18.18      0.06     0.06    23480     0.00     0.00  find_char_unquote
+ 12.12      0.10     0.04      120     0.33     0.73  pattern_search
+  9.09      0.13     0.03     5120     0.01     0.01  collapse_continuations
+  9.09      0.16     0.03      148     0.20     0.88  update_file_1
+  9.09      0.19     0.03       37     0.81     4.76  eval
+  6.06      0.21     0.02    12484     0.00     0.00  file_hash_1
+  6.06      0.23     0.02     6596     0.00     0.00  get_next_mword
+  3.03      0.24     0.01    29981     0.00     0.00  hash_find_slot
+  3.03      0.25     0.01    14769     0.00     0.00  next_token
+  3.03      0.26     0.01     5800     0.00     0.00  variable_expand_string
+  3.03      0.27     0.01     3680     0.00     0.00  vpath_search
+  3.03      0.28     0.01     3270     0.00     0.01  dir_file_exists_p
+  3.03      0.29     0.01     2962     0.00     0.00  dirfile_hash_2
+  3.03      0.30     0.01     2621     0.00     0.00  try_variable_definition
+  3.03      0.31     0.01     2537     0.00     0.00  file_hash_2
+  3.03      0.32     0.01      160     0.06     0.06  new_pattern_rule
+  3.03      0.33     0.01       23     0.43     0.53  target_environment
+  0.00      0.33     0.00    28267     0.00     0.00  xmalloc
+  0.00      0.33     0.00    15633     0.00     0.00  hash_find_item
+  0.00      0.33     0.00    13236     0.00     0.00  variable_buffer_output
+  0.00      0.33     0.00     9748     0.00     0.00  lookup_file
+  0.00      0.33     0.00     9562     0.00     0.00  file_hash_cmp
+  0.00      0.33     0.00     9480     0.00     0.00  ar_name
+  0.00      0.33     0.00     9213     0.00     0.00  dirfile_hash_cmp
+  0.00      0.33     0.00     9025     0.00     0.00  xstrdup
+  0.00      0.33     0.00     7759     0.00     0.00  directory_hash_cmp
+  0.00      0.33     0.00     7633     0.00     0.00  directory_hash_1
+  0.00      0.33     0.00     7633     0.00     0.00  find_directory
+  0.00      0.33     0.00     7317     0.00     0.00  savestring
+  0.00      0.33     0.00     5618     0.00     0.00  dirfile_hash_1
+  0.00      0.33     0.00     5528     0.00     0.00  readline
+  0.00      0.33     0.00     4626     0.00     0.00  hash_insert_at
+  0.00      0.33     0.00     4296     0.00     0.00  dir_setup_glob
+  0.00      0.33     0.00     4296     0.00     0.00  multi_glob
+  0.00      0.33     0.00     4296     0.00     0.00  parse_file_seq
+  0.00      0.33     0.00     3976     0.00     0.00  variable_hash_1
+  0.00      0.33     0.00     3941     0.00     0.00  file_impossible_p
+  0.00      0.33     0.00     3418     0.00     0.00  initialize_variable_output
+  0.00      0.33     0.00     3270     0.00     0.00  dir_contents_file_exists_p
+  0.00      0.33     0.00     3192     0.00     0.01  file_exists_p
+  0.00      0.33     0.00     3013     0.00     0.00  remove_comments
+  0.00      0.33     0.00     2736     0.00     0.00  enter_file
+  0.00      0.33     0.00     2255     0.00     0.00  find_percent
+  0.00      0.33     0.00     2107     0.00     0.00  record_files
+  0.00      0.33     0.00     1420     0.00     0.00  define_variable_in_set
+  0.00      0.33     0.00     1388     0.00     0.00  lindex
+  0.00      0.33     0.00     1311     0.00     0.00  variable_expand
+  0.00      0.33     0.00     1291     0.00     0.00  allocated_variable_expand_for_file
+  0.00      0.33     0.00     1291     0.00     0.00  variable_expand_for_file
+  0.00      0.33     0.00     1290     0.00     0.00  variable_hash_cmp
+  0.00      0.33     0.00     1132     0.00     0.00  concat
+  0.00      0.33     0.00      737     0.00     0.00  lookup_variable
+  0.00      0.33     0.00      704     0.00     0.00  handle_function
+  0.00      0.33     0.00      704     0.00     0.00  lookup_function
+  0.00      0.33     0.00      693     0.00     0.00  reference_variable
+  0.00      0.33     0.00      561     0.00     0.00  hash_insert
+  0.00      0.33     0.00      550     0.00     0.00  do_variable_definition
+  0.00      0.33     0.00      501     0.00     0.00  recursively_expand_for_file
+  0.00      0.33     0.00      423     0.00     0.00  variable_hash_2
+  0.00      0.33     0.00      421     0.00     0.00  file_impossible
+  0.00      0.33     0.00      210     0.00     0.00  xrealloc
+  0.00      0.33     0.00      209     0.00     0.00  update_file
+  0.00      0.33     0.00      167     0.00     0.00  check_dep
+  0.00      0.33     0.00      163     0.00     0.00  f_mtime
+  0.00      0.33     0.00      163     0.00     0.00  name_mtime
+  0.00      0.33     0.00      162     0.00     0.00  directory_hash_2
+  0.00      0.33     0.00      150     0.00     0.00  function_table_entry_hash_1
+  0.00      0.33     0.00      148     0.00     0.00  notice_finished_file
+  0.00      0.33     0.00      146     0.00     0.00  file_timestamp_cons
+  0.00      0.33     0.00      120     0.00     0.73  try_implicit_rule
+  0.00      0.33     0.00      115     0.00     0.06  convert_suffix_rule
+  0.00      0.33     0.00      115     0.00     0.06  create_pattern_rule
+  0.00      0.33     0.00      111     0.00     0.00  copy_dep_chain
+  0.00      0.33     0.00      108     0.00     0.00  dep_hash_1
+  0.00      0.33     0.00      108     0.00     0.00  hash_init
+  0.00      0.33     0.00      108     0.00     0.00  round_up_2
+  0.00      0.33     0.00       77     0.00     0.00  handle_special_var
+  0.00      0.33     0.00       75     0.00     0.00  function_table_entry_hash_cmp
+  0.00      0.33     0.00       62     0.00     0.01  selective_vpath_search
+  0.00      0.33     0.00       61     0.00     0.00  block_sigs
+  0.00      0.33     0.00       61     0.00     0.00  job_next_command
+  0.00      0.33     0.00       61     0.00     0.00  unblock_sigs
+  0.00      0.33     0.00       56     0.00     0.09  reap_children
+  0.00      0.33     0.00       46     0.00     0.00  chop_commands
+  0.00      0.33     0.00       46     0.00     0.00  hash_free
+  0.00      0.33     0.00       45     0.00     0.00  function_table_entry_hash_2
+  0.00      0.33     0.00       45     0.00     0.07  install_pattern_rule
+  0.00      0.33     0.00       44     0.00     0.00  sindex
+  0.00      0.33     0.00       43     0.00     0.00  log_working_directory
+  0.00      0.33     0.00       38     0.00     0.01  construct_command_argv
+  0.00      0.33     0.00       38     0.00     0.01  construct_command_argv_internal
+  0.00      0.33     0.00       38     0.00     0.00  message
+  0.00      0.33     0.00       38     0.00     0.00  set_command_state
+  0.00      0.33     0.00       38     0.00     0.33  start_job_command
+  0.00      0.33     0.00       38     0.00     0.00  start_remote_job_p
+  0.00      0.33     0.00       37     0.00     0.01  eval_makefile
+  0.00      0.33     0.00       33     0.00     0.00  start_waiting_jobs
+  0.00      0.33     0.00       26     0.00     0.00  lookup_pattern_var
+  0.00      0.33     0.00       26     0.00     0.47  remake_file
+  0.00      0.33     0.00       23     0.00     0.53  execute_file_commands
+  0.00      0.33     0.00       23     0.00     0.00  free_child
+  0.00      0.33     0.00       23     0.00     0.00  hash_delete
+  0.00      0.33     0.00       23     0.00     0.00  hash_delete_at
+  0.00      0.33     0.00       23     0.00     0.00  initialize_file_variables
+  0.00      0.33     0.00       23     0.00     0.51  new_job
+  0.00      0.33     0.00       23     0.00     0.02  set_file_variables
+  0.00      0.33     0.00       23     0.00     0.33  start_waiting_job
+  0.00      0.33     0.00       23     0.00     0.01  uniquize_deps
+  0.00      0.33     0.00       20     0.00     0.00  define_makeflags
+  0.00      0.33     0.00       12     0.00     0.00  directory_contents_hash_1
+  0.00      0.33     0.00       10     0.00     0.00  decode_env_switches
+  0.00      0.33     0.00       10     0.00     0.00  expand_argument
+  0.00      0.33     0.00       10     0.00     0.00  expand_builtin_function
+  0.00      0.33     0.00       10     0.00     0.00  func_strip
+  0.00      0.33     0.00       10     0.00    13.11  update_goal_chain
+  0.00      0.33     0.00        7     0.00     0.00  dep_hash_2
+  0.00      0.33     0.00        7     0.00     0.00  dep_hash_cmp
+  0.00      0.33     0.00        5     0.00     0.01  build_vpath_lists
+  0.00      0.33     0.00        5     0.00     0.00  construct_include_path
+  0.00      0.33     0.00        5     0.00     1.83  convert_to_pattern
+  0.00      0.33     0.00        5     0.00     0.02  count_implicit_rule_limits
+  0.00      0.33     0.00        5     0.00     0.00  decode_debug_flags
+  0.00      0.33     0.00        5     0.00     0.00  decode_switches
+  0.00      0.33     0.00        5     0.00     0.03  define_automatic_variables
+  0.00      0.33     0.00        5     0.00     0.10  define_default_variables
+  0.00      0.33     0.00        5     0.00     0.00  die
+  0.00      0.33     0.00        5     0.00     0.00  file_timestamp_now
+  0.00      0.33     0.00        5     0.00     0.00  find_next_token
+  0.00      0.33     0.00        5     0.00     0.00  hash_dump
+  0.00      0.33     0.00        5     0.00     0.00  hash_init_directories
+  0.00      0.33     0.00        5     0.00     0.05  hash_init_function_table
+  0.00      0.33     0.00        5     0.00     0.05  hash_load
+  0.00      0.33     0.00        5     0.00     0.00  init_hash_files
+  0.00      0.33     0.00        5     0.00     0.00  init_hash_global_variable_set
+  0.00      0.33     0.00        5     0.00     0.00  init_switches
+  0.00      0.33     0.00        5     0.00     0.05  initialize_global_hash_tables
+  0.00      0.33     0.00        5     0.00     0.63  install_default_implicit_rules
+  0.00      0.33     0.00        5     0.00     0.08  install_default_suffix_rules
+  0.00      0.33     0.00        5     0.00    35.26  read_all_makefiles
+  0.00      0.33     0.00        5     0.00     0.00  remote_cleanup
+  0.00      0.33     0.00        5     0.00     0.00  remote_setup
+  0.00      0.33     0.00        5     0.00     0.00  remove_intermediates
+  0.00      0.33     0.00        5     0.00     0.01  set_default_suffixes
+  0.00      0.33     0.00        5     0.00     1.65  snap_deps
+  0.00      0.33     0.00        5     0.00     0.00  user_access
+  0.00      0.33     0.00        2     0.00     0.20  hash_rehash
+  0.00      0.33     0.00        1     0.00     0.01  construct_vpath_list
+  0.00      0.33     0.00        1     0.00     0.00  dir_name
+  0.00      0.33     0.00        1     0.00     0.00  directory_contents_hash_cmp
+  0.00      0.33     0.00        1     0.00     0.00  enter_command_line_file
+  0.00      0.33     0.00        1     0.00     0.01  handle_non_switch_argument
+  0.00      0.33     0.00        1     0.00     0.00  subst_expand
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 3.03% of 0.33 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00    0.33                 main [1]
+                0.00    0.18       5/5           read_all_makefiles [2]
+                0.00    0.13      10/10          update_goal_chain [5]
+                0.00    0.01       5/5           convert_to_pattern [36]
+                0.00    0.01       5/5           snap_deps [37]
+                0.00    0.00       5/5           install_default_implicit_rules [47]
+                0.00    0.00       5/5           define_default_variables [56]
+                0.00    0.00     255/1420        define_variable_in_set [48]
+                0.00    0.00       5/5           install_default_suffix_rules [59]
+                0.00    0.00       5/5           initialize_global_hash_tables [63]
+                0.00    0.00       5/5           define_automatic_variables [67]
+                0.00    0.00       5/5           count_implicit_rule_limits [68]
+                0.00    0.00      20/20          define_makeflags [69]
+                0.00    0.00       5/5           set_default_suffixes [71]
+                0.00    0.00       5/5           build_vpath_lists [73]
+                0.00    0.00      10/10          decode_env_switches [74]
+                0.00    0.00       5/737         lookup_variable [49]
+                0.00    0.00      37/163         f_mtime [70]
+                0.00    0.00       5/5           decode_switches [77]
+                0.00    0.00       5/2736        enter_file [44]
+                0.00    0.00      37/210         xrealloc [107]
+                0.00    0.00       5/5           user_access [154]
+                0.00    0.00       5/9025        xstrdup [89]
+                0.00    0.00       5/5           decode_debug_flags [143]
+                0.00    0.00       5/1132        concat [104]
+                0.00    0.00       5/5           construct_include_path [142]
+                0.00    0.00       5/5           remote_setup [152]
+                0.00    0.00       5/5           die [144]
+                0.00    0.00       4/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.18       5/5           main [1]
+[2]     53.4    0.00    0.18       5         read_all_makefiles [2]
+                0.03    0.15       5/5           eval_makefile <cycle 2> [64]
+                0.00    0.00      14/3192        file_exists_p [18]
+                0.00    0.00       5/5256        allocated_variable_expand_for_file <cycle 1> [101]
+                0.00    0.00       5/1420        define_variable_in_set [48]
+                0.00    0.00       5/5           find_next_token [81]
+-----------------------------------------------
+[3]     53.4    0.03    0.15       5+69      <cycle 2 as a whole> [3]
+                0.00    0.00      37             eval_makefile <cycle 2> [64]
+-----------------------------------------------
+                                  37             eval_makefile <cycle 2> [64]
+[4]     53.3    0.03    0.15      37         eval <cycle 2> [4]
+                0.03    0.00   12980/23480       find_char_unquote [10]
+                0.03    0.00    5120/5120        collapse_continuations [12]
+                0.02    0.00    6596/6596        get_next_mword [14]
+                0.00    0.02    4246/4296        parse_file_seq [17]
+                0.01    0.00    2620/2621        try_variable_definition [20]
+                0.01    0.00    4489/5256        variable_expand_string <cycle 1> [30]
+                0.00    0.01    2107/2107        record_files [35]
+                0.00    0.01    3013/3013        remove_comments [38]
+                0.00    0.00    2107/14769       next_token [32]
+                0.00    0.00      32/5256        allocated_variable_expand_for_file <cycle 1> [101]
+                0.00    0.00    5528/5528        readline [94]
+                0.00    0.00    4246/4296        multi_glob [96]
+                0.00    0.00     212/13236       variable_buffer_output [85]
+                0.00    0.00      85/28267       xmalloc [84]
+                0.00    0.00      10/210         xrealloc [107]
+                                  32             eval_makefile <cycle 2> [64]
+-----------------------------------------------
+                0.00    0.13      10/10          main [1]
+[5]     39.7    0.00    0.13      10         update_goal_chain [5]
+                0.03    0.10      42/42          update_file <cycle 3> [108]
+                0.00    0.00      10/56          reap_children [43]
+                0.00    0.00       1/163         f_mtime [70]
+                0.00    0.00      10/111         copy_dep_chain [114]
+                0.00    0.00      10/33          start_waiting_jobs [131]
+-----------------------------------------------
+[6]     39.5    0.03    0.10      42+482     <cycle 3 as a whole> [6]
+                0.03    0.10     148             update_file_1 <cycle 3> [7]
+                0.00    0.00     209             update_file <cycle 3> [108]
+-----------------------------------------------
+                                 148             update_file <cycle 3> [108]
+[7]     39.5    0.03    0.10     148         update_file_1 <cycle 3> [7]
+                0.00    0.09     120/120         try_implicit_rule [9]
+                0.00    0.01      26/26          remake_file [23]
+                0.00    0.00     106/163         f_mtime [70]
+                0.00    0.00     122/148         notice_finished_file [112]
+                                 167             check_dep <cycle 3> [80]
+-----------------------------------------------
+                                 421             pattern_search [8]
+                0.04    0.05     120/120         try_implicit_rule [9]
+[8]     26.6    0.04    0.05     120+421     pattern_search [8]
+                0.00    0.02    3178/3192        file_exists_p [18]
+                0.00    0.01    3941/3941        file_impossible_p [29]
+                0.01    0.00    3658/3680        vpath_search [28]
+                0.00    0.01    3688/9748        lookup_file [19]
+                0.00    0.00     421/421         file_impossible [51]
+                0.00    0.00    1097/28267       xmalloc [84]
+                0.00    0.00     541/9480        ar_name [87]
+                0.00    0.00      15/9025        xstrdup [89]
+                0.00    0.00      15/7317        savestring [92]
+                                 421             pattern_search [8]
+-----------------------------------------------
+                0.00    0.09     120/120         update_file_1 <cycle 3> [7]
+[9]     26.6    0.00    0.09     120         try_implicit_rule [9]
+                0.04    0.05     120/120         pattern_search [8]
+                0.00    0.00     105/9480        ar_name [87]
+-----------------------------------------------
+                0.01    0.00    2255/23480       find_percent [42]
+                0.01    0.00    3013/23480       remove_comments [38]
+                0.01    0.00    5232/23480       parse_file_seq [17]
+                0.03    0.00   12980/23480       eval <cycle 2> [4]
+[10]    18.2    0.06    0.00   23480         find_char_unquote [10]
+-----------------------------------------------
+                0.00    0.00       2/29981       hash_insert_at [57]
+                0.00    0.00      23/29981       hash_delete [72]
+                0.00    0.00     108/29981       uniquize_deps [66]
+                0.00    0.00     242/29981       hash_rehash [58]
+                0.00    0.00     461/29981       dir_contents_file_exists_p [45]
+                0.00    0.00     561/29981       hash_insert [53]
+                0.00    0.00    1150/29981       target_environment [26]
+                0.00    0.00    1420/29981       define_variable_in_set [48]
+                0.00    0.00    2736/29981       enter_file [44]
+                0.00    0.01    7645/29981       find_directory [21]
+                0.01    0.02   15633/29981       hash_find_item [13]
+[11]    15.2    0.01    0.04   29981         hash_find_slot [11]
+                0.02    0.00   12484/12484       file_hash_1 [15]
+                0.01    0.00    2962/2962        dirfile_hash_2 [33]
+                0.01    0.00    2537/2537        file_hash_2 [34]
+                0.00    0.00    9562/9562        file_hash_cmp [86]
+                0.00    0.00    9213/9213        dirfile_hash_cmp [88]
+                0.00    0.00    7759/7759        directory_hash_cmp [90]
+                0.00    0.00    7633/7633        directory_hash_1 [91]
+                0.00    0.00    5618/5618        dirfile_hash_1 [93]
+                0.00    0.00    3976/3976        variable_hash_1 [97]
+                0.00    0.00    1290/1290        variable_hash_cmp [103]
+                0.00    0.00     423/423         variable_hash_2 [106]
+                0.00    0.00     162/162         directory_hash_2 [110]
+                0.00    0.00     150/150         function_table_entry_hash_1 [111]
+                0.00    0.00     108/108         dep_hash_1 [115]
+                0.00    0.00      75/75          function_table_entry_hash_cmp [119]
+                0.00    0.00      45/45          function_table_entry_hash_2 [125]
+                0.00    0.00      12/12          directory_contents_hash_1 [136]
+                0.00    0.00       7/7           dep_hash_cmp [141]
+                0.00    0.00       7/7           dep_hash_2 [140]
+                0.00    0.00       1/1           directory_contents_hash_cmp [155]
+-----------------------------------------------
+                0.03    0.00    5120/5120        eval <cycle 2> [4]
+[12]     9.5    0.03    0.00    5120         collapse_continuations [12]
+                0.00    0.00    1801/14769       next_token [32]
+-----------------------------------------------
+                0.00    0.00      10/15633       lookup_function [76]
+                0.00    0.00    1383/15633       lookup_variable [49]
+                0.00    0.00    2129/15633       dir_contents_file_exists_p [45]
+                0.00    0.00    2363/15633       file_impossible_p [29]
+                0.00    0.02    9748/15633       lookup_file [19]
+[13]     7.9    0.00    0.03   15633         hash_find_item [13]
+                0.01    0.02   15633/29981       hash_find_slot [11]
+-----------------------------------------------
+                0.02    0.00    6596/6596        eval <cycle 2> [4]
+[14]     6.1    0.02    0.00    6596         get_next_mword [14]
+-----------------------------------------------
+                0.02    0.00   12484/12484       hash_find_slot [11]
+[15]     6.1    0.02    0.00   12484         file_hash_1 [15]
+-----------------------------------------------
+                0.00    0.00       1/3270        construct_vpath_list [79]
+                0.00    0.00      15/3270        count_implicit_rule_limits [68]
+                0.00    0.00      62/3270        selective_vpath_search [54]
+                0.01    0.01    3192/3270        file_exists_p [18]
+[16]     6.0    0.01    0.01    3270         dir_file_exists_p [16]
+                0.00    0.01    3270/7633        find_directory [21]
+                0.00    0.00    3270/3270        dir_contents_file_exists_p [45]
+-----------------------------------------------
+                0.00    0.00       5/4296        set_default_suffixes [71]
+                0.00    0.00      45/4296        install_pattern_rule [46]
+                0.00    0.02    4246/4296        eval <cycle 2> [4]
+[17]     6.0    0.00    0.02    4296         parse_file_seq [17]
+                0.01    0.00    5232/23480       find_char_unquote [10]
+                0.01    0.00    9528/14769       next_token [32]
+                0.00    0.00    5232/7317        savestring [92]
+                0.00    0.00    5232/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00      14/3192        read_all_makefiles [2]
+                0.00    0.02    3178/3192        pattern_search [8]
+[18]     5.9    0.00    0.02    3192         file_exists_p [18]
+                0.01    0.01    3192/3270        dir_file_exists_p [16]
+                0.00    0.00    3192/9480        ar_name [87]
+-----------------------------------------------
+                0.00    0.00      20/9748        record_files [35]
+                0.00    0.00      37/9748        eval_makefile <cycle 2> [64]
+                0.00    0.00     124/9748        selective_vpath_search [54]
+                0.00    0.00    1172/9748        convert_to_pattern [36]
+                0.00    0.01    3688/9748        pattern_search [8]
+                0.00    0.01    4707/9748        snap_deps [37]
+[19]     4.9    0.00    0.02    9748         lookup_file [19]
+                0.00    0.02    9748/15633       hash_find_item [13]
+-----------------------------------------------
+                0.00    0.00       1/2621        handle_non_switch_argument [78]
+                0.01    0.00    2620/2621        eval <cycle 2> [4]
+[20]     3.9    0.01    0.00    2621         try_variable_definition [20]
+                0.00    0.00     513/5256        allocated_variable_expand_for_file <cycle 1> [101]
+                0.00    0.00     513/550         do_variable_definition [52]
+                0.00    0.00    1026/14769       next_token [32]
+-----------------------------------------------
+                0.00    0.00       1/7633        dir_name [83]
+                0.00    0.00     421/7633        file_impossible [51]
+                0.00    0.01    3270/7633        dir_file_exists_p [16]
+                0.00    0.01    3941/7633        file_impossible_p [29]
+[21]     3.9    0.00    0.01    7633         find_directory [21]
+                0.00    0.01    7645/29981       hash_find_slot [11]
+                0.00    0.00      47/4626        hash_insert_at [57]
+                0.00    0.00      47/28267       xmalloc [84]
+                0.00    0.00      36/7317        savestring [92]
+                0.00    0.00      11/108         hash_init [116]
+-----------------------------------------------
+                0.00    0.00      15/38          reap_children [43]
+                0.00    0.01      23/38          start_waiting_job [39]
+[22]     3.8    0.00    0.01      38         start_job_command [22]
+                0.01    0.00      23/23          target_environment [26]
+                0.00    0.00      38/38          construct_command_argv [60]
+                0.00    0.00      38/38          message [128]
+                0.00    0.00      38/61          block_sigs [120]
+                0.00    0.00      38/38          set_command_state [129]
+-----------------------------------------------
+                0.00    0.01      26/26          update_file_1 <cycle 3> [7]
+[23]     3.7    0.00    0.01      26         remake_file [23]
+                0.00    0.01      23/23          execute_file_commands [24]
+                0.00    0.00      23/46          chop_commands [123]
+                0.00    0.00       3/148         notice_finished_file [112]
+-----------------------------------------------
+                0.00    0.01      23/23          remake_file [23]
+[24]     3.7    0.00    0.01      23         execute_file_commands [24]
+                0.00    0.01      23/23          new_job [27]
+                0.00    0.00      23/23          set_file_variables [55]
+                0.00    0.00      23/23          initialize_file_variables [135]
+-----------------------------------------------
+[25]     3.7    0.01    0.00    5256+6345    <cycle 1 as a whole> [25]
+                0.01    0.00    5800             variable_expand_string <cycle 1> [30]
+                0.00    0.00     693             reference_variable <cycle 1> [50]
+                0.00    0.00     704             handle_function <cycle 1> [75]
+                0.00    0.00    1311             variable_expand <cycle 1> [100]
+                0.00    0.00    1291             allocated_variable_expand_for_file <cycle 1> [101]
+                0.00    0.00    1291             variable_expand_for_file <cycle 1> [102]
+                0.00    0.00     501             recursively_expand_for_file <cycle 1> [105]
+-----------------------------------------------
+                0.01    0.00      23/23          start_job_command [22]
+[26]     3.7    0.01    0.00      23         target_environment [26]
+                0.00    0.00    1150/29981       hash_find_slot [11]
+                0.00    0.00      46/5256        recursively_expand_for_file <cycle 1> [105]
+                0.00    0.00    1150/4626        hash_insert_at [57]
+                0.00    0.00      23/23          hash_delete [72]
+                0.00    0.00    1127/1132        concat [104]
+                0.00    0.00      46/28267       xmalloc [84]
+                0.00    0.00      23/108         hash_init [116]
+                0.00    0.00      23/46          hash_free [124]
+-----------------------------------------------
+                0.00    0.01      23/23          execute_file_commands [24]
+[27]     3.6    0.00    0.01      23         new_job [27]
+                0.00    0.01      23/23          start_waiting_job [39]
+                0.00    0.00      46/56          reap_children [43]
+                0.00    0.00      38/5256        allocated_variable_expand_for_file <cycle 1> [101]
+                0.00    0.00      46/28267       xmalloc [84]
+                0.00    0.00      23/33          start_waiting_jobs [131]
+                0.00    0.00      23/46          chop_commands [123]
+                0.00    0.00      23/61          job_next_command [121]
+-----------------------------------------------
+                0.00    0.00      22/3680        f_mtime [70]
+                0.01    0.00    3658/3680        pattern_search [8]
+[28]     3.2    0.01    0.00    3680         vpath_search [28]
+                0.00    0.00      62/62          selective_vpath_search [54]
+-----------------------------------------------
+                0.00    0.01    3941/3941        pattern_search [8]
+[29]     3.2    0.00    0.01    3941         file_impossible_p [29]
+                0.00    0.01    3941/7633        find_directory [21]
+                0.00    0.00    2363/15633       hash_find_item [13]
+-----------------------------------------------
+                                1311             variable_expand <cycle 1> [100]
+                0.01    0.00    4489/5256        eval <cycle 2> [4]
+[30]     3.0    0.01    0.00    5800         variable_expand_string <cycle 1> [30]
+                0.00    0.00       1/737         lookup_variable [49]
+                0.00    0.00       1/2255        find_percent [42]
+                0.00    0.00   12532/13236       variable_buffer_output [85]
+                0.00    0.00    3418/3418        initialize_variable_output [98]
+                0.00    0.00    1388/1388        lindex [99]
+                0.00    0.00       1/1           subst_expand [156]
+                                 704             handle_function <cycle 1> [75]
+                                 693             reference_variable <cycle 1> [50]
+                                  79             allocated_variable_expand_for_file <cycle 1> [101]
+                                   1             recursively_expand_for_file <cycle 1> [105]
+-----------------------------------------------
+                0.00    0.00      45/160         install_pattern_rule [46]
+                0.01    0.00     115/160         create_pattern_rule [41]
+[31]     3.0    0.01    0.00     160         new_pattern_rule [31]
+-----------------------------------------------
+                0.00    0.00       5/14769       find_next_token [81]
+                0.00    0.00      10/14769       handle_function <cycle 1> [75]
+                0.00    0.00      10/14769       decode_env_switches [74]
+                0.00    0.00     282/14769       construct_command_argv_internal [65]
+                0.00    0.00    1026/14769       try_variable_definition [20]
+                0.00    0.00    1801/14769       collapse_continuations [12]
+                0.00    0.00    2107/14769       eval <cycle 2> [4]
+                0.01    0.00    9528/14769       parse_file_seq [17]
+[32]     3.0    0.01    0.00   14769         next_token [32]
+-----------------------------------------------
+                0.01    0.00    2962/2962        hash_find_slot [11]
+[33]     3.0    0.01    0.00    2962         dirfile_hash_2 [33]
+-----------------------------------------------
+                0.01    0.00    2537/2537        hash_find_slot [11]
+[34]     3.0    0.01    0.00    2537         file_hash_2 [34]
+-----------------------------------------------
+                0.00    0.01    2107/2107        eval <cycle 2> [4]
+[35]     2.9    0.00    0.01    2107         record_files [35]
+                0.00    0.01    2208/2255        find_percent [42]
+                0.00    0.00    2208/2736        enter_file [44]
+                0.00    0.00      20/9748        lookup_file [19]
+                0.00    0.00     176/28267       xmalloc [84]
+                0.00    0.00     176/7317        savestring [92]
+                0.00    0.00     101/111         copy_dep_chain [114]
+-----------------------------------------------
+                0.00    0.01       5/5           main [1]
+[36]     2.8    0.00    0.01       5         convert_to_pattern [36]
+                0.00    0.01     115/115         convert_suffix_rule [40]
+                0.00    0.00    1172/9748        lookup_file [19]
+-----------------------------------------------
+                0.00    0.01       5/5           main [1]
+[37]     2.5    0.00    0.01       5         snap_deps [37]
+                0.00    0.01    4707/9748        lookup_file [19]
+                0.00    0.00     247/2736        enter_file [44]
+                0.00    0.00       5/5           hash_dump [146]
+-----------------------------------------------
+                0.00    0.01    3013/3013        eval <cycle 2> [4]
+[38]     2.3    0.00    0.01    3013         remove_comments [38]
+                0.01    0.00    3013/23480       find_char_unquote [10]
+-----------------------------------------------
+                0.00    0.01      23/23          new_job [27]
+[39]     2.3    0.00    0.01      23         start_waiting_job [39]
+                0.00    0.01      23/38          start_job_command [22]
+                0.00    0.00      23/38          start_remote_job_p [130]
+                0.00    0.00      23/61          unblock_sigs [122]
+-----------------------------------------------
+                0.00    0.01     115/115         convert_to_pattern [36]
+[40]     2.2    0.00    0.01     115         convert_suffix_rule [40]
+                0.00    0.01     115/115         create_pattern_rule [41]
+                0.00    0.00     366/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.01     115/115         convert_suffix_rule [40]
+[41]     2.2    0.00    0.01     115         create_pattern_rule [41]
+                0.01    0.00     115/160         new_pattern_rule [31]
+                0.00    0.00     345/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00       1/2255        variable_expand_string <cycle 1> [30]
+                0.00    0.00       1/2255        construct_vpath_list [79]
+                0.00    0.00      45/2255        install_pattern_rule [46]
+                0.00    0.01    2208/2255        record_files [35]
+[42]     1.7    0.00    0.01    2255         find_percent [42]
+                0.01    0.00    2255/23480       find_char_unquote [10]
+-----------------------------------------------
+                0.00    0.00      10/56          update_goal_chain [5]
+                0.00    0.00      46/56          new_job [27]
+[43]     1.5    0.00    0.00      56         reap_children [43]
+                0.00    0.00      15/38          start_job_command [22]
+                0.00    0.00      38/61          job_next_command [121]
+                0.00    0.00      38/61          unblock_sigs [122]
+                0.00    0.00      23/148         notice_finished_file [112]
+                0.00    0.00      23/61          block_sigs [120]
+                0.00    0.00      23/23          free_child [133]
+                0.00    0.00      15/38          start_remote_job_p [130]
+-----------------------------------------------
+                0.00    0.00       1/2736        enter_command_line_file [82]
+                0.00    0.00       5/2736        set_default_suffixes [71]
+                0.00    0.00       5/2736        main [1]
+                0.00    0.00       8/2736        set_file_variables [55]
+                0.00    0.00      37/2736        eval_makefile <cycle 2> [64]
+                0.00    0.00     225/2736        install_default_suffix_rules [59]
+                0.00    0.00     247/2736        snap_deps [37]
+                0.00    0.00    2208/2736        record_files [35]
+[44]     1.4    0.00    0.00    2736         enter_file [44]
+                0.00    0.00    2736/29981       hash_find_slot [11]
+                0.00    0.00     972/4626        hash_insert_at [57]
+                0.00    0.00     974/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00    3270/3270        dir_file_exists_p [16]
+[45]     1.3    0.00    0.00    3270         dir_contents_file_exists_p [45]
+                0.00    0.00    2129/15633       hash_find_item [13]
+                0.00    0.00     461/29981       hash_find_slot [11]
+                0.00    0.00     461/4626        hash_insert_at [57]
+                0.00    0.00     461/28267       xmalloc [84]
+                0.00    0.00     461/7317        savestring [92]
+-----------------------------------------------
+                0.00    0.00      45/45          install_default_implicit_rules [47]
+[46]     1.0    0.00    0.00      45         install_pattern_rule [46]
+                0.00    0.00      45/160         new_pattern_rule [31]
+                0.00    0.00      45/4296        parse_file_seq [17]
+                0.00    0.00      45/2255        find_percent [42]
+                0.00    0.00     225/28267       xmalloc [84]
+                0.00    0.00      45/7317        savestring [92]
+                0.00    0.00      45/4296        multi_glob [96]
+                0.00    0.00      45/9025        xstrdup [89]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[47]     1.0    0.00    0.00       5         install_default_implicit_rules [47]
+                0.00    0.00      45/45          install_pattern_rule [46]
+-----------------------------------------------
+                0.00    0.00       1/1420        handle_non_switch_argument [78]
+                0.00    0.00       5/1420        set_default_suffixes [71]
+                0.00    0.00       5/1420        read_all_makefiles [2]
+                0.00    0.00      40/1420        define_makeflags [69]
+                0.00    0.00      90/1420        define_automatic_variables [67]
+                0.00    0.00     184/1420        set_file_variables [55]
+                0.00    0.00     255/1420        main [1]
+                0.00    0.00     290/1420        define_default_variables [56]
+                0.00    0.00     550/1420        do_variable_definition [52]
+[48]     0.8    0.00    0.00    1420         define_variable_in_set [48]
+                0.00    0.00    1420/29981       hash_find_slot [11]
+                0.00    0.00    1327/4626        hash_insert_at [57]
+                0.00    0.00    1415/9025        xstrdup [89]
+                0.00    0.00    1327/28267       xmalloc [84]
+                0.00    0.00    1327/7317        savestring [92]
+-----------------------------------------------
+                0.00    0.00       1/737         handle_non_switch_argument [78]
+                0.00    0.00       1/737         variable_expand_string <cycle 1> [30]
+                0.00    0.00       5/737         main [1]
+                0.00    0.00      37/737         do_variable_definition [52]
+                0.00    0.00     693/737         reference_variable <cycle 1> [50]
+[49]     0.7    0.00    0.00     737         lookup_variable [49]
+                0.00    0.00    1383/15633       hash_find_item [13]
+                0.00    0.00      77/77          handle_special_var [118]
+-----------------------------------------------
+                                 693             variable_expand_string <cycle 1> [30]
+[50]     0.7    0.00    0.00     693         reference_variable <cycle 1> [50]
+                0.00    0.00     693/737         lookup_variable [49]
+                0.00    0.00     488/13236       variable_buffer_output [85]
+                                 454             recursively_expand_for_file <cycle 1> [105]
+-----------------------------------------------
+                0.00    0.00     421/421         pattern_search [8]
+[51]     0.4    0.00    0.00     421         file_impossible [51]
+                0.00    0.00     421/561         hash_insert [53]
+                0.00    0.00     421/7633        find_directory [21]
+                0.00    0.00     421/28267       xmalloc [84]
+                0.00    0.00     421/9025        xstrdup [89]
+-----------------------------------------------
+                0.00    0.00      37/550         eval_makefile <cycle 2> [64]
+                0.00    0.00     513/550         try_variable_definition [20]
+[52]     0.4    0.00    0.00     550         do_variable_definition [52]
+                0.00    0.00     550/1420        define_variable_in_set [48]
+                0.00    0.00      37/737         lookup_variable [49]
+                0.00    0.00      37/5256        allocated_variable_expand_for_file <cycle 1> [101]
+-----------------------------------------------
+                0.00    0.00     140/561         hash_load [62]
+                0.00    0.00     421/561         file_impossible [51]
+[53]     0.3    0.00    0.00     561         hash_insert [53]
+                0.00    0.00     561/29981       hash_find_slot [11]
+                0.00    0.00     561/4626        hash_insert_at [57]
+-----------------------------------------------
+                0.00    0.00      62/62          vpath_search [28]
+[54]     0.2    0.00    0.00      62         selective_vpath_search [54]
+                0.00    0.00      62/3270        dir_file_exists_p [16]
+                0.00    0.00     124/9748        lookup_file [19]
+                0.00    0.00      62/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00      23/23          execute_file_commands [24]
+[55]     0.2    0.00    0.00      23         set_file_variables [55]
+                0.00    0.00     184/1420        define_variable_in_set [48]
+                0.00    0.00      23/23          uniquize_deps [66]
+                0.00    0.00       8/2736        enter_file [44]
+                0.00    0.00     247/9480        ar_name [87]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[56]     0.2    0.00    0.00       5         define_default_variables [56]
+                0.00    0.00     290/1420        define_variable_in_set [48]
+-----------------------------------------------
+                0.00    0.00      47/4626        find_directory [21]
+                0.00    0.00     108/4626        uniquize_deps [66]
+                0.00    0.00     461/4626        dir_contents_file_exists_p [45]
+                0.00    0.00     561/4626        hash_insert [53]
+                0.00    0.00     972/4626        enter_file [44]
+                0.00    0.00    1150/4626        target_environment [26]
+                0.00    0.00    1327/4626        define_variable_in_set [48]
+[57]     0.1    0.00    0.00    4626         hash_insert_at [57]
+                0.00    0.00       2/2           hash_rehash [58]
+                0.00    0.00       2/29981       hash_find_slot [11]
+-----------------------------------------------
+                0.00    0.00       2/2           hash_insert_at [57]
+[58]     0.1    0.00    0.00       2         hash_rehash [58]
+                0.00    0.00     242/29981       hash_find_slot [11]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[59]     0.1    0.00    0.00       5         install_default_suffix_rules [59]
+                0.00    0.00     225/2736        enter_file [44]
+                0.00    0.00     225/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00      38/38          start_job_command [22]
+[60]     0.1    0.00    0.00      38         construct_command_argv [60]
+                0.00    0.00      38/38          construct_command_argv_internal [65]
+                0.00    0.00      76/5256        allocated_variable_expand_for_file <cycle 1> [101]
+-----------------------------------------------
+                0.00    0.00       5/5           initialize_global_hash_tables [63]
+[61]     0.1    0.00    0.00       5         hash_init_function_table [61]
+                0.00    0.00       5/5           hash_load [62]
+                0.00    0.00       5/108         hash_init [116]
+-----------------------------------------------
+                0.00    0.00       5/5           hash_init_function_table [61]
+[62]     0.1    0.00    0.00       5         hash_load [62]
+                0.00    0.00     140/561         hash_insert [53]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[63]     0.1    0.00    0.00       5         initialize_global_hash_tables [63]
+                0.00    0.00       5/5           hash_init_function_table [61]
+                0.00    0.00       5/5           init_hash_files [148]
+                0.00    0.00       5/5           init_hash_global_variable_set [149]
+                0.00    0.00       5/5           hash_init_directories [147]
+-----------------------------------------------
+                                  32             eval <cycle 2> [4]
+                0.03    0.15       5/5           read_all_makefiles [2]
+[64]     0.1    0.00    0.00      37         eval_makefile <cycle 2> [64]
+                0.00    0.00      37/550         do_variable_definition [52]
+                0.00    0.00      37/2736        enter_file [44]
+                0.00    0.00      37/9748        lookup_file [19]
+                0.00    0.00      74/28267       xmalloc [84]
+                0.00    0.00      37/9025        xstrdup [89]
+                                  37             eval <cycle 2> [4]
+-----------------------------------------------
+                                   9             construct_command_argv_internal [65]
+                0.00    0.00      38/38          construct_command_argv [60]
+[65]     0.1    0.00    0.00      38+9       construct_command_argv_internal [65]
+                0.00    0.00     282/14769       next_token [32]
+                0.00    0.00      94/28267       xmalloc [84]
+                                   9             construct_command_argv_internal [65]
+-----------------------------------------------
+                0.00    0.00      23/23          set_file_variables [55]
+[66]     0.1    0.00    0.00      23         uniquize_deps [66]
+                0.00    0.00     108/29981       hash_find_slot [11]
+                0.00    0.00     108/4626        hash_insert_at [57]
+                0.00    0.00      23/108         hash_init [116]
+                0.00    0.00      23/46          hash_free [124]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[67]     0.0    0.00    0.00       5         define_automatic_variables [67]
+                0.00    0.00      90/1420        define_variable_in_set [48]
+                0.00    0.00       5/9025        xstrdup [89]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[68]     0.0    0.00    0.00       5         count_implicit_rule_limits [68]
+                0.00    0.00      15/3270        dir_file_exists_p [16]
+                0.00    0.00      10/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00      20/20          main [1]
+[69]     0.0    0.00    0.00      20         define_makeflags [69]
+                0.00    0.00      40/1420        define_variable_in_set [48]
+-----------------------------------------------
+                0.00    0.00       1/163         update_goal_chain [5]
+                0.00    0.00      19/163         check_dep <cycle 3> [80]
+                0.00    0.00      37/163         main [1]
+                0.00    0.00     106/163         update_file_1 <cycle 3> [7]
+[70]     0.0    0.00    0.00     163         f_mtime [70]
+                0.00    0.00      22/3680        vpath_search [28]
+                0.00    0.00     163/9480        ar_name [87]
+                0.00    0.00     163/163         name_mtime [109]
+                0.00    0.00       5/5           file_timestamp_now [145]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[71]     0.0    0.00    0.00       5         set_default_suffixes [71]
+                0.00    0.00       5/4296        parse_file_seq [17]
+                0.00    0.00       5/1420        define_variable_in_set [48]
+                0.00    0.00       5/2736        enter_file [44]
+                0.00    0.00       5/4296        multi_glob [96]
+-----------------------------------------------
+                0.00    0.00      23/23          target_environment [26]
+[72]     0.0    0.00    0.00      23         hash_delete [72]
+                0.00    0.00      23/29981       hash_find_slot [11]
+                0.00    0.00      23/23          hash_delete_at [134]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[73]     0.0    0.00    0.00       5         build_vpath_lists [73]
+                0.00    0.00      10/5256        variable_expand <cycle 1> [100]
+                0.00    0.00       1/1           construct_vpath_list [79]
+-----------------------------------------------
+                0.00    0.00      10/10          main [1]
+[74]     0.0    0.00    0.00      10         decode_env_switches [74]
+                0.00    0.00      10/5256        variable_expand <cycle 1> [100]
+                0.00    0.00      10/14769       next_token [32]
+-----------------------------------------------
+                                 704             variable_expand_string <cycle 1> [30]
+[75]     0.0    0.00    0.00     704         handle_function <cycle 1> [75]
+                0.00    0.00     704/704         lookup_function [76]
+                0.00    0.00      10/14769       next_token [32]
+                0.00    0.00      10/10          expand_builtin_function [138]
+                                  10             expand_argument <cycle 1> [137]
+-----------------------------------------------
+                0.00    0.00     704/704         handle_function <cycle 1> [75]
+[76]     0.0    0.00    0.00     704         lookup_function [76]
+                0.00    0.00      10/15633       hash_find_item [13]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[77]     0.0    0.00    0.00       5         decode_switches [77]
+                0.00    0.00       1/1           handle_non_switch_argument [78]
+                0.00    0.00       5/5           init_switches [150]
+-----------------------------------------------
+                0.00    0.00       1/1           decode_switches [77]
+[78]     0.0    0.00    0.00       1         handle_non_switch_argument [78]
+                0.00    0.00       1/2621        try_variable_definition [20]
+                0.00    0.00       1/737         lookup_variable [49]
+                0.00    0.00       1/1420        define_variable_in_set [48]
+                0.00    0.00       1/1           enter_command_line_file [82]
+                0.00    0.00       1/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00       1/1           build_vpath_lists [73]
+[79]     0.0    0.00    0.00       1         construct_vpath_list [79]
+                0.00    0.00       1/3270        dir_file_exists_p [16]
+                0.00    0.00       1/2255        find_percent [42]
+                0.00    0.00       1/1           dir_name [83]
+                0.00    0.00       2/28267       xmalloc [84]
+                0.00    0.00       1/9025        xstrdup [89]
+                0.00    0.00       1/7317        savestring [92]
+-----------------------------------------------
+                                 167             update_file_1 <cycle 3> [7]
+[80]     0.0    0.00    0.00     167         check_dep <cycle 3> [80]
+                0.00    0.00      19/163         f_mtime [70]
+                                 167             update_file <cycle 3> [108]
+-----------------------------------------------
+                0.00    0.00       5/5           read_all_makefiles [2]
+[81]     0.0    0.00    0.00       5         find_next_token [81]
+                0.00    0.00       5/14769       next_token [32]
+-----------------------------------------------
+                0.00    0.00       1/1           handle_non_switch_argument [78]
+[82]     0.0    0.00    0.00       1         enter_command_line_file [82]
+                0.00    0.00       1/2736        enter_file [44]
+                0.00    0.00       1/9025        xstrdup [89]
+-----------------------------------------------
+                0.00    0.00       1/1           construct_vpath_list [79]
+[83]     0.0    0.00    0.00       1         dir_name [83]
+                0.00    0.00       1/7633        find_directory [21]
+-----------------------------------------------
+                0.00    0.00       1/28267       handle_non_switch_argument [78]
+                0.00    0.00       2/28267       construct_vpath_list [79]
+                0.00    0.00       4/28267       main [1]
+                0.00    0.00       5/28267       construct_include_path [142]
+                0.00    0.00       5/28267       hash_dump [146]
+                0.00    0.00      10/28267       count_implicit_rule_limits [68]
+                0.00    0.00      18/28267       chop_commands [123]
+                0.00    0.00      46/28267       new_job [27]
+                0.00    0.00      46/28267       target_environment [26]
+                0.00    0.00      47/28267       find_directory [21]
+                0.00    0.00      52/28267       initialize_file_variables [135]
+                0.00    0.00      62/28267       selective_vpath_search [54]
+                0.00    0.00      74/28267       eval_makefile <cycle 2> [64]
+                0.00    0.00      85/28267       eval <cycle 2> [4]
+                0.00    0.00      94/28267       construct_command_argv_internal [65]
+                0.00    0.00     176/28267       record_files [35]
+                0.00    0.00     225/28267       install_default_suffix_rules [59]
+                0.00    0.00     225/28267       install_pattern_rule [46]
+                0.00    0.00     345/28267       create_pattern_rule [41]
+                0.00    0.00     366/28267       convert_suffix_rule [40]
+                0.00    0.00     421/28267       file_impossible [51]
+                0.00    0.00     461/28267       dir_contents_file_exists_p [45]
+                0.00    0.00     974/28267       enter_file [44]
+                0.00    0.00    1097/28267       pattern_search [8]
+                0.00    0.00    1132/28267       concat [104]
+                0.00    0.00    1296/28267       initialize_variable_output [98]
+                0.00    0.00    1327/28267       define_variable_in_set [48]
+                0.00    0.00    1890/28267       copy_dep_chain [114]
+                0.00    0.00    5232/28267       parse_file_seq [17]
+                0.00    0.00    5232/28267       multi_glob [96]
+                0.00    0.00    7317/28267       savestring [92]
+[84]     0.0    0.00    0.00   28267         xmalloc [84]
+-----------------------------------------------
+                0.00    0.00       2/13236       subst_expand [156]
+                0.00    0.00       2/13236       func_strip [139]
+                0.00    0.00     212/13236       eval <cycle 2> [4]
+                0.00    0.00     488/13236       reference_variable <cycle 1> [50]
+                0.00    0.00   12532/13236       variable_expand_string <cycle 1> [30]
+[85]     0.0    0.00    0.00   13236         variable_buffer_output [85]
+                0.00    0.00      48/210         xrealloc [107]
+-----------------------------------------------
+                0.00    0.00    9562/9562        hash_find_slot [11]
+[86]     0.0    0.00    0.00    9562         file_hash_cmp [86]
+-----------------------------------------------
+                0.00    0.00     105/9480        try_implicit_rule [9]
+                0.00    0.00     163/9480        f_mtime [70]
+                0.00    0.00     247/9480        set_file_variables [55]
+                0.00    0.00     541/9480        pattern_search [8]
+                0.00    0.00    3192/9480        file_exists_p [18]
+                0.00    0.00    5232/9480        multi_glob [96]
+[87]     0.0    0.00    0.00    9480         ar_name [87]
+-----------------------------------------------
+                0.00    0.00    9213/9213        hash_find_slot [11]
+[88]     0.0    0.00    0.00    9213         dirfile_hash_cmp [88]
+-----------------------------------------------
+                0.00    0.00       1/9025        enter_command_line_file [82]
+                0.00    0.00       1/9025        construct_vpath_list [79]
+                0.00    0.00       5/9025        main [1]
+                0.00    0.00       5/9025        define_automatic_variables [67]
+                0.00    0.00      15/9025        pattern_search [8]
+                0.00    0.00      37/9025        eval_makefile <cycle 2> [64]
+                0.00    0.00      45/9025        install_pattern_rule [46]
+                0.00    0.00     421/9025        file_impossible [51]
+                0.00    0.00    1415/9025        define_variable_in_set [48]
+                0.00    0.00    1848/9025        copy_dep_chain [114]
+                0.00    0.00    5232/9025        multi_glob [96]
+[89]     0.0    0.00    0.00    9025         xstrdup [89]
+-----------------------------------------------
+                0.00    0.00    7759/7759        hash_find_slot [11]
+[90]     0.0    0.00    0.00    7759         directory_hash_cmp [90]
+-----------------------------------------------
+                0.00    0.00    7633/7633        hash_find_slot [11]
+[91]     0.0    0.00    0.00    7633         directory_hash_1 [91]
+-----------------------------------------------
+                0.00    0.00       1/7317        construct_vpath_list [79]
+                0.00    0.00      15/7317        pattern_search [8]
+                0.00    0.00      24/7317        chop_commands [123]
+                0.00    0.00      36/7317        find_directory [21]
+                0.00    0.00      45/7317        install_pattern_rule [46]
+                0.00    0.00     176/7317        record_files [35]
+                0.00    0.00     461/7317        dir_contents_file_exists_p [45]
+                0.00    0.00    1327/7317        define_variable_in_set [48]
+                0.00    0.00    5232/7317        parse_file_seq [17]
+[92]     0.0    0.00    0.00    7317         savestring [92]
+                0.00    0.00    7317/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00    5618/5618        hash_find_slot [11]
+[93]     0.0    0.00    0.00    5618         dirfile_hash_1 [93]
+-----------------------------------------------
+                0.00    0.00    5528/5528        eval <cycle 2> [4]
+[94]     0.0    0.00    0.00    5528         readline [94]
+                0.00    0.00     104/210         xrealloc [107]
+-----------------------------------------------
+                0.00    0.00    4296/4296        multi_glob [96]
+[95]     0.0    0.00    0.00    4296         dir_setup_glob [95]
+-----------------------------------------------
+                0.00    0.00       5/4296        set_default_suffixes [71]
+                0.00    0.00      45/4296        install_pattern_rule [46]
+                0.00    0.00    4246/4296        eval <cycle 2> [4]
+[96]     0.0    0.00    0.00    4296         multi_glob [96]
+                0.00    0.00    5232/9480        ar_name [87]
+                0.00    0.00    5232/28267       xmalloc [84]
+                0.00    0.00    5232/9025        xstrdup [89]
+                0.00    0.00    4296/4296        dir_setup_glob [95]
+-----------------------------------------------
+                0.00    0.00    3976/3976        hash_find_slot [11]
+[97]     0.0    0.00    0.00    3976         variable_hash_1 [97]
+-----------------------------------------------
+                0.00    0.00    3418/3418        variable_expand_string <cycle 1> [30]
+[98]     0.0    0.00    0.00    3418         initialize_variable_output [98]
+                0.00    0.00    1296/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00    1388/1388        variable_expand_string <cycle 1> [30]
+[99]     0.0    0.00    0.00    1388         lindex [99]
+-----------------------------------------------
+                                1291             variable_expand_for_file <cycle 1> [102]
+                0.00    0.00      10/5256        decode_env_switches [74]
+                0.00    0.00      10/5256        build_vpath_lists [73]
+[100]    0.0    0.00    0.00    1311         variable_expand <cycle 1> [100]
+                                1311             variable_expand_string <cycle 1> [30]
+-----------------------------------------------
+                                  10             expand_argument <cycle 1> [137]
+                                  79             variable_expand_string <cycle 1> [30]
+                                 501             recursively_expand_for_file <cycle 1> [105]
+                0.00    0.00       5/5256        read_all_makefiles [2]
+                0.00    0.00      32/5256        eval <cycle 2> [4]
+                0.00    0.00      37/5256        do_variable_definition [52]
+                0.00    0.00      38/5256        new_job [27]
+                0.00    0.00      76/5256        construct_command_argv [60]
+                0.00    0.00     513/5256        try_variable_definition [20]
+[101]    0.0    0.00    0.00    1291         allocated_variable_expand_for_file <cycle 1> [101]
+                                1291             variable_expand_for_file <cycle 1> [102]
+-----------------------------------------------
+                                1291             allocated_variable_expand_for_file <cycle 1> [101]
+[102]    0.0    0.00    0.00    1291         variable_expand_for_file <cycle 1> [102]
+                                1291             variable_expand <cycle 1> [100]
+-----------------------------------------------
+                0.00    0.00    1290/1290        hash_find_slot [11]
+[103]    0.0    0.00    0.00    1290         variable_hash_cmp [103]
+-----------------------------------------------
+                0.00    0.00       5/1132        main [1]
+                0.00    0.00    1127/1132        target_environment [26]
+[104]    0.0    0.00    0.00    1132         concat [104]
+                0.00    0.00    1132/28267       xmalloc [84]
+-----------------------------------------------
+                                   1             variable_expand_string <cycle 1> [30]
+                                 454             reference_variable <cycle 1> [50]
+                0.00    0.00      46/5256        target_environment [26]
+[105]    0.0    0.00    0.00     501         recursively_expand_for_file <cycle 1> [105]
+                                 501             allocated_variable_expand_for_file <cycle 1> [101]
+-----------------------------------------------
+                0.00    0.00     423/423         hash_find_slot [11]
+[106]    0.0    0.00    0.00     423         variable_hash_2 [106]
+-----------------------------------------------
+                0.00    0.00      10/210         eval <cycle 2> [4]
+                0.00    0.00      11/210         chop_commands [123]
+                0.00    0.00      37/210         main [1]
+                0.00    0.00      48/210         variable_buffer_output [85]
+                0.00    0.00     104/210         readline [94]
+[107]    0.0    0.00    0.00     210         xrealloc [107]
+-----------------------------------------------
+                                 167             check_dep <cycle 3> [80]
+                0.03    0.10      42/42          update_goal_chain [5]
+[108]    0.0    0.00    0.00     209         update_file <cycle 3> [108]
+                                 148             update_file_1 <cycle 3> [7]
+-----------------------------------------------
+                0.00    0.00     163/163         f_mtime [70]
+[109]    0.0    0.00    0.00     163         name_mtime [109]
+                0.00    0.00     141/146         file_timestamp_cons [113]
+-----------------------------------------------
+                0.00    0.00     162/162         hash_find_slot [11]
+[110]    0.0    0.00    0.00     162         directory_hash_2 [110]
+-----------------------------------------------
+                0.00    0.00     150/150         hash_find_slot [11]
+[111]    0.0    0.00    0.00     150         function_table_entry_hash_1 [111]
+-----------------------------------------------
+                0.00    0.00       3/148         remake_file [23]
+                0.00    0.00      23/148         reap_children [43]
+                0.00    0.00     122/148         update_file_1 <cycle 3> [7]
+[112]    0.0    0.00    0.00     148         notice_finished_file [112]
+-----------------------------------------------
+                0.00    0.00       5/146         file_timestamp_now [145]
+                0.00    0.00     141/146         name_mtime [109]
+[113]    0.0    0.00    0.00     146         file_timestamp_cons [113]
+-----------------------------------------------
+                0.00    0.00      10/111         update_goal_chain [5]
+                0.00    0.00     101/111         record_files [35]
+[114]    0.0    0.00    0.00     111         copy_dep_chain [114]
+                0.00    0.00    1890/28267       xmalloc [84]
+                0.00    0.00    1848/9025        xstrdup [89]
+-----------------------------------------------
+                0.00    0.00     108/108         hash_find_slot [11]
+[115]    0.0    0.00    0.00     108         dep_hash_1 [115]
+-----------------------------------------------
+                0.00    0.00       5/108         init_hash_files [148]
+                0.00    0.00       5/108         hash_init_function_table [61]
+                0.00    0.00       5/108         init_hash_global_variable_set [149]
+                0.00    0.00      10/108         hash_init_directories [147]
+                0.00    0.00      11/108         find_directory [21]
+                0.00    0.00      23/108         uniquize_deps [66]
+                0.00    0.00      23/108         target_environment [26]
+                0.00    0.00      26/108         initialize_file_variables [135]
+[116]    0.0    0.00    0.00     108         hash_init [116]
+                0.00    0.00     108/108         round_up_2 [117]
+-----------------------------------------------
+                0.00    0.00     108/108         hash_init [116]
+[117]    0.0    0.00    0.00     108         round_up_2 [117]
+-----------------------------------------------
+                0.00    0.00      77/77          lookup_variable [49]
+[118]    0.0    0.00    0.00      77         handle_special_var [118]
+-----------------------------------------------
+                0.00    0.00      75/75          hash_find_slot [11]
+[119]    0.0    0.00    0.00      75         function_table_entry_hash_cmp [119]
+-----------------------------------------------
+                0.00    0.00      23/61          reap_children [43]
+                0.00    0.00      38/61          start_job_command [22]
+[120]    0.0    0.00    0.00      61         block_sigs [120]
+-----------------------------------------------
+                0.00    0.00      23/61          new_job [27]
+                0.00    0.00      38/61          reap_children [43]
+[121]    0.0    0.00    0.00      61         job_next_command [121]
+-----------------------------------------------
+                0.00    0.00      23/61          start_waiting_job [39]
+                0.00    0.00      38/61          reap_children [43]
+[122]    0.0    0.00    0.00      61         unblock_sigs [122]
+-----------------------------------------------
+                0.00    0.00      23/46          new_job [27]
+                0.00    0.00      23/46          remake_file [23]
+[123]    0.0    0.00    0.00      46         chop_commands [123]
+                0.00    0.00      43/44          sindex [126]
+                0.00    0.00      24/7317        savestring [92]
+                0.00    0.00      18/28267       xmalloc [84]
+                0.00    0.00      11/210         xrealloc [107]
+-----------------------------------------------
+                0.00    0.00      23/46          uniquize_deps [66]
+                0.00    0.00      23/46          target_environment [26]
+[124]    0.0    0.00    0.00      46         hash_free [124]
+-----------------------------------------------
+                0.00    0.00      45/45          hash_find_slot [11]
+[125]    0.0    0.00    0.00      45         function_table_entry_hash_2 [125]
+-----------------------------------------------
+                0.00    0.00       1/44          subst_expand [156]
+                0.00    0.00      43/44          chop_commands [123]
+[126]    0.0    0.00    0.00      44         sindex [126]
+-----------------------------------------------
+                0.00    0.00       5/43          die [144]
+                0.00    0.00      38/43          message [128]
+[127]    0.0    0.00    0.00      43         log_working_directory [127]
+-----------------------------------------------
+                0.00    0.00      38/38          start_job_command [22]
+[128]    0.0    0.00    0.00      38         message [128]
+                0.00    0.00      38/43          log_working_directory [127]
+-----------------------------------------------
+                0.00    0.00      38/38          start_job_command [22]
+[129]    0.0    0.00    0.00      38         set_command_state [129]
+-----------------------------------------------
+                0.00    0.00      15/38          reap_children [43]
+                0.00    0.00      23/38          start_waiting_job [39]
+[130]    0.0    0.00    0.00      38         start_remote_job_p [130]
+-----------------------------------------------
+                0.00    0.00      10/33          update_goal_chain [5]
+                0.00    0.00      23/33          new_job [27]
+[131]    0.0    0.00    0.00      33         start_waiting_jobs [131]
+-----------------------------------------------
+                0.00    0.00      26/26          initialize_file_variables [135]
+[132]    0.0    0.00    0.00      26         lookup_pattern_var [132]
+-----------------------------------------------
+                0.00    0.00      23/23          reap_children [43]
+[133]    0.0    0.00    0.00      23         free_child [133]
+-----------------------------------------------
+                0.00    0.00      23/23          hash_delete [72]
+[134]    0.0    0.00    0.00      23         hash_delete_at [134]
+-----------------------------------------------
+                                  37             initialize_file_variables [135]
+                0.00    0.00      23/23          execute_file_commands [24]
+[135]    0.0    0.00    0.00      23+37      initialize_file_variables [135]
+                0.00    0.00      52/28267       xmalloc [84]
+                0.00    0.00      26/108         hash_init [116]
+                0.00    0.00      26/26          lookup_pattern_var [132]
+                                  37             initialize_file_variables [135]
+-----------------------------------------------
+                0.00    0.00      12/12          hash_find_slot [11]
+[136]    0.0    0.00    0.00      12         directory_contents_hash_1 [136]
+-----------------------------------------------
+                                  10             handle_function <cycle 1> [75]
+[137]    0.0    0.00    0.00      10         expand_argument <cycle 1> [137]
+                                  10             allocated_variable_expand_for_file <cycle 1> [101]
+-----------------------------------------------
+                0.00    0.00      10/10          handle_function <cycle 1> [75]
+[138]    0.0    0.00    0.00      10         expand_builtin_function [138]
+                0.00    0.00      10/10          func_strip [139]
+-----------------------------------------------
+                0.00    0.00      10/10          expand_builtin_function [138]
+[139]    0.0    0.00    0.00      10         func_strip [139]
+                0.00    0.00       2/13236       variable_buffer_output [85]
+-----------------------------------------------
+                0.00    0.00       7/7           hash_find_slot [11]
+[140]    0.0    0.00    0.00       7         dep_hash_2 [140]
+-----------------------------------------------
+                0.00    0.00       7/7           hash_find_slot [11]
+[141]    0.0    0.00    0.00       7         dep_hash_cmp [141]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[142]    0.0    0.00    0.00       5         construct_include_path [142]
+                0.00    0.00       5/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[143]    0.0    0.00    0.00       5         decode_debug_flags [143]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[144]    0.0    0.00    0.00       5         die [144]
+                0.00    0.00       5/5           remote_cleanup [151]
+                0.00    0.00       5/5           remove_intermediates [153]
+                0.00    0.00       5/43          log_working_directory [127]
+-----------------------------------------------
+                0.00    0.00       5/5           f_mtime [70]
+[145]    0.0    0.00    0.00       5         file_timestamp_now [145]
+                0.00    0.00       5/146         file_timestamp_cons [113]
+-----------------------------------------------
+                0.00    0.00       5/5           snap_deps [37]
+[146]    0.0    0.00    0.00       5         hash_dump [146]
+                0.00    0.00       5/28267       xmalloc [84]
+-----------------------------------------------
+                0.00    0.00       5/5           initialize_global_hash_tables [63]
+[147]    0.0    0.00    0.00       5         hash_init_directories [147]
+                0.00    0.00      10/108         hash_init [116]
+-----------------------------------------------
+                0.00    0.00       5/5           initialize_global_hash_tables [63]
+[148]    0.0    0.00    0.00       5         init_hash_files [148]
+                0.00    0.00       5/108         hash_init [116]
+-----------------------------------------------
+                0.00    0.00       5/5           initialize_global_hash_tables [63]
+[149]    0.0    0.00    0.00       5         init_hash_global_variable_set [149]
+                0.00    0.00       5/108         hash_init [116]
+-----------------------------------------------
+                0.00    0.00       5/5           decode_switches [77]
+[150]    0.0    0.00    0.00       5         init_switches [150]
+-----------------------------------------------
+                0.00    0.00       5/5           die [144]
+[151]    0.0    0.00    0.00       5         remote_cleanup [151]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[152]    0.0    0.00    0.00       5         remote_setup [152]
+-----------------------------------------------
+                0.00    0.00       5/5           die [144]
+[153]    0.0    0.00    0.00       5         remove_intermediates [153]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[154]    0.0    0.00    0.00       5         user_access [154]
+-----------------------------------------------
+                0.00    0.00       1/1           hash_find_slot [11]
+[155]    0.0    0.00    0.00       1         directory_contents_hash_cmp [155]
+-----------------------------------------------
+                0.00    0.00       1/1           variable_expand_string <cycle 1> [30]
+[156]    0.0    0.00    0.00       1         subst_expand [156]
+                0.00    0.00       2/13236       variable_buffer_output [85]
+                0.00    0.00       1/44          sindex [126]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+ [101] allocated_variable_expand_for_file [86] file_hash_cmp [32] next_token
+  [87] ar_name                [51] file_impossible       [112] notice_finished_file
+ [120] block_sigs             [29] file_impossible_p      [17] parse_file_seq
+  [73] build_vpath_lists     [113] file_timestamp_cons     [8] pattern_search
+  [80] check_dep             [145] file_timestamp_now      [2] read_all_makefiles
+ [123] chop_commands          [10] find_char_unquote      [94] readline
+  [12] collapse_continuations [21] find_directory         [43] reap_children
+ [104] concat                 [81] find_next_token        [35] record_files
+  [60] construct_command_argv [42] find_percent          [105] recursively_expand_for_file
+  [65] construct_command_argv_internal [133] free_child   [50] reference_variable
+ [142] construct_include_path [139] func_strip            [23] remake_file
+  [79] construct_vpath_list  [111] function_table_entry_hash_1 [151] remote_cleanup
+  [40] convert_suffix_rule   [125] function_table_entry_hash_2 [152] remote_setup
+  [36] convert_to_pattern    [119] function_table_entry_hash_cmp [38] remove_comments
+ [114] copy_dep_chain         [14] get_next_mword        [153] remove_intermediates
+  [68] count_implicit_rule_limits [75] handle_function   [117] round_up_2
+  [41] create_pattern_rule    [78] handle_non_switch_argument [92] savestring
+ [143] decode_debug_flags    [118] handle_special_var     [54] selective_vpath_search
+  [74] decode_env_switches    [72] hash_delete           [129] set_command_state
+  [77] decode_switches       [134] hash_delete_at         [71] set_default_suffixes
+  [67] define_automatic_variables [146] hash_dump         [55] set_file_variables
+  [56] define_default_variables [13] hash_find_item      [126] sindex
+  [69] define_makeflags       [11] hash_find_slot         [37] snap_deps
+  [48] define_variable_in_set [124] hash_free             [22] start_job_command
+ [115] dep_hash_1            [116] hash_init             [130] start_remote_job_p
+ [140] dep_hash_2            [147] hash_init_directories  [39] start_waiting_job
+ [141] dep_hash_cmp           [61] hash_init_function_table [131] start_waiting_jobs
+ [144] die                    [53] hash_insert           [156] subst_expand
+  [45] dir_contents_file_exists_p [57] hash_insert_at     [26] target_environment
+  [16] dir_file_exists_p      [62] hash_load               [9] try_implicit_rule
+  [83] dir_name               [58] hash_rehash            [20] try_variable_definition
+  [95] dir_setup_glob        [148] init_hash_files       [122] unblock_sigs
+ [136] directory_contents_hash_1 [149] init_hash_global_variable_set [66] uniquize_deps
+ [155] directory_contents_hash_cmp [150] init_switches   [108] update_file
+  [91] directory_hash_1      [135] initialize_file_variables [7] update_file_1
+ [110] directory_hash_2       [63] initialize_global_hash_tables [5] update_goal_chain
+  [90] directory_hash_cmp     [98] initialize_variable_output [154] user_access
+  [93] dirfile_hash_1         [47] install_default_implicit_rules [85] variable_buffer_output
+  [33] dirfile_hash_2         [59] install_default_suffix_rules [100] variable_expand
+  [88] dirfile_hash_cmp       [46] install_pattern_rule  [102] variable_expand_for_file
+  [52] do_variable_definition [121] job_next_command      [30] variable_expand_string
+  [82] enter_command_line_file [99] lindex                [97] variable_hash_1
+  [44] enter_file            [127] log_working_directory [106] variable_hash_2
+   [4] eval                   [19] lookup_file           [103] variable_hash_cmp
+  [64] eval_makefile          [76] lookup_function        [28] vpath_search
+  [24] execute_file_commands [132] lookup_pattern_var     [84] xmalloc
+ [137] expand_argument        [49] lookup_variable       [107] xrealloc
+ [138] expand_builtin_function [128] message              [89] xstrdup
+  [70] f_mtime                [96] multi_glob             [25] <cycle 1>
+  [18] file_exists_p         [109] name_mtime              [3] <cycle 2>
+  [15] file_hash_1            [27] new_job                 [6] <cycle 3>
+  [34] file_hash_2            [31] new_pattern_rule

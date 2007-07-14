@@ -1,0 +1,669 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 34.20      0.66     0.66   131073     0.01     0.01  write
+ 25.91      1.16     0.50                             __mcount_internal
+  7.25      1.30     0.14                             mcount
+  5.70      1.41     0.11   292411     0.00     0.00  vfprintf
+  4.66      1.50     0.09   615089     0.00     0.00  _IO_new_file_xsputn
+  3.63      1.57     0.07  1027872     0.00     0.00  index
+  3.63      1.64     0.07   151445     0.00     0.00  chunk_alloc
+  2.07      1.68     0.04    82405     0.00     0.00  hash
+  1.55      1.71     0.03   131075     0.00     0.01  _IO_file_overflow
+  1.55      1.74     0.03   131073     0.00     0.01  new_do_write
+  1.55      1.77     0.03    30297     0.00     0.00  silex
+  1.04      1.79     0.02    30403     0.00     0.00  memchr
+  1.04      1.81     0.02     3610     0.01     0.01  brk
+  1.04      1.83     0.02        1    20.00   959.06  dumparray
+  0.52      1.84     0.01   322701     0.00     0.00  flockfile
+  0.52      1.85     0.01   292415     0.00     0.00  __errno_location
+  0.52      1.86     0.01    38264     0.00     0.00  strcmp
+  0.52      1.87     0.01    30289     0.00     0.00  _IO_getline_info
+  0.52      1.88     0.01    30287     0.00     0.00  argnew
+  0.52      1.89     0.01    30286     0.00     0.00  lookup
+  0.52      1.90     0.01    30286     0.00     0.00  removechar
+  0.52      1.91     0.01    30266     0.00     0.00  tostring
+  0.52      1.92     0.01      127     0.08     0.08  read
+  0.52      1.93     0.01        1    10.00  1290.00  fparse
+  0.00      1.93     0.00   322701     0.00     0.00  funlockfile
+  0.00      1.93     0.00   292411     0.00     0.00  printf
+  0.00      1.93     0.00   151423     0.00     0.00  malloc
+  0.00      1.93     0.00   131075     0.00     0.01  __overflow
+  0.00      1.93     0.00   131073     0.00     0.01  _IO_file_write
+  0.00      1.93     0.00   131073     0.00     0.01  _IO_new_do_write
+  0.00      1.93     0.00    90872     0.00     0.00  realloc
+  0.00      1.93     0.00    60591     0.00     0.00  strncpy
+  0.00      1.93     0.00    60591     0.00     0.00  wanew
+  0.00      1.93     0.00    60572     0.00     0.00  chunk_realloc
+  0.00      1.93     0.00    60552     0.00     0.00  strcpy
+  0.00      1.93     0.00    30403     0.00     0.00  memcpy
+  0.00      1.93     0.00    30289     0.00     0.00  _IO_getline
+  0.00      1.93     0.00    30289     0.00     0.00  fgets
+  0.00      1.93     0.00    30288     0.00     0.04  parse
+  0.00      1.93     0.00    30285     0.00     0.00  additem
+  0.00      1.93     0.00    30285     0.00     0.00  t_additem
+  0.00      1.93     0.00     3610     0.00     0.01  __default_morecore
+  0.00      1.93     0.00     3610     0.00     0.01  sbrk
+  0.00      1.93     0.00      128     0.00     0.08  _IO_default_uflow
+  0.00      1.93     0.00      128     0.00     0.08  __uflow
+  0.00      1.93     0.00      127     0.00     0.08  _IO_file_read
+  0.00      1.93     0.00      127     0.00     0.08  _IO_file_underflow
+  0.00      1.93     0.00      127     0.00     0.00  _IO_switch_to_get_mode
+  0.00      1.93     0.00       26     0.00     0.00  chunk_free
+  0.00      1.93     0.00        9     0.00     0.00  calloc
+  0.00      1.93     0.00        8     0.00     0.00  cfree
+  0.00      1.93     0.00        8     0.00     1.33  rehash
+  0.00      1.93     0.00        5     0.00     0.00  memset
+  0.00      1.93     0.00        4     0.00     0.00  mempcpy
+  0.00      1.93     0.00        4     0.00     0.00  mmap
+  0.00      1.93     0.00        3     0.00     0.00  _IO_setb
+  0.00      1.93     0.00        2     0.00     0.00  _IO_doallocbuf
+  0.00      1.93     0.00        2     0.00     0.00  _IO_file_doallocate
+  0.00      1.93     0.00        2     0.00     0.00  _IO_file_stat
+  0.00      1.93     0.00        2     0.00     0.00  __fxstat64
+  0.00      1.93     0.00        2     0.00     0.00  __gconv_transform_ascii_internal
+  0.00      1.93     0.00        2     0.00     0.00  ioctl
+  0.00      1.93     0.00        2     0.00     0.00  isatty
+  0.00      1.93     0.00        2     0.00     0.00  mbrtowc
+  0.00      1.93     0.00        2     0.00     0.00  tcgetattr
+  0.00      1.93     0.00        1     0.00     0.00  _IO_init
+  0.00      1.93     0.00        1     0.00     0.00  _IO_sputbackc
+  0.00      1.93     0.00        1     0.00     0.00  _IO_str_init_static
+  0.00      1.93     0.00        1     0.00     0.00  _IO_str_underflow
+  0.00      1.93     0.00        1     0.00     0.08  _IO_vfscanf
+  0.00      1.93     0.00        1     0.00     0.00  __moncontrol
+  0.00      1.93     0.00        1     0.00     0.00  __new_exitfn
+  0.00      1.93     0.00        1     0.00     0.00  __strtol_internal
+  0.00      1.93     0.00        1     0.00     0.00  _mcleanup
+  0.00      1.93     0.00        1     0.00     0.00  atexit
+  0.00      1.93     0.00        1     0.00     0.00  exit
+  0.00      1.93     0.00        1     0.00     0.00  fileno_unlocked
+  0.00      1.93     0.00        1     0.00  1290.00  main
+  0.00      1.93     0.00        1     0.00     0.00  munmap
+  0.00      1.93     0.00        1     0.00     0.00  munmap_chunk
+  0.00      1.93     0.00        1     0.00     0.00  newarray
+  0.00      1.93     0.00        1     0.00     0.00  ptmalloc_init
+  0.00      1.93     0.00        1     0.00     0.00  realloc_hook_ini
+  0.00      1.93     0.00        1     0.00     0.00  setitimer
+  0.00      1.93     0.00        1     0.00     0.00  sigaction
+  0.00      1.93     0.00        1     0.00     0.08  sscanf
+  0.00      1.93     0.00        1     0.00   959.06  t_dumparray
+  0.00      1.93     0.00        1     0.00     0.00  t_lookup
+  0.00      1.93     0.00        1     0.00     0.00  t_newarray
+  0.00      1.93     0.00        1     0.00     0.08  vsscanf
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.78% of 1.29 seconds
+
+index % time    self  children    called     name
+                0.01    1.28       1/1           main [2]
+[1]    100.0    0.01    1.28       1         fparse [1]
+                0.00    1.24   30288/30288       parse [4]
+                0.00    0.04   30289/30289       fgets [23]
+                0.00    0.00       1/1           fileno_unlocked [72]
+                0.00    0.00       1/2           isatty [67]
+-----------------------------------------------
+                0.00    1.29       1/1           __libc_start_main [3]
+[2]    100.0    0.00    1.29       1         main [2]
+                0.01    1.28       1/1           fparse [1]
+-----------------------------------------------
+                                                 <spontaneous>
+[3]    100.0    0.00    1.29                 __libc_start_main [3]
+                0.00    1.29       1/1           main [2]
+                0.00    0.00       1/1           exit [71]
+-----------------------------------------------
+                0.00    1.24   30288/30288       fparse [1]
+[4]     96.1    0.00    1.24   30288         parse [4]
+                0.00    0.96       1/1           t_dumparray [6]
+                0.03    0.11   30297/30297       silex [16]
+                0.00    0.10   30285/30285       t_additem [18]
+                0.01    0.01   30287/30287       argnew [29]
+                0.01    0.00   30286/30286       removechar [39]
+                0.01    0.00   30288/38264       strcmp [38]
+                0.00    0.00       1/1           sscanf [46]
+                0.00    0.00       1/1           t_lookup [51]
+                0.00    0.00       1/1           t_newarray [53]
+                0.00    0.00   30286/60552       strcpy [59]
+-----------------------------------------------
+                0.02    0.94       1/1           t_dumparray [6]
+[5]     74.3    0.02    0.94       1         dumparray [5]
+                0.00    0.94  292410/292411      printf [7]
+-----------------------------------------------
+                0.00    0.96       1/1           parse [4]
+[6]     74.3    0.00    0.96       1         t_dumparray [6]
+                0.02    0.94       1/1           dumparray [5]
+-----------------------------------------------
+                0.00    0.00       1/292411      t_lookup [51]
+                0.00    0.94  292410/292411      dumparray [5]
+[7]     72.8    0.00    0.94  292411         printf [7]
+                0.11    0.83  292411/292411      vfprintf [8]
+-----------------------------------------------
+                0.11    0.83  292411/292411      printf [7]
+[8]     72.8    0.11    0.83  292411         vfprintf [8]
+                0.09    0.72  615089/615089      _IO_new_file_xsputn [9]
+                0.01    0.00  292411/292415      __errno_location [45]
+                0.01    0.00  292411/322701      flockfile [37]
+                0.00    0.00       2/131075      __overflow [11]
+                0.00    0.00  292411/322701      funlockfile [57]
+-----------------------------------------------
+                0.09    0.72  615089/615089      vfprintf [8]
+[9]     62.8    0.09    0.72  615089         _IO_new_file_xsputn [9]
+                0.00    0.72  131073/131075      __overflow [11]
+                0.00    0.00       2/4           mempcpy [64]
+-----------------------------------------------
+                0.03    0.69  131075/131075      __overflow [11]
+[10]    55.8    0.03    0.69  131075         _IO_file_overflow [10]
+                0.00    0.69  131073/131073      _IO_new_do_write [13]
+                0.00    0.00       1/2           _IO_doallocbuf [330]
+-----------------------------------------------
+                0.00    0.00       2/131075      vfprintf [8]
+                0.00    0.72  131073/131075      _IO_new_file_xsputn [9]
+[11]    55.8    0.00    0.72  131075         __overflow [11]
+                0.03    0.69  131075/131075      _IO_file_overflow [10]
+-----------------------------------------------
+                0.03    0.66  131073/131073      _IO_new_do_write [13]
+[12]    53.5    0.03    0.66  131073         new_do_write [12]
+                0.00    0.66  131073/131073      _IO_file_write [15]
+-----------------------------------------------
+                0.00    0.69  131073/131073      _IO_file_overflow [10]
+[13]    53.5    0.00    0.69  131073         _IO_new_do_write [13]
+                0.03    0.66  131073/131073      new_do_write [12]
+-----------------------------------------------
+                0.66    0.00  131073/131073      _IO_file_write [15]
+[14]    51.2    0.66    0.00  131073         write [14]
+-----------------------------------------------
+                0.00    0.66  131073/131073      new_do_write [12]
+[15]    51.2    0.00    0.66  131073         _IO_file_write [15]
+                0.66    0.00  131073/131073      write [14]
+-----------------------------------------------
+                0.03    0.11   30297/30297       parse [4]
+[16]    11.0    0.03    0.11   30297         silex [16]
+                0.07    0.00 1027872/1027872     index [21]
+                0.00    0.04   60591/60591       wanew [22]
+-----------------------------------------------
+                0.00    0.10   30285/30285       t_additem [18]
+[17]     7.6    0.00    0.10   30285         additem [17]
+                0.01    0.02   30266/30266       tostring [27]
+                0.01    0.02   30285/30286       lookup [28]
+                0.00    0.02   30266/151423      malloc [20]
+                0.01    0.00   30266/82405       hash [24]
+                0.00    0.01       8/8           rehash [36]
+-----------------------------------------------
+                0.00    0.10   30285/30285       parse [4]
+[18]     7.6    0.00    0.10   30285         t_additem [18]
+                0.00    0.10   30285/30285       additem [17]
+-----------------------------------------------
+                0.00    0.00       9/151445      calloc [50]
+                0.00    0.00      13/151445      chunk_realloc [49]
+                0.07    0.02  151423/151445      malloc [20]
+[19]     7.0    0.07    0.02  151445         chunk_alloc [19]
+                0.00    0.02    3610/3610        __default_morecore [33]
+                0.00    0.00       2/4           mmap [65]
+-----------------------------------------------
+                0.00    0.00       1/151423      newarray [52]
+                0.00    0.02   30266/151423      tostring [27]
+                0.00    0.02   30266/151423      additem [17]
+                0.00    0.02   30299/151423      realloc <cycle 1> [35]
+                0.00    0.04   60591/151423      wanew [22]
+[20]     7.0    0.00    0.09  151423         malloc [20]
+                0.07    0.02  151423/151445      chunk_alloc [19]
+-----------------------------------------------
+                0.07    0.00 1027872/1027872     silex [16]
+[21]     5.4    0.07    0.00 1027872         index [21]
+-----------------------------------------------
+                0.00    0.04   60591/60591       silex [16]
+[22]     3.3    0.00    0.04   60591         wanew [22]
+                0.00    0.04   60591/151423      malloc [20]
+                0.00    0.01   30297/90871       realloc <cycle 1> [35]
+                0.00    0.00   60591/60591       strncpy [58]
+-----------------------------------------------
+                0.00    0.04   30289/30289       fparse [1]
+[23]     3.2    0.00    0.04   30289         fgets [23]
+                0.00    0.04   30289/30289       _IO_getline [25]
+                0.00    0.00   30289/322701      flockfile [37]
+                0.00    0.00   30289/322701      funlockfile [57]
+-----------------------------------------------
+                0.01    0.00   21853/82405       rehash [36]
+                0.01    0.00   30266/82405       additem [17]
+                0.01    0.00   30286/82405       lookup [28]
+[24]     3.1    0.04    0.00   82405         hash [24]
+-----------------------------------------------
+                0.00    0.04   30289/30289       fgets [23]
+[25]     3.1    0.00    0.04   30289         _IO_getline [25]
+                0.01    0.03   30289/30289       _IO_getline_info [26]
+-----------------------------------------------
+                0.01    0.03   30289/30289       _IO_getline [25]
+[26]     3.1    0.01    0.03   30289         _IO_getline_info [26]
+                0.02    0.00   30403/30403       memchr [30]
+                0.00    0.01     127/128         __uflow [42]
+                0.00    0.00   30403/30403       memcpy [60]
+-----------------------------------------------
+                0.01    0.02   30266/30266       additem [17]
+[27]     2.2    0.01    0.02   30266         tostring [27]
+                0.00    0.02   30266/151423      malloc [20]
+                0.00    0.00   30266/60552       strcpy [59]
+-----------------------------------------------
+                0.00    0.00       1/30286       t_lookup [51]
+                0.01    0.02   30285/30286       additem [17]
+[28]     2.1    0.01    0.02   30286         lookup [28]
+                0.01    0.00   30286/82405       hash [24]
+                0.00    0.00    7976/38264       strcmp [38]
+-----------------------------------------------
+                0.01    0.01   30287/30287       parse [4]
+[29]     1.7    0.01    0.01   30287         argnew [29]
+                0.00    0.01   60574/90871       realloc <cycle 1> [35]
+-----------------------------------------------
+                0.02    0.00   30403/30403       _IO_getline_info [26]
+[30]     1.6    0.02    0.00   30403         memchr [30]
+-----------------------------------------------
+                0.02    0.00    3610/3610        sbrk [32]
+[31]     1.6    0.02    0.00    3610         brk [31]
+-----------------------------------------------
+                0.00    0.02    3610/3610        __default_morecore [33]
+[32]     1.6    0.00    0.02    3610         sbrk [32]
+                0.02    0.00    3610/3610        brk [31]
+-----------------------------------------------
+                0.00    0.02    3610/3610        chunk_alloc [19]
+[33]     1.6    0.00    0.02    3610         __default_morecore [33]
+                0.00    0.02    3610/3610        sbrk [32]
+-----------------------------------------------
+[34]     1.4    0.00    0.02   90871+2       <cycle 1 as a whole> [34]
+                0.00    0.02   90872             realloc <cycle 1> [35]
+-----------------------------------------------
+                                   1             realloc_hook_ini <cycle 1> [76]
+                0.00    0.01   30297/90871       wanew [22]
+                0.00    0.01   60574/90871       argnew [29]
+[35]     1.4    0.00    0.02   90872         realloc <cycle 1> [35]
+                0.00    0.02   30299/151423      malloc [20]
+                0.00    0.00   60572/60572       chunk_realloc [49]
+                                   1             realloc_hook_ini <cycle 1> [76]
+-----------------------------------------------
+                0.00    0.01       8/8           additem [17]
+[36]     0.8    0.00    0.01       8         rehash [36]
+                0.01    0.00   21853/82405       hash [24]
+                0.00    0.00       8/9           calloc [50]
+                0.00    0.00       8/8           cfree [62]
+-----------------------------------------------
+                0.00    0.00       1/322701      _IO_vfscanf [48]
+                0.00    0.00   30289/322701      fgets [23]
+                0.01    0.00  292411/322701      vfprintf [8]
+[37]     0.8    0.01    0.00  322701         flockfile [37]
+-----------------------------------------------
+                0.00    0.00    7976/38264       lookup [28]
+                0.01    0.00   30288/38264       parse [4]
+[38]     0.8    0.01    0.00   38264         strcmp [38]
+-----------------------------------------------
+                0.01    0.00   30286/30286       parse [4]
+[39]     0.8    0.01    0.00   30286         removechar [39]
+-----------------------------------------------
+                0.01    0.00     127/127         _IO_file_read [43]
+[40]     0.8    0.01    0.00     127         read [40]
+-----------------------------------------------
+                0.00    0.01     128/128         __uflow [42]
+[41]     0.8    0.00    0.01     128         _IO_default_uflow [41]
+                0.00    0.01     127/127         _IO_file_underflow [44]
+                0.00    0.00       1/1           _IO_str_underflow [338]
+-----------------------------------------------
+                0.00    0.00       1/128         _IO_vfscanf [48]
+                0.00    0.01     127/128         _IO_getline_info [26]
+[42]     0.8    0.00    0.01     128         __uflow [42]
+                0.00    0.01     128/128         _IO_default_uflow [41]
+-----------------------------------------------
+                0.00    0.01     127/127         _IO_file_underflow [44]
+[43]     0.8    0.00    0.01     127         _IO_file_read [43]
+                0.01    0.00     127/127         read [40]
+-----------------------------------------------
+                0.00    0.01     127/127         _IO_default_uflow [41]
+[44]     0.8    0.00    0.01     127         _IO_file_underflow [44]
+                0.00    0.01     127/127         _IO_file_read [43]
+                0.00    0.00     127/127         _IO_switch_to_get_mode [328]
+                0.00    0.00       1/2           _IO_doallocbuf [330]
+-----------------------------------------------
+                0.00    0.00       1/292415      __syscall_error_1 [56]
+                0.00    0.00       1/292415      sigaction [54]
+                0.00    0.00       2/292415      _IO_vfscanf [48]
+                0.01    0.00  292411/292415      vfprintf [8]
+[45]     0.8    0.01    0.00  292415         __errno_location [45]
+-----------------------------------------------
+                0.00    0.00       1/1           parse [4]
+[46]     0.0    0.00    0.00       1         sscanf [46]
+                0.00    0.00       1/1           vsscanf [47]
+-----------------------------------------------
+                0.00    0.00       1/1           sscanf [46]
+[47]     0.0    0.00    0.00       1         vsscanf [47]
+                0.00    0.00       1/1           _IO_vfscanf [48]
+                0.00    0.00       1/1           _IO_init [335]
+                0.00    0.00       1/1           _IO_str_init_static [337]
+-----------------------------------------------
+                0.00    0.00       1/1           vsscanf [47]
+[48]     0.0    0.00    0.00       1         _IO_vfscanf [48]
+                0.00    0.00       1/128         __uflow [42]
+                0.00    0.00       2/292415      __errno_location [45]
+                0.00    0.00       1/322701      flockfile [37]
+                0.00    0.00       2/2           mbrtowc [68]
+                0.00    0.00       1/1           _IO_sputbackc [336]
+                0.00    0.00       1/1           __strtol_internal [341]
+                0.00    0.00       1/322701      funlockfile [57]
+-----------------------------------------------
+                0.00    0.00   60572/60572       realloc <cycle 1> [35]
+[49]     0.0    0.00    0.00   60572         chunk_realloc [49]
+                0.00    0.00      13/151445      chunk_alloc [19]
+                0.00    0.00      19/26          chunk_free [61]
+-----------------------------------------------
+                0.00    0.00       1/9           newarray [52]
+                0.00    0.00       8/9           rehash [36]
+[50]     0.0    0.00    0.00       9         calloc [50]
+                0.00    0.00       9/151445      chunk_alloc [19]
+                0.00    0.00       5/5           memset [63]
+-----------------------------------------------
+                0.00    0.00       1/1           parse [4]
+[51]     0.0    0.00    0.00       1         t_lookup [51]
+                0.00    0.00       1/292411      printf [7]
+                0.00    0.00       1/30286       lookup [28]
+-----------------------------------------------
+                0.00    0.00       1/1           t_newarray [53]
+[52]     0.0    0.00    0.00       1         newarray [52]
+                0.00    0.00       1/151423      malloc [20]
+                0.00    0.00       1/9           calloc [50]
+-----------------------------------------------
+                0.00    0.00       1/1           parse [4]
+[53]     0.0    0.00    0.00       1         t_newarray [53]
+                0.00    0.00       1/1           newarray [52]
+-----------------------------------------------
+                0.00    0.00       1/1           profil [55]
+[54]     0.0    0.00    0.00       1         sigaction [54]
+                0.00    0.00       1/292415      __errno_location [45]
+-----------------------------------------------
+                                                 <spontaneous>
+[55]     0.0    0.00    0.00                 profil [55]
+                0.00    0.00       1/1           sigaction [54]
+                0.00    0.00       1/1           setitimer [77]
+-----------------------------------------------
+                                                 <spontaneous>
+[56]     0.0    0.00    0.00                 __syscall_error_1 [56]
+                0.00    0.00       1/292415      __errno_location [45]
+-----------------------------------------------
+                0.00    0.00       1/322701      _IO_vfscanf [48]
+                0.00    0.00   30289/322701      fgets [23]
+                0.00    0.00  292411/322701      vfprintf [8]
+[57]     0.0    0.00    0.00  322701         funlockfile [57]
+-----------------------------------------------
+                0.00    0.00   60591/60591       wanew [22]
+[58]     0.0    0.00    0.00   60591         strncpy [58]
+-----------------------------------------------
+                0.00    0.00   30266/60552       tostring [27]
+                0.00    0.00   30286/60552       parse [4]
+[59]     0.0    0.00    0.00   60552         strcpy [59]
+-----------------------------------------------
+                0.00    0.00   30403/30403       _IO_getline_info [26]
+[60]     0.0    0.00    0.00   30403         memcpy [60]
+-----------------------------------------------
+                0.00    0.00       7/26          cfree [62]
+                0.00    0.00      19/26          chunk_realloc [49]
+[61]     0.0    0.00    0.00      26         chunk_free [61]
+-----------------------------------------------
+                0.00    0.00       8/8           rehash [36]
+[62]     0.0    0.00    0.00       8         cfree [62]
+                0.00    0.00       7/26          chunk_free [61]
+                0.00    0.00       1/1           munmap_chunk [74]
+-----------------------------------------------
+                0.00    0.00       5/5           calloc [50]
+[63]     0.0    0.00    0.00       5         memset [63]
+-----------------------------------------------
+                0.00    0.00       2/4           _IO_new_file_xsputn [9]
+                0.00    0.00       2/4           tcgetattr [69]
+[64]     0.0    0.00    0.00       4         mempcpy [64]
+-----------------------------------------------
+                0.00    0.00       2/4           chunk_alloc [19]
+                0.00    0.00       2/4           _IO_file_doallocate [331]
+[65]     0.0    0.00    0.00       4         mmap [65]
+-----------------------------------------------
+                0.00    0.00       2/2           tcgetattr [69]
+[66]     0.0    0.00    0.00       2         ioctl [66]
+-----------------------------------------------
+                0.00    0.00       1/2           fparse [1]
+                0.00    0.00       1/2           _IO_file_doallocate [331]
+[67]     0.0    0.00    0.00       2         isatty [67]
+                0.00    0.00       2/2           tcgetattr [69]
+-----------------------------------------------
+                0.00    0.00       2/2           _IO_vfscanf [48]
+[68]     0.0    0.00    0.00       2         mbrtowc [68]
+                0.00    0.00       2/2           __gconv_transform_ascii_internal [334]
+-----------------------------------------------
+                0.00    0.00       2/2           isatty [67]
+[69]     0.0    0.00    0.00       2         tcgetattr [69]
+                0.00    0.00       2/2           ioctl [66]
+                0.00    0.00       2/4           mempcpy [64]
+-----------------------------------------------
+                0.00    0.00       1/1           __gmon_start__ [426]
+[70]     0.0    0.00    0.00       1         atexit [70]
+                0.00    0.00       1/1           __new_exitfn [340]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_start_main [3]
+[71]     0.0    0.00    0.00       1         exit [71]
+                0.00    0.00       1/1           _mcleanup [342]
+-----------------------------------------------
+                0.00    0.00       1/1           fparse [1]
+[72]     0.0    0.00    0.00       1         fileno_unlocked [72]
+-----------------------------------------------
+                0.00    0.00       1/1           munmap_chunk [74]
+[73]     0.0    0.00    0.00       1         munmap [73]
+-----------------------------------------------
+                0.00    0.00       1/1           cfree [62]
+[74]     0.0    0.00    0.00       1         munmap_chunk [74]
+                0.00    0.00       1/1           munmap [73]
+-----------------------------------------------
+                0.00    0.00       1/1           realloc_hook_ini <cycle 1> [76]
+[75]     0.0    0.00    0.00       1         ptmalloc_init [75]
+-----------------------------------------------
+                                   1             realloc <cycle 1> [35]
+[76]     0.0    0.00    0.00       1         realloc_hook_ini <cycle 1> [76]
+                0.00    0.00       1/1           ptmalloc_init [75]
+                                   1             realloc <cycle 1> [35]
+-----------------------------------------------
+                0.00    0.00       1/1           profil [55]
+[77]     0.0    0.00    0.00       1         setitimer [77]
+-----------------------------------------------
+                0.00    0.00     127/127         _IO_file_underflow [44]
+[328]    0.0    0.00    0.00     127         _IO_switch_to_get_mode [328]
+-----------------------------------------------
+                0.00    0.00       1/3           _IO_str_init_static [337]
+                0.00    0.00       2/3           _IO_file_doallocate [331]
+[329]    0.0    0.00    0.00       3         _IO_setb [329]
+-----------------------------------------------
+                0.00    0.00       1/2           _IO_file_underflow [44]
+                0.00    0.00       1/2           _IO_file_overflow [10]
+[330]    0.0    0.00    0.00       2         _IO_doallocbuf [330]
+                0.00    0.00       2/2           _IO_file_doallocate [331]
+-----------------------------------------------
+                0.00    0.00       2/2           _IO_doallocbuf [330]
+[331]    0.0    0.00    0.00       2         _IO_file_doallocate [331]
+                0.00    0.00       2/2           _IO_file_stat [332]
+                0.00    0.00       2/4           mmap [65]
+                0.00    0.00       2/3           _IO_setb [329]
+                0.00    0.00       1/2           isatty [67]
+-----------------------------------------------
+                0.00    0.00       2/2           _IO_file_doallocate [331]
+[332]    0.0    0.00    0.00       2         _IO_file_stat [332]
+                0.00    0.00       2/2           __fxstat64 [333]
+-----------------------------------------------
+                0.00    0.00       2/2           _IO_file_stat [332]
+[333]    0.0    0.00    0.00       2         __fxstat64 [333]
+-----------------------------------------------
+                0.00    0.00       2/2           mbrtowc [68]
+[334]    0.0    0.00    0.00       2         __gconv_transform_ascii_internal [334]
+-----------------------------------------------
+                0.00    0.00       1/1           vsscanf [47]
+[335]    0.0    0.00    0.00       1         _IO_init [335]
+-----------------------------------------------
+                0.00    0.00       1/1           _IO_vfscanf [48]
+[336]    0.0    0.00    0.00       1         _IO_sputbackc [336]
+-----------------------------------------------
+                0.00    0.00       1/1           vsscanf [47]
+[337]    0.0    0.00    0.00       1         _IO_str_init_static [337]
+                0.00    0.00       1/3           _IO_setb [329]
+-----------------------------------------------
+                0.00    0.00       1/1           _IO_default_uflow [41]
+[338]    0.0    0.00    0.00       1         _IO_str_underflow [338]
+-----------------------------------------------
+                0.00    0.00       1/1           _mcleanup [342]
+[339]    0.0    0.00    0.00       1         __moncontrol [339]
+-----------------------------------------------
+                0.00    0.00       1/1           atexit [70]
+[340]    0.0    0.00    0.00       1         __new_exitfn [340]
+-----------------------------------------------
+                0.00    0.00       1/1           _IO_vfscanf [48]
+[341]    0.0    0.00    0.00       1         __strtol_internal [341]
+-----------------------------------------------
+                0.00    0.00       1/1           exit [71]
+[342]    0.0    0.00    0.00       1         _mcleanup [342]
+                0.00    0.00       1/1           __moncontrol [339]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+  [41] _IO_default_uflow      [29] argnew (cmd.c)         [12] new_do_write (fileops.c)
+ [330] _IO_doallocbuf         [70] atexit                 [52] newarray
+ [331] _IO_file_doallocate    [31] brk                     [4] parse
+  [10] _IO_file_overflow      [50] calloc                  [7] printf
+  [43] _IO_file_read          [62] cfree                  [75] ptmalloc_init (malloc.c)
+ [332] _IO_file_stat          [19] chunk_alloc (malloc.c) [40] read
+  [44] _IO_file_underflow     [61] chunk_free (malloc.c)  [35] realloc
+  [15] _IO_file_write         [49] chunk_realloc (malloc.c) [76] realloc_hook_ini (malloc.c)
+  [25] _IO_getline             [5] dumparray              [36] rehash
+  [26] _IO_getline_info       [71] exit                   [39] removechar
+ [335] _IO_init               [23] fgets                  [32] sbrk
+  [13] _IO_new_do_write       [72] fileno_unlocked        [77] setitimer
+   [9] _IO_new_file_xsputn    [37] flockfile              [54] sigaction
+ [329] _IO_setb                [1] fparse                 [16] silex
+ [336] _IO_sputbackc          [57] funlockfile            [46] sscanf
+ [337] _IO_str_init_static    [24] hash                   [38] strcmp
+ [338] _IO_str_underflow      [21] index                  [59] strcpy
+ [328] _IO_switch_to_get_mode [66] ioctl                  [58] strncpy
+  [48] _IO_vfscanf            [67] isatty                 [18] t_additem
+  [33] __default_morecore     [28] lookup                  [6] t_dumparray
+  [45] __errno_location        [2] main                   [51] t_lookup
+ [333] __fxstat64             [20] malloc                 [53] t_newarray
+ [334] __gconv_transform_ascii_internal [68] mbrtowc      [69] tcgetattr
+ (436) __mcount_internal     (216) mcount                 [27] tostring
+ [339] __moncontrol           [30] memchr                  [8] vfprintf
+ [340] __new_exitfn           [60] memcpy                 [47] vsscanf
+  [11] __overflow             [64] mempcpy                [22] wanew (cmd.c)
+ [341] __strtol_internal      [63] memset                 [14] write
+  [42] __uflow                [65] mmap                   [34] <cycle 1>
+ [342] _mcleanup              [73] munmap
+  [17] additem                [74] munmap_chunk (malloc.c)
