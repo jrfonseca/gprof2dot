@@ -10,6 +10,8 @@ import gtk
 import gtk.gdk
 import gtk.keysyms
 import cairo
+import pango
+import pangocairo
 
 import pydot
 
@@ -48,6 +50,10 @@ class Shape:
 LEFT, CENTER, RIGHT = -1, 0, 1
 
 class TextShape(Shape):
+	
+	#fontmap = pangocairo.CairoFontMap()
+	#fontmap.set_resolution(72)
+	#context = fontmap.create_context()
 
 	def __init__(self, pen, x, y, j, w, t):
 		Shape.__init__(self, pen)
@@ -58,17 +64,40 @@ class TextShape(Shape):
 		self.t = t
 
 	def draw(self, cr):
-		
-		cr.select_font_face(self.pen.fontname, 0, 0)
-		cr.set_font_size(self.pen.fontsize)
 
-		x_bearing, y_bearing, width, height, x_advance, y_advance = cr.text_extents(self.t)
+		try:
+			layout = self.layout
+		except AttributeError:
+			layout = cr.create_layout()
+			
+			# set font options
+			# See http://lists.freedesktop.org/archives/cairo/2007-February/009688.html
+			context = layout.get_context()
+			fo = cairo.FontOptions()
+			fo.set_antialias(cairo.ANTIALIAS_DEFAULT)
+			fo.set_hint_style(cairo.HINT_STYLE_NONE)
+			fo.set_hint_metrics(cairo.HINT_METRICS_OFF)
+			pangocairo.context_set_font_options(context, fo)
+			
+			# set font
+			font = pango.FontDescription()
+			font.set_family(self.pen.fontname)
+			font.set_absolute_size(self.pen.fontsize*pango.SCALE)
+			layout.set_font_description(font)
+			
+			# set text
+			layout.set_text(self.t)
+			
+			# cache it
+			self.layout = layout
+		else:
+			cr.update_layout(layout)
+
+		width, height = layout.get_size()
+		width = float(width)/pango.SCALE
+		height = float(height)/pango.SCALE
 
 		cr.move_to(self.x - self.w/2, self.y)
-
-		cr.save()
-		s = self.w/width
-		cr.scale(s, s)
 
 		if self.j == LEFT:
 			x = self.x
@@ -78,10 +107,13 @@ class TextShape(Shape):
 			x = self.x - width
 		else:
 			assert 0
+		
+		y = self.y - height
+		
+		cr.move_to(x, y)
 
 		cr.set_source_rgba(*self.pen.color)
-		cr.show_text(self.t)
-		cr.restore()
+		cr.show_layout(layout)
 
 
 class EllipseShape(Shape):
@@ -456,14 +488,6 @@ class DotWindow(gtk.Window):
 		cr.set_line_join(cairo.LINE_JOIN_MITER)
 		cr.set_miter_limit(1.0)
 		
-		# See http://lists.freedesktop.org/archives/cairo/2007-February/009688.html
-		#fo = cairo.FontOptions()
-		fo = cr.get_font_options()
-		fo.set_antialias(cairo.ANTIALIAS_DEFAULT)
-		fo.set_hint_style(cairo.HINT_STYLE_NONE)
-		fo.set_hint_metrics(cairo.HINT_METRICS_OFF)
-		cr.set_font_options(fo)
-
 		for shape in self.shapes:
 			shape.draw(cr)
 
