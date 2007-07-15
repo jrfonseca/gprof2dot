@@ -16,6 +16,10 @@ import pydot
 
 # See http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
 
+# For pygtk inspiration and guidance see:
+# - http://mirageiv.berlios.de/
+# - http://comix.sourceforge.net/
+
 
 class Pen:
 
@@ -287,6 +291,8 @@ class Hyperlink:
 
 class DotWindow(gtk.Window):
 
+	# TODO: Make a seperate, reusable widget
+
 	ui = '''
 	<ui>
 		<toolbar name="ToolBar">
@@ -350,6 +356,7 @@ class DotWindow(gtk.Window):
 		scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
 		vbox.pack_start(scrolled_window)
 
+		# TODO: Use a custom widget instead of Layout like in the scrollable.py example?
 		self.area = gtk.Layout()
 		self.area.connect("expose_event", self.on_expose)
 		scrolled_window.add(self.area)
@@ -359,6 +366,7 @@ class DotWindow(gtk.Window):
 		self.area.connect("button-press-event", self.on_area_button_press)
 		self.area.add_events(gtk.gdk.POINTER_MOTION_MASK)
 		self.area.connect("motion-notify-event", self.on_area_motion_notify)
+		self.area.connect("scroll-event", self.on_area_scroll_event)
 		
 		window.connect('key-press-event', self.on_key_press_event)
 
@@ -408,6 +416,7 @@ class DotWindow(gtk.Window):
 				x, y = map(float, node.pos.split(","))
 				w = float(node.width)*72
 				h = float(node.height)*72
+				# TODO: use event boxes instead
 				self.hyperlinks.append(Hyperlink(node.URL, x, y, w, h))
 		for edge in self.graph.get_edge_list():
 			for attr in ("_draw_", "_ldraw_", "_hdraw_", "_tdraw_", "_hldraw_", "_tldraw_"):
@@ -522,6 +531,18 @@ class DotWindow(gtk.Window):
 		url = self.get_url(x, y)
 		if url is not None:
 			return self.on_url_clicked(url, event)
+		return False
+
+	def on_area_scroll_event(self, area, event):
+		print event
+		if event.direction == gtk.gdk.SCROLL_UP:
+			self.zoom_ratio *= self.ZOOM_INCREMENT
+			self.zoom_image()
+			return True
+		if event.direction == gtk.gdk.SCROLL_DOWN:
+			self.zoom_ratio /= self.ZOOM_INCREMENT
+			self.zoom_image()
+			return True
 		return False
 
 	def on_area_motion_notify(self, area, event):
