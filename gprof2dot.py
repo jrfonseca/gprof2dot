@@ -157,10 +157,6 @@ class GprofParser:
 			attrs[name] = (value)
 		return Struct(attrs)
 
-	_cg_granularity_re = re.compile(
-		r'n?granularity:.*\s(?P<total>\d+\.\d+)\sseconds$'
-	)
-
 	_cg_header_re = re.compile(
 		# original gprof header
 		r'^\s+called/total\s+parents\s*$|' +
@@ -298,14 +294,6 @@ class GprofParser:
 	def parse_cg(self):
 		"""Parse the call graph."""
 
-		# read total time from granularity line
-		while True:
-			line = self.readline()
-			mo = self._cg_granularity_re.match(line)
-			if mo:
-				break
-		self.total = float(mo.group('total'))
-
 		# skip call graph header
 		while not self._cg_header_re.match(self.readline()):
 			pass
@@ -345,7 +333,7 @@ class GprofParser:
 		self.fp.close()
 
 		profile = Profile()
-		profile.total_time = self.total
+		profile.total_time = 0.0
 
 		static_functions = {}
 		for entry in self.functions.itervalues():
@@ -374,6 +362,8 @@ class GprofParser:
 				function.calls.append(call)
 
 			profile.add_function(function)
+
+			profile.total_time = max(profile.total_time, function.total_time)
 
 		return profile
 
