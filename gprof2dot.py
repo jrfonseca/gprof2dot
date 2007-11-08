@@ -368,6 +368,118 @@ class GprofParser:
 		return profile
 
 
+class OprofileParser:
+	"""Parser for oprofile callgraph output.
+	
+	See also:
+	- http://oprofile.sourceforge.net/doc/opreport.html#opreport-callgraph
+	"""
+
+	_field_re = re.compile(r'\([^)]*\)|\S+')
+
+	def __init__(self, ifile):
+		self.file = ifile
+		self.line = None
+		self.entries = []
+	
+	def readline(self):
+		self.line = self.file.readline()[:-1]
+		return self.line
+
+	def parse(self):
+		self.readline()
+		self.parse_header()
+		while self.line:
+			self.parse_group()
+
+		profile = Profile()
+		profile.total_time = 0.0
+		for entry in self.entries:
+			function = Function(entry.id, entry.name)
+			function.self_time = float(entry.samples)
+			# FIXME: wrong
+			function.total_time = float(entry.samples)
+			for child in entry.children:
+				call = Call(child.id)
+				call.total_time = float(entry.samples)
+				function.calls.append(call)
+
+			if function.id in profile.functions:
+				#print function.id, entry.samples
+				continue
+			profile.add_function(function)
+			profile.total_time += function.self_time
+				
+		return profile
+
+	def parse_header(self):
+		self.skip_separator()
+
+	def parse_group(self):
+		callers = []
+		while self.match_secondary():
+			caller = self.parse_entry()
+			if caller is not None:
+				callers.append(caller)
+		if self.match_primary():
+			entry = self.parse_entry()
+			if entry is not None:
+				#print entry
+				callees = []
+				while self.match_secondary():
+					callee = self.parse_entry()
+					if callee is not None:
+						callees.append(callee)
+						#print "", callee
+				entry.children = callees
+				self.entries.append(entry)
+		self.skip_separator()
+
+	def parse_entry(self):
+		entry = None
+		fields = self._field_re.findall(self.line)
+		if fields[-1] != '[self]':
+			if len(fields) == 6:
+				entry = Struct()
+				#print len(fields), fields
+				samples, percentage, source, image, application, symbol = fields
+				entry.samples = int(samples)
+				entry.percentage = float(percentage)
+				if source == '(no location information)':
+					entry.source = None
+				else:
+					filename, lineno = source.split(':')
+					entry.filename = filename
+					entry.lineno = int(lineno)
+				entry.image = image
+				entry.application = application
+				if symbol == '(no symbols)':
+					entry.symbol = None
+				else:
+					entry.symbol = symbol
+				entry.id = ':'.join((image, symbol, source))
+				if entry.symbol is None:
+					entry.name = entry.image
+				else:
+					entry.name = entry.symbol
+		self.readline()
+		return entry
+
+	def skip_separator(self):
+		while not self.match_separator():
+			self.readline()
+		self.readline()
+
+	def match_separator(self):
+		return self.line == '-'*len(self.line)
+
+	def match_primary(self):
+		return not self.line[:1].isspace()
+	
+	def match_secondary(self):
+		return self.line[:1].isspace()
+
+
 class PstatsParser:
 	"""Parser python profiling statistics saved with te pstats module."""
 
@@ -646,9 +758,9 @@ class Main:
 			help="eliminate edges below this threshold [default: %default]")
 		parser.add_option(
 			'-f', '--format',
-			type="choice", choices=('prof', 'pstats'),
+			type="choice", choices=('prof', 'oprofile', 'pstats'),
 			dest="format", default="prof",
-			help="profile format: prof or pstats [default: %default]")
+			help="profile format: prof, oprofile, or pstats [default: %default]")
 		parser.add_option(
 			'-c', '--colormap',
 			type="choice", choices=('color', 'pink', 'gray'),
@@ -684,6 +796,12 @@ class Main:
 			else:
 				fp = open(self.input, 'rt')
 			parser = GprofParser(fp)
+		elif self.options.format == 'oprofile':
+			if self.input is None:
+				fp = sys.stdin
+			else:
+				fp = open(self.input, 'rt')
+			parser = OprofileParser(fp)
 		elif self.options.format == 'pstats':
 			if self.input is None:
 				parser.error('a file must be specified for pstats input')
