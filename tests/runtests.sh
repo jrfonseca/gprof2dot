@@ -2,11 +2,12 @@
 
 PYTHON=python2.5
 
-GPROF2DOT=../gprof2dot.py
+TESTDIR=`dirname "$0"`
+GPROF2DOT=$TESTDIR/../gprof2dot.py
 
 for FORMAT in prof pstats
 do
-	for INPUT in *.$FORMAT
+	for INPUT in $TESTDIR/*.$FORMAT
 	do
 		NAME=${INPUT%%.$FORMAT}
 		OUTPUT=$NAME.dot
