@@ -13,33 +13,71 @@ import textwrap
 import optparse
 
 
-class Call:
+TIME = 1
+TOTAL_TIME = 2
+TOTAL_TIME_ESTIMATE = 2
+CALLS = 3
+SAMPLES = 4
 
-	def __init__(self, callee_id, ncalls=0):
+
+class EventAccessor(object):
+	"""A data descriptor that sets and returns values
+		 normally and prints a message logging their access.
+	"""
+
+	def __init__(self, event):
+		self.event = event
+
+	def __get__(self, obj, objtype):
+		try:
+			return obj.events[self.event]
+		except KeyError:
+			return None
+
+	def __set__(self, obj, val):
+		obj.events[self.event] = val
+
+
+class Common(object):
+
+	def __init__(self, events=None):
+		if events is None:
+			self.events = {}
+		else:
+			self.events = events
+	
+	self_time = EventAccessor(TIME)
+	total_time = EventAccessor(TOTAL_TIME)
+	samples = EventAccessor(SAMPLES)
+	ncalls = EventAccessor(CALLS)
+
+
+class Call(Common):
+
+	def __init__(self, callee_id):
+		Common.__init__(self)
 		self.callee_id = callee_id
-		self.ncalls = ncalls
-		self.total_time = None
+	
+	total_time_estimate = EventAccessor(TOTAL_TIME_ESTIMATE)
 
 
-class Function:
+class Function(Common):
 
 	def __init__(self, id, name):
+		Common.__init__(self)
 		self.id = id
 		self.name = name
-		self.total_time = 0.0
-		self.self_time = 0.0
-		self.ncalls = 0
 		self.calls = []
 	
 	def add_call(self, call):
 		self.calls = []
 
 
-class Profile:
+class Profile(Common):
 
 	def __init__(self):
+		Common.__init__(self)
 		self.functions = {}
-		self.total_time = 0.0
 
 	def add_function(self, function):
 		assert function.id not in self.functions
@@ -64,23 +102,27 @@ class Profile:
 				elif callee.total_time == 0.0:
 					# no time spent on callee
 					call.total_time = 0.0
-				elif call.ncalls == callee.ncalls:
+				elif call.ncalls is not None and call.ncalls == callee.ncalls:
 					# all calls made from this function
 					call.total_time = callee.total_time
 
 				if call.total_time is not None:
 					# exact time is already available
 					call.total_time_estimate = call.total_time 
-				else:
+				elif function.total_time is not None and callee.total_time is not None:
 					# make a safe estimate
 					call.total_time_estimate = min(function.total_time, callee.total_time) 
 
 	def prune(profile, node_thres, edge_thres):
+		if profile.total_time is None:
+			return
+
 		node_thres = profile.total_time*node_thres
 		edge_thres = profile.total_time*edge_thres
 
 		for function_id in profile.functions.keys():
 			function = profile.functions[function_id]
+			assert function.total_time is not None
 			if function.total_time < node_thres:
 				del profile.functions[function_id]
 
@@ -393,22 +435,20 @@ class OprofileParser:
 			self.parse_group()
 
 		profile = Profile()
-		profile.total_time = 0.0
+		profile.self_time = 0.0
 		for entry in self.entries:
 			function = Function(entry.id, entry.name)
 			function.self_time = float(entry.samples)
-			# FIXME: wrong
-			function.total_time = float(entry.samples)
 			for child in entry.children:
 				call = Call(child.id)
-				call.total_time = float(entry.samples)
+				call.self_time = float(entry.samples)
 				function.calls.append(call)
 
 			if function.id in profile.functions:
 				#print function.id, entry.samples
 				continue
 			profile.add_function(function)
-			profile.total_time += function.self_time
+			profile.self_time += function.self_time
 				
 		return profile
 
@@ -551,21 +591,35 @@ class DotWriter:
 		self.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
 		self.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
 
+		if profile.self_time is None:
+			profile.self_time = profile.total_time
+
 		for function in profile.functions.itervalues():
 			labels = []
 			
 			labels.append(function.name)
 
-			total_ratio = function.total_time/profile.total_time
-			self_ratio = function.self_time/profile.total_time
-			labels.append("%.02f%% (%.02f%%)" % (total_ratio*100.0, self_ratio*100.0))
+			color_ratio = None
+			if function.total_time is not None:
+				assert profile.total_time is not None
+				total_ratio = function.total_time/profile.total_time
+				labels.append("%.02f%%" % (total_ratio*100.0))
+				color_ratio = total_ratio
+			if function.self_time is not None:
+				assert profile.self_time is not None
+				self_ratio = function.self_time/profile.self_time
+				labels.append("(%.02f%%)" % (self_ratio*100.0))
+				if color_ratio is None:
+					color_ratio = self_ratio
+			if color_ratio is None:
+				color_ratio = 0.0
 
 			# number of invocations
 			if function.ncalls is not None:
 				labels.append("%i" % (function.ncalls,))
 
 			label = '\n'.join(labels)
-			color = self.color(colormap(total_ratio))
+			color = self.color(colormap(color_ratio))
 			self.node(function.id, label=label, color=color)
 
 			for call in function.calls:
@@ -573,16 +627,20 @@ class DotWriter:
 				labels = []
 				
 				if call.total_time is not None:
+					assert profile.total_time is not None
 					total_ratio = call.total_time/profile.total_time
 					labels.append("%.02f%%" % (total_ratio*100.0),)
-				else:
+					color_ratio = total_ratio
+				elif call.total_time_estimate is not None:
+					assert profile.total_time is not None
 					# use the estimate for the color
-					total_ratio = call.total_time_estimate/profile.total_time
+					color_ratio = call.total_time_estimate/profile.total_time
 
-				labels.append("%i" % (call.ncalls,))
+				if call.ncalls is not None:
+					labels.append("%i" % (call.ncalls,))
 
 				label = '\n'.join(labels)
-				color = self.color(colormap(total_ratio))
+				color = self.color(colormap(color_ratio))
 				self.edge(function.id, call.callee_id, label=label, color=color, fontcolor=color)
 
 		self.end_graph()
