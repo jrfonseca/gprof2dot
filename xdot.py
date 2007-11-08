@@ -393,10 +393,9 @@ class DotWindow(gtk.Window):
 		self.area.connect("expose_event", self.on_expose)
 		scrolled_window.add(self.area)
 
-		self.area.add_events(gtk.gdk.BUTTON_PRESS_MASK)
-		self.area.add_events(gtk.gdk.BUTTON_RELEASE_MASK)
+		self.area.add_events(gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
 		self.area.connect("button-press-event", self.on_area_button_press)
-		self.area.add_events(gtk.gdk.POINTER_MOTION_MASK)
+		self.area.add_events(gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
 		self.area.connect("motion-notify-event", self.on_area_motion_notify)
 		self.area.connect("scroll-event", self.on_area_scroll_event)
 		
@@ -412,7 +411,8 @@ class DotWindow(gtk.Window):
 			['dot', '-Txdot'],
 			stdin=subprocess.PIPE,
 			stdout=subprocess.PIPE,
-			shell=False
+			shell=False,
+			universal_newlines=True
 		)
 		xdotcode = p.communicate(dotcode)[0]
 		#if __name__ == '__main__':
@@ -481,6 +481,8 @@ class DotWindow(gtk.Window):
 
 		cr.translate(0, 0)
 		cr.scale(self.zoom_ratio, self.zoom_ratio)
+
+		# FIXME: scale from points to pixels
 
 		cr.set_source_rgba(0.0, 0.0, 0.0, 1.0)
 
@@ -558,7 +560,6 @@ class DotWindow(gtk.Window):
 		return False
 
 	def on_area_scroll_event(self, area, event):
-		print event
 		if event.direction == gtk.gdk.SCROLL_UP:
 			self.zoom_ratio *= self.ZOOM_INCREMENT
 			self.zoom_image()
@@ -570,12 +571,13 @@ class DotWindow(gtk.Window):
 		return False
 
 	def on_area_motion_notify(self, area, event):
+		#print event.x, event.y
 		x, y = int(event.x), int(event.y)
 		if self.get_url(x, y) is not None:
 			area.window.set_cursor(self.hand_cursor)
 		else:
 			area.window.set_cursor(self.regular_cursor)
-		return False
+		return True
 
 	def get_url(self, x, y):
 		x /= self.zoom_ratio
