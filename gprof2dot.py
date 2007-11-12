@@ -129,11 +129,13 @@ class Function(Object):
 		Object.__init__(self)
 		self.id = id
 		self.name = name
-		self.calls = []
+		self.calls = {}
 		self.cycle = None
 	
 	def add_call(self, call):
-		self.calls = []
+		if call.callee_id in self.calls:
+			sys.stderr.write('warning: overwriting call from function %s to %s\n' % (str(self.id), str(call.callee_id)))
+		self.calls[call.callee_id] = call
 
 	def __repr__(self):
 		return self.name
@@ -153,8 +155,9 @@ class Cycle(Object):
 		# TODO: aggregate events?
 		if function.cycle is not None:
 			for other in function.cycle.functions:
-				self.add_function(other)
-			function.cycle = self
+				if function not in self.functions:
+					self.add_function(other)
+		function.cycle = self
 
 
 class Profile(Object):
@@ -168,6 +171,16 @@ class Profile(Object):
 		if function.id in self.functions:
 			sys.stderr.write('warning: overwriting function %s (id %s)\n' % (function.name, str(function.id)))
 		self.functions[function.id] = function
+
+	def validate(self):
+		"""Validate the edges."""
+
+		for function in self.functions.itervalues():
+			for callee_id in function.calls.keys():
+				assert function.calls[callee_id].callee_id == callee_id
+				if callee_id not in self.functions:
+					sys.stderr.write('warning: call to undefined function %s from function %s\n' % (str(callee_id), function.name))
+					del function.calls[callee_id]
 
 	def find_cycles(self):
 		"""Find cycles using Tarjan's strongly connected components algorithm."""
@@ -191,7 +204,7 @@ class Profile(Object):
 		order += 1
 		pos = len(stack)
 		stack.append(function)
-		for call in function.calls:
+		for call in function.calls.itervalues():
 			callee = self.functions[call.callee_id]
 			# TODO: use a set to optimize lookup
 			if callee not in orders:
@@ -232,24 +245,26 @@ class Profile(Object):
 
 		if function.cycle is not None:
 			total = 0.0
-			for member in cycle.functions:
-				for call in member.calls:
+			for member in function.cycle.functions:
+				for call in member.calls.itervalues():
 					callee = self.functions[call.callee_id]
-					total += call[CALL_RATIO]*self._propagate_function_time(callee)
-			for member in cycle.functions:
+					if callee.cycle is not function.cycle:
+						total += call[CALL_RATIO]*self._propagate_function_time(callee)
+			for member in function.cycle.functions:
 				assert TOTAL_TIME_RATIO not in member
 				member[TOTAL_TIME_RATIO] = total
 		else:
 			total = function[TIME_RATIO]
-			for call in function.calls:
-				callee = self.functions[call.callee_id]
-				try:
-					partial = call[CALL_RATIO]*self._propagate_function_time(callee)
-				except UndefinedEvent:
-					# FIXME:
-					partial = 0.0
-				call[TOTAL_TIME_RATIO] = partial
-				total += partial
+			for call in function.calls.itervalues():
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					try:
+						partial = call[CALL_RATIO]*self._propagate_function_time(callee)
+					except UndefinedEvent:
+						# FIXME:
+						partial = 0.0
+					call[TOTAL_TIME_RATIO] = partial
+					total += partial
 			function[TOTAL_TIME_RATIO] = total
 		return total
 
@@ -272,7 +287,7 @@ class Profile(Object):
 
 		# Estimate the total time ratio of calls
 		for function in self.functions.itervalues():
-			for call in function.calls:
+			for call in function.calls.itervalues():
 				callee = self.functions[call.callee_id]
 
 				if TOTAL_TIME_RATIO not in call:
@@ -288,7 +303,6 @@ class Profile(Object):
 							call[TOTAL_TIME] = callee[TOTAL_TIME]
 					
 					try:
-						assert TOTAL_TIME in self
 						call[TOTAL_TIME_RATIO] = call[TOTAL_TIME]/self[TOTAL_TIME]
 					except UndefinedEvent:
 						pass
@@ -324,7 +338,7 @@ class Profile(Object):
 			except UndefinedEvent:
 				pass
 
-			for call in function.calls:
+			for call in function.calls.itervalues():
 				callee = self.functions[call.callee_id]
 
 				if TOTAL_TIME_RATIO in call:
@@ -348,22 +362,19 @@ class Profile(Object):
 
 		# prune the egdes
 		for function in self.functions.itervalues():
-			calls = []
-			for call in function.calls:
-				if call.callee_id in self.functions:
-					try:
-						if call[PRUNE_RATIO] < edge_thres:
-							continue
-					except UndefinedEvent:
-						pass
-					calls.append(call)
-			function.calls = calls
+			for callee_id in function.calls.keys():
+				call = function.calls[callee_id]
+				try:
+					if callee_id not in self.functions or call[PRUNE_RATIO] < edge_thres:
+						del function.calls[callee_id]
+				except UndefinedEvent:
+					pass
 	
 	def dump(self):
 		for function in self.functions.itervalues():
 			sys.stderr.write('Function %s:\n' % (function.name,))
 			self._dump_events(function.events)
-			for call in function.calls:
+			for call in function.calls.itervalues():
 				callee = self.functions[call.callee_id]
 				sys.stderr.write('  Call %s:\n' % (callee.name,))
 				self._dump_events(call.events)
@@ -774,12 +785,15 @@ class OprofileParser(LineParser):
 			for parent in entry.parents:
 				assert not parent.self
 				function = profile.functions[parent.id]
-				for call in function.calls:
-					if call.callee_id == entry.id:
-						# FIXME: handle this
-						#assert CALL_RATIO not in call
-						call[CALL_RATIO] = float(parent.samples)/float(total_samples)
-						break
+				try:
+					call = function.calls[entry.id]
+				# FIXME:
+				#assert CALL_RATIO not in call
+					call[CALL_RATIO] = float(parent.samples)/float(total_samples)
+				except KeyError:
+					# FIXME:
+					#assert 0
+					call[CALL_RATIO] = 0.0
 
 		profile.find_cycles()
 		profile.propagate_time()
@@ -948,7 +962,7 @@ class DotWriter:
 			color = self.color(colormap(color_ratio))
 			self.node(function.id, label=label, color=color)
 
-			for call in function.calls:
+			for call in function.calls.itervalues():
 				callee = profile.functions[call.callee_id]
 
 				labels = []
@@ -1266,6 +1280,7 @@ class Main:
 	def write_graph(self):
 		dot = DotWriter(self.output)
 		profile = self.profile
+		profile.validate()
 		profile.estimate()
 		profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
 
