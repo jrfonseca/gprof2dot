@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 '''Visualize dot graphs via the xdot format.'''
 
+__author__ = "Jose Fonseca"
+
+__version__ = "0.2"
+
 
 import sys
 import subprocess
@@ -24,6 +28,7 @@ import pydot
 
 
 class Pen:
+	"""Store pen attributes."""
 
 	def __init__(self):
 		self.color = (0.0, 0.0, 0.0, 1.0)
@@ -33,21 +38,26 @@ class Pen:
 		self.fontname = "Times-Roman"
 
 	def copy(self):
+		"""Create a copy of this pen."""
 		pen = Pen()
 		pen.__dict__ = self.__dict__.copy()
 		return pen
 
 
 class Shape:
+	"""Abstract base class for all the drawing shapes."""
 
-	def __init__(self, pen):
-		self.pen = pen.copy()
+	def __init__(self):
+		pass
 
 	def draw(self, cr):
+		"""Draw this shape with the given cairo context"""
 		raise NotImplementedError
 
+	def boundingbox(self):
+		"""Get the bounding box of this shape."""
+		raise NotImplementedError
 
-LEFT, CENTER, RIGHT = -1, 0, 1
 
 class TextShape(Shape):
 	
@@ -55,8 +65,11 @@ class TextShape(Shape):
 	#fontmap.set_resolution(72)
 	#context = fontmap.create_context()
 
+	LEFT, CENTER, RIGHT = -1, 0, 1
+
 	def __init__(self, pen, x, y, j, w, t):
-		Shape.__init__(self, pen)
+		Shape.__init__(self)
+		self.pen = pen.copy()
 		self.x = x
 		self.y = y
 		self.j = j
@@ -71,7 +84,7 @@ class TextShape(Shape):
 			layout = cr.create_layout()
 			
 			# set font options
-			# See http://lists.freedesktop.org/archives/cairo/2007-February/009688.html
+			# see http://lists.freedesktop.org/archives/cairo/2007-February/009688.html
 			context = layout.get_context()
 			fo = cairo.FontOptions()
 			fo.set_antialias(cairo.ANTIALIAS_DEFAULT)
@@ -99,11 +112,11 @@ class TextShape(Shape):
 
 		cr.move_to(self.x - self.w/2, self.y)
 
-		if self.j == LEFT:
+		if self.j == self.LEFT:
 			x = self.x
-		elif self.j == CENTER:
+		elif self.j == self.CENTER:
 			x = self.x - 0.5*width
-		elif self.j == RIGHT:
+		elif self.j == self.RIGHT:
 			x = self.x - width
 		else:
 			assert 0
@@ -119,7 +132,8 @@ class TextShape(Shape):
 class EllipseShape(Shape):
 
 	def __init__(self, pen, x0, y0, w, h, filled=False):
-		Shape.__init__(self, pen)
+		Shape.__init__(self)
+		self.pen = pen.copy()
 		self.x0 = x0
 		self.y0 = y0
 		self.w = w
@@ -143,7 +157,8 @@ class EllipseShape(Shape):
 class PolygonShape(Shape):
 
 	def __init__(self, pen, points, filled=False):
-		Shape.__init__(self, pen)
+		Shape.__init__(self)
+		self.pen = pen.copy()
 		self.points = points
 		self.filled = filled
 
@@ -164,7 +179,8 @@ class PolygonShape(Shape):
 class BezierShape(Shape):
 
 	def __init__(self, pen, points):
-		Shape.__init__(self, pen)
+		Shape.__init__(self)
+		self.pen = pen.copy()
 		self.points = points
 
 	def draw(self, cr):
@@ -180,8 +196,22 @@ class BezierShape(Shape):
 		cr.stroke()
 
 
+class CompoundShape(Shape):
+
+	def __init__(self, shapes):
+		Shape.__init__(self)
+		self.shapes = shapes
+
+	def draw(self, cr):
+		for shape in self.shapes:
+			shape.draw(cr)
+
+
 class XDotAttrParser:
-	# See http://www.graphviz.org/doc/info/output.html#d:xdot
+	"""Parser for xdot drawing attributes.
+	See also:
+	- http://www.graphviz.org/doc/info/output.html#d:xdot
+	"""
 
 	def __init__(self, parser, buf):
 		self.parser = parser
@@ -302,7 +332,7 @@ class XDotAttrParser:
 			else:
 				sys.stderr.write("unknown xdot opcode '%s'\n" % op)
 				break
-		return shapes
+		return CompoundShape(shapes)
 
 	def transform(self, x, y):
 		return self.parser.transform(x, y)
@@ -335,9 +365,6 @@ class DotWindow(gtk.Window):
 		</toolbar>
 	</ui>
 	'''
-
-	hand_cursor = gtk.gdk.Cursor(gtk.gdk.HAND2)
-	regular_cursor = gtk.gdk.Cursor(gtk.gdk.XTERM)
 
 	def __init__(self):
 		gtk.Window.__init__(self)
@@ -384,23 +411,29 @@ class DotWindow(gtk.Window):
 		toolbar = uimanager.get_widget('/ToolBar')
 		vbox.pack_start(toolbar, False)
 
-		scrolled_window = self.scrolled_window = gtk.ScrolledWindow()
-		scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-		vbox.pack_start(scrolled_window)
-
 		# TODO: Use a custom widget instead of Layout like in the scrollable.py example?
-		self.area = gtk.Layout()
+		#scrolled_window = self.scrolled_window = gtk.ScrolledWindow()
+		#scrolled_window.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+		#vbox.pack_start(scrolled_window)
+
+		self.area = gtk.DrawingArea()
 		self.area.connect("expose_event", self.on_expose)
-		scrolled_window.add(self.area)
+		#scrolled_window.add(self.area)
+		vbox.pack_start(self.area)
+
+		self.area.set_flags(gtk.CAN_FOCUS)
+		self.set_focus(self.area)
 
 		self.area.add_events(gtk.gdk.BUTTON_PRESS_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
 		self.area.connect("button-press-event", self.on_area_button_press)
+		self.area.connect("button-release-event", self.on_area_button_release)
 		self.area.add_events(gtk.gdk.POINTER_MOTION_MASK | gtk.gdk.POINTER_MOTION_HINT_MASK | gtk.gdk.BUTTON_RELEASE_MASK)
 		self.area.connect("motion-notify-event", self.on_area_motion_notify)
 		self.area.connect("scroll-event", self.on_area_scroll_event)
-		
-		window.connect('key-press-event', self.on_key_press_event)
 
+		self.connect('key-press-event', self.on_key_press_event)
+
+		self.x, self.y = 0.0, 0.0
 		self.zoom_ratio = 1.0
 		self.pixbuf = None
 
@@ -418,7 +451,7 @@ class DotWindow(gtk.Window):
 		#if __name__ == '__main__':
 		#	sys.stdout.write(xdotcode)
 		self.parse(xdotcode)
-		self.zoom_image()
+		self.zoom_image(self.zoom_ratio, center=True)
 
 	def parse(self, xdotcode):
 		self.graph = pydot.graph_from_dot_data(xdotcode)
@@ -443,18 +476,17 @@ class DotWindow(gtk.Window):
 			for attr in ("_draw_", "_ldraw_"):
 				if hasattr(node, attr):
 					p = XDotAttrParser(self, getattr(node, attr))
-					self.shapes.extend(p.parse())
+					self.shapes.append(p.parse())
 			if node.URL is not None:
 				x, y = map(float, node.pos.split(","))
 				w = float(node.width)*72
 				h = float(node.height)*72
-				# TODO: use event boxes instead
 				self.hyperlinks.append(Hyperlink(node.URL, x, y, w, h))
 		for edge in self.graph.get_edge_list():
 			for attr in ("_draw_", "_ldraw_", "_hdraw_", "_tdraw_", "_hldraw_", "_tldraw_"):
 				if hasattr(edge, attr):
 					p = XDotAttrParser(self, getattr(edge, attr))
-					self.shapes.extend(p.parse())
+					self.shapes.append(p.parse())
 
 	def transform(self, x, y):
 		x = (x + self.xoffset)*self.xscale
@@ -462,7 +494,7 @@ class DotWindow(gtk.Window):
 		return x, y
 
 	def on_expose(self, area, event):
-		cr = area.bin_window.cairo_create()
+		cr = area.window.cairo_create()
 
 		# set a clip region for the expose event
 		cr.rectangle(
@@ -474,13 +506,10 @@ class DotWindow(gtk.Window):
 		cr.set_source_rgba(1.0, 1.0, 1.0, 1.0)
 		cr.paint()
 
-		#rect = area.get_allocation()
-		#xscale = float(rect.width)/self.width
-		#yscale = float(rect.height)/self.height
-		#scale = min(xscale, yscale)*2
-
-		cr.translate(0, 0)
+		rect = self.area.get_allocation()
+		cr.translate(0.5*rect.width, 0.5*rect.height)
 		cr.scale(self.zoom_ratio, self.zoom_ratio)
+		cr.translate(-self.x, -self.y)
 
 		# FIXME: scale from points to pixels
 
@@ -495,88 +524,119 @@ class DotWindow(gtk.Window):
 
 		return False
 
-	def zoom_image(self):
-		width = int(self.width*self.zoom_ratio)
-		height = int(self.height*self.zoom_ratio)
-		self.area.set_size(width, height)
+	def get_current_pos(self):
+		return self.x, self.y
+
+	def set_current_pos(self, x, y):
+		self.x = x
+		self.y = y
+		self.area.queue_draw()
+
+	def zoom_image(self, zoom_ratio, center=False):
+		if center:
+			self.x = self.width/2
+			self.y = self.height/2
+		self.zoom_ratio = zoom_ratio
 		self.area.queue_draw()
 
 	ZOOM_INCREMENT = 1.25
 
 	def on_zoom_in(self, action):
-		self.zoom_ratio *= self.ZOOM_INCREMENT
-		self.zoom_image()
+		self.zoom_image(self.zoom_ratio * self.ZOOM_INCREMENT)
 
 	def on_zoom_out(self, action):
-		self.zoom_ratio /= self.ZOOM_INCREMENT
-		self.zoom_image()
+		self.zoom_image(self.zoom_ratio / self.ZOOM_INCREMENT)
 
 	def on_zoom_fit(self, action):
 		rect = self.area.get_allocation()
-		self.zoom_ratio = min(
+		zoom_ratio = min(
 			float(rect.width)/float(self.width),
 			float(rect.height)/float(self.height)
 		)
-		self.zoom_image()
+		self.zoom_image(zoom_ratio, center=True)
 
 	def on_zoom_100(self, action):
-		self.zoom_ratio = 1.0
-		self.zoom_image()
+		self.zoom_image(1.0)
 
 	POS_INCREMENT = 100
 
 	def on_key_press_event(self, widget, event):
-		hadjust = self.scrolled_window.get_hadjustment()
-		vadjust = self.scrolled_window.get_vadjustment()
 		if event.keyval == gtk.keysyms.Left:
-			hadjust.value = max(hadjust.value - self.POS_INCREMENT, hadjust.lower)
+			self.x -= self.POS_INCREMENT/self.zoom_ratio
+			self.area.queue_draw()
 			return True
 		if event.keyval == gtk.keysyms.Right:
-			hadjust.value = min(hadjust.value + self.POS_INCREMENT, hadjust.upper - hadjust.page_size)
+			self.x += self.POS_INCREMENT/self.zoom_ratio
+			self.area.queue_draw()
 			return True
 		if event.keyval == gtk.keysyms.Up:
-			vadjust.value = max(vadjust.value - self.POS_INCREMENT, vadjust.lower)
+			self.y -= self.POS_INCREMENT/self.zoom_ratio
+			self.area.queue_draw()
 			return True
 		if event.keyval == gtk.keysyms.Down:
-			vadjust.value = min(vadjust.value + self.POS_INCREMENT, vadjust.upper - vadjust.page_size)
+			self.y += self.POS_INCREMENT/self.zoom_ratio
+			self.area.queue_draw()
 			return True
 		if event.keyval == gtk.keysyms.Page_Up:
-			self.zoom_ratio *= self.ZOOM_INCREMENT
-			self.zoom_image()
+			self.zoom_image(self.zoom_ratio * self.ZOOM_INCREMENT)
+			self.area.queue_draw()
 			return True
 		if event.keyval == gtk.keysyms.Page_Down:
-			self.zoom_ratio /= self.ZOOM_INCREMENT
-			self.zoom_image()
+			self.zoom_image(self.zoom_ratio / self.ZOOM_INCREMENT)
+			self.area.queue_draw()
 			return True
 		return False
 
 	def on_area_button_press(self, area, event):
+		if event.button == 2 or event.button == 1:
+			area.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.FLEUR))
+			self.prevmousex = event.x
+			self.prevmousey = event.y
+
 		if event.type not in (gtk.gdk.BUTTON_PRESS, gtk.gdk.BUTTON_RELEASE):
 			return False
 		x, y = int(event.x), int(event.y)
 		url = self.get_url(x, y)
 		if url is not None:
 			return self.on_url_clicked(url, event)
+
+		return False
+
+	def on_area_button_release(self, area, event):
+		if event.button == 2 or event.button == 1:
+			area.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.ARROW))
+			self.prevmousex = None
+			self.prevmousey = None
+			return True
 		return False
 
 	def on_area_scroll_event(self, area, event):
 		if event.direction == gtk.gdk.SCROLL_UP:
-			self.zoom_ratio *= self.ZOOM_INCREMENT
-			self.zoom_image()
+			self.zoom_image(self.zoom_ratio * self.ZOOM_INCREMENT)
 			return True
 		if event.direction == gtk.gdk.SCROLL_DOWN:
-			self.zoom_ratio /= self.ZOOM_INCREMENT
-			self.zoom_image()
+			self.zoom_image(self.zoom_ratio / self.ZOOM_INCREMENT)
 			return True
 		return False
 
 	def on_area_motion_notify(self, area, event):
-		#print event.x, event.y
 		x, y = int(event.x), int(event.y)
-		if self.get_url(x, y) is not None:
-			area.window.set_cursor(self.hand_cursor)
+		state = event.state
+
+		if state & gtk.gdk.BUTTON2_MASK or state & gtk.gdk.BUTTON1_MASK:
+			# pan the image
+			self.x += (self.prevmousex - x)/self.zoom_ratio
+			self.y += (self.prevmousey - y)/self.zoom_ratio
+			self.area.queue_draw()
+			self.prevmousex = x
+			self.prevmousey = y
 		else:
-			area.window.set_cursor(self.regular_cursor)
+			# set cursor
+			if self.get_url(x, y) is not None:
+				area.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.HAND2))
+			else:
+				area.window.set_cursor(gtk.gdk.Cursor(gtk.gdk.ARROW))
+
 		return True
 
 	def get_url(self, x, y):
@@ -593,12 +653,27 @@ class DotWindow(gtk.Window):
 		return False
 
 
-if __name__ == '__main__':
-	win = DotWindow()
-	try:
-		fp = file(sys.argv[1], 'rt')
-	except IndexError:
+def main():
+	import optparse
+	
+	parser = optparse.OptionParser(
+		usage="\n\t%prog [file]",
+		version="%%prog %s" % __version__)
+	
+	(options, args) = parser.parse_args(sys.argv[1:])
+	
+	if len(args) == 0:
 		fp = sys.stdin
+	elif len(args) == 1:
+		fp = file(args[0], 'rt')
+	else:
+		parser.error('incorrect number of arguments')
+	
+	win = DotWindow()
 	win.set_dotcode(fp.read())
 	win.connect('destroy', gtk.main_quit)
 	gtk.main()
+
+
+if __name__ == '__main__':
+	main()
