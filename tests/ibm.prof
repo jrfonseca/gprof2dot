@@ -135,7 +135,7 @@ index  %time    self descendents  called+self    name    	index
 
 -----------------------------------------------
 
-6.6s                                               <spontaneous>
+                                                     <spontaneous>
 [2]     99.1    0.00        1.16                 .__start [2]
                 0.44        0.72       1/1           .main [1]
 
@@ -152,7 +152,7 @@ index  %time    self descendents  called+self    name    	index
 
 -----------------------------------------------
 
-6.6s                                               <spontaneous>
+                                                     <spontaneous>
 [5]      0.9    0.01        0.00                 .__mcount [5]
 
 -----------------------------------------------
