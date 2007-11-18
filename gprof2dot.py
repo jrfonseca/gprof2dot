@@ -114,7 +114,7 @@ class Object(object):
 class Call(Object):
 	"""A call between functions.
 	
-	There should be at most one for every pair of functions.
+	There should be at most one call object for every pair of functions.
 	"""
 
 	def __init__(self, callee_id):
@@ -137,6 +137,8 @@ class Function(Object):
 			sys.stderr.write('warning: overwriting call from function %s to %s\n' % (str(self.id), str(call.callee_id)))
 		self.calls[call.callee_id] = call
 
+	# TODO: write utility functions
+
 	def __repr__(self):
 		return self.name
 
@@ -152,7 +154,7 @@ class Cycle(Object):
 	def add_function(self, function):
 		assert function not in self.functions
 		self.functions.add(function)
-		# TODO: aggregate events?
+		# XXX: Aggregate events?
 		if function.cycle is not None:
 			for other in function.cycle.functions:
 				if function not in self.functions:
@@ -258,11 +260,7 @@ class Profile(Object):
 			for call in function.calls.itervalues():
 				if call.callee_id != function.id:
 					callee = self.functions[call.callee_id]
-					try:
-						partial = call[CALL_RATIO]*self._propagate_function_time(callee)
-					except UndefinedEvent:
-						# FIXME:
-						partial = 0.0
+					partial = call[CALL_RATIO]*self._propagate_function_time(callee)
 					call[TOTAL_TIME_RATIO] = partial
 					total += partial
 			function[TOTAL_TIME_RATIO] = total
@@ -291,6 +289,7 @@ class Profile(Object):
 				callee = self.functions[call.callee_id]
 
 				if TOTAL_TIME_RATIO not in call:
+					# TODO: compute this using the actual CALL_RATIO
 					if TOTAL_TIME not in call:
 						if CALLS in callee and callee[CALLS] == 0:
 							# no calls made
@@ -747,53 +746,82 @@ class OprofileParser(LineParser):
 
 	def __init__(self, infile):
 		LineParser.__init__(self, infile)
-		self.entries = []
+		self.entries = {}
+
+	def add_entry(self, callers, function, callees):
+		try:
+			entry = self.entries[function.id]
+		except KeyError:
+			self.entries[function.id] = (callers, function, callees)
+		else:
+			callers_total, function_total, callees_total = entry
+			self.update_subentries_dict(callers_total, callers)
+			function_total.samples += function.samples
+			self.update_subentries_dict(callees_total, callees)
 	
+	def update_subentries_dict(self, totals, partials):
+		for partial in partials.itervalues():
+			try:
+				total = totals[partial.id]
+			except KeyError:
+				totals[partial.id] = partial
+			else:
+				total.samples += partial.samples
+		
 	def parse(self):
 		# read lookahead
 		self.readline()
 
 		self.parse_header()
 		while self.lookahead():
-			self.parse_group()
+			self.parse_entry()
 
 		profile = Profile()
+
+		reverse_call_samples = {}
 		
 		# populate the profile
 		profile[SAMPLES] = 0
-		for entry in self.entries:
-			function = Function(entry.id, entry.name)
-			function[SAMPLES] = entry.samples
-
-			for child in entry.children:
-				if not child.self:
-					call = Call(child.id)
-					call[SAMPLES] = child.samples
-					function.add_call(call)
-
+		for _callers, _function, _callees in self.entries.itervalues():
+			function = Function(_function.id, _function.name)
+			function[SAMPLES] = _function.samples
 			profile.add_function(function)
-			profile[SAMPLES] += function[SAMPLES]
+			profile[SAMPLES] += _function.samples
+
+			total_callee_samples = 0
+			for _callee in _callees.itervalues():
+				total_callee_samples += _callee.samples
+
+			for _callee in _callees.itervalues():
+				if not _callee.self:
+					call = Call(_callee.id)
+					call[SAMPLES] = _callee.samples
+					function.add_call(call)
 				
-		# fill in missing data
-		for entry in self.entries:
-			function = profile.functions[entry.id]
+		# compute time ratios
+		for function in profile.functions.itervalues():
 			function[TIME_RATIO] = float(function[SAMPLES])/float(profile[SAMPLES])
 			
-			total_samples = 0
-			for parent in entry.parents:
-				total_samples += parent.samples
-			for parent in entry.parents:
-				assert not parent.self
-				function = profile.functions[parent.id]
-				try:
-					call = function.calls[entry.id]
-				# FIXME:
-				#assert CALL_RATIO not in call
-					call[CALL_RATIO] = float(parent.samples)/float(total_samples)
-				except KeyError:
-					# FIXME:
-					#assert 0
-					call[CALL_RATIO] = 0.0
+		# compute call ratios
+		for _callers, _function, _callees in self.entries.itervalues():
+
+			total_caller_samples = 0
+			for _caller in _callers.itervalues():
+				total_caller_samples += _caller.samples
+
+			for _caller in _callers.itervalues():
+				assert not _caller.self
+				caller = profile.functions[_caller.id]
+				call = caller.calls[_function.id]
+				
+				assert CALL_RATIO not in call
+				if total_caller_samples == 0.0:
+					assert _caller.samples
+					call[CALL_RATIO] = 1.0
+				else:
+					call[CALL_RATIO] = float(_caller.samples)/float(total_caller_samples)
+					assert call[CALL_RATIO] >= 0.0
+					assert call[CALL_RATIO] <= 1.0
 
 		profile.find_cycles()
 		profile.propagate_time()
@@ -803,24 +831,23 @@ class OprofileParser(LineParser):
 	def parse_header(self):
 		self.skip_separator()
 
-	def parse_group(self):
-		parents = []
-		while self.match_secondary():
-			parent = self.parse_entry()
-			parents.append(parent)
+	def parse_entry(self):
+		callers = self.parse_subentries()
 		if self.match_primary():
-			entry = self.parse_entry()
-			if entry is not None:
-				callees = []
-				while not self.match_separator():
-					callee = self.parse_entry()
-					callees.append(callee)
-				entry.children = callees
-				entry.parents = parents
-				self.entries.append(entry)
+			function = self.parse_subentry()
+			if function is not None:
+				callees = self.parse_subentries()
+				self.add_entry(callers, function, callees)
 		self.skip_separator()
 
-	def parse_entry(self):
+	def parse_subentries(self):
+		subentries = {}
+		while self.match_secondary():
+			subentry = self.parse_subentry()
+			subentries[subentry.id] = subentry
+		return subentries
+
+	def parse_subentry(self):
 		entry = Struct()
 		line = self.consume()
 		fields = self._field_re.findall(line)
@@ -833,7 +860,6 @@ class OprofileParser(LineParser):
 			raise ParseError('wrong number of fields', line)
 		samples, percentage, source, image, application, symbol = fields
 		entry.samples = int(samples)
-		entry.percentage = float(percentage)
 		if source == '(no location information)':
 			entry.source = None
 		else:
