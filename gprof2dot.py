@@ -26,6 +26,17 @@ def percentage(p):
 def add(a, b):
 	return a + b
 
+def ratio(numerator, denominator):
+	numerator = float(numerator)
+	denominator = float(denominator)
+	assert 0.0 <= numerator
+	assert numerator <= denominator
+	try:
+		return numerator/denominator
+	except ZeroDivisionError:
+		# 0/0 is undefined, but 1.0 yields more useful results
+		return 1.0
+
 
 class UndefinedEvent(Exception):
 	"""Raised when attempting to get an event which is undefined."""
@@ -302,7 +313,7 @@ class Profile(Object):
 							call[TOTAL_TIME] = callee[TOTAL_TIME]
 					
 					try:
-						call[TOTAL_TIME_RATIO] = call[TOTAL_TIME]/self[TOTAL_TIME]
+						call[TOTAL_TIME_RATIO] = ratio(call[TOTAL_TIME], self[TOTAL_TIME])
 					except UndefinedEvent:
 						pass
 
@@ -320,12 +331,9 @@ class Profile(Object):
 		for function in self.functions.itervalues():
 			if outevent not in function:
 				try:
-					function[outevent] = float(function[inevent])/float(self[inevent])
+					function[outevent] = ratio(function[inevent], self[inevent])
 				except UndefinedEvent:
 					pass
-				except ZeroDivisionError:
-					if not function[inevent]:
-						function[outevent] = 0.0
 
 	def prune(self, node_thres, edge_thres):
 		"""Prune the profile"""
@@ -718,12 +726,7 @@ class GprofParser(Parser):
 						profile.add_function(missing)
 
 					child_total_time = self.function_total_time(self.functions[child.index])
-					if child_total_time == 0.0:
-						assert call[TOTAL_TIME] == 0.0
-						call[CALL_RATIO] = 1.0
-					else:
-						assert call[TOTAL_TIME] <= child_total_time
-						call[CALL_RATIO] = call[TOTAL_TIME]/child_total_time
+					call[CALL_RATIO] = ratio(call[TOTAL_TIME], child_total_time)
 
 				function.add_call(call)
 
@@ -800,7 +803,7 @@ class OprofileParser(LineParser):
 				
 		# compute time ratios
 		for function in profile.functions.itervalues():
-			function[TIME_RATIO] = float(function[SAMPLES])/float(profile[SAMPLES])
+			function[TIME_RATIO] = ratio(function[SAMPLES], profile[SAMPLES])
 			
 		# compute call ratios
 		for _callers, _function, _callees in self.entries.itervalues():
@@ -813,15 +816,8 @@ class OprofileParser(LineParser):
 				assert not _caller.self
 				caller = profile.functions[_caller.id]
 				call = caller.calls[_function.id]
-				
 				assert CALL_RATIO not in call
-				if total_caller_samples == 0.0:
-					assert _caller.samples
-					call[CALL_RATIO] = 1.0
-				else:
-					call[CALL_RATIO] = float(_caller.samples)/float(total_caller_samples)
-					assert call[CALL_RATIO] >= 0.0
-					assert call[CALL_RATIO] <= 1.0
+				call[CALL_RATIO] = ratio(_caller.samples, total_caller_samples)
 
 		profile.find_cycles()
 		profile.propagate_time()
