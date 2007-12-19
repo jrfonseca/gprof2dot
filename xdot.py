@@ -141,7 +141,6 @@ class EllipseShape(Shape):
 		self.filled = filled
 
 	def draw(self, cr):
-		cr.set_line_width(self.pen.linewidth)
 		cr.save()
 		cr.translate(self.x0, self.y0)
 		cr.scale(self.w, self.h)
@@ -149,9 +148,11 @@ class EllipseShape(Shape):
 		cr.restore()
 		if self.filled:
 			cr.set_source_rgba(*self.pen.fillcolor)
-			cr.fill_preserve()
-		cr.set_source_rgba(*self.pen.color)
-		cr.stroke()
+			cr.fill()
+		else:
+			cr.set_line_width(self.pen.linewidth)
+			cr.set_source_rgba(*self.pen.color)
+			cr.stroke()
 
 
 class PolygonShape(Shape):
@@ -164,7 +165,6 @@ class PolygonShape(Shape):
 
 	def draw(self, cr):
 		x0, y0 = self.points[-1]
-		cr.set_line_width(self.pen.linewidth)
 		cr.move_to(x0, y0)
 		for x, y in self.points:
 			cr.line_to(x, y)
@@ -172,8 +172,11 @@ class PolygonShape(Shape):
 		if self.filled:
 			cr.set_source_rgba(*self.pen.fillcolor)
 			cr.fill_preserve()
-		cr.set_source_rgba(*self.pen.color)
-		cr.stroke()
+			cr.fill()
+		else:
+			cr.set_line_width(self.pen.linewidth)
+			cr.set_source_rgba(*self.pen.color)
+			cr.stroke()
 
 
 class BezierShape(Shape):
@@ -185,13 +188,13 @@ class BezierShape(Shape):
 
 	def draw(self, cr):
 		x0, y0 = self.points[0]
-		cr.set_line_width(self.pen.linewidth)
 		cr.move_to(x0, y0)
 		for i in xrange(1, len(self.points), 3):
 			x1, y1 = self.points[i]
 			x2, y2 = self.points[i + 1]
 			x3, y3 = self.points[i + 2]
 			cr.curve_to(x1, y1, x2, y2, x3, y3)
+		cr.set_line_width(self.pen.linewidth)
 		cr.set_source_rgba(*self.pen.color)
 		cr.stroke()
 
@@ -517,7 +520,6 @@ class DotWindow(gtk.Window):
 
 		cr.set_line_cap(cairo.LINE_CAP_BUTT)
 		cr.set_line_join(cairo.LINE_JOIN_MITER)
-		cr.set_miter_limit(1.0)
 		
 		for shape in self.shapes:
 			shape.draw(cr)
