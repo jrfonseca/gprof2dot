@@ -896,9 +896,9 @@ class OprofileParser(LineParser):
 class PstatsParser:
 	"""Parser python profiling statistics saved with te pstats module."""
 
-	def __init__(self, filename):
+	def __init__(self, *filename):
 		import pstats
-		self.stats = pstats.Stats(filename)
+		self.stats = pstats.Stats(*filename)
 		self.profile = Profile()
 		self.function_ids = {}
 
@@ -932,11 +932,22 @@ class PstatsParser:
 				caller = self.get_function(fn)
 				call = Call(callee.id)
 				if isinstance(value, tuple):
-					nc, cc, tt, ct = value
+					for i in xrange(0, len(value), 4):
+						nc, cc, tt, ct = value[i:i+4]
+						if CALLS in call:
+							call[CALLS] += cc
+						else:
+							call[CALLS] = cc
+
+						if TOTAL_TIME in call:
+							call[TOTAL_TIME] += ct
+						else:
+							call[TOTAL_TIME] = ct
+
 				else:
-					cc, ct = value, None
-				call[CALLS] = cc
-				call[TOTAL_TIME] = ct
+					call[CALLS] = value
+					call[TOTAL_TIME] = None
+
 				caller.add_call(call)
 		#self.stats.print_stats()
 		#self.stats.print_callees()
@@ -1203,13 +1214,9 @@ class Main:
 			action="store_true",
 			dest="wrap", default=False,
 			help="wrap function names")
-		(self.options, args) = parser.parse_args(sys.argv[1:])
+		(self.options, self.args) = parser.parse_args(sys.argv[1:])
 
-		if len(args) == 0:
-			self.input = None
-		elif len(args) == 1:
-			self.input = args[0]
-		else:
+		if len(self.args) > 1 and self.options.format != 'pstats':
 			parser.error('incorrect number of arguments')
 
 		try:
@@ -1218,21 +1225,21 @@ class Main:
 			parser.error('invalid colormap \'%s\'' % self.options.colormap)
 
 		if self.options.format == 'prof':
-			if self.input is None:
+			if not self.args:
 				fp = sys.stdin
 			else:
-				fp = open(self.input, 'rt')
+				fp = open(self.args[0], 'rt')
 			parser = GprofParser(fp)
 		elif self.options.format == 'oprofile':
-			if self.input is None:
+			if not self.args:
 				fp = sys.stdin
 			else:
-				fp = open(self.input, 'rt')
+				fp = open(self.args[0], 'rt')
 			parser = OprofileParser(fp)
 		elif self.options.format == 'pstats':
-			if self.input is None:
-				parser.error('a file must be specified for pstats input')
-			parser = PstatsParser(self.input)
+			if not self.args:
+				parser.error('at least a file must be specified for pstats input')
+			parser = PstatsParser(*self.args)
 		else:
 			parser.error('invalid format \'%s\'' % self.options.format)
 
