@@ -259,6 +259,7 @@ class Profile(Object):
 		if function.cycle is not None:
 			total = 0.0
 			for member in function.cycle.functions:
+				total += member[TIME_RATIO]
 				for call in member.calls.itervalues():
 					callee = self.functions[call.callee_id]
 					if callee.cycle is not function.cycle:
