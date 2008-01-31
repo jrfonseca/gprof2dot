@@ -853,9 +853,13 @@ class OprofileParser(LineParser):
 			fields = fields[:-1]
 		else:
 			entry.self = False
-		if len(fields) != 6:
+		if len(fields) == 6:
+			samples, percentage, source, image, application, symbol = fields
+		elif len(fields) == 5:
+			samples, percentage, source, image, symbol = fields
+			application = ''
+		else:
 			raise ParseError('wrong number of fields', line)
-		samples, percentage, source, image, application, symbol = fields
 		entry.samples = int(samples)
 		if source == '(no location information)':
 			entry.source = None
