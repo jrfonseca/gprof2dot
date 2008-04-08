@@ -746,7 +746,7 @@ class OprofileParser(LineParser):
 	- http://oprofile.sourceforge.net/doc/opreport.html#opreport-callgraph
 	"""
 
-	_field_re = re.compile(r'\([^)]*\)|\S+(?:\s\(tgid:[^)]*\))?')
+	_field_re = re.compile(r'\([^)]*\)|\"[^"]*\"|\S+(?:\s\(tgid:[^)]*\))?')
 
 	def __init__(self, infile):
 		LineParser.__init__(self, infile)
