@@ -26,6 +26,9 @@ def percentage(p):
 def add(a, b):
 	return a + b
 
+def null(a, b):
+	return None
+
 def ratio(numerator, denominator):
 	numerator = float(numerator)
 	denominator = float(denominator)
@@ -76,6 +79,9 @@ class Event(object):
 		assert val is not None
 		return self._formatter(val)
 
+
+MODULE = Event("Module", null)
+PROCESS = Event("Process", null)
 
 CALLS = Event("Calls", add)
 SAMPLES = Event("Samples", add)
@@ -792,6 +798,11 @@ class OprofileParser(LineParser):
 			profile.add_function(function)
 			profile[SAMPLES] += _function.samples
 
+			if _function.application:
+				function[PROCESS] = os.path.basename(_function.application)
+			if _function.image:
+				function[MODULE] = os.path.basename(_function.image)
+
 			total_callee_samples = 0
 			for _callee in _callees.itervalues():
 				total_callee_samples += _callee.samples
@@ -985,6 +996,10 @@ class DotWriter:
 
 		for function in profile.functions.itervalues():
 			labels = []
+			for event in PROCESS, MODULE:
+				if event in function.events:
+					label = event.format(function[event])
+					labels.append(label)
 			labels.append(function.name)
 			for event in TOTAL_TIME_RATIO, TIME_RATIO, CALLS, SAMPLES:
 				if event in function.events:
