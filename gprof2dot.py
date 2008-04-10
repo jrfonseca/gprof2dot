@@ -1279,6 +1279,9 @@ class Main:
 	def strip_function_name(self, name):
 		"""Remove extraneous information from C++ demangled function names."""
 
+		if name.startswith('"') and name.endswith('"'):
+			name = name[1:-1]
+
 		# Strip function parameters from name by recursively removing paired parenthesis
 		while True:
 			name, n = self._parenthesis_re.subn('', name)
