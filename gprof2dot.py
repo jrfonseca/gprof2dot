@@ -887,6 +887,8 @@ class OprofileParser(LineParser):
 		else:
 			entry.symbol = symbol
 		entry.id = ':'.join((application, image, source, symbol))
+		if entry.self:
+			entry.id += ':self'
 		if entry.symbol is None:
 			entry.name = entry.image
 		else:
