@@ -752,11 +752,19 @@ class OprofileParser(LineParser):
 	- http://oprofile.sourceforge.net/doc/opreport.html#opreport-callgraph
 	"""
 
-	_field_re = re.compile(r'\([^)]*\)|\"[^"]*\"|\S+(?:\s\(tgid:[^)]*\))?')
+	_fields_re = {
+		'samples': r'(?P<samples>\d+)',
+		'%': r'(?P<percentage>\S+)',
+		'linenr info': r'(?P<source>\(no location information\)|\S+:\d+)',
+		'image name': r'(?P<image>\S+(?:\s\(tgid:[^)]*\))?)',
+		'app name': r'(?P<application>\S+)',
+		'symbol name': r'(?P<symbol>\(no symbols\)|.+?)',
+	}
 
 	def __init__(self, infile):
 		LineParser.__init__(self, infile)
 		self.entries = {}
+		self.entry_re = None
 
 	def add_entry(self, callers, function, callees):
 		try:
@@ -837,6 +845,12 @@ class OprofileParser(LineParser):
 		return profile
 
 	def parse_header(self):
+		while not self.match_header():
+			self.consume()
+		line = self.lookahead()
+		fields = re.split(r'\s\s+', line)
+		entry_re = r'^\s*' + r'\s+'.join([self._fields_re[field] for field in fields]) + r'(?P<self>\s+\[self\])?$'
+		self.entry_re = re.compile(entry_re)
 		self.skip_separator()
 
 	def parse_entry(self):
@@ -858,47 +872,47 @@ class OprofileParser(LineParser):
 	def parse_subentry(self):
 		entry = Struct()
 		line = self.consume()
-		fields = self._field_re.findall(line)
-		if fields[-1] == '[self]':
-			entry.self = True
-			fields = fields[:-1]
-		else:
-			entry.self = False
-		if len(fields) == 6:
-			samples, percentage, source, image, application, symbol = fields
-		elif len(fields) == 5:
-			samples, percentage, source, image, symbol = fields
-			application = ''
-		else:
-			raise ParseError('wrong number of fields', line)
-		entry.samples = int(samples)
-		if source == '(no location information)':
-			entry.source = None
-		else:
+		mo = self.entry_re.match(line)
+		if not mo:
+			raise ParseError('failed to parse', line)
+		fields = mo.groupdict()
+		entry.samples = int(fields.get('samples', 0))
+		entry.percentage = float(fields.get('percentage', 0.0))
+		if 'source' in fields and fields['source'] != '(no location information)':
+			source = fields['source']
 			filename, lineno = source.split(':')
 			entry.filename = filename
 			entry.lineno = int(lineno)
-		entry.image = image
-		entry.application = application
-		if symbol == '(no symbols)':
-			entry.symbol = None
-		elif symbol.startswith('"') and symbol.endswith('"'):
-			entry.symbol = symbol[1:-1]
 		else:
-			entry.symbol = symbol
-		entry.id = ':'.join((application, image, source, symbol))
+			source = ''
+			entry.filename = None
+			entry.lineno = None
+		entry.image = fields.get('image', '')
+		entry.application = fields.get('application', '')
+		if 'symbol' in fields and fields['symbol'] != '(no symbols)':
+			entry.symbol = fields['symbol']
+		else:
+			entry.symbol = ''
+		if entry.symbol.startswith('"') and entry.symbol.endswith('"'):
+			entry.symbol = entry.symbol[1:-1]
+		entry.id = ':'.join((entry.application, entry.image, source, entry.symbol))
+		entry.self = fields.get('self', None) != None
 		if entry.self:
 			entry.id += ':self'
-		if entry.symbol is None:
-			entry.name = entry.image
-		else:
+		if entry.symbol:
 			entry.name = entry.symbol
+		else:
+			entry.name = entry.image
 		return entry
 
 	def skip_separator(self):
 		while not self.match_separator():
 			self.consume()
 		self.consume()
+
+	def match_header(self):
+		line = self.lookahead()
+		return line.startswith('samples')
 
 	def match_separator(self):
 		line = self.lookahead()
