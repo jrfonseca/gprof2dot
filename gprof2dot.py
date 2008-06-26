@@ -218,6 +218,11 @@ class Profile(Object):
 		for function in self.functions.itervalues():
 			if function not in visited:
 				self._tarjan(function, 0, [], {}, {}, visited)
+		cycles = []
+		for function in self.functions.itervalues():
+			if function.cycle is not None and function.cycle not in cycles:
+				cycles.append(function.cycle)
+		self.cycles = cycles
 	
 	def _tarjan(self, function, order, stack, orders, lowlinks, visited):
 		"""Tarjan's strongly connected components algorithm.
@@ -252,7 +257,35 @@ class Profile(Object):
 					cycle.add_function(member)
 		return order
 
-	def propagate_time(self):
+	def call_ratios(self, event):
+		# Aggregate for incoming calls
+		cycle_totals = {}
+		for cycle in self.cycles:
+			cycle_totals[cycle] = 0.0
+		function_totals = {}
+		for function in self.functions.itervalues():
+			function_totals[function] = 0.0
+		for function in self.functions.itervalues():
+			for call in function.calls.itervalues():
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					function_totals[callee] += call[event]
+					if callee.cycle is not None and callee.cycle is not function.cycle:
+						cycle_totals[callee.cycle] += call[event]
+
+		# Compute the ratios
+		for function in self.functions.itervalues():
+			for call in function.calls.itervalues():
+				assert CALL_RATIO not in call
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					if callee.cycle is not None and callee.cycle is not function.cycle:
+						total = cycle_totals[callee.cycle]
+					else:
+						total = function_totals[callee]
+					call[CALL_RATIO] = ratio(call[event], total)
+
+	def integrate(self, outevent, inevent):
 		"""Propagate function time ratio allong the function calls.
 
 		Must be called after finding the cycles.
@@ -261,79 +294,67 @@ class Profile(Object):
 		- http://citeseer.ist.psu.edu/graham82gprof.html
 		"""
 
-		total = 0.0
+		# Sanity checking
+		assert outevent not in self
 		for function in self.functions.itervalues():
-			partial = self._propagate_function_time(function)
-			total = max(total, partial)
-		self[TOTAL_TIME_RATIO] = total
+			assert outevent not in function
+			assert inevent in function
+			for call in function.calls.itervalues():
+				assert outevent not in call
+				assert CALL_RATIO in call
 
-	def _propagate_function_time(self, function):
-		if TOTAL_TIME_RATIO in function:
-			return function[TOTAL_TIME_RATIO]
+		# Aggregate the input for each cycle 
+		for cycle in self.cycles:
+			total = inevent.null()
+			for function in self.functions.itervalues():
+				if event in function:
+					total = inevent.aggregate(total, function[event])
+			self[inevent] = total
 
+		# Integrate along the edges
+		total = inevent.null()
+		for function in self.functions.itervalues():
+			total = inevent.aggregate(total, function[inevent])
+			self._integrate_function(function, outevent, inevent)
+		self[inevent] = total
+
+	def _integrate_function(self, function, outevent, inevent):
 		if function.cycle is not None:
-			total = 0.0
+			return self._integrate_cycle(self, function.cycle, outevent, inevent)
+		else:
+			if outevent not in function:
+				total = function[inevent]
+				for call in function.calls.itervalues():
+					if call.callee_id != function.id:
+						total += self._integrate_call(call, outevent, inevent)
+				function[outevent] = total
+			return function[outevent]
+	
+	def _integrate_cycle(self, cycle, outevent, inevent):
+		if outevent not in cycle:
+			total = inevent.null()
 			for member in function.cycle.functions:
-				total += member[TIME_RATIO]
+				total = inevent.aggregate(total, member[inevent])
 				for call in member.calls.itervalues():
 					callee = self.functions[call.callee_id]
 					if callee.cycle is not function.cycle:
-						total += call[CALL_RATIO]*self._propagate_function_time(callee)
+						total += self._integrate_call(call, outevent, inevent)
 			for member in function.cycle.functions:
-				assert TOTAL_TIME_RATIO not in member
-				member[TOTAL_TIME_RATIO] = total
-		else:
-			total = function[TIME_RATIO]
-			for call in function.calls.itervalues():
-				if call.callee_id != function.id:
-					callee = self.functions[call.callee_id]
-					partial = call[CALL_RATIO]*self._propagate_function_time(callee)
-					call[TOTAL_TIME_RATIO] = partial
-					total += partial
-			function[TOTAL_TIME_RATIO] = total
-		return total
+				assert outevent not in member
+				member[outevent] = total
+		return cycle[outevent]
 
-	def estimate(self):
-		"""Compute derived events and estimate the call times for the calls where this information is not available.
-		
-		These estimates are necessary for pruning and coloring, but they are not shown to the user,
-		except for the rare cases where there is absolute certainty.
+	def _integrate_call(self, call, outevent, inevent):
+		assert outevent not in call
+		assert CALL_RATIO in call
+		callee = self.functions[call.callee_id]
+		subtotal = call[CALL_RATIO]*self._integrate_function(callee, outevent, inevent)
+		call[outevent] = subtotal
+		return subtotal
 
-		The profile is modified in-place."""
-		
-		# Aggregate events for the whole profile
-		for event in TIME, SAMPLES, CALLS:
-			self._aggregate(event)
+	def aggregate(self, event):
+		"""Aggregate an event for the whole profile."""
 
-		# Estimate ratios
-		self._estimate_ratio(TIME_RATIO, TIME)
-		self._estimate_ratio(TIME_RATIO, SAMPLES)
-		self._estimate_ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
-
-		# Estimate the total time ratio of calls
-		for function in self.functions.itervalues():
-			for call in function.calls.itervalues():
-				callee = self.functions[call.callee_id]
-
-				if TOTAL_TIME_RATIO not in call:
-					# TODO: compute this using the actual CALL_RATIO
-					if TOTAL_TIME not in call:
-						if CALLS in callee and callee[CALLS] == 0:
-							# no calls made
-							call[TOTAL_TIME] = 0.0
-						elif TOTAL_TIME in callee and callee[TOTAL_TIME] == 0.0:
-							# no time spent on callee
-							call[TOTAL_TIME] = 0.0
-						elif CALLS in call and CALLS in callee and call[CALLS] == callee[CALLS]:
-							# all calls made from this function
-							call[TOTAL_TIME] = callee[TOTAL_TIME]
-					
-					try:
-						call[TOTAL_TIME_RATIO] = ratio(call[TOTAL_TIME], self[TOTAL_TIME])
-					except UndefinedEvent:
-						pass
-
-	def _aggregate(self, event):
 		total = event.null()
 		for function in self.functions.itervalues():
 			try:
@@ -342,13 +363,18 @@ class Profile(Object):
 				return
 		self[event] = total
 
-	def _estimate_ratio(self, outevent, inevent):
+	def ratio(self, outevent, inevent):
+		assert outevent not in self
+		assert inevent in self
 		for function in self.functions.itervalues():
-			if outevent not in function:
-				try:
-					function[outevent] = ratio(function[inevent], self[inevent])
-				except UndefinedEvent:
-					pass
+			assert outevent not in function
+			assert inevent in function
+			function[outevent] = ratio(function[inevent], self[inevent])
+			for call in function.calls.itervalues():
+				assert outevent not in call
+				if inevent in call:
+					call[outevent] = ratio(call[inevent], self[inevent])
+		self[outevent] = 1.0
 
 	def prune(self, node_thres, edge_thres):
 		"""Prune the profile"""
@@ -488,7 +514,7 @@ class GprofParser(Parser):
 
 	See also:
 	- Chapter "Interpreting gprof's Output" from the GNU gprof manual
-	  http://www.gnu.org/software/binutils/manual/gprof-2.9.1/html_chapter/gprof_5.html#SEC10
+	  http://sourceware.org/binutils/docs-2.18/gprof/Call-Graph.html#Call-Graph
 	- File "cg_print.c" from the GNU gprof source code
 	  http://sourceware.org/cgi-bin/cvsweb.cgi/~checkout~/src/gprof/cg_print.c?rev=1.12&cvsroot=src
 	"""
@@ -713,6 +739,7 @@ class GprofParser(Parser):
 			if entry.called_self is not None:
 				call = Call(entry.index)
 				call[CALLS] = entry.called_self
+				function[CALLS] += entry.called_self
 			
 			# populate the function calls
 			for child in entry.children:
@@ -721,7 +748,11 @@ class GprofParser(Parser):
 				assert child.called is not None
 				call[CALLS] = child.called
 
-				if entry.index == child.index or (entry.cycle is not None and child.cycle is not None and entry.cycle == child.cycle):
+				if entry.index == child.index:
+					# recursive function
+					assert child.self is None
+					assert child.descendants is None
+				elif entry.cycle is not None and child.cycle is not None and entry.cycle == child.cycle:
 					# two functions in the same cycle
 					assert child.self is None
 					assert child.descendants is None
@@ -749,6 +780,11 @@ class GprofParser(Parser):
 
 			profile[TIME] = profile[TIME] + function[TIME]
 			profile[TOTAL_TIME] = max(profile[TOTAL_TIME], function[TOTAL_TIME])
+
+		# Compute derived events
+		profile.validate()
+		profile.ratio(TIME_RATIO, TIME)
+		profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
 
 		return profile
 
@@ -829,26 +865,12 @@ class OprofileParser(LineParser):
 					call[SAMPLES] = _callee.samples
 					function.add_call(call)
 				
-		# compute time ratios
-		for function in profile.functions.itervalues():
-			function[TIME_RATIO] = ratio(function[SAMPLES], profile[SAMPLES])
-			
-		# compute call ratios
-		for _callers, _function, _callees in self.entries.itervalues():
-
-			total_caller_samples = 0
-			for _caller in _callers.itervalues():
-				total_caller_samples += _caller.samples
-
-			for _caller in _callers.itervalues():
-				assert not _caller.self
-				caller = profile.functions[_caller.id]
-				call = caller.calls[_function.id]
-				assert CALL_RATIO not in call
-				call[CALL_RATIO] = ratio(_caller.samples, total_caller_samples)
-
+		# compute derived data
+		profile.validate()
 		profile.find_cycles()
-		profile.propagate_time()
+		profile.ratio(TIME_RATIO, SAMPLES)
+		profile.call_ratios(SAMPLES)
+		profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
 
 		return profile
 
@@ -963,12 +985,14 @@ class PstatsParser:
 		return function
 
 	def parse(self):
+		self.profile[TIME] = 0.0
 		self.profile[TOTAL_TIME] = self.stats.total_tt
 		for fn, (cc, nc, tt, ct, callers) in self.stats.stats.iteritems():
 			callee = self.get_function(fn)
 			callee[CALLS] = nc
 			callee[TOTAL_TIME] = ct
 			callee[TIME] = tt
+			self.profile[TIME] += tt
 			self.profile[TOTAL_TIME] = max(self.profile[TOTAL_TIME], ct)
 			for fn, value in callers.iteritems():
 				caller = self.get_function(fn)
@@ -988,11 +1012,17 @@ class PstatsParser:
 
 				else:
 					call[CALLS] = value
-					call[TOTAL_TIME] = None
+					call[TOTAL_TIME] = ratio(value, nc)*ct
 
 				caller.add_call(call)
 		#self.stats.print_stats()
 		#self.stats.print_callees()
+
+		# Compute derived events
+		self.profile.validate()
+		self.profile.ratio(TIME_RATIO, TIME)
+		self.profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
+
 		return self.profile
 
 
@@ -1352,8 +1382,6 @@ class Main:
 	def write_graph(self):
 		dot = DotWriter(self.output)
 		profile = self.profile
-		profile.validate()
-		profile.estimate()
 		profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
 
 		for function in profile.functions.itervalues():
