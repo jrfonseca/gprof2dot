@@ -223,6 +223,10 @@ class Profile(Object):
 			if function.cycle is not None and function.cycle not in cycles:
 				cycles.append(function.cycle)
 		self.cycles = cycles
+		for cycle in cycles:
+			sys.stderr.write("Cycle:\n")
+			for member in cycle.functions:
+				sys.stderr.write("\t%s\n" % member.name)
 	
 	def _tarjan(self, function, order, stack, orders, lowlinks, visited):
 		"""Tarjan's strongly connected components algorithm.
@@ -250,10 +254,8 @@ class Profile(Object):
 			members = stack[pos:]
 			del stack[pos:]
 			if len(members) > 1:
-				sys.stderr.write("Cycle:\n")
 				cycle = Cycle()
 				for member in members:
-					sys.stderr.write("\t%s\n" % member.name)
 					cycle.add_function(member)
 		return order
 
@@ -301,14 +303,14 @@ class Profile(Object):
 			assert inevent in function
 			for call in function.calls.itervalues():
 				assert outevent not in call
-				assert CALL_RATIO in call
+				if call.callee_id != function.id:
+					assert CALL_RATIO in call
 
 		# Aggregate the input for each cycle 
 		for cycle in self.cycles:
 			total = inevent.null()
 			for function in self.functions.itervalues():
-				if event in function:
-					total = inevent.aggregate(total, function[event])
+				total = inevent.aggregate(total, function[inevent])
 			self[inevent] = total
 
 		# Integrate along the edges
@@ -320,7 +322,7 @@ class Profile(Object):
 
 	def _integrate_function(self, function, outevent, inevent):
 		if function.cycle is not None:
-			return self._integrate_cycle(self, function.cycle, outevent, inevent)
+			return self._integrate_cycle(function.cycle, outevent, inevent)
 		else:
 			if outevent not in function:
 				total = function[inevent]
@@ -333,15 +335,17 @@ class Profile(Object):
 	def _integrate_cycle(self, cycle, outevent, inevent):
 		if outevent not in cycle:
 			total = inevent.null()
-			for member in function.cycle.functions:
-				total = inevent.aggregate(total, member[inevent])
+			for member in cycle.functions:
+				subtotal = member[inevent]
 				for call in member.calls.itervalues():
 					callee = self.functions[call.callee_id]
-					if callee.cycle is not function.cycle:
-						total += self._integrate_call(call, outevent, inevent)
-			for member in function.cycle.functions:
+					if callee.cycle is not cycle:
+						subtotal += self._integrate_call(call, outevent, inevent)
+				total += subtotal
+			for member in cycle.functions:
 				assert outevent not in member
-				member[outevent] = total
+				member[outevent] = 0.0
+			cycle[outevent] = total
 		return cycle[outevent]
 
 	def _integrate_call(self, call, outevent, inevent):
@@ -667,14 +671,14 @@ class GprofParser(Parser):
 		cycle = self.translate(mo)
 
 		# read cycle member lines
-		cycle.members = []
+		cycle.functions = []
 		for line in lines[1:]:
 			mo = self._cg_cycle_member_re.match(line)
 			if not mo:
 				sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
 				continue
 			call = self.translate(mo)
-			cycle.members.append(call)
+			cycle.functions.append(call)
 		
 		self.cycles[cycle.cycle] = cycle
 
