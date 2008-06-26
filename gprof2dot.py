@@ -26,8 +26,15 @@ def percentage(p):
 def add(a, b):
 	return a + b
 
-def null(a, b):
-	return None
+def equal(a, b):
+	if a == b:
+		return a
+	else:
+		return None
+
+def fail(a, b):
+	assert False
+
 
 def ratio(numerator, denominator):
 	numerator = float(numerator)
@@ -55,8 +62,9 @@ class UndefinedEvent(Exception):
 class Event(object):
 	"""Describe a kind of event, and its basic operations."""
 
-	def __init__(self, name, aggregator, formatter = str):
+	def __init__(self, name, null, aggregator, formatter = str):
 		self.name = name
+		self._null = null
 		self._aggregator = aggregator
 		self._formatter = formatter
 
@@ -66,12 +74,13 @@ class Event(object):
 	def __hash__(self):
 		return id(self)
 
+	def null(self):
+		return self._null
+
 	def aggregate(self, val1, val2):
 		"""Aggregate two event values."""
-		if val1 is None:
-			return val2
-		if val2 is None:
-			return val1
+		assert val1 is not None
+		assert val2 is not None
 		return self._aggregator(val1, val2)
 	
 	def format(self, val):
@@ -80,20 +89,20 @@ class Event(object):
 		return self._formatter(val)
 
 
-MODULE = Event("Module", null)
-PROCESS = Event("Process", null)
+MODULE = Event("Module", None, equal)
+PROCESS = Event("Process", None, equal)
 
-CALLS = Event("Calls", add)
-SAMPLES = Event("Samples", add)
+CALLS = Event("Calls", 0, add)
+SAMPLES = Event("Samples", 0, add)
 
-TIME = Event("Time", add, lambda x: '(' + str(x) + ')')
-TIME_RATIO = Event("Time ratio", add, lambda x: '(' + percentage(x) + ')')
-TOTAL_TIME = Event("Total time", max)
-TOTAL_TIME_RATIO = Event("Total time ratio", max, percentage)
+TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
+TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
+TOTAL_TIME = Event("Total time", 0.0, fail)
+TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
-CALL_RATIO = Event("Call ratio", add, percentage)
+CALL_RATIO = Event("Call ratio", 0.0, add, percentage)
 
-PRUNE_RATIO = Event("Prune ratio", max, percentage)
+PRUNE_RATIO = Event("Prune ratio", 0.0, add, percentage)
 
 
 class Object(object):
@@ -293,7 +302,7 @@ class Profile(Object):
 		The profile is modified in-place."""
 		
 		# Aggregate events for the whole profile
-		for event in TIME, TOTAL_TIME, SAMPLES:
+		for event in TIME, SAMPLES, CALLS:
 			self._aggregate(event)
 
 		# Estimate ratios
@@ -325,14 +334,13 @@ class Profile(Object):
 						pass
 
 	def _aggregate(self, event):
-		total = None
+		total = event.null()
 		for function in self.functions.itervalues():
 			try:
 				total = event.aggregate(total, function[event])
 			except UndefinedEvent:
-				pass
-		if total is not None:
-			self[event] = total
+				return
+		self[event] = total
 
 	def _estimate_ratio(self, outevent, inevent):
 		for function in self.functions.itervalues():
@@ -1008,9 +1016,6 @@ class DotWriter:
 		self.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
 		self.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
 		self.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
-
-		if TOTAL_TIME in profile and TIME not in profile:
-			profile[TIME] = profile[TOTAL_TIME]
 
 		for function in profile.functions.itervalues():
 			labels = []
