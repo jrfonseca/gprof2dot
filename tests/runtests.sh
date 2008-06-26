@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 PYTHON=python2.5
 
 TESTDIR=`dirname "$0"`
@@ -16,13 +14,20 @@ fi
 
 for FORMAT in $FORMATS
 do
-	for INPUT in $TESTDIR/*.$FORMAT
+	for PROFILE in $TESTDIR/*.$FORMAT
 	do
-		NAME=${INPUT%%.$FORMAT}
-		OUTPUT=$NAME.dot
-		echo $PYTHON $GPROF2DOT -f $FORMAT -o $OUTPUT $INPUT
-		$PYTHON $GPROF2DOT -f $FORMAT -o $OUTPUT $INPUT || continue
-		echo dot -Tpng -o $NAME.png $OUTPUT
-		dot -Tpng -o $NAME.png $OUTPUT || continue
+		NAME=${PROFILE%%.$FORMAT}
+		echo $PYTHON $GPROF2DOT -f $FORMAT -o $NAME.dot $PROFILE
+		$PYTHON $GPROF2DOT -f $FORMAT -o $NAME.dot $PROFILE || continue
+		echo dot -Tpng -o $NAME.png $NAME.dot
+		dot -Tpng -o $NAME.png $NAME.dot || continue
+
+		if [ ! -f $NAME.orig.dot ]
+		then
+			cp -f $NAME.dot $NAME.orig.dot
+			cp -f $NAME.png $NAME.orig.png
+		else
+			diff $NAME.orig.dot $NAME.dot
+		fi
 	done
 done
