@@ -344,7 +344,7 @@ class Profile(Object):
 				total += subtotal
 			for member in cycle.functions:
 				assert outevent not in member
-				member[outevent] = 0.0
+				member[outevent] = total
 			cycle[outevent] = total
 		return cycle[outevent]
 
