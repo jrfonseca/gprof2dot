@@ -332,8 +332,17 @@ class Profile(Object):
 				function[outevent] = total
 			return function[outevent]
 	
+	def _integrate_call(self, call, outevent, inevent):
+		assert outevent not in call
+		assert CALL_RATIO in call
+		callee = self.functions[call.callee_id]
+		subtotal = call[CALL_RATIO]*self._integrate_function(callee, outevent, inevent)
+		call[outevent] = subtotal
+		return subtotal
+
 	def _integrate_cycle(self, cycle, outevent, inevent):
 		if outevent not in cycle:
+
 			total = inevent.null()
 			for member in cycle.functions:
 				subtotal = member[inevent]
@@ -342,19 +351,76 @@ class Profile(Object):
 					if callee.cycle is not cycle:
 						subtotal += self._integrate_call(call, outevent, inevent)
 				total += subtotal
-			for member in cycle.functions:
-				assert outevent not in member
-				member[outevent] = total
 			cycle[outevent] = total
+			
+			callees = {}
+			for function in self.functions.itervalues():
+				if function.cycle is not cycle:
+					for call in function.calls.itervalues():
+						callee = self.functions[call.callee_id]
+						if callee.cycle is cycle:
+							try:
+								callees[callee] += call[CALL_RATIO]
+							except KeyError:
+								callees[callee] = call[CALL_RATIO]
+
+			for callee, call_ratio in callees.iteritems():
+				ranks = {}
+				call_ratios = {}
+				partials = {}
+				self._rank_cycle_function(cycle, callee, 0, ranks)
+				self._call_ratios_cycle(cycle, callee, ranks, call_ratios, set())
+				partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
+				assert partial == max(partials.values())
+				assert abs(1.0 - partial/(call_ratio*total)) <= 0.001
+			
 		return cycle[outevent]
 
-	def _integrate_call(self, call, outevent, inevent):
-		assert outevent not in call
-		assert CALL_RATIO in call
-		callee = self.functions[call.callee_id]
-		subtotal = call[CALL_RATIO]*self._integrate_function(callee, outevent, inevent)
-		call[outevent] = subtotal
-		return subtotal
+	def _rank_cycle_function(self, cycle, function, rank, ranks):
+		if function not in ranks or ranks[function] > rank:
+			ranks[function] = rank
+			for call in function.calls.itervalues():
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					if callee.cycle is cycle:
+						self._rank_cycle_function(cycle, callee, rank + 1, ranks)
+
+	def _call_ratios_cycle(self, cycle, function, ranks, call_ratios, visited):
+		if function not in visited:
+			visited.add(function)
+			for call in function.calls.itervalues():
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					if callee.cycle is cycle:
+						if ranks[callee] > ranks[function]:
+							call_ratios[callee] = call_ratios.get(callee, 0.0) + call[CALL_RATIO]
+							self._call_ratios_cycle(cycle, callee, ranks, call_ratios, visited)
+
+	def _integrate_cycle_function(self, cycle, function, partial_ratio, partials, ranks, call_ratios, outevent, inevent):
+		if function not in partials:
+			partial = partial_ratio*function[inevent]
+			for call in function.calls.itervalues():
+				if call.callee_id != function.id:
+					callee = self.functions[call.callee_id]
+					if callee.cycle is not cycle:
+						assert outevent in call
+						partial += partial_ratio*call[outevent]
+					else:
+						if ranks[callee] > ranks[function]:
+							callee_partial = self._integrate_cycle_function(cycle, callee, partial_ratio, partials, ranks, call_ratios, outevent, inevent)
+							call_ratio = ratio(call[CALL_RATIO], call_ratios[callee])
+							call_partial = call_ratio*callee_partial
+							try:
+								call[outevent] += call_partial
+							except UndefinedEvent:
+								call[outevent] = call_partial
+							partial += call_partial
+			partials[function] = partial
+			try:
+				function[outevent] += partial
+			except UndefinedEvent:
+				function[outevent] = partial
+		return partials[function]
 
 	def aggregate(self, event):
 		"""Aggregate an event for the whole profile."""
