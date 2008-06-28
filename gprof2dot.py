@@ -223,10 +223,11 @@ class Profile(Object):
 			if function.cycle is not None and function.cycle not in cycles:
 				cycles.append(function.cycle)
 		self.cycles = cycles
-		for cycle in cycles:
-			sys.stderr.write("Cycle:\n")
-			for member in cycle.functions:
-				sys.stderr.write("\t%s\n" % member.name)
+		if 0:
+			for cycle in cycles:
+				sys.stderr.write("Cycle:\n")
+				for member in cycle.functions:
+					sys.stderr.write("\t%s\n" % member.name)
 	
 	def _tarjan(self, function, order, stack, orders, lowlinks, visited):
 		"""Tarjan's strongly connected components algorithm.
