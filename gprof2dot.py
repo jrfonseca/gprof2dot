@@ -194,11 +194,15 @@ class Profile(Object):
 	def __init__(self):
 		Object.__init__(self)
 		self.functions = {}
+		self.cycles = []
 
 	def add_function(self, function):
 		if function.id in self.functions:
 			sys.stderr.write('warning: overwriting function %s (id %s)\n' % (function.name, str(function.id)))
 		self.functions[function.id] = function
+
+	def add_cycle(self, cycle):
+		self.cycles.append(cycle)
 
 	def validate(self):
 		"""Validate the edges."""
@@ -319,7 +323,7 @@ class Profile(Object):
 		for function in self.functions.itervalues():
 			total = inevent.aggregate(total, function[inevent])
 			self._integrate_function(function, outevent, inevent)
-		self[inevent] = total
+		self[outevent] = total
 
 	def _integrate_function(self, function, outevent, inevent):
 		if function.cycle is not None:
@@ -373,7 +377,7 @@ class Profile(Object):
 				self._call_ratios_cycle(cycle, callee, ranks, call_ratios, set())
 				partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
 				assert partial == max(partials.values())
-				assert abs(1.0 - partial/(call_ratio*total)) <= 0.001
+				assert not total or abs(1.0 - partial/(call_ratio*total)) <= 0.001
 			
 		return cycle[outevent]
 
@@ -776,35 +780,21 @@ class GprofParser(Parser):
 					entry_lines.append(line)			
 			line = self.readline()
 	
-	def function_total_time(self, function):
-		"""Calculate total time spent in function and descendants."""
-		if function.cycle is not None:
-			# function is part of a cycle so return total time spent in the cycle
-			try:
-				cycle = self.cycles[function.cycle]
-			except KeyError:
-				# cycles discovered by gprof's static call graph analysis
-				return 0.0
-			else:
-				return cycle.self + cycle.descendants
-		else:
-			assert function.self is not None
-			assert function.descendants is not None
-			return function.self + function.descendants
-	
 	def parse(self):
 		self.parse_cg()
 		self.fp.close()
 
 		profile = Profile()
 		profile[TIME] = 0.0
-		profile[TOTAL_TIME] = 0.0
 		
+		cycles = {}
+		for index in self.cycles.iterkeys():
+			cycles[index] = Cycle()
+
 		for entry in self.functions.itervalues():
 			# populate the function
 			function = Function(entry.index, entry.name)
 			function[TIME] = entry.self
-			function[TOTAL_TIME] = self.function_total_time(entry)
 			if entry.called is not None:
 				function[CALLS] = entry.called
 			if entry.called_self is not None:
@@ -819,42 +809,32 @@ class GprofParser(Parser):
 				assert child.called is not None
 				call[CALLS] = child.called
 
-				if entry.index == child.index:
-					# recursive function
-					assert child.self is None
-					assert child.descendants is None
-				elif entry.cycle is not None and child.cycle is not None and entry.cycle == child.cycle:
-					# two functions in the same cycle
-					assert child.self is None
-					assert child.descendants is None
-				else:
-					assert child.self is not None
-					assert child.descendants is not None
-					call[TOTAL_TIME] = child.self + child.descendants
-
-					if child.index not in self.functions:
-						# NOTE: functions that were never called but were discovered by gprof's 
-						# static call graph analysis dont have a call graph entry so we need
-						# to add them here
-						missing = Function(child.index, child.name)
-						function[TIME] = 0.0
-						function[TOTAL_TIME] = 0.0
-						function[CALLS] = 0
-						profile.add_function(missing)
-
-					child_total_time = self.function_total_time(self.functions[child.index])
-					call[CALL_RATIO] = ratio(call[TOTAL_TIME], child_total_time)
+				if child.index not in self.functions:
+					# NOTE: functions that were never called but were discovered by gprof's 
+					# static call graph analysis dont have a call graph entry so we need
+					# to add them here
+					missing = Function(child.index, child.name)
+					function[TIME] = 0.0
+					function[CALLS] = 0
+					profile.add_function(missing)
 
 				function.add_call(call)
 
 			profile.add_function(function)
 
+			if entry.cycle is not None:
+				cycles[entry.cycle].add_function(function)
+
 			profile[TIME] = profile[TIME] + function[TIME]
-			profile[TOTAL_TIME] = max(profile[TOTAL_TIME], function[TOTAL_TIME])
+
+		for cycle in cycles.itervalues():
+			profile.add_cycle(cycle)
 
 		# Compute derived events
 		profile.validate()
 		profile.ratio(TIME_RATIO, TIME)
+		profile.call_ratios(CALLS)
+		profile.integrate(TOTAL_TIME, TIME)
 		profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
 
 		return profile
