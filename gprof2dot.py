@@ -1105,7 +1105,7 @@ class DotWriter:
 					label = event.format(function[event])
 					labels.append(label)
 			labels.append(function.name)
-			for event in TOTAL_TIME_RATIO, TIME_RATIO, CALLS, SAMPLES:
+			for event in TOTAL_TIME_RATIO, TIME_RATIO, CALLS:
 				if event in function.events:
 					label = event.format(function[event])
 					labels.append(label)
@@ -1123,7 +1123,7 @@ class DotWriter:
 				callee = profile.functions[call.callee_id]
 
 				labels = []
-				for event in TOTAL_TIME_RATIO, CALLS, SAMPLES:
+				for event in TOTAL_TIME_RATIO, CALLS:
 					if event in call.events:
 						label = event.format(call[event])
 						labels.append(label)
