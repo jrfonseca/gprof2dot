@@ -1149,7 +1149,7 @@ class DotWriter:
                     color_ratio = call[PRUNE_RATIO]
                 except UndefinedEvent:
                     try:
-                        color_ratio = call[PRUNE_RATIO]
+                        color_ratio = callee[PRUNE_RATIO]
                     except UndefinedEvent:
                         color_ratio = 0.0
 
