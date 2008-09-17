@@ -24,6 +24,7 @@ __version__ = "1.0"
 
 
 import sys
+import math
 import os.path
 import re
 import textwrap
@@ -1094,6 +1095,141 @@ class PstatsParser:
         return self.profile
 
 
+class Theme:
+
+    def __init__(self, 
+            bgcolor = (0.0, 0.0, 1.0),
+            mincolor = (0.0, 0.0, 0.0),
+            maxcolor = (0.0, 0.0, 1.0),
+            fontname = "Arial",
+            minfontsize = 10.0,
+            maxfontsize = 10.0,
+            minpenwidth = 0.5,
+            maxpenwidth = 4.0,
+            gamma = 2.2):
+        self.bgcolor = bgcolor
+        self.mincolor = mincolor
+        self.maxcolor = maxcolor
+        self.fontname = fontname
+        self.minfontsize = minfontsize
+        self.maxfontsize = maxfontsize
+        self.minpenwidth = minpenwidth
+        self.maxpenwidth = maxpenwidth
+        self.gamma = gamma
+
+    def graph_bgcolor(self):
+        return self.hsl_to_rgb(*self.bgcolor)
+
+    def graph_fontname(self):
+        return self.fontname
+
+    def graph_fontsize(self):
+        return self.minfontsize
+
+    def node_bgcolor(self, weight):
+        return self.color(weight)
+
+    def node_fgcolor(self, weight):
+        return self.graph_bgcolor()
+
+    def node_fontsize(self, weight):
+        return self.fontsize(weight)
+
+    def edge_color(self, weight):
+        return self.color(weight)
+
+    def edge_fontsize(self, weight):
+        return self.fontsize(weight)
+
+    def edge_penwidth(self, weight):
+        return max(weight*self.maxpenwidth, self.minpenwidth)
+
+    def edge_arrowsize(self, weight):
+        return 0.5 * math.sqrt(self.edge_penwidth(weight))
+
+    def fontsize(self, weight):
+        return max(weight**2 * self.maxfontsize, self.minfontsize)
+
+    def color(self, weight):
+        weight = min(max(weight, 0.0), 1.0)
+    
+        hmin, smin, lmin = self.mincolor
+        hmax, smax, lmax = self.maxcolor
+
+        h = hmin + weight*(hmax - hmin)
+        s = smin + weight*(smax - smin)
+        l = lmin + weight*(lmax - lmin)
+
+        return self.hsl_to_rgb(h, s, l)
+
+    def hsl_to_rgb(self, h, s, l):
+        """Convert a color from HSL color-model to RGB.
+
+        See also:
+        - http://www.w3.org/TR/css3-color/#hsl-color
+        """
+
+        h = h % 1.0
+        s = min(max(s, 0.0), 1.0)
+        l = min(max(l, 0.0), 1.0)
+
+        if l <= 0.5:
+            m2 = l*(s + 1.0)
+        else:
+            m2 = l + s - l*s
+        m1 = l*2.0 - m2
+        r = self._hue_to_rgb(m1, m2, h + 1.0/3.0)
+        g = self._hue_to_rgb(m1, m2, h)
+        b = self._hue_to_rgb(m1, m2, h - 1.0/3.0)
+
+        # Apply gamma correction
+        r **= self.gamma
+        g **= self.gamma
+        b **= self.gamma
+
+        return (r, g, b)
+
+    def _hue_to_rgb(self, m1, m2, h):
+        if h < 0.0:
+            h += 1.0
+        elif h > 1.0:
+            h -= 1.0
+        if h*6 < 1.0:
+            return m1 + (m2 - m1)*h*6.0
+        elif h*2 < 1.0:
+            return m2
+        elif h*3 < 2.0:
+            return m1 + (m2 - m1)*(2.0/3.0 - h)*6.0
+        else:
+            return m1
+
+
+TEMPERATURE_COLORMAP = Theme(
+    mincolor = (2.0/3.0, 0.80, 0.25), # dark blue
+    maxcolor = (0.0, 1.0, 0.5), # satured red
+    gamma = 1.0
+)
+
+PINK_COLORMAP = Theme(
+    mincolor = (0.0, 1.0, 0.90), # pink
+    maxcolor = (0.0, 1.0, 0.5), # satured red
+)
+
+GRAY_COLORMAP = Theme(
+    mincolor = (0.0, 0.0, 0.85), # light gray
+    maxcolor = (0.0, 0.0, 0.0), # black
+)
+
+BW_COLORMAP = Theme(
+    minfontsize = 8.0,
+    maxfontsize = 24.0,
+    mincolor = (0.0, 0.0, 0.0), # black
+    maxcolor = (0.0, 0.0, 0.0), # black
+    minpenwidth = 0.1,
+    maxpenwidth = 8.0,
+)
+
+
 class DotWriter:
     """Writer for the DOT language.
 
@@ -1105,15 +1241,14 @@ class DotWriter:
     def __init__(self, fp):
         self.fp = fp
 
-    fontname = "Arial"
-    fontsize = "10"
-
-    def graph(self, profile, colormap):
+    def graph(self, profile, theme):
         self.begin_graph()
 
-        self.attr('graph', fontname=self.fontname, fontsize=self.fontsize)
-        self.attr('node', fontname=self.fontname, fontsize=self.fontsize, shape="box", style="filled", fontcolor="white")
-        self.attr('edge', fontname=self.fontname, fontsize=self.fontsize)
+        fontname = theme.graph_fontname()
+
+        self.attr('graph', fontname=fontname, ranksep=0.25, nodesep=0.125)
+        self.attr('node', fontname=fontname, shape="box", style="filled", fontcolor="white", width=0, height=0)
+        self.attr('edge', fontname=fontname)
 
         for function in profile.functions.itervalues():
             labels = []
@@ -1128,13 +1263,17 @@ class DotWriter:
                     labels.append(label)
 
             try:
-                color_ratio = function[PRUNE_RATIO]
+                weight = function[PRUNE_RATIO]
             except UndefinedEvent:
-                color_ratio = 0.0
+                weight = 0.0
 
             label = '\n'.join(labels)
-            color = self.color(colormap(color_ratio))
-            self.node(function.id, label=label, color=color)
+            self.node(function.id, 
+                label = label, 
+                color = self.color(theme.node_bgcolor(weight)), 
+                fontcolor = self.color(theme.node_fgcolor(weight)), 
+                fontsize = "%.2f" % theme.node_fontsize(weight),
+            )
 
             for call in function.calls.itervalues():
                 callee = profile.functions[call.callee_id]
@@ -1146,16 +1285,24 @@ class DotWriter:
                         labels.append(label)
 
                 try:
-                    color_ratio = call[PRUNE_RATIO]
+                    weight = call[PRUNE_RATIO]
                 except UndefinedEvent:
                     try:
-                        color_ratio = callee[PRUNE_RATIO]
+                        weight = callee[PRUNE_RATIO]
                     except UndefinedEvent:
-                        color_ratio = 0.0
+                        weight = 0.0
 
                 label = '\n'.join(labels)
-                color = self.color(colormap(color_ratio))
-                self.edge(function.id, call.callee_id, label=label, color=color, fontcolor=color)
+
+                self.edge(function.id, call.callee_id, 
+                    label = label, 
+                    color = self.color(theme.edge_color(weight)), 
+                    fontcolor = self.color(theme.edge_color(weight)),
+                    fontsize = "%.2f" % theme.edge_fontsize(weight), 
+                    penwidth = "%.2f" % theme.edge_penwidth(weight), 
+                    labeldistance = "%.2f" % theme.edge_penwidth(weight), 
+                    arrowsize = "%.2f" % theme.edge_arrowsize(weight),
+                )
 
         self.end_graph()
 
@@ -1224,6 +1371,7 @@ class DotWriter:
         return "#" + "".join(["%02x" % float2int(c) for c in (r, g, b)])
 
     def escape(self, s):
+        s = s.encode('utf-8')
         s = s.replace('\\', r'\\')
         s = s.replace('\n', r'\n')
         s = s.replace('\t', r'\t')
@@ -1234,87 +1382,14 @@ class DotWriter:
         self.fp.write(s)
 
 
-class ColorMap:
-    """Color map."""
-
-    def __init__(self, cmin, cmax, cpow = (1.0, 1.0, 1.0)):
-        self.hmin, self.smin, self.lmin = cmin
-        self.hmax, self.smax, self.lmax = cmax
-        self.hpow, self.spow, self.lpow = cpow
-
-    def __call__(self, ratio):
-        """Map a ratio value into a RGB color."""
-
-        ratio = min(max(ratio, 0.0), 1.0)
-
-        h = self.hmin + ratio**self.hpow*(self.hmax - self.hmin)
-        s = self.smin + ratio**self.spow*(self.smax - self.smin)
-        l = self.lmin + ratio**self.lpow*(self.lmax - self.lmin)
-
-        return self.hsl_to_rgb(h, s, l)
-
-    def hsl_to_rgb(self, h, s, l):
-        """Convert a color from HSL color-model to RGB.
-
-        See also:
-        - http://www.w3.org/TR/css3-color/#hsl-color
-        """
-
-        h = h % 1.0
-        s = min(max(s, 0.0), 1.0)
-        l = min(max(l, 0.0), 1.0)
-
-        if l <= 0.5:
-            m2 = l*(s + 1.0)
-        else:
-            m2 = l + s - l*s
-        m1 = l*2.0 - m2
-        r = self._hue_to_rgb(m1, m2, h + 1.0/3.0)
-        g = self._hue_to_rgb(m1, m2, h)
-        b = self._hue_to_rgb(m1, m2, h - 1.0/3.0)
-        return (r, g, b)
-
-    def _hue_to_rgb(self, m1, m2, h):
-        if h < 0.0:
-            h += 1.0
-        elif h > 1.0:
-            h -= 1.0
-        if h*6 < 1.0:
-            return m1 + (m2 - m1)*h*6.0
-        elif h*2 < 1.0:
-            return m2
-        elif h*3 < 2.0:
-            return m1 + (m2 - m1)*(2.0/3.0 - h)*6.0
-        else:
-            return m1
-
-
-TEMPERATURE_COLORMAP = ColorMap(
-    (2.0/3.0, 0.80, 0.25), # dark blue
-    (0.0, 1.0, 0.5), # satured red
-    (0.5, 1.0, 1.0), # sub-linear hue gradation
-)
-
-PINK_COLORMAP = ColorMap(
-    (0.0, 1.0, 0.90), # pink
-    (0.0, 1.0, 0.5), # satured red
-    (1.0, 1.0, 1.0), # linear gradation
-)
-
-GRAY_COLORMAP =  ColorMap(
-    (0.0, 0.0, 0.925), # light gray
-    (0.0, 0.0, 0.0), # black
-    (1.0, 1.0, 1.0), # linear gradation
-)
-
-
 class Main:
     """Main program."""
 
-    colormaps = {
+    themes = {
             "color": TEMPERATURE_COLORMAP,
             "pink": PINK_COLORMAP,
             "gray": GRAY_COLORMAP,
+            "bw": BW_COLORMAP,
     }
 
     def main(self):
@@ -1342,9 +1417,9 @@ class Main:
             help="profile format: prof, oprofile, or pstats [default: %default]")
         parser.add_option(
             '-c', '--colormap',
-            type="choice", choices=('color', 'pink', 'gray'),
-            dest="colormap", default="color",
-            help="color map: color, pink or gray [default: %default]")
+            type="choice", choices=('color', 'pink', 'gray', 'bw'),
+            dest="theme", default="color",
+            help="color map: color, pink, gray, or bw [default: %default]")
         parser.add_option(
             '-s', '--strip',
             action="store_true",
@@ -1361,9 +1436,9 @@ class Main:
             parser.error('incorrect number of arguments')
 
         try:
-            self.colormap = self.colormaps[self.options.colormap]
+            self.theme = self.themes[self.options.theme]
         except KeyError:
-            parser.error('invalid colormap \'%s\'' % self.options.colormap)
+            parser.error('invalid colormap \'%s\'' % self.options.theme)
 
         if self.options.format == 'prof':
             if not self.args:
@@ -1455,7 +1530,7 @@ class Main:
         for function in profile.functions.itervalues():
             function.name = self.compress_function_name(function.name)
 
-        dot.graph(profile, self.colormap)
+        dot.graph(profile, self.theme)
 
 
 if __name__ == '__main__':
