@@ -1,0 +1,519 @@
+# Report 0 - Session 1 - Time Profile of Transmission
+SharkProfileViewer
+# Generated from the visible portion of the outline view
++ 6692, start, Transmission
+| + 6692, main, Transmission
+| | + 1230, -[TorrentCell drawInteriorWithFrame:inView:], Transmission
+| | | + 190, -[TorrentCell(Private) drawBar:], Transmission
+| | | | + 123, -[TorrentCell(Private) drawRegularBar:], Transmission
+| | | | | + 9, -[Torrent progressStopRatio], Transmission
+| | | | | |   8, -[Torrent actualStopRatio], Transmission
+| | | | | |   1, -[Torrent progressStopRatio], Transmission
+| | | |   2, -[TorrentCell(Private) drawBar:], Transmission
+| | | + 117, -[Torrent progressString], Transmission
+| | | |   58, +[NSString(NSStringAdditions) stringForFileSize:], Transmission
+| | | |   7, -[Torrent(Private) etaString:], Transmission
+| | | |   6, +[NSString(NSStringAdditions) stringForRatio:], Transmission
+| | | |   1, -[Torrent progressString], Transmission
+| | | + 60, -[TorrentCell(Private) statusString], Transmission
+| | | | + 60, -[Torrent statusString], Transmission
+| | | | | + 21, +[NSString(NSStringAdditions) stringForSpeed:], Transmission
+| | | | | |   14, +[NSString(NSStringAdditions) stringForSpeedAbbrev:], Transmission
+| | | | |   1, -[Torrent isError], Transmission
+| | |   30, -[TorrentCell(Private) rectForTitleWithString:basedOnMinimalStatusRect:inBounds:], Transmission
+| | | + 24, -[TorrentCell(Private) attributedStatusString:withColor:], Transmission
+| | | |   2, -[TorrentCell(Private) attributedStatusString:withColor:], Transmission
+| | |   20, -[TorrentCell(Private) attributedTitleWithColor:], Transmission
+| | |   14, -[TorrentCell controlButtonRectForBounds:], Transmission
+| | |   14, -[TorrentCell barRectForBounds:], Transmission
+| | |   13, -[TorrentCell(Private) rectForProgressWithString:inBounds:], Transmission
+| | |   11, -[TorrentCell(Private) rectForStatusWithString:inBounds:], Transmission
+| | |   8, -[TorrentCell revealButtonRectForBounds:], Transmission
+| | | + 4, -[GroupsController colorForIndex:], Transmission
+| | | |   3, -[GroupsController rowValueForIndex:], Transmission
+| | |   2, -[TorrentCell iconRectForBounds:], Transmission
+| | |   1, -[GroupsPrefsController tableViewSelectionDidChange:], Transmission
+| | + 390, -[Controller updateUI], Transmission
+| | | + 240, -[Torrent update], Transmission
+| | | | + 121, tr_torrentStat, Transmission
+| | | | | + 37, tr_trackerStat, Transmission
+| | | | | | + 33, tr_snprintf, Transmission
+| | | | | | |   33, evutil_vsnprintf, Transmission
+| | | | | | + 3, tr_webGetResponseStr, Transmission
+| | | | | | |   1, evutil_vsnprintf, Transmission
+| | | | | + 18, tr_peerMgrTorrentStats, Transmission
+| | | | | | + 7, getExistingAtom, Transmission
+| | | | | | | + 6, tr_ptrArrayFindSorted, Transmission
+| | | | | | | | + 6, tr_ptrArrayLowerBound, Transmission
+| | | | | | | | | + 4, comparePeerAtomToAddress, Transmission
+| | | | | | | | | | + 4, tr_compareAddresses, Transmission
+| | | | | | | | | | |   4, tr_compareAddresses, Transmission
+| | | | | | | | |   1, tr_ptrArrayLowerBound, Transmission
+| | | | | | + 5, tr_globalLock, Transmission
+| | | | | | | + 5, tr_lockLock, Transmission
+| | | | | | | |   3, tr_getCurrentThread, Transmission
+| | | | | | | | + 1, tr_areThreadsEqual, Transmission
+| | | | | | | | |   1, dyld_stub_pthread_equal, Transmission
+| | | | | | + 2, tr_globalUnlock, Transmission
+| | | | | | |   2, tr_lockUnlock, Transmission
+| | | | | + 12, tr_torrentGetActivity, Transmission
+| | | | | | + 12, tr_torrentRecheckCompleteness, Transmission
+| | | | | | | + 6, tr_globalUnlock, Transmission
+| | | | | | | | + 4, tr_lockUnlock, Transmission
+| | | | | | | | | + 1, tr_getCurrentThread, Transmission
+| | | | | | | | | |   1, dyld_stub_pthread_self, Transmission
+| | | | | | | |   1, tr_getCurrentThread, Transmission
+| | | | | | | + 3, tr_globalLock, Transmission
+| | | | | | | | + 2, tr_lockLock, Transmission
+| | | | | | | | |   1, tr_getCurrentThread, Transmission
+| | | | | | |   3, tr_cpGetStatus, Transmission
+| | | | | + 7, tr_bandwidthGetRawSpeed, Transmission
+| | | | | | + 3, getSpeed, Transmission
+| | | | | | |   2, getSpeed, Transmission
+| | | | | |   1, tr_bandwidthGetRawSpeed, Transmission
+| | | | | + 4, tr_globalLock, Transmission
+| | | | | | + 2, tr_lockLock, Transmission
+| | | | | | |   1, tr_lockLock, Transmission
+| | | | | + 4, tr_cpSizeWhenDone, Transmission
+| | | | | |   2, tr_cpSizeWhenDone, Transmission
+| | | | | + 4, tr_bandwidthGetPieceSpeed, Transmission
+| | | | | | + 4, getSpeed, Transmission
+| | | | | | |   1, getSpeed, Transmission
+| | | | | + 3, tr_trackerGetAddress, Transmission
+| | | | | | + 2, getCurrentAddressFromTorrent, Transmission
+| | | | | | |   2, getCurrentAddressFromTorrent, Transmission
+| | | | | + 1, tr_globalUnlock, Transmission
+| | | | | |   1, tr_lockUnlock, Transmission
+| | | | |   1, tr_getRatio, Transmission
+| | | | |   1, tr_date, Transmission
+| | | |   39, -[Torrent actualStopRatio], Transmission
+| | | | + 24, -[Torrent stalledMinutes], Transmission
+| | | | |   3, -[Torrent dateActivity], Transmission
+| | | | |   1, -[Torrent stalledMinutes], Transmission
+| | | | + 3, -[Torrent update], Transmission
+| | | | |   1, -[Torrent stalledMinutes], Transmission
+| | | |   1, -[Torrent isError], Transmission
+| | | + 41, -[Controller sortTorrents], Transmission
+| | | | + 38, -[Controller sortTorrentsIgnoreSelected], Transmission
+| | | | | + 1, -[Torrent dateActivityOrAdd], Transmission
+| | | | | |   1, -[Torrent dateActivity], Transmission
+| | | | |   1, -[Controller outlineView:numberOfChildrenOfItem:], Transmission
+| | | |   2, -[TorrentTableView selectedValues], Transmission
+| | | |   1, -[TorrentTableView selectValues:], Transmission
+| | |   38, -[Controller resizeStatusButton], Transmission
+| | | + 34, -[InfoWindowController updateInfoStats], Transmission
+| | | | + 33, -[InfoWindowController(Private) updateInfoPeers], Transmission
+| | | | | + 18, -[Torrent peers], Transmission
+| | | | | | + 3, tr_torrentPeers, Transmission
+| | | | | | | + 3, tr_peerMgrPeerStats, Transmission
+| | | | | | | | + 2, getExistingAtom, Transmission
+| | | | | | | | | + 1, tr_ptrArrayFindSorted, Transmission
+| | | | | | | | | | + 1, tr_ptrArrayLowerBound, Transmission
+| | | | | | | | | | | + 1, comparePeerAtomToAddress, Transmission
+| | | | | | | | | | | | + 1, tr_compareAddresses, Transmission
+| | | | | | | | | | | | |   1, tr_compareAddresses, Transmission
+| | | | | | | |   1, tr_ntop, Transmission
+| | | | |   1, -[NSString(NSStringAdditions) compareNumeric:], Transmission
+| | | | |   1, -[InfoWindowController(Private) peerSortDescriptors], Transmission
+| | | |   1, -[InfoWindowController(Private) updateInfoTracker], Transmission
+| | | + 7, +[NSString(NSStringAdditions) stringForSpeed:], Transmission
+| | | |   4, +[NSString(NSStringAdditions) stringForSpeedAbbrev:], Transmission
+| | |   5, -[Badger updateBadge], Transmission
+| | |   5, +[NSString(NSStringAdditions) stringForFileSize:], Transmission
+| | |   1, tr_sessionGetStats, Transmission
+| | | + 1, tr_sessionGetPieceSpeed, Transmission
+| | | | + 1, tr_bandwidthGetPieceSpeed, Transmission
+| | | | | + 1, getSpeed, Transmission
+| | | | | |   1, tr_date, Transmission
+| | + 119, -[TorrentTableView mouseDown:], Transmission
+| | | + 23, -[Controller torrentTableViewSelectionDidChange:], Transmission
+| | | | + 23, -[Controller resetInfo], Transmission
+| | | | | + 23, -[InfoWindowController setInfoForTorrents:], Transmission
+| | | | | |   2, -[PiecesView setTorrent:], Transmission
+| | | | | | + 2, -[InfoWindowController updateInfoStats], Transmission
+| | | | | | |   2, -[InfoWindowController(Private) updateInfoTracker], Transmission
+| | | | | |   1, -[InfoWindowController updateOptions], Transmission
+| | | + 15, -[Controller showInfo:], Transmission
+| | | | + 1, -[InfoWindowController updateInfoStats], Transmission
+| | | | | + 1, -[InfoWindowController(Private) updateInfoTracker], Transmission
+| | | | | | + 1, +[NSString(NSStringAdditions) timeString:showSeconds:], Transmission
+| | | | | | |   1, +[NSString(NSStringAdditions) timeString:showSeconds:maxFields:], Transmission
+| | | + 12, -[Controller windowDidBecomeMain:], Transmission
+| | | | + 12, -[Controller updateUI], Transmission
+| | | | | + 9, -[Torrent update], Transmission
+| | | | | | + 5, tr_torrentStat, Transmission
+| | | | | | | + 2, tr_trackerStat, Transmission
+| | | | | | | | + 2, tr_snprintf, Transmission
+| | | | | | | | |   2, evutil_vsnprintf, Transmission
+| | | | | | |   1, tr_torrentStat, Transmission
+| | | | | | | + 1, tr_torrentGetActivity, Transmission
+| | | | | | | | + 1, tr_torrentRecheckCompleteness, Transmission
+| | | | | | | | | + 1, tr_globalLock, Transmission
+| | | | | | | | | | + 1, tr_lockLock, Transmission
+| | | | | | | | | | |   1, tr_getCurrentThread, Transmission
+| | | | | + 1, -[Controller sortTorrents], Transmission
+| | | | | |   1, -[Controller sortTorrentsIgnoreSelected], Transmission
+| | | | |   1, -[Controller resizeStatusButton], Transmission
+| | | | |   1, +[NSString(NSStringAdditions) stringForSpeed:], Transmission
+| | | + 7, -[TorrentCell drawInteriorWithFrame:inView:], Transmission
+| | | | + 1, -[GroupsController colorForIndex:], Transmission
+| | | | |   1, -[GroupsController rowValueForIndex:], Transmission
+| | |   1, -[GroupToolbarItem validate], Transmission
+| | + 91, -[Controller outlineView:objectValueForTableColumn:byItem:], Transmission
+| | | + 42, +[NSString(NSStringAdditions) stringForSpeed:], Transmission
+| | | |   26, +[NSString(NSStringAdditions) stringForSpeedAbbrev:], Transmission
+| | | |   1, +[NSString(NSStringAdditions) stringForSpeed:], Transmission
+| | | + 7, -[GroupsController imageForIndex:], Transmission
+| | | |   7, -[GroupsController rowValueForIndex:], Transmission
+| | |   4, -[Controller outlineView:objectValueForTableColumn:byItem:], Transmission
+| | |   1, -[TorrentGroup uploadRate], Transmission
+| | | + 1, -[TorrentGroup downloadRate], Transmission
+| | | |   1, -[Torrent downloadRate], Transmission
+| | | + 1, -[GroupsController nameForIndex:], Transmission
+| | | |   1, -[GroupsController rowValueForIndex:], Transmission
+| | + 79, -[TorrentTableView frameOfCellAtColumn:row:], Transmission
+| | | + 2, -[TorrentTableView outlineView:heightOfRowByItem:], Transmission
+| | | |   1, -[TorrentTableView outlineView:heightOfRowByItem:], Transmission
+| | + 71, -[InfoWindowController setTab:], Transmission
+| | |   12, -[InfoTabButtonCell setSelectedTab:], Transmission
+| | | + 4, -[InfoWindowController updateInfoStats], Transmission
+| | | | + 4, -[InfoWindowController(Private) updateInfoPeers], Transmission
+| | | | | + 2, -[Torrent peers], Transmission
+| | | | | | + 1, tr_torrentPeers, Transmission
+| | | | | | | + 1, tr_peerMgrPeerStats, Transmission
+| | | | | | | | + 1, getExistingAtom, Transmission
+| | | | | | | | | + 1, tr_ptrArrayFindSorted, Transmission
+| | | | | | | | | | + 1, tr_ptrArrayLowerBound, Transmission
+| | | | | | | | | | |   1, tr_ptrArrayLowerBound, Transmission
+| | | + 1, 0x316000 [5.2KB], Unknown Library
+| | | |   1, 0x316000 [5.2KB], Unknown Library
+| |   62, -[PeerProgressIndicatorCell drawWithFrame:inView:], Transmission
+| | + 35, -[TorrentTableView highlightSelectionInClipRect:], Transmission
+| | |   2, -[TorrentTableView outlineView:heightOfRowByItem:], Transmission
+| | |   1, -[TorrentTableView highlightSelectionInClipRect:], Transmission
+| | + 24, -[InfoWindowController tableView:objectValueForTableColumn:row:], Transmission
+| | |   11, +[NSString(NSStringAdditions) stringForSpeedAbbrev:], Transmission
+| | |   3, -[InfoWindowController tableView:objectValueForTableColumn:row:], Transmission
+| | + 11, -[TorrentTableView outlineView:willDisplayCell:forTableColumn:item:], Transmission
+| | |   1, -[TorrentTableView outlineView:willDisplayCell:forTableColumn:item:], Transmission
+| | + 9, -[TorrentTableView outlineView:dataCellForTableColumn:item:], Transmission
+| | |   1, -[TorrentTableView outlineView:isGroupItem:], Transmission
+| | |   1, -[TorrentTableView outlineView:dataCellForTableColumn:item:], Transmission
+| |   8, -[StatusBarView drawRect:], Transmission
+| |   3, -[TorrentTableView outlineView:heightOfRowByItem:], Transmission
+| |   2, -[TorrentTableView outlineView:isGroupItem:], Transmission
+| | + 2, -[GroupToolbarItem validate], Transmission
+| | | + 2, -[Controller validateToolbarItem:], Transmission
+| | | |   2, -[TorrentTableView selectedTorrents], Transmission
+| | + 1, 0x316000 [5.2KB], Unknown Library
+| | |   1, 0x316000 [5.2KB], Unknown Library
+| |   1, -[InfoWindowController tableView:willDisplayCell:forTableColumn:row:], Transmission
+| | + 1, -[ButtonToolbarItem validate], Transmission
+| | |   1, -[Controller validateToolbarItem:], Transmission
++ 1925, shandler, mach_kernel
+| + 1822, unix_syscall, mach_kernel
+| | + 1793, close_nocancel, mach_kernel
+| | | + 1793, fdexec, mach_kernel
+| | | | + 1793, closef_locked, mach_kernel
+| | | | | + 1793, vn_lock, mach_kernel
+| | | | | | + 1793, vnode_put, mach_kernel
+| | | | | | | + 1793, vnode_put_locked, mach_kernel
+| | | | | | | | + 1793, VNOP_INACTIVE, mach_kernel
+| | | | | | | | | + 1793, CompareExtendedCatalogKeys, mach_kernel
+| | | | | | | | | | + 1793, cluster_write, mach_kernel
+| | | | | | | | | | | + 1793, cluster_write_ext, mach_kernel
+| | | | | | | | | | | | + 1729, cluster_read, mach_kernel
+| | | | | | | | | | | | |   697, bzero, mach_kernel
+| | | | | | | | | | | | | + 400, cluster_pageout, mach_kernel
+| | | | | | | | | | | | | | + 394, cluster_pageout, mach_kernel
+| | | | | | | | | | | | | | | + 268, cluster_zero, mach_kernel
+| | | | | | | | | | | | | | | | + 221, VNOP_STRATEGY, mach_kernel
+| | | | | | | | | | | | | | | | | + 220, buf_strategy, mach_kernel
+| | | | | | | | | | | | | | | | | | + 220, spec_strategy, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 34, IOGeneralMemoryDescriptor::getPhysicalSegment64(unsigned long, unsigned long*), mach_kernel
+| | | | | | | | | | | | | | | | | | | |   21, IOGeneralMemoryDescriptor::dmaCommandOperation(unsigned long, void*, unsigned int) const, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   2, OSData::getBytesNoCopy() const, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 28, IOMemoryDescriptor::withOptions(void*, unsigned long, unsigned long, task*, unsigned long, IOMapper*), mach_kernel
+| | | | | | | | | | | | | | | | | | | | + 10, IOGeneralMemoryDescriptor::initWithOptions(void*, unsigned long, unsigned long, task*, unsigned long, IOMapper*), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | + 7, OSData::withCapacity(unsigned int), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | + 4, OSData::initWithCapacity(unsigned int), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | | + 3, kalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | | |   3, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | |   1, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | + 2, OSObject::operator new(unsigned long), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | | + 2, kalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | | |   1, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | | |   1, mutex_lock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | + 1, OSData::OSData(), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | | |   1, OSAddAtomic, mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   1, memcpy_nop_if_32bit, mach_kernel
+| | | | | | | | | | | | | | | | | | | | + 8, OSObject::operator new(unsigned long), mach_kernel
+| | | | | | | | | | | | | | | | | | | | | + 4, kalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | |   2, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | | |   1, mulckPatch_eieio, mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   2, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   2, bzero, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, OSMetaClass::instanceConstructed() const, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, OSData::withCapacity(unsigned int), mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, kalloc, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, IOMemoryDescriptor::IOMemoryDescriptor(OSMetaClass const*), mach_kernel
+| | | | | | | | | | | | | | | | | | | + 9, IOCommandPool::getCommand(bool), mach_kernel
+| | | | | | | | | | | | | | | | | | | |   2, IOCommandPool::gatedGetCommand(IOCommand**, bool), mach_kernel
+| | | | | | | | | | | | | | | | | | |   7, IOGeneralMemoryDescriptor::dmaCommandOperation(unsigned long, void*, unsigned int) const, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 5, IOMalloc, mach_kernel
+| | | | | | | | | | | | | | | | | | | | + 5, kalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   4, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   1, mutex_lock, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 5, IOCommandGate::runAction(int (*)(OSObject*, void*, void*, void*, void*), void*, void*, void*, void*), mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, IOCommandGate::runAction(int (*)(OSObject*, void*, void*, void*, void*), void*, void*, void*, void*), mach_kernel
+| | | | | | | | | | | | | | | | | | |   3, mac_file_check_mmap_downgrade, mach_kernel
+| | | | | | | | | | | | | | | | | | |   3, clock_get_uptime, mach_kernel
+| | | | | | | | | | | | | | | | | | |   2, OSObject::taggedRetain(void const*) const, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 2, OSObject::operator new(unsigned long), mach_kernel
+| | | | | | | | | | | | | | | | | | | | + 2, kalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   2, zalloc_canblock, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 2, IOMemoryDescriptor::writeBytes(unsigned long, void const*, unsigned long), mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, ml_set_interrupts_enabled, mach_kernel
+| | | | | | | | | | | | | | | | | | | | + 1, IOGeneralMemoryDescriptor::getPhysicalSegment64(unsigned long, unsigned long*), mach_kernel
+| | | | | | | | | | | | | | | | | | | | |   1, IOGeneralMemoryDescriptor::dmaCommandOperation(unsigned long, void*, unsigned int) const, mach_kernel
+| | | | | | | | | | | | | | | | | | |   2, IOGeneralMemoryDescriptor::initWithOptions(void*, unsigned long, unsigned long, task*, unsigned long, IOMapper*), mach_kernel
+| | | | | | | | | | | | | | | | | | | + 1, throttle_get_io_policy, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   1, current_task, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, tbeproc, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, ppc_usimple_lock, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, OSMetaClass::checkMetaCast(OSMetaClassBase const*) const, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOService::isInactive() const, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOService::getProvider() const, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOService::errnoFromReturn(int), mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IORecursiveLockUnlock, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOGeneralMemoryDescriptor::IOGeneralMemoryDescriptor(), mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOEventSource::closeGate(), mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, IOCommand::IOCommand(OSMetaClass const*), mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, bzero, mach_kernel
+| | | | | | | | | | | | | | | | |   1, hfs_vnop_strategy, mach_kernel
+| | | | | | | | | | | | | | | | + 25, VNOP_BLOCKMAP, mach_kernel
+| | | | | | | | | | | | | | | | | + 17, hfs_vnop_blockmap, mach_kernel
+| | | | | | | | | | | | | | | | | | + 9, ReplaceBTreeRecord, mach_kernel
+| | | | | | | | | | | | | | | | | | |   3, mac_file_check_mmap_downgrade, mach_kernel
+| | | | | | | | | | | | | | | | | | |   2, ReplaceBTreeRecord, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, memcpy_nop_if_32bit, mach_kernel
+| | | | | | | | | | | | | | | | | | + 5, CompareExtendedCatalogKeys, mach_kernel
+| | | | | | | | | | | | | | | | | | |   1, rwldPatch_eieio, mach_kernel
+| | | | | | | | | | | | | | | | | |   2, lck_rw_unlock_exclusive, mach_kernel
+| | | | | | | | | | | | | | | | | |   1, mac_file_check_mmap_downgrade, mach_kernel
+| | | | | | | | | | | | | | | | |   2, rl_init, mach_kernel
+| | | | | | | | | | | | | | | | |   2, ReplaceBTreeRecord, mach_kernel
+| | | | | | | | | | | | | | | | |   1, current_act, mach_kernel
+| | | | | | | | | | | | | | | | |   1, CompareExtendedCatalogKeys, mach_kernel
+| | | | | | | | | | | | | | | |   5, alloc_io_buf, mach_kernel
+| | | | | | | | | | | | | | | | + 4, vnode_waitforwrites, mach_kernel
+| | | | | | | | | | | | | | | | | + 4, msleep, mach_kernel
+| | | | | | | | | | | | | | | | | | + 4, ureadc, mach_kernel
+| | | | | | | | | | | | | | | | | | | + 3, lck_mtx_sleep, mach_kernel
+| | | | | | | | | | | | | | | | | | | |   3, ml_set_interrupts_enabled, mach_kernel
+| | | | | | | | | | | | | | | |   2, hfs_vnop_strategy, mach_kernel
+| | | | | | | | | | | | | | | |   1, msleep, mach_kernel
+| | | | | | | | | | | | | | | |   1, hfs_vnop_blockmap, mach_kernel
+| | | | | | | | | | | | | | | + 120, ubc_create_upl, mach_kernel
+| | | | | | | | | | | | | | | | + 111, vm_page_decrypt, mach_kernel
+| | | | | | | | | | | | | | | | |   39, vm_page_wire, mach_kernel
+| | | | | | | | | | | | | | | | |   16, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | | | |   5, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | | | |   2, UBCINFOEXISTS, mach_kernel
+| | | | | | | | | | | | | | | |   1, rwtlePatch_isync, mach_kernel
+| | | | | | | | | | | | | | | |   1, mutex_lock, mach_kernel
+| | | | | | | | | | | | | | |   1, VNOP_STRATEGY, mach_kernel
+| | | | | | | | | | | | | | |   1, vnode_waitforwrites, mach_kernel
+| | | | | | | | | | | | | | |   1, vnode_startwrite, mach_kernel
+| | | | | | | | | | | | | | |   1, alloc_io_buf, mach_kernel
+| | | | | | | | | | | | | |   3, upl_dirty_page, mach_kernel
+| | | | | | | | | | | | | |   1, cluster_zero, mach_kernel
+| | | | | | | | | | | | | + 339, ubc_upl_commit_range, mach_kernel
+| | | | | | | | | | | | | | + 312, upl_commit_range, mach_kernel
+| | | | | | | | | | | | | | | + 166, vm_page_deactivate, mach_kernel
+| | | | | | | | | | | | | | | | + 96, vm_page_speculate, mach_kernel
+| | | | | | | | | | | | | | | | |   60, mac_file_check_mmap_downgrade, mach_kernel
+| | | | | | | | | | | | | | | | |   13, clock_get_system_nanotime, mach_kernel
+| | | | | | | | | | | | | | | | |   7, hw_walk_phys, mach_kernel
+| | | | | | | | | | | | | | | | |   4, mach_absolute_time, mach_kernel
+| | | | | | | | | | | | | | | | + 38, mapping_clr_ref, mach_kernel
+| | | | | | | | | | | | | | | | |   26, hw_walk_phys, mach_kernel
+| | | | | | | | | | | | | | | | |   9, mapSetUp, mach_kernel
+| | | | | | | | | | | | | | | |   13, clock_get_system_nanotime, mach_kernel
+| | | | | | | | | | | | | | | |   1, mapping_phys_lookup, mach_kernel
+| | | | | | | | | | | | | | |   45, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | | | + 42, mapping_clr_refmod, mach_kernel
+| | | | | | | | | | | | | | | |   38, hw_walk_phys, mach_kernel
+| | | | | | | | | | | | | | | |   3, mapSetUp, mach_kernel
+| | | | | | | | | | | | | | |   8, mapping_phys_lookup, mach_kernel
+| | | | | | | | | | | | | | | + 6, vm_page_queue_lock, mach_kernel
+| | | | | | | | | | | | | | | |   6, hw_walk_phys, mach_kernel
+| | | | | | | | | | | | | | |   4, vm_page_speculate, mach_kernel
+| | | | | | | | | | | | | | |   3, mapping_clr_ref, mach_kernel
+| | | | | | | | | | | | | | |   1, hw_walk_phys, mach_kernel
+| | | | | | | | | | | | | |   13, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | |   6, mapping_clr_refmod, mach_kernel
+| | | | | | | | | | | | | |   4, vm_page_deactivate, mach_kernel
+| | | | | | | | | | | | | |   1, zfree, mach_kernel
+| | | | | | | | | | | | | |   1, vm_pool_low, mach_kernel
+| | | | | | | | | | | | | |   1, vm_pageout_internal_start, mach_kernel
+| | | | | | | | | | | | | |   1, kfree, mach_kernel
+| | | | | | | | | | | | | + 250, ubc_create_upl, mach_kernel
+| | | | | | | | | | | | | | + 212, vm_page_decrypt, mach_kernel
+| | | | | | | | | | | | | | |   105, vm_page_grab, mach_kernel
+| | | | | | | | | | | | | | |   38, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | | |   11, vm_page_insert_internal, mach_kernel
+| | | | | | | | | | | | | | |   7, _enable_preemption, mach_kernel
+| | | | | | | | | | | | | | |   5, ppc_usimple_lock, mach_kernel
+| | | | | | | | | | | | | | | + 1, vm_pageout_internal_start, mach_kernel
+| | | | | | | | | | | | | | | |   1, mutex_init, mach_kernel
+| | | | | | | | | | | | | | | + 1, mlckPatch_isync, mach_kernel
+| | | | | | | | | | | | | | | |   1, ml_set_interrupts_enabled, mach_kernel
+| | | | | | | | | | | | | | |   1, _disable_preemption, mach_kernel
+| | | | | | | | | | | | | |   13, vm_page_lookup, mach_kernel
+| | | | | | | | | | | | | |   12, vm_page_insert_internal, mach_kernel
+| | | | | | | | | | | | | |   11, vm_page_grab, mach_kernel
+| | | | | | | | | | | | | |   1, memory_object_lock_page, mach_kernel
+| | | | | | | | | | | | |   8, cluster_zero, mach_kernel
+| | | | | | | | | | | | |   5, ubc_upl_pageinfo, mach_kernel
+| | | | | | | | | | | | |   3, upl_device_page, mach_kernel
+| | | | | | | | | | | | |   3, bzero_phys, mach_kernel
+| | | | | | | | | | | | |   2, ml_set_physical, mach_kernel
+| | | | | | | | | | | | |   2, ml_restore, mach_kernel
+| | | | | | | | | | | | |   2, kfree, mach_kernel
+| | | | | | | | | | | | |   1, upl_phys_page, mach_kernel
+| | | | | | | | | | | | |   1, memory_object_upl_request, mach_kernel
+| | | | | | | | | | | |   52, cluster_zero, mach_kernel
+| | | | | | | | | | | |   9, upl_valid_page, mach_kernel
+| | | | | | | | | | | |   2, ubc_upl_commit_range, mach_kernel
+| | | | | | | | | | | |   1, ubc_create_upl, mach_kernel
+| | + 15, mmap, mach_kernel
+| | | + 15, vm_map_enter_mem_object, mach_kernel
+| | | | + 15, vm_map_enter, mach_kernel
+| | | | | + 1, adjust_vm_object_cache, mach_kernel
+| | | | | | + 1, vm_object_hash_entry_free, mach_kernel
+| | | | | | |   1, vm_page_release, mach_kernel
+| |   3, mac_thread_userret, mach_kernel
+| | + 2, munmap, mach_kernel
+| | | + 2, vm_map_remove, mach_kernel
+| | | | + 2, vm_map_submap, mach_kernel
+| | | | | + 1, vm_object_lock_shared, mach_kernel
+| | | | | | + 1, vm_object_page_op, mach_kernel
+| | | | | | | + 1, vm_object_page_op, mach_kernel
+| | | | | | | |   1, vm_page_remove, mach_kernel
+| | | | |   1, vm_map_lookup_entry, mach_kernel
+| |   1, mac_policy_list_conditional_busy, mach_kernel
+| |   1, kauth_getuid, mach_kernel
+| |   1, inet_ntop, mach_kernel
+| | + 1, geteuid, mach_kernel
+| | | + 1, kauth_getuid, mach_kernel
+| | | |   1, kauth_cred_get, mach_kernel
+| + 31, mach_msg_overwrite_trap, mach_kernel
+| | + 8, ipc_kobject_server, mach_kernel
+| | | + 6, vm_map_server_routine, mach_kernel
+| | | | + 4, vm_copy, mach_kernel
+| | | | | + 3, vm_map_copyout, mach_kernel
+| | | | | | + 2, vm_fault_copy, mach_kernel
+| | | | | | |   2, pmap_copy_page, mach_kernel
+| | | | | |   1, vm_fault_page, mach_kernel
+| | | | |   1, vm_object_lock_shared, mach_kernel
+| | | | + 2, vm_map_remove, mach_kernel
+| | | | | + 2, vm_map_submap, mach_kernel
+| | | | | | + 1, pmap_remove, mach_kernel
+| | | | | | | + 1, mapping_remove, mach_kernel
+| | | | | | | |   1, hw_rem_map, mach_kernel
+| | | + 2, mach_port_server_routine, mach_kernel
+| | | | + 1, mach_port_extract_member, mach_kernel
+| | | | | + 1, ipc_object_translate_two, mach_kernel
+| | | | | |   1, ipc_entry_lookup, mach_kernel
+| |   6, ml_set_interrupts_enabled, mach_kernel
+| | + 4, ipc_mqueue_send, mach_kernel
+| | |   4, ml_set_interrupts_enabled, mach_kernel
+| | + 3, ipc_kmsg_copyin_body, mach_kernel
+| | | + 3, vm_map_copyin_common, mach_kernel
+| | | | + 2, copyinmap, mach_kernel
+| | | | |   2, memcpy_nop_if_32bit, mach_kernel
+| | | | + 1, kalloc_canblock, mach_kernel
+| | | | |   1, zalloc_canblock, mach_kernel
+| | + 2, ipc_kmsg_get, mach_kernel
+| | |   1, memcpy_nop_if_32bit, mach_kernel
+| | |   1, kalloc, mach_kernel
+| | + 2, ipc_kmsg_copyin, mach_kernel
+| | | + 2, ipc_kmsg_copyin_header, mach_kernel
+| | | |   1, ipc_right_copyin, mach_kernel
+| | + 1, ipc_kmsg_put, mach_kernel
+| | |   1, _disable_preemption, mach_kernel
+| | + 1, ipc_kmsg_copyout_body, mach_kernel
+| | |   1, vm_map_copyout, mach_kernel
+| |   1, ipc_kmsg_alloc, mach_kernel
+|   15, ml_set_interrupts_enabled, mach_kernel
+| + 4, mk_timer_create_trap, mach_kernel
+| | + 1, mach_port_allocate_full, mach_kernel
+| | | + 1, ipc_port_alloc, mach_kernel
+| | | | + 1, ipc_object_alloc, mach_kernel
+| | | | |   1, mutex_init, mach_kernel
+| |   1, ipc_kmsg_set_prealloc, mach_kernel
+|   3, kauth_cred_uthread_update, mach_kernel
+| + 2, mk_timer_destroy_trap, mach_kernel
+| | + 2, mach_port_destroy, mach_kernel
+| | | + 2, ipc_right_destroy, mach_kernel
+| | | |   1, mk_timer_port_destroy, mach_kernel
+| | | | + 1, ipc_port_destroy, mach_kernel
+| | | | | + 1, mk_timer_port_destroy, mach_kernel
+| | | | | |   1, ml_set_interrupts_enabled, mach_kernel
+| + 2, mk_timer_arm_trap, mach_kernel
+| |   2, ml_set_interrupts_enabled, mach_kernel
+|   2, geteuid, mach_kernel
+|   1, syscall_exit_funnelcheck, mach_kernel
+|   1, mltlckPatch_isync, mach_kernel
+|   1, mk_timer_cancel_trap, mach_kernel
+|   1, mac_thread_userret, mach_kernel
+|   1, ipc_kobject_server, mach_kernel
+|   1, ipc_kmsg_put, mach_kernel
+|   1, ipc_kmsg_get, mach_kernel
+|   1, find_user_regs, mach_kernel
++ 101, thandler, mach_kernel
+| + 96, trap, mach_kernel
+| |   68, ml_set_interrupts_enabled, mach_kernel
+| | + 25, vm_fault, mach_kernel
+| | | + 6, vm_map_lookup_locked, mach_kernel
+| | | |   5, vm_map_lookup_entry, mach_kernel
+| | |   5, vm_page_lookup, mach_kernel
+| | | + 5, vm_fault_enter, mach_kernel
+| | | | + 3, pmap_enter, mach_kernel
+| | | | |   2, mapping_make, mach_kernel
+| | | | |   1, ml_set_interrupts_enabled, mach_kernel
+| | |   4, ml_restore, mach_kernel
+| | | + 1, vm_page_alloc, mach_kernel
+| | | |   1, vm_page_insert_internal, mach_kernel
+| | |   1, vm_object_lock_shared, mach_kernel
+| | | + 1, vm_fault_page, mach_kernel
+| | | | + 1, vnode_pager_data_request, mach_kernel
+| | | | | + 1, vnode_pager_cluster_read, mach_kernel
+| | | | | | + 1, vnode_pagein, mach_kernel
+| | | | | | | + 1, VNOP_PAGEIN, mach_kernel
+| | | | | | | | + 1, hfs_vnop_pagein, mach_kernel
+| | | | | | | | | + 1, cluster_pagein, mach_kernel
+| | | | | | | | | | + 1, cluster_zero, mach_kernel
+| | | | | | | | | | | + 1, VNOP_STRATEGY, mach_kernel
+| | | | | | | | | | | | + 1, buf_strategy, mach_kernel
+| | | | | | | | | | | | |   1, spec_strategy, mach_kernel
+| | |   1, lck_rw_lock_shared, mach_kernel
+| | + 1, get_procrustime, mach_kernel
+| | |   1, current_task, mach_kernel
+| |   1, _vm_external_state_get, mach_kernel
+|   5, ml_set_interrupts_enabled, mach_kernel
+  25, ml_set_interrupts_enabled, mach_kernel
++ 4, mach_msg_receive_continue, mach_kernel
+| + 2, ipc_kmsg_put, mach_kernel
+| |   1, memcpy_nop_if_32bit, mach_kernel
+| |   1, bcopy, mach_kernel
+| + 1, mach_msg_receive_results, mach_kernel
+| | + 1, ipc_kmsg_copyout, mach_kernel
+| | |   1, mutex_lock, mach_kernel
+|   1, ipc_kmsg_free, mach_kernel
+  1, unix_syscall, mach_kernel
+  1, thread_syscall_return, mach_kernel
+  1, munge_wwwwww, mach_kernel
+  1, ipc_mqueue_receive_continue, mach_kernel
+

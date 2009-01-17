@@ -9,7 +9,7 @@ if [ "$1" ]
 then
 	FORMATS=$@
 else
-	FORMATS="prof pstats oprofile"
+	FORMATS="prof pstats oprofile shark"
 fi
 
 for FORMAT in $FORMATS
