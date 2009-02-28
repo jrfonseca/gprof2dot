@@ -112,6 +112,7 @@ PROCESS = Event("Process", None, equal)
 
 CALLS = Event("Calls", 0, add)
 SAMPLES = Event("Samples", 0, add)
+SAMPLES2 = Event("Samples", 0, add)
 
 TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
@@ -931,14 +932,14 @@ class OprofileParser(LineParser):
             for _callee in _callees.itervalues():
                 if not _callee.self:
                     call = Call(_callee.id)
-                    call[SAMPLES] = _callee.samples
+                    call[SAMPLES2] = _callee.samples
                     function.add_call(call)
                 
         # compute derived data
         profile.validate()
         profile.find_cycles()
         profile.ratio(TIME_RATIO, SAMPLES)
-        profile.call_ratios(SAMPLES)
+        profile.call_ratios(SAMPLES2)
         profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
 
         return profile
