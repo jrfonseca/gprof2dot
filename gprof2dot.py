@@ -661,7 +661,7 @@ class GprofParser(Parser):
     )
 
     _cg_primary_re = re.compile(
-        r'^\[(?P<index>\d+)\]' + 
+        r'^\[(?P<index>\d+)\]?' + 
         r'\s+(?P<percentage_time>\d+\.\d+)' + 
         r'\s+(?P<self>\d+\.\d+)' + 
         r'\s+(?P<descendants>\d+\.\d+)' + 
@@ -683,7 +683,7 @@ class GprofParser(Parser):
     _cg_child_re = _cg_parent_re
 
     _cg_cycle_header_re = re.compile(
-        r'^\[(?P<index>\d+)\]' + 
+        r'^\[(?P<index>\d+)\]?' + 
         r'\s+(?P<percentage_time>\d+\.\d+)' + 
         r'\s+(?P<self>\d+\.\d+)' + 
         r'\s+(?P<descendants>\d+\.\d+)' + 
