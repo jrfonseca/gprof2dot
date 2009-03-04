@@ -1830,7 +1830,7 @@ class Main:
             '-f', '--format',
             type="choice", choices=('prof', 'oprofile', 'pstats', 'shark', 'aqtime'),
             dest="format", default="prof",
-            help="profile format: prof, oprofile, or pstats [default: %default]")
+            help="profile format: prof, oprofile, shark, aqtime, or pstats [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
