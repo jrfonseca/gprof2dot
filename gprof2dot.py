@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2008 Jose Fonseca
+# Copyright 2008-2009 Jose Fonseca
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU Lesser General Public License as published
@@ -29,6 +29,7 @@ import os.path
 import re
 import textwrap
 import optparse
+import xml.parsers.expat
 
 
 try:
@@ -603,6 +604,158 @@ class LineParser(Parser):
         return self.__eof
 
 
+XML_ELEMENT_START, XML_ELEMENT_END, XML_CHARACTER_DATA, XML_EOF = range(4)
+
+
+class XmlToken:
+
+    def __init__(self, type, name_or_data, attrs = None, line = None, column = None):
+        assert type in (XML_ELEMENT_START, XML_ELEMENT_END, XML_CHARACTER_DATA, XML_EOF)
+        self.type = type
+        self.name_or_data = name_or_data
+        self.attrs = attrs
+        self.line = line
+        self.column = column
+
+    def __str__(self):
+        if self.type == XML_ELEMENT_START:
+            return '<' + self.name_or_data + ' ...>'
+        if self.type == XML_ELEMENT_END:
+            return '</' + self.name_or_data + '>'
+        if self.type == XML_CHARACTER_DATA:
+            return self.name_or_data
+        if self.type == XML_EOF:
+            return 'end of file'
+        assert 0
+
+
+class XmlTokenizer:
+    """Expat based XML tokenizer."""
+
+    def __init__(self, fp, skip_ws = True):
+        self.fp = fp
+        self.tokens = []
+        self.index = 0
+        self.final = False
+        self.skip_ws = skip_ws
+        
+        self.character_pos = 0, 0
+        self.character_data = ''
+        
+        self.parser = xml.parsers.expat.ParserCreate()
+        self.parser.StartElementHandler  = self.handle_element_start
+        self.parser.EndElementHandler    = self.handle_element_end
+        self.parser.CharacterDataHandler = self.handle_character_data
+    
+    def handle_element_start(self, name, attributes):
+        self.finish_character_data()
+        line, column = self.pos()
+        token = XmlToken(XML_ELEMENT_START, name, attributes, line, column)
+        self.tokens.append(token)
+    
+    def handle_element_end(self, name):
+        self.finish_character_data()
+        line, column = self.pos()
+        token = XmlToken(XML_ELEMENT_END, name, None, line, column)
+        self.tokens.append(token)
+
+    def handle_character_data(self, data):
+        if not self.character_data:
+            self.character_pos = self.pos()
+        self.character_data += data
+    
+    def finish_character_data(self):
+        if self.character_data:
+            if not self.skip_ws or not self.character_data.isspace(): 
+                line, column = self.character_pos
+                token = XmlToken(XML_CHARACTER_DATA, self.character_data, None, line, column)
+                self.tokens.append(token)
+            self.character_data = ''
+    
+    def next(self):
+        size = 16*1024
+        while self.index >= len(self.tokens) and not self.final:
+            self.tokens = []
+            self.index = 0
+            data = self.fp.read(size)
+            self.final = len(data) < size
+            try:
+                self.parser.Parse(data, self.final)
+            except xml.parsers.expat.ExpatError, e:
+                #if e.code == xml.parsers.expat.errors.XML_ERROR_NO_ELEMENTS:
+                if e.code == 3:
+                    pass
+                else:
+                    raise e
+        if self.index >= len(self.tokens):
+            line, column = self.pos()
+            token = XmlToken(XML_EOF, None, None, line, column)
+        else:
+            token = self.tokens[self.index]
+            self.index += 1
+        return token
+
+    def pos(self):
+        return self.parser.CurrentLineNumber, self.parser.CurrentColumnNumber
+
+
+class XmlTokenMismatch(Exception):
+
+    def __init__(self, expected, found):
+        self.expected = expected
+        self.found = found
+
+    def __str__(self):
+        return '%u:%u: %s expected, %s found' % (self.found.line, self.found.column, str(self.expected), str(self.found))
+
+
+class XmlParser(Parser):
+    """Base XML document parser."""
+
+    def __init__(self, fp):
+        Parser.__init__(self)
+        self.tokenizer = XmlTokenizer(fp)
+        self.consume()
+    
+    def consume(self):
+        self.token = self.tokenizer.next()
+
+    def match_element_start(self, name):
+        return self.token.type == XML_ELEMENT_START and self.token.name_or_data == name
+    
+    def match_element_end(self, name):
+        return self.token.type == XML_ELEMENT_END and self.token.name_or_data == name
+
+    def element_start(self, name):
+        while self.token.type == XML_CHARACTER_DATA:
+            self.consume()
+        if self.token.type != XML_ELEMENT_START:
+            raise XmlTokenMismatch(XmlToken(XML_ELEMENT_START, name), self.token)
+        if self.token.name_or_data != name:
+            raise XmlTokenMismatch(XmlToken(XML_ELEMENT_START, name), self.token)
+        attrs = self.token.attrs
+        self.consume()
+        return attrs
+    
+    def element_end(self, name):
+        while self.token.type == XML_CHARACTER_DATA:
+            self.consume()
+        if self.token.type != XML_ELEMENT_END:
+            raise XmlTokenMismatch(XmlToken(XML_ELEMENT_END, name), self.token)
+        if self.token.name_or_data != name:
+            raise XmlTokenMismatch(XmlToken(XML_ELEMENT_END, name), self.token)
+        self.consume()
+
+    def character_data(self, strip = True):
+        data = ''
+        while self.token.type == XML_CHARACTER_DATA:
+            data += self.token.name_or_data
+            self.consume()
+        if strip:
+            data = data.strip()
+        return data
+
+
 class GprofParser(Parser):
     """Parser for GNU gprof output.
 
@@ -1122,6 +1275,173 @@ class SharkParser(LineParser):
         return profile
 
 
+class AQtimeTable:
+
+    def __init__(self, name, fields):
+        self.name = name
+
+        self.fields = fields
+        self.field_column = {}
+        for column in range(len(fields)):
+            self.field_column[fields[column]] = column
+        self.rows = []
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __iter__(self):
+        for values, children in self.rows:
+            fields = {}
+            for name, value in zip(self.fields, values):
+                fields[name] = value
+            children = dict([(child.name, child) for child in children])
+            yield fields, children
+        raise StopIteration
+
+    def add_row(self, values, children=()):
+        self.rows.append((values, children))
+
+
+class AQtimeParser(XmlParser):
+
+    def __init__(self, stream):
+        XmlParser.__init__(self, stream)
+        self.tables = {}
+
+    def parse(self):
+        self.element_start('AQtime_Results')
+        self.parse_headers()
+        results = self.parse_results()
+        self.element_end('AQtime_Results')
+        return self.build_profile(results) 
+
+    def parse_headers(self):
+        self.element_start('HEADERS')
+        while self.token.type == XML_ELEMENT_START:
+            self.parse_table_header()
+        self.element_end('HEADERS')
+
+    def parse_table_header(self):
+        attrs = self.element_start('TABLE_HEADER')
+        name = attrs['NAME']
+        id = int(attrs['ID'])
+        field_types = []
+        field_names = []
+        while self.token.type == XML_ELEMENT_START:
+            field_type, field_name = self.parse_table_field()
+            field_types.append(field_type)
+            field_names.append(field_name)
+        self.element_end('TABLE_HEADER')
+        self.tables[id] = name, field_types, field_names
+
+    def parse_table_field(self):
+        attrs = self.element_start('TABLE_FIELD')
+        type = attrs['TYPE']
+        name = self.character_data()
+        self.element_end('TABLE_FIELD')
+        return type, name
+
+    def parse_results(self):
+        self.element_start('RESULTS')
+        table = self.parse_data()
+        self.element_end('RESULTS')
+        return table
+
+    def parse_data(self):
+        rows = []
+        attrs = self.element_start('DATA')
+        table_id = int(attrs['TABLE_ID'])
+        table_name, field_types, field_names = self.tables[table_id]
+        table = AQtimeTable(table_name, field_names)
+        while self.token.type == XML_ELEMENT_START:
+            row, children = self.parse_row(field_types)
+            table.add_row(row, children)
+        self.element_end('DATA')
+        return table
+
+    def parse_row(self, field_types):
+        row = [None]*len(field_types)
+        children = []
+        self.element_start('ROW')
+        while self.token.type == XML_ELEMENT_START:
+            if self.token.name_or_data == 'FIELD':
+                field_id, field_value = self.parse_field(field_types)
+                row[field_id] = field_value
+            elif self.token.name_or_data == 'CHILDREN':
+                children = self.parse_children()
+            else:
+                raise XmlTokenMismatch("<FIELD ...> or <CHILDREN ...>", self.token)
+        self.element_end('ROW')
+        return row, children
+
+    def parse_field(self, field_types):
+        attrs = self.element_start('FIELD')
+        id = int(attrs['ID'])
+        type = field_types[id]
+        value = self.character_data()
+        if type == 'Integer':
+            value = int(value)
+        elif type == 'Float':
+            value = float(value)
+        elif type == 'Address':
+            value = int(value)
+        elif type == 'String':
+            pass
+        else:
+            assert False
+        self.element_end('FIELD')
+        return id, value
+
+    def parse_children(self):
+        children = []
+        self.element_start('CHILDREN')
+        while self.token.type == XML_ELEMENT_START:
+            table = self.parse_data()
+            assert table.name not in children
+            children.append(table)
+        self.element_end('CHILDREN')
+        return children
+
+    def build_profile(self, results):
+        assert results.name == 'Routines'
+        profile = Profile()
+        profile[TIME] = 0.0
+        for fields, tables in results:
+            function = self.build_function(fields)
+            children = tables['Children']
+            for fields, _ in children:
+                call = self.build_call(fields)
+                function.add_call(call)
+            profile.add_function(function)
+            profile[TIME] = profile[TIME] + function[TIME]
+        profile[TOTAL_TIME] = profile[TIME]
+        profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
+        return profile
+    
+    def build_function(self, fields):
+        function = Function(self.build_id(fields), self.build_name(fields))
+        function[TIME] = fields['Time']
+        function[TOTAL_TIME] = fields['Time with Children']
+        #function[TIME_RATIO] = fields['% Time']/100.0
+        #function[TOTAL_TIME_RATIO] = fields['% with Children']/100.0
+        return function
+
+    def build_call(self, fields):
+        call = Call(self.build_id(fields))
+        call[TIME] = fields['Time']
+        call[TOTAL_TIME] = fields['Time with Children']
+        #call[TIME_RATIO] = fields['% Time']/100.0
+        #call[TOTAL_TIME_RATIO] = fields['% with Children']/100.0
+        return call
+
+    def build_id(self, fields):
+        return ':'.join([fields['Module Name'], fields['Unit Name'], fields['Routine Name']])
+
+    def build_name(self, fields):
+        # TODO: use more fields
+        return fields['Routine Name']
+
+
 class PstatsParser:
     """Parser python profiling statistics saved with te pstats module."""
 
@@ -1508,7 +1828,7 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'oprofile', 'pstats', 'shark'),
+            type="choice", choices=('prof', 'oprofile', 'pstats', 'shark', 'aqtime'),
             dest="format", default="prof",
             help="profile format: prof, oprofile, or pstats [default: %default]")
         parser.add_option(
@@ -1558,6 +1878,12 @@ class Main:
             else:
                 fp = open(self.args[0], 'rt')
             parser = SharkParser(fp)
+        elif self.options.format == 'aqtime':
+            if not self.args:
+                fp = sys.stdin
+            else:
+                fp = open(self.args[0], 'rt')
+            parser = AQtimeParser(fp)
         else:
             parser.error('invalid format \'%s\'' % self.options.format)
 
