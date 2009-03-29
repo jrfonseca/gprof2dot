@@ -1,0 +1,1773 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 28.74      0.75     0.75   603269     0.00     0.00  __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*)
+ 26.82      1.45     0.70  7531899     0.00     0.00  __triangle__::Triangle::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*)
+  6.51      1.62     0.17  3521200     0.00     0.00  __random__::Random::_genrand_int32()
+  6.13      1.78     0.16  7042416     0.00     0.00  std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&)
+  3.83      1.88     0.10 28535685     0.00     0.00  __vector3f__::Vector3f::__getitem__(int)
+  3.45      1.97     0.09  7042416     0.00     0.00  std::vector<int, gc_allocator<int> >::_M_check_len(unsigned int, char const*) const
+  2.68      2.04     0.07  1042798     0.00     0.00  __math__::sqrt(double)
+  2.30      2.10     0.06  1760600     0.00     0.00  __random__::Random::_genrand_res53()
+  1.92      2.15     0.05  6758210     0.00     0.00  __shedskin__::pyobj::__ne__(__shedskin__::pyobj*)
+  1.53      2.19     0.04  3521202     0.00     0.00  __shedskin__::list<int>::list(int, ...)
+  1.53      2.23     0.04  1767655     0.00     0.00  __vector3f__::Vector3f::dot(__vector3f__::Vector3f*)
+  1.53      2.27     0.04       10     0.00     0.26  __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*)
+  1.15      2.30     0.03  4993192     0.00     0.00  __vector3f__::Vector3f::__init__(double, double, double)
+  1.15      2.33     0.03  4883138     0.00     0.00  __shedskin__::pyobj::__nonzero__()
+  1.15      2.36     0.03   277031     0.00     0.00  __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*)
+  0.77      2.38     0.02 25576640     0.00     0.00  int __shedskin__::___bool<int>(int)
+  0.77      2.40     0.02  4241335     0.00     0.00  __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*)
+  0.77      2.42     0.02  3701089     0.00     0.00  __shedskin__::list<double>::__getfast__(int)
+  0.77      2.44     0.02  1009576     0.00     0.00  __vector3f__::Vector3f::__neg__()
+  0.77      2.46     0.02   496547     0.00     0.00  __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*)
+  0.77      2.48     0.02   277031     0.00     0.00  __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*)
+  0.38      2.49     0.01  7034840     0.00     0.00  __shedskin__::pyobj::__eq__(__shedskin__::pyobj*)
+  0.38      2.50     0.01  4883138     0.00     0.00  __shedskin__::pyobj::__len__()
+  0.38      2.51     0.01   831434     0.00     0.00  __shedskin__::pyseq<__triangle__::Triangle*>::__len__()
+  0.38      2.52     0.01   440938     0.00     0.00  __vector3f__::Vector3f::unitize()
+  0.38      2.53     0.01   429351     0.00     0.00  __vector3f__::Vector3f::mul(__vector3f__::Vector3f*)
+  0.38      2.54     0.01   370682     0.00     0.00  __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int)
+  0.38      2.55     0.01   277065     0.00     0.00  __vector3f__::Vector3f::is_zero()
+  0.38      2.56     0.01   277031     0.00     0.00  __scene__::Scene::get_emitter()
+  0.38      2.57     0.01   163840     0.00     0.00  __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*)
+  0.38      2.58     0.01    98316     0.00     0.00  __shedskin__::file::write(__shedskin__::str*)
+  0.38      2.59     0.01    98312     0.00     0.00  double __shedskin__::__power<double>(double, double)
+  0.38      2.60     0.01    98306     0.00     0.00  int __shedskin__::__min<int>(int, int)
+  0.38      2.61     0.01        2     0.01     0.01  __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double)
+  0.00      2.61     0.00  1760600     0.00     0.00  __random__::Random::random()
+  0.00      2.61     0.00  1483569     0.00     0.00  __random__::random()
+  0.00      2.61     0.00   647810     0.00     0.00  __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*)
+  0.00      2.61     0.00   603269     0.00     0.00  __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*)
+  0.00      2.61     0.00   590329     0.00     0.00  std::vector<double, gc_allocator<double> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00   590329     0.00     0.00  std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&)
+  0.00      2.61     0.00   554158     0.00     0.00  std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00   554158     0.00     0.00  std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&)
+  0.00      2.61     0.00   496547     0.00     0.00  __vector3f__::Vector3f::copy()
+  0.00      2.61     0.00   375347     0.00     0.00  int __shedskin__::__int<double>(double)
+  0.00      2.61     0.00   277031     0.00     0.00  __shedskin__::pyseq<__triangle__::Triangle*>::__getitem__(int)
+  0.00      2.61     0.00   277031     0.00     0.00  __shedskin__::tuple2<__vector3f__::Vector3f*, __vector3f__::Vector3f*>::tuple2(int, ...)
+  0.00      2.61     0.00   277031     0.00     0.00  __triangle__::Triangle::get_sample_point()
+  0.00      2.61     0.00   277031     0.00     0.00  __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*)
+  0.00      2.61     0.00   277031     0.00     0.00  __scene__::Scene::emitters_count()
+  0.00      2.61     0.00   243373     0.00     0.00  double __shedskin__::__abs<double>(double)
+  0.00      2.61     0.00   219718     0.00     0.00  double __shedskin__::__max<double>(double, double)
+  0.00      2.61     0.00   199889     0.00     0.00  __shedskin__::file::__check_closed()
+  0.00      2.61     0.00   163876     0.00     0.00  __shedskin__::list<double>::list(int, ...)
+  0.00      2.61     0.00   163843     0.00     0.00  __vector3f__::Vector3f::as_list()
+  0.00      2.61     0.00   163840     0.00     0.00  __math__::tan(double)
+  0.00      2.61     0.00   163840     0.00     0.00  __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*)
+  0.00      2.61     0.00   162464     0.00     0.00  __vector3f__::Vector3f::cross(__vector3f__::Vector3f*)
+  0.00      2.61     0.00   162398     0.00     0.00  __math__::cos(double)
+  0.00      2.61     0.00   162398     0.00     0.00  __math__::sin(double)
+  0.00      2.61     0.00    98847     0.00     0.00  __shedskin__::pyseq<double>::append(double)
+  0.00      2.61     0.00    98648     0.00     0.00  __shedskin__::file::putchar(int)
+  0.00      2.61     0.00    98304     0.00     0.00  __shedskin__::chr(int)
+  0.00      2.61     0.00    49207     0.00     0.00  __scene__::Scene::get_default_emission(__vector3f__::Vector3f*)
+  0.00      2.61     0.00    32779     0.00     0.00  __shedskin__::pyseq<double>::__len__()
+  0.00      2.61     0.00    32777     0.00     0.00  __math__::log10(double)
+  0.00      2.61     0.00    32773     0.00     0.00  __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*)
+  0.00      2.61     0.00    32773     0.00     0.00  __shedskin__::slicenr(int, int&, int&, int&, int)
+  0.00      2.61     0.00    32772     0.00     0.00  __vector3f__::Vector3f_seq(__shedskin__::list<double>*)
+  0.00      2.61     0.00     2853     0.00     0.00  __shedskin__::file::getchar()
+  0.00      2.61     0.00     2429     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&)
+  0.00      2.61     0.00     2413     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
+  0.00      2.61     0.00     2017     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int)
+  0.00      2.61     0.00     2016     0.00     0.00  __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >)
+  0.00      2.61     0.00     1226     0.00     0.00  std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00     1226     0.00     0.00  std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&)
+  0.00      2.61     0.00     1076     0.00     0.00  __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*)
+  0.00      2.61     0.00     1069     0.00     0.00  double __shedskin__::__float<__shedskin__::str*>(__shedskin__::str*)
+  0.00      2.61     0.00      529     0.00     0.00  int __shedskin__::__mods<int>(int, int)
+  0.00      2.61     0.00      491     0.00     0.00  __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*)
+  0.00      2.61     0.00      388     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_M_clone(gc_allocator<char> const&, unsigned int)
+  0.00      2.61     0.00      388     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int)
+  0.00      2.61     0.00      370     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const
+  0.00      2.61     0.00      370     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::~basic_string()
+  0.00      2.61     0.00      360     0.00     0.00  __shedskin__::str::lstrip(__shedskin__::str*)
+  0.00      2.61     0.00      360     0.00     0.00  __shedskin__::str::rstrip(__shedskin__::str*)
+  0.00      2.61     0.00      358     0.00     0.00  __shedskin__::str::split(__shedskin__::str*, int)
+  0.00      2.61     0.00      358     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find_first_not_of(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int) const
+  0.00      2.61     0.00      356     0.00     0.00  __vector3f__::Vector3f_str(__shedskin__::str*)
+  0.00      2.61     0.00      274     0.00     0.00  std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00      274     0.00     0.00  std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__triangle__::Triangle**, std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> > >, __triangle__::Triangle* const&)
+  0.00      2.61     0.00      256     0.00     0.00  __shedskin__::str::str(char const*, int)
+  0.00      2.61     0.00      202     0.00     0.00  double __shedskin__::__min<double>(double, double)
+  0.00      2.61     0.00      144     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&)
+  0.00      2.61     0.00      130     0.00     0.00  __shedskin__::str::str(char const*)
+  0.00      2.61     0.00      104     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
+  0.00      2.61     0.00       88     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const
+  0.00      2.61     0.00       67     0.00     0.00  __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*)
+  0.00      2.61     0.00       62     0.00     0.00  __shedskin__::file::next()
+  0.00      2.61     0.00       62     0.00     0.00  __shedskin__::file::readline(int)
+  0.00      2.61     0.00       61     0.00     0.00  __shedskin__::__fileiter::next()
+  0.00      2.61     0.00       60     0.00     0.00  __shedskin__::str::isspace()
+  0.00      2.61     0.00       54     0.00     0.00  __shedskin__::__fmtpos(__shedskin__::str*)
+  0.00      2.61     0.00       38     0.00     0.00  __shedskin__::pyseq<__shedskin__::pyobj*>::__len__()
+  0.00      2.61     0.00       37     0.00     0.00  __shedskin__::file::__iter__()
+  0.00      2.61     0.00       35     0.00     0.00  __shedskin__::str::__add__(__shedskin__::str*)
+  0.00      2.61     0.00       34     0.00     0.00  __shedskin__::__dictiterkeys<__shedskin__::str*, int>::next()
+  0.00      2.61     0.00       34     0.00     0.00  __shedskin__::dict<__shedskin__::str*, int>::__iter__()
+  0.00      2.61     0.00       34     0.00     0.00  __shedskin__::__iter<__shedskin__::str*>::for_has_next()
+  0.00      2.61     0.00       34     0.00     0.00  __re__::match_object::groups(__shedskin__::str*)
+  0.00      2.61     0.00       34     0.00     0.00  __re__::re_object::__exec(__shedskin__::str*, int, int, int)
+  0.00      2.61     0.00       34     0.00     0.00  __re__::re_object::search(__shedskin__::str*, int, int)
+  0.00      2.61     0.00       33     0.00     0.00  __triangle__::Triangle::__init__(__shedskin__::file*)
+  0.00      2.61     0.00       32     0.00     0.00  __shedskin__::list<__vector3f__::Vector3f*>::list(int, ...)
+  0.00      2.61     0.00       32     0.00     0.00  __triangle__::Triangle::get_bound()
+  0.00      2.61     0.00       23     0.00     0.00  __shedskin__::class_::class_(char const*, int, int)
+  0.00      2.61     0.00       22     0.00     0.00  __shedskin__::pyseq<__shedskin__::pyobj*>::__getitem__(int)
+  0.00      2.61     0.00       20     0.00     0.00  __shedskin__::modgetitem(__shedskin__::list<__shedskin__::pyobj*>*, int)
+  0.00      2.61     0.00       20     0.00     0.00  __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*)
+  0.00      2.61     0.00       20     0.00     0.00  double __shedskin__::__float<int>(int)
+  0.00      2.61     0.00       20     0.00     0.00  __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*)
+  0.00      2.61     0.00       20     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
+  0.00      2.61     0.00       18     0.00     0.00  __shedskin__::pyseq<int>::__getitem__(int)
+  0.00      2.61     0.00       18     0.00     0.00  std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00       18     0.00     0.00  std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::pyobj**, std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> > >, __shedskin__::pyobj* const&)
+  0.00      2.61     0.00       16     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int)
+  0.00      2.61     0.00       14     0.00     0.00  __shedskin__::mod_to_int(__shedskin__::pyobj*)
+  0.00      2.61     0.00       14     0.00     0.00  __shedskin__::str* __shedskin__::do_asprintf<int>(char const*, int, __shedskin__::pyobj*, __shedskin__::pyobj*)
+  0.00      2.61     0.00       14     0.00     0.00  __shedskin__::__box(int)
+  0.00      2.61     0.00       14     0.00     0.00  __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*)
+  0.00      2.61     0.00       14     0.00     0.00  __time__::time()
+  0.00      2.61     0.00       12     0.00     0.00  __shedskin__::__modct(__shedskin__::str*, int, ...)
+  0.00      2.61     0.00       11     0.00     0.00  __shedskin__::list<__spatialindex__::SpatialIndex*>::__mul__(int)
+  0.00      2.61     0.00       11     0.00     0.00  __shedskin__::list<__spatialindex__::SpatialIndex*>::list(int, ...)
+  0.00      2.61     0.00       11     0.00     0.00  std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_check_len(unsigned int, char const*) const
+  0.00      2.61     0.00       11     0.00     0.00  std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__spatialindex__::SpatialIndex**, std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> > >, __spatialindex__::SpatialIndex* const&)
+  0.00      2.61     0.00       11     0.00     0.00  std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_fill_assign(unsigned int, __spatialindex__::SpatialIndex* const&)
+  0.00      2.61     0.00       10     0.00     0.00  __shedskin__::str::__mul__(int)
+  0.00      2.61     0.00       10     0.00     0.00  __shedskin__::file::flush()
+  0.00      2.61     0.00       10     0.00     0.00  __raytracer__::RayTracer::__init__(__scene__::Scene*)
+  0.00      2.61     0.00        9     0.00     0.00  __shedskin__::pyseq<__shedskin__::str*>::__len__()
+  0.00      2.61     0.00        6     0.00     0.00  __shedskin__::str* __shedskin__::do_asprintf<char const*>(char const*, char const*, __shedskin__::pyobj*, __shedskin__::pyobj*)
+  0.00      2.61     0.00        6     0.00     0.00  __shedskin__::str::__str__()
+  0.00      2.61     0.00        6     0.00     0.00  __shedskin__::str* __shedskin__::__str<__shedskin__::pyobj*>(__shedskin__::pyobj*)
+  0.00      2.61     0.00        5     0.00     0.00  __shedskin__::list<double>::__slice__(int, int, int, int)
+  0.00      2.61     0.00        4     0.00     0.00  __shedskin__::str::strip(__shedskin__::str*)
+  0.00      2.61     0.00        4     0.00     0.00  __shedskin__::str::__eq__(__shedskin__::pyobj*)
+  0.00      2.61     0.00        4     0.00     0.00  __shedskin__::list<double>::__mul__(int)
+  0.00      2.61     0.00        4     0.00     0.00  int __shedskin__::__divs<int>(int, int)
+  0.00      2.61     0.00        4     0.00     0.00  __shedskin__::__seqiter<double>::next()
+  0.00      2.61     0.00        4     0.00     0.00  __vector3f__::Vector3f_scalar(double)
+  0.00      2.61     0.00        4     0.00     0.00  std::vector<double, gc_allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, unsigned int, double const&)
+  0.00      2.61     0.00        3     0.00     0.00  int __shedskin__::len<__shedskin__::str*>(__shedskin__::str*)
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::str::__len__()
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::dict<__shedskin__::str*, int>::dict()
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::file::close()
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::file::file(_IO_FILE*)
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::file::file(__shedskin__::str*, __shedskin__::str*)
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::open(__shedskin__::str*, __shedskin__::str*)
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::__int(__shedskin__::str*, int)
+  0.00      2.61     0.00        3     0.00     0.00  int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*)
+  0.00      2.61     0.00        3     0.00     0.00  int __shedskin__::__max<int>(int, int)
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::pyseq<int>::__len__()
+  0.00      2.61     0.00        3     0.00     0.00  __shedskin__::tuple2<int, int>::tuple2(int, ...)
+  0.00      2.61     0.00        3     0.00     0.00  __re__::__convert_flags(int)
+  0.00      2.61     0.00        3     0.00     0.00  __re__::compile(__shedskin__::str*, int)
+  0.00      2.61     0.00        3     0.00     0.00  std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >**, std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> > >, unsigned int, __gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >* const&)
+  0.00      2.61     0.00        3     0.00     0.00  std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::reserve(unsigned int)
+  0.00      2.61     0.00        2     0.00     0.00  __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*)
+  0.00      2.61     0.00        2     0.00     0.00  __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int)
+  0.00      2.61     0.00        2     0.00     0.00  int __shedskin__::__cmp<double>(double, double)
+  0.00      2.61     0.00        2     0.00     0.00  __shedskin__::print(int, ...)
+  0.00      2.61     0.00        2     0.00     0.00  __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int)
+  0.00      2.61     0.00        2     0.00     0.02  __minilight__::save_image(__shedskin__::str*, __image__::Image*, int)
+  0.00      2.61     0.00        2     0.00     0.00  __math__::log(double)
+  0.00      2.61     0.00        2     0.00     0.00  __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*)
+  0.00      2.61     0.00        2     0.00     0.00  __time__::tm2tuple(tm*)
+  0.00      2.61     0.00        2     0.00     0.02  __image__::Image::get_formatted(__shedskin__::file*, int)
+  0.00      2.61     0.00        2     0.00     0.00  __image__::Image::dim(__shedskin__::str*)
+  0.00      2.61     0.00        2     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int)
+  0.00      2.61     0.00        2     0.00     0.00  std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::resize(unsigned int, char)
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN10__camera__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN10__random__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN12__shedskin__9cl_class_E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN12__triangle__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN12__vector3f__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN13__minilight__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN13__raytracer__8__name__E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN16__spatialindex__8__name__E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN16__surfacepoint__8__name__E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN6__re__1IE
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN7__sys__4argvE
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN8__math__1eE
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN8__time__5startE
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN9__image__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  global constructors keyed to _ZN9__scene__7const_0E
+  0.00      2.61     0.00        1     0.00     0.00  __camera__::Camera::__init__(__shedskin__::file*)
+  0.00      2.61     0.00        1     0.00     0.00  __camera__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __random__::Random::_init_genrand(int)
+  0.00      2.61     0.00        1     0.00     0.00  __random__::Random::_init_by_array(__shedskin__::list<int>*)
+  0.00      2.61     0.00        1     0.00     0.00  __random__::Random::seed(int)
+  0.00      2.61     0.00        1     0.00     0.00  __random__::Random::Random(int)
+  0.00      2.61     0.00        1     0.00     0.00  __random__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::list<__shedskin__::str*>::list(int, ...)
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::list<double>::__add__(__shedskin__::list<double>*)
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::list<int>::__mul__(int)
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::pyseq<double>::__iter__()
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::__exit(int)
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __shedskin__::tuple2<__shedskin__::str*, __shedskin__::str*>::tuple2(int, ...)
+  0.00      2.61     0.00        1     0.00     0.00  __triangle__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __vector3f__::__init()
+  0.00      2.61     0.00        1     0.00     2.61  __minilight__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __raytracer__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int)
+  0.00      2.61     0.00        1     0.00     0.00  __spatialindex__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __surfacepoint__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __re__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __sys__::__init(int, char**)
+  0.00      2.61     0.00        1     0.00     0.00  __math__::exp(double)
+  0.00      2.61     0.00        1     0.00     0.00  __math__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __time__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __time__::gmtime(double)
+  0.00      2.61     0.00        1     0.00     0.00  __time__::gmtime()
+  0.00      2.61     0.00        1     0.00     0.00  __time__::localtime(double)
+  0.00      2.61     0.00        1     0.00     0.00  __time__::localtime()
+  0.00      2.61     0.00        1     0.00     0.00  __image__::Image::__init__(__shedskin__::file*)
+  0.00      2.61     0.00        1     0.00     0.00  __image__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*)
+  0.00      2.61     0.00        1     0.00     0.00  __scene__::__init()
+  0.00      2.61     0.00        1     0.00     0.00  std::vector<double, gc_allocator<double> >::_M_fill_assign(unsigned int, double const&)
+  0.00      2.61     0.00        1     0.00     0.00  std::vector<int, gc_allocator<int> >::_M_fill_assign(unsigned int, int const&)
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 0.38% of 2.61 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00    2.61                 main [1]
+                0.00    2.61       1/1           __minilight__::__init() [2]
+                0.00    0.00       1/1           __time__::__init() [51]
+                0.00    0.00       1/1           __random__::__init() [52]
+                0.00    0.00       1/1           __sys__::__init(int, char**) [54]
+                0.00    0.00       1/1           __image__::__init() [61]
+                0.00    0.00       1/1           __triangle__::__init() [227]
+                0.00    0.00       1/1           __shedskin__::__init() [225]
+                0.00    0.00       1/1           __vector3f__::__init() [228]
+                0.00    0.00       1/1           __surfacepoint__::__init() [231]
+                0.00    0.00       1/1           __scene__::__init() [235]
+                0.00    0.00       1/1           __re__::__init() [232]
+                0.00    0.00       1/1           __camera__::__init() [217]
+                0.00    0.00       1/1           __math__::__init() [234]
+                0.00    0.00       1/1           __spatialindex__::__init() [230]
+                0.00    0.00       1/1           __raytracer__::__init() [229]
+                0.00    0.00       1/1           __shedskin__::__exit(int) [224]
+-----------------------------------------------
+                0.00    2.61       1/1           main [1]
+[2]    100.0    0.00    2.61       1         __minilight__::__init() [2]
+                0.04    2.53      10/10          __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.04       2/2           __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [21]
+                0.00    0.00       1/1           __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00      10/98316       __shedskin__::file::write(__shedskin__::str*) [40]
+                0.00    0.00       1/1           __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       1/1           __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00      12/25576640     int __shedskin__::___bool<int>(int) [28]
+                0.00    0.00       1/6758210     __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [20]
+                0.00    0.00      14/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00      13/14          __time__::time() [155]
+                0.00    0.00      11/35          __shedskin__::str::__add__(__shedskin__::str*) [132]
+                0.00    0.00      10/14          __shedskin__::__box(int) [153]
+                0.00    0.00      10/12          __shedskin__::__modct(__shedskin__::str*, int, ...) [156]
+                0.00    0.00      10/10          __shedskin__::str::__mul__(int) [162]
+                0.00    0.00      10/10          __shedskin__::file::flush() [163]
+                0.00    0.00       9/32777       __math__::log10(double) [92]
+                0.00    0.00       9/375347      int __shedskin__::__int<double>(double) [74]
+                0.00    0.00       3/4           __shedskin__::str::__eq__(__shedskin__::pyobj*) [171]
+                0.00    0.00       3/62          __shedskin__::file::next() [125]
+                0.00    0.00       2/2           __shedskin__::print(int, ...) [195]
+                0.00    0.00       2/61          __shedskin__::__fileiter::next() [127]
+                0.00    0.00       2/60          __shedskin__::str::isspace() [128]
+                0.00    0.00       1/9           __shedskin__::pyseq<__shedskin__::str*>::__len__() [165]
+                0.00    0.00       1/3           __shedskin__::open(__shedskin__::str*, __shedskin__::str*) [183]
+                0.00    0.00       1/360         __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00       1/4           __shedskin__::str::strip(__shedskin__::str*) [170]
+                0.00    0.00       1/37          __shedskin__::file::__iter__() [131]
+                0.00    0.00       1/3           int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*) [185]
+                0.00    0.00       1/3           __shedskin__::file::close() [180]
+-----------------------------------------------
+                0.04    2.53      10/10          __minilight__::__init() [2]
+[3]     98.4    0.04    2.53      10         __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.01    2.40  163840/163840      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.00    0.10  327680/1483569     __random__::random() [11]
+                0.00    0.01  163840/440938      __vector3f__::Vector3f::unitize() [25]
+                0.00    0.00  491520/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  478846/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+                0.00    0.00  163840/163840      __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*) [43]
+                0.00    0.00    6316/429351      __vector3f__::Vector3f::mul(__vector3f__::Vector3f*) [39]
+                0.00    0.00  163840/163840      __math__::tan(double) [83]
+                0.00    0.00   12674/49207       __scene__::Scene::get_default_emission(__vector3f__::Vector3f*) [90]
+                0.00    0.00      20/20          double __shedskin__::__float<int>(int) [144]
+                0.00    0.00      10/10          __raytracer__::RayTracer::__init__(__scene__::Scene*) [164]
+-----------------------------------------------
+                              162398             __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.01    2.40  163840/163840      __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+[4]     92.4    0.01    2.40  163840+162398  __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.02    1.16  277031/277031      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.92  326238/603269      __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [6]
+                0.03    0.22  277031/277031      __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.00    0.01  151166/370682      __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+                0.01    0.00  277031/496547      __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*) [31]
+                0.01    0.00  277031/277065      __vector3f__::Vector3f::is_zero() [35]
+                0.01    0.00  477404/1009576     __vector3f__::Vector3f::__neg__() [30]
+                0.00    0.00  179854/429351      __vector3f__::Vector3f::mul(__vector3f__::Vector3f*) [39]
+                0.00    0.00  277031/4883138     __shedskin__::pyobj::__nonzero__() [23]
+                0.00    0.00  402896/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+                0.00    0.00   36533/49207       __scene__::Scene::get_default_emission(__vector3f__::Vector3f*) [90]
+                              162398             __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+-----------------------------------------------
+                             2687454             __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+                0.75    0.96  603269/603269      __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [6]
+[5]     65.5    0.75    0.96  603269+2687454 __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+                0.70    0.01 7531899/7531899     __triangle__::Triangle::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [8]
+                0.10    0.00 28535493/28535685     __vector3f__::Vector3f::__getitem__(int) [17]
+                0.05    0.01 6758209/6758210     __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [20]
+                0.02    0.01 4052444/4883138     __shedskin__::pyobj::__nonzero__() [23]
+                0.02    0.00 3699939/3701089     __shedskin__::list<double>::__getfast__(int) [29]
+                0.01    0.00 2480734/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.01    0.00 2480734/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+                0.01    0.00 12593431/25576640     int __shedskin__::___bool<int>(int) [28]
+                             2687454             __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+-----------------------------------------------
+                0.00    0.78  277031/603269      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.92  326238/603269      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[6]     65.5    0.00    1.71  603269         __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [6]
+                0.75    0.96  603269/603269      __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+-----------------------------------------------
+                0.02    1.16  277031/277031      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[7]     45.3    0.02    1.16  277031         __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.78  277031/603269      __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [6]
+                0.01    0.28  277031/277031      __scene__::Scene::get_emitter() [13]
+                0.01    0.02  277031/440938      __vector3f__::Vector3f::unitize() [25]
+                0.00    0.02  277031/277031      __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+                0.01    0.01  219516/370682      __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+                0.01    0.00  496547/1009576     __vector3f__::Vector3f::__neg__() [30]
+                0.01    0.00  219516/496547      __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*) [31]
+                0.00    0.00  553662/4883138     __shedskin__::pyobj::__nonzero__() [23]
+                0.00    0.00  277031/831434      __shedskin__::pyseq<__triangle__::Triangle*>::__len__() [38]
+                0.00    0.00  277031/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  276631/7034840     __shedskin__::pyobj::__eq__(__shedskin__::pyobj*) [36]
+                0.00    0.00  277031/25576640     int __shedskin__::___bool<int>(int) [28]
+                0.00    0.00  277031/647810      __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [68]
+                0.00    0.00  277031/277031      __scene__::Scene::emitters_count() [77]
+-----------------------------------------------
+                0.70    0.01 7531899/7531899     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[8]     27.2    0.70    0.01 7531899         __triangle__::Triangle::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [8]
+                0.01    0.00 11818052/25576640     int __shedskin__::___bool<int>(int) [28]
+-----------------------------------------------
+                0.01    0.07  277031/1760600     __scene__::Scene::get_emitter() [13]
+                0.05    0.39 1483569/1760600     __random__::random() [11]
+[9]     19.9    0.06    0.46 1760600         __random__::Random::_genrand_res53() [9]
+                0.17    0.29 3521200/3521200     __random__::Random::_genrand_int32() [10]
+-----------------------------------------------
+                0.17    0.29 3521200/3521200     __random__::Random::_genrand_res53() [9]
+[10]    17.6    0.17    0.29 3521200         __random__::Random::_genrand_int32() [10]
+                0.04    0.25 3521200/3521202     __shedskin__::list<int>::list(int, ...) [12]
+-----------------------------------------------
+                0.00    0.10  327680/1483569     __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.16  554062/1483569     __triangle__::Triangle::get_sample_point() [16]
+                0.00    0.18  601827/1483569     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+[11]    16.8    0.00    0.44 1483569         __random__::random() [11]
+                0.05    0.39 1483569/1760600     __random__::Random::_genrand_res53() [9]
+                0.00    0.00 1483569/1760600     __random__::Random::random() [67]
+-----------------------------------------------
+                0.00    0.00       1/3521202     __random__::Random::seed(int) [60]
+                0.00    0.00       1/3521202     __random__::Random::Random(int) [59]
+                0.04    0.25 3521200/3521202     __random__::Random::_genrand_int32() [10]
+[12]    11.1    0.04    0.25 3521202         __shedskin__::list<int>::list(int, ...) [12]
+                0.16    0.09 7042402/7042416     std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&) [14]
+-----------------------------------------------
+                0.01    0.28  277031/277031      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[13]    11.0    0.01    0.28  277031         __scene__::Scene::get_emitter() [13]
+                0.00    0.19  277031/277031      __triangle__::Triangle::get_sample_point() [16]
+                0.01    0.07  277031/1760600     __random__::Random::_genrand_res53() [9]
+                0.01    0.00  554062/831434      __shedskin__::pyseq<__triangle__::Triangle*>::__len__() [38]
+                0.00    0.00  277031/1760600     __random__::Random::random() [67]
+                0.00    0.00  277031/375347      int __shedskin__::__int<double>(double) [74]
+                0.00    0.00  277031/277031      __shedskin__::pyseq<__triangle__::Triangle*>::__getitem__(int) [75]
+-----------------------------------------------
+                0.00    0.00      14/7042416     __shedskin__::tuple2<int, int>::tuple2(int, ...) [48]
+                0.16    0.09 7042402/7042416     __shedskin__::list<int>::list(int, ...) [12]
+[14]     9.6    0.16    0.09 7042416         std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&) [14]
+                0.09    0.00 7042416/7042416     std::vector<int, gc_allocator<int> >::_M_check_len(unsigned int, char const*) const [18]
+-----------------------------------------------
+                0.03    0.22  277031/277031      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[15]     9.4    0.03    0.22  277031         __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.00    0.18  601827/1483569     __random__::random() [11]
+                0.02    0.00  324796/1042798     __math__::sqrt(double) [19]
+                0.01    0.00  439429/1767655     __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+                0.00    0.00  649592/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  324796/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+                0.00    0.00   35625/1009576     __vector3f__::Vector3f::__neg__() [30]
+                0.00    0.00  277031/277031      __shedskin__::tuple2<__vector3f__::Vector3f*, __vector3f__::Vector3f*>::tuple2(int, ...) [76]
+                0.00    0.00  162398/162398      __math__::cos(double) [85]
+                0.00    0.00  162398/162398      __math__::sin(double) [86]
+                0.00    0.00  162398/162464      __vector3f__::Vector3f::cross(__vector3f__::Vector3f*) [84]
+-----------------------------------------------
+                0.00    0.19  277031/277031      __scene__::Scene::get_emitter() [13]
+[16]     7.2    0.00    0.19  277031         __triangle__::Triangle::get_sample_point() [16]
+                0.00    0.16  554062/1483569     __random__::random() [11]
+                0.02    0.00  277031/1042798     __math__::sqrt(double) [19]
+                0.00    0.00  554062/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  554062/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+-----------------------------------------------
+                0.00    0.00     192/28535685     __triangle__::Triangle::get_bound() [47]
+                0.10    0.00 28535493/28535685     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[17]     3.8    0.10    0.00 28535685         __vector3f__::Vector3f::__getitem__(int) [17]
+-----------------------------------------------
+                0.09    0.00 7042416/7042416     std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&) [14]
+[18]     3.4    0.09    0.00 7042416         std::vector<int, gc_allocator<int> >::_M_check_len(unsigned int, char const*) const [18]
+-----------------------------------------------
+                0.00    0.00       1/1042798     __random__::__init() [52]
+                0.00    0.00      32/1042798     __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.02    0.00  277031/1042798     __triangle__::Triangle::get_sample_point() [16]
+                0.02    0.00  324796/1042798     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.03    0.00  440938/1042798     __vector3f__::Vector3f::unitize() [25]
+[19]     2.7    0.07    0.00 1042798         __math__::sqrt(double) [19]
+-----------------------------------------------
+                0.00    0.00       1/6758210     __minilight__::__init() [2]
+                0.05    0.01 6758209/6758210     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[20]     2.3    0.05    0.01 6758210         __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [20]
+                0.01    0.00 6758209/7034840     __shedskin__::pyobj::__eq__(__shedskin__::pyobj*) [36]
+                0.00    0.00       1/4           __shedskin__::str::__eq__(__shedskin__::pyobj*) [171]
+-----------------------------------------------
+                0.00    0.04       2/2           __minilight__::__init() [2]
+[21]     1.6    0.00    0.04       2         __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [21]
+                0.00    0.04       2/2           __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+                0.00    0.00       2/3           __shedskin__::open(__shedskin__::str*, __shedskin__::str*) [183]
+                0.00    0.00       2/3           __shedskin__::file::close() [180]
+-----------------------------------------------
+                0.00    0.04       2/2           __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [21]
+[22]     1.6    0.00    0.04       2         __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+                0.01    0.00       2/2           __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+                0.01    0.00   98304/98306       int __shedskin__::__min<int>(int, int) [42]
+                0.01    0.00   98304/98312       double __shedskin__::__power<double>(double, double) [41]
+                0.01    0.00   98306/98316       __shedskin__::file::write(__shedskin__::str*) [40]
+                0.00    0.00   98304/375347      int __shedskin__::__int<double>(double) [74]
+                0.00    0.00   98304/98304       __shedskin__::chr(int) [89]
+                0.00    0.00       4/14          __shedskin__::__box(int) [153]
+                0.00    0.00       2/12          __shedskin__::__modct(__shedskin__::str*, int, ...) [156]
+-----------------------------------------------
+                0.00    0.00       1/4883138     __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00  277031/4883138     __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.00    0.00  553662/4883138     __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.02    0.01 4052444/4883138     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[23]     1.5    0.03    0.01 4883138         __shedskin__::pyobj::__nonzero__() [23]
+                0.01    0.00 4883138/4883138     __shedskin__::pyobj::__len__() [37]
+-----------------------------------------------
+                0.00    0.00      32/1767655     __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.00   32768/1767655     __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+                0.01    0.00  439429/1767655     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.01    0.00  554062/1767655     __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+                0.02    0.00  741364/1767655     __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+[24]     1.5    0.04    0.00 1767655         __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+-----------------------------------------------
+                0.00    0.00       3/440938      __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00      64/440938      __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.01  163840/440938      __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.01    0.02  277031/440938      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[25]     1.5    0.01    0.03  440938         __vector3f__::Vector3f::unitize() [25]
+                0.03    0.00  440938/1042798     __math__::sqrt(double) [19]
+-----------------------------------------------
+                0.00    0.00       1/4993192     __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       1/4993192     __image__::__init() [61]
+                0.00    0.00  243181/4993192     __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+                0.00    0.00  277031/4993192     __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.00  297070/4993192     __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+                0.00    0.00  491520/4993192     __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.00  554062/4993192     __triangle__::Triangle::get_sample_point() [16]
+                0.00    0.00  649592/4993192     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.01    0.00 2480734/4993192     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[26]     1.1    0.03    0.00 4993192         __vector3f__::Vector3f::__init__(double, double, double) [26]
+-----------------------------------------------
+                0.00    0.01  151166/370682      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.01    0.01  219516/370682      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[27]     1.1    0.01    0.02  370682         __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+                0.02    0.00  741364/1767655     __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+                0.00    0.00  297070/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  370682/647810      __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [68]
+                0.00    0.00  219516/219718      double __shedskin__::__max<double>(double, double) [79]
+-----------------------------------------------
+                0.00    0.00      12/25576640     __minilight__::__init() [2]
+                0.00    0.00      32/25576640     __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00    4833/25576640     __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00  277031/25576640     __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.00  391729/25576640     __vector3f__::Vector3f::is_zero() [35]
+                0.00    0.00  491520/25576640     __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*) [43]
+                0.01    0.00 11818052/25576640     __triangle__::Triangle::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [8]
+                0.01    0.00 12593431/25576640     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[28]     0.8    0.02    0.00 25576640         int __shedskin__::___bool<int>(int) [28]
+-----------------------------------------------
+                0.00    0.00    1150/3701089     __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.02    0.00 3699939/3701089     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[29]     0.8    0.02    0.00 3701089         __shedskin__::list<double>::__getfast__(int) [29]
+-----------------------------------------------
+                0.00    0.00   35625/1009576     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.01    0.00  477404/1009576     __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.01    0.00  496547/1009576     __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[30]     0.8    0.02    0.00 1009576         __vector3f__::Vector3f::__neg__() [30]
+-----------------------------------------------
+                0.01    0.00  219516/496547      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.01    0.00  277031/496547      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[31]     0.8    0.02    0.00  496547         __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*) [31]
+                0.00    0.00  496547/496547      __vector3f__::Vector3f::copy() [73]
+-----------------------------------------------
+                0.00    0.00       1/4241335     __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00  324796/4241335     __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+                0.00    0.00  402896/4241335     __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.00    0.00  478846/4241335     __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.00  554062/4241335     __triangle__::Triangle::get_sample_point() [16]
+                0.01    0.00 2480734/4241335     __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [5]
+[32]     0.8    0.02    0.00 4241335         __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+-----------------------------------------------
+                0.00    0.02  277031/277031      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[33]     0.8    0.00    0.02  277031         __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+                0.01    0.00  554062/1767655     __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+                0.01    0.00  243181/429351      __vector3f__::Vector3f::mul(__vector3f__::Vector3f*) [39]
+                0.00    0.00  243181/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00  243181/243373      double __shedskin__::__abs<double>(double) [78]
+-----------------------------------------------
+                0.01    0.00       2/2           __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+[34]     0.4    0.01    0.00       2         __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+                0.00    0.00   32768/1767655     __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+                0.00    0.00       8/98312       double __shedskin__::__power<double>(double, double) [41]
+                0.00    0.00   32768/32773       __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+                0.00    0.00   32768/32772       __vector3f__::Vector3f_seq(__shedskin__::list<double>*) [95]
+                0.00    0.00   32768/32777       __math__::log10(double) [92]
+                0.00    0.00       4/32779       __shedskin__::pyseq<double>::__len__() [91]
+                0.00    0.00       4/4           int __shedskin__::__divs<int>(int, int) [173]
+-----------------------------------------------
+                0.00    0.00       2/277065      __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00      32/277065      __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.01    0.00  277031/277065      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[35]     0.4    0.01    0.00  277065         __vector3f__::Vector3f::is_zero() [35]
+                0.00    0.00  391729/25576640     int __shedskin__::___bool<int>(int) [28]
+-----------------------------------------------
+                0.00    0.00  276631/7034840     __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.01    0.00 6758209/7034840     __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [20]
+[36]     0.4    0.01    0.00 7034840         __shedskin__::pyobj::__eq__(__shedskin__::pyobj*) [36]
+-----------------------------------------------
+                0.01    0.00 4883138/4883138     __shedskin__::pyobj::__nonzero__() [23]
+[37]     0.4    0.01    0.00 4883138         __shedskin__::pyobj::__len__() [37]
+-----------------------------------------------
+                0.00    0.00     341/831434      __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00  277031/831434      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.01    0.00  554062/831434      __scene__::Scene::get_emitter() [13]
+[38]     0.4    0.01    0.00  831434         __shedskin__::pyseq<__triangle__::Triangle*>::__len__() [38]
+-----------------------------------------------
+                0.00    0.00    6316/429351      __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.00  179854/429351      __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+                0.01    0.00  243181/429351      __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+[39]     0.4    0.01    0.00  429351         __vector3f__::Vector3f::mul(__vector3f__::Vector3f*) [39]
+-----------------------------------------------
+                0.00    0.00      10/98316       __minilight__::__init() [2]
+                0.01    0.00   98306/98316       __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+[40]     0.4    0.01    0.00   98316         __shedskin__::file::write(__shedskin__::str*) [40]
+                0.00    0.00   98648/98648       __shedskin__::file::putchar(int) [88]
+                0.00    0.00   98316/199889      __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00       8/98312       __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+                0.01    0.00   98304/98312       __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+[41]     0.4    0.01    0.00   98312         double __shedskin__::__power<double>(double, double) [41]
+-----------------------------------------------
+                0.00    0.00       2/98306       __image__::Image::__init__(__shedskin__::file*) [53]
+                0.01    0.00   98304/98306       __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+[42]     0.4    0.01    0.00   98306         int __shedskin__::__min<int>(int, int) [42]
+-----------------------------------------------
+                0.00    0.00  163840/163840      __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+[43]     0.0    0.00    0.00  163840         __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*) [43]
+                0.00    0.00  491520/25576640     int __shedskin__::___bool<int>(int) [28]
+                0.00    0.00  163840/163843      __vector3f__::Vector3f::as_list() [82]
+-----------------------------------------------
+                0.00    0.00       1/1           __minilight__::__init() [2]
+[44]     0.0    0.00    0.00       1         __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       1/1           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00      33/33          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.00      32/277065      __vector3f__::Vector3f::is_zero() [35]
+                0.00    0.00      32/25576640     int __shedskin__::___bool<int>(int) [28]
+                0.00    0.00      34/491         __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*) [106]
+                0.00    0.00       3/62          __shedskin__::file::next() [125]
+                0.00    0.00       3/61          __shedskin__::__fileiter::next() [127]
+                0.00    0.00       3/60          __shedskin__::str::isspace() [128]
+                0.00    0.00       2/356         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+                0.00    0.00       2/67          __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+                0.00    0.00       1/37          __shedskin__::file::__iter__() [131]
+                0.00    0.00       1/34          __re__::re_object::search(__shedskin__::str*, int, int) [138]
+                0.00    0.00       1/34          __re__::match_object::groups(__shedskin__::str*) [136]
+-----------------------------------------------
+                                  76             __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00       1/1           __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+[45]     0.0    0.00    0.00       1+76      __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00    1150/3701089     __shedskin__::list<double>::__getfast__(int) [29]
+                0.00    0.00     341/831434      __shedskin__::pyseq<__triangle__::Triangle*>::__len__() [38]
+                0.00    0.00    4833/25576640     int __shedskin__::___bool<int>(int) [28]
+                0.00    0.00      32/32          __triangle__::Triangle::get_bound() [47]
+                0.00    0.00       1/4883138     __shedskin__::pyobj::__nonzero__() [23]
+                0.00    0.00       1/4241335     __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [32]
+                0.00    0.00     528/98847       __shedskin__::pyseq<double>::append(double) [87]
+                0.00    0.00     528/529         int __shedskin__::__mods<int>(int, int) [105]
+                0.00    0.00     457/491         __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*) [106]
+                0.00    0.00      11/11          __shedskin__::list<__spatialindex__::SpatialIndex*>::list(int, ...) [158]
+                0.00    0.00      11/11          __shedskin__::list<__spatialindex__::SpatialIndex*>::__mul__(int) [157]
+                0.00    0.00       5/5           __shedskin__::list<double>::__slice__(int, int, int, int) [169]
+                0.00    0.00       4/32772       __vector3f__::Vector3f_seq(__shedskin__::list<double>*) [95]
+                0.00    0.00       4/4           __shedskin__::__seqiter<double>::next() [174]
+                0.00    0.00       3/163843      __vector3f__::Vector3f::as_list() [82]
+                0.00    0.00       2/2           int __shedskin__::__cmp<double>(double, double) [194]
+                0.00    0.00       1/4           __shedskin__::list<double>::__mul__(int) [172]
+                0.00    0.00       1/647810      __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [68]
+                0.00    0.00       1/1           __shedskin__::pyseq<double>::__iter__() [223]
+                0.00    0.00       1/4           __vector3f__::Vector3f_scalar(double) [175]
+                0.00    0.00       1/67          __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+                0.00    0.00       1/1           __shedskin__::list<double>::__add__(__shedskin__::list<double>*) [221]
+                                  76             __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+-----------------------------------------------
+                0.00    0.00      33/33          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+[46]     0.0    0.00    0.00      33         __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.00      64/440938      __vector3f__::Vector3f::unitize() [25]
+                0.00    0.00      32/1042798     __math__::sqrt(double) [19]
+                0.00    0.00      32/1767655     __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [24]
+                0.00    0.00     352/356         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+                0.00    0.00      96/647810      __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [68]
+                0.00    0.00      64/67          __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+                0.00    0.00      64/162464      __vector3f__::Vector3f::cross(__vector3f__::Vector3f*) [84]
+                0.00    0.00      52/62          __shedskin__::file::next() [125]
+                0.00    0.00      52/61          __shedskin__::__fileiter::next() [127]
+                0.00    0.00      51/60          __shedskin__::str::isspace() [128]
+                0.00    0.00      33/37          __shedskin__::file::__iter__() [131]
+                0.00    0.00      32/34          __re__::re_object::search(__shedskin__::str*, int, int) [138]
+                0.00    0.00      32/34          __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00      32/32          __shedskin__::list<__vector3f__::Vector3f*>::list(int, ...) [139]
+-----------------------------------------------
+                0.00    0.00      32/32          __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[47]     0.0    0.00    0.00      32         __triangle__::Triangle::get_bound() [47]
+                0.00    0.00     192/28535685     __vector3f__::Vector3f::__getitem__(int) [17]
+                0.00    0.00     192/243373      double __shedskin__::__abs<double>(double) [78]
+                0.00    0.00      32/163876      __shedskin__::list<double>::list(int, ...) [81]
+-----------------------------------------------
+                0.00    0.00       1/3           __sys__::__init(int, char**) [54]
+                0.00    0.00       2/3           __time__::tm2tuple(tm*) [50]
+[48]     0.0    0.00    0.00       3         __shedskin__::tuple2<int, int>::tuple2(int, ...) [48]
+                0.00    0.00      14/7042416     std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&) [14]
+-----------------------------------------------
+                0.00    0.00       1/1           __minilight__::__init() [2]
+[49]     0.0    0.00    0.00       1         __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       3/440938      __vector3f__::Vector3f::unitize() [25]
+                0.00    0.00       2/277065      __vector3f__::Vector3f::is_zero() [35]
+                0.00    0.00       1/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00       2/62          __shedskin__::file::next() [125]
+                0.00    0.00       2/61          __shedskin__::__fileiter::next() [127]
+                0.00    0.00       2/60          __shedskin__::str::isspace() [128]
+                0.00    0.00       2/356         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+                0.00    0.00       2/162464      __vector3f__::Vector3f::cross(__vector3f__::Vector3f*) [84]
+                0.00    0.00       1/37          __shedskin__::file::__iter__() [131]
+                0.00    0.00       1/34          __re__::re_object::search(__shedskin__::str*, int, int) [138]
+                0.00    0.00       1/34          __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00       1/1069        double __shedskin__::__float<__shedskin__::str*>(__shedskin__::str*) [104]
+                0.00    0.00       1/219718      double __shedskin__::__max<double>(double, double) [79]
+                0.00    0.00       1/202         double __shedskin__::__min<double>(double, double) [119]
+-----------------------------------------------
+                0.00    0.00       1/2           __time__::gmtime(double) [55]
+                0.00    0.00       1/2           __time__::localtime(double) [57]
+[50]     0.0    0.00    0.00       2         __time__::tm2tuple(tm*) [50]
+                0.00    0.00       2/3           __shedskin__::tuple2<int, int>::tuple2(int, ...) [48]
+                0.00    0.00       2/2           __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*) [198]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[51]     0.0    0.00    0.00       1         __time__::__init() [51]
+                0.00    0.00       1/1           __time__::gmtime() [56]
+                0.00    0.00       1/1           __time__::localtime() [58]
+                0.00    0.00       4/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/1           __shedskin__::tuple2<__shedskin__::str*, __shedskin__::str*>::tuple2(int, ...) [226]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[52]     0.0    0.00    0.00       1         __random__::__init() [52]
+                0.00    0.00       1/1           __random__::Random::Random(int) [59]
+                0.00    0.00       1/1042798     __math__::sqrt(double) [19]
+                0.00    0.00      36/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       2/23          __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00       2/2           __math__::log(double) [197]
+                0.00    0.00       1/1           __shedskin__::list<__shedskin__::str*>::list(int, ...) [220]
+                0.00    0.00       1/1           __math__::exp(double) [233]
+-----------------------------------------------
+                0.00    0.00       1/1           __minilight__::__init() [2]
+[53]     0.0    0.00    0.00       1         __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00       2/98306       int __shedskin__::__min<int>(int, int) [42]
+                0.00    0.00       3/4           __shedskin__::list<double>::__mul__(int) [172]
+                0.00    0.00       2/62          __shedskin__::file::next() [125]
+                0.00    0.00       2/61          __shedskin__::__fileiter::next() [127]
+                0.00    0.00       2/60          __shedskin__::str::isspace() [128]
+                0.00    0.00       2/358         __shedskin__::str::split(__shedskin__::str*, int) [113]
+                0.00    0.00       2/2           __image__::Image::dim(__shedskin__::str*) [199]
+                0.00    0.00       1/37          __shedskin__::file::__iter__() [131]
+                0.00    0.00       1/163876      __shedskin__::list<double>::list(int, ...) [81]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[54]     0.0    0.00    0.00       1         __sys__::__init(int, char**) [54]
+                0.00    0.00       1/3           __shedskin__::tuple2<int, int>::tuple2(int, ...) [48]
+                0.00    0.00      10/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       3/3           __shedskin__::file::file(_IO_FILE*) [181]
+                0.00    0.00       2/35          __shedskin__::str::__add__(__shedskin__::str*) [132]
+                0.00    0.00       2/1076        __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [103]
+-----------------------------------------------
+                0.00    0.00       1/1           __time__::gmtime() [56]
+[55]     0.0    0.00    0.00       1         __time__::gmtime(double) [55]
+                0.00    0.00       1/2           __time__::tm2tuple(tm*) [50]
+-----------------------------------------------
+                0.00    0.00       1/1           __time__::__init() [51]
+[56]     0.0    0.00    0.00       1         __time__::gmtime() [56]
+                0.00    0.00       1/1           __time__::gmtime(double) [55]
+-----------------------------------------------
+                0.00    0.00       1/1           __time__::localtime() [58]
+[57]     0.0    0.00    0.00       1         __time__::localtime(double) [57]
+                0.00    0.00       1/2           __time__::tm2tuple(tm*) [50]
+-----------------------------------------------
+                0.00    0.00       1/1           __time__::__init() [51]
+[58]     0.0    0.00    0.00       1         __time__::localtime() [58]
+                0.00    0.00       1/1           __time__::localtime(double) [57]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::__init() [52]
+[59]     0.0    0.00    0.00       1         __random__::Random::Random(int) [59]
+                0.00    0.00       1/3521202     __shedskin__::list<int>::list(int, ...) [12]
+                0.00    0.00       1/1           __random__::Random::seed(int) [60]
+                0.00    0.00       1/1           __shedskin__::list<int>::__mul__(int) [222]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::Random::Random(int) [59]
+[60]     0.0    0.00    0.00       1         __random__::Random::seed(int) [60]
+                0.00    0.00       1/3521202     __shedskin__::list<int>::list(int, ...) [12]
+                0.00    0.00       3/375347      int __shedskin__::__int<double>(double) [74]
+                0.00    0.00       1/1           __random__::Random::_init_by_array(__shedskin__::list<int>*) [219]
+                0.00    0.00       1/14          __time__::time() [155]
+                0.00    0.00       1/529         int __shedskin__::__mods<int>(int, int) [105]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[61]     0.0    0.00    0.00       1         __image__::__init() [61]
+                0.00    0.00       1/4993192     __vector3f__::Vector3f::__init__(double, double, double) [26]
+                0.00    0.00       4/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+-----------------------------------------------
+                0.00    0.00  277031/1760600     __scene__::Scene::get_emitter() [13]
+                0.00    0.00 1483569/1760600     __random__::random() [11]
+[67]     0.0    0.00    0.00 1760600         __random__::Random::random() [67]
+-----------------------------------------------
+                0.00    0.00       1/647810      __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00      96/647810      __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.00  277031/647810      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+                0.00    0.00  370682/647810      __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+[68]     0.0    0.00    0.00  647810         __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [68]
+-----------------------------------------------
+                0.00    0.00  590329/590329      std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&) [70]
+[69]     0.0    0.00    0.00  590329         std::vector<double, gc_allocator<double> >::_M_check_len(unsigned int, char const*) const [69]
+-----------------------------------------------
+                0.00    0.00   98671/590329      __shedskin__::pyseq<double>::append(double) [87]
+                0.00    0.00  491658/590329      __shedskin__::list<double>::list(int, ...) [81]
+[70]     0.0    0.00    0.00  590329         std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&) [70]
+                0.00    0.00  590329/590329      std::vector<double, gc_allocator<double> >::_M_check_len(unsigned int, char const*) const [69]
+-----------------------------------------------
+                0.00    0.00  554158/554158      std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&) [72]
+[71]     0.0    0.00    0.00  554158         std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_check_len(unsigned int, char const*) const [71]
+-----------------------------------------------
+                0.00    0.00      96/554158      __shedskin__::list<__vector3f__::Vector3f*>::list(int, ...) [139]
+                0.00    0.00  554062/554158      __shedskin__::tuple2<__vector3f__::Vector3f*, __vector3f__::Vector3f*>::tuple2(int, ...) [76]
+[72]     0.0    0.00    0.00  554158         std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&) [72]
+                0.00    0.00  554158/554158      std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_check_len(unsigned int, char const*) const [71]
+-----------------------------------------------
+                0.00    0.00  496547/496547      __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*) [31]
+[73]     0.0    0.00    0.00  496547         __vector3f__::Vector3f::copy() [73]
+-----------------------------------------------
+                0.00    0.00       3/375347      __random__::Random::seed(int) [60]
+                0.00    0.00       9/375347      __minilight__::__init() [2]
+                0.00    0.00   98304/375347      __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+                0.00    0.00  277031/375347      __scene__::Scene::get_emitter() [13]
+[74]     0.0    0.00    0.00  375347         int __shedskin__::__int<double>(double) [74]
+-----------------------------------------------
+                0.00    0.00  277031/277031      __scene__::Scene::get_emitter() [13]
+[75]     0.0    0.00    0.00  277031         __shedskin__::pyseq<__triangle__::Triangle*>::__getitem__(int) [75]
+-----------------------------------------------
+                0.00    0.00  277031/277031      __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+[76]     0.0    0.00    0.00  277031         __shedskin__::tuple2<__vector3f__::Vector3f*, __vector3f__::Vector3f*>::tuple2(int, ...) [76]
+                0.00    0.00  554062/554158      std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&) [72]
+-----------------------------------------------
+                0.00    0.00  277031/277031      __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [7]
+[77]     0.0    0.00    0.00  277031         __scene__::Scene::emitters_count() [77]
+-----------------------------------------------
+                0.00    0.00     192/243373      __triangle__::Triangle::get_bound() [47]
+                0.00    0.00  243181/243373      __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*) [33]
+[78]     0.0    0.00    0.00  243373         double __shedskin__::__abs<double>(double) [78]
+-----------------------------------------------
+                0.00    0.00       1/219718      __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00     201/219718      __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+                0.00    0.00  219516/219718      __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int) [27]
+[79]     0.0    0.00    0.00  219718         double __shedskin__::__max<double>(double, double) [79]
+-----------------------------------------------
+                0.00    0.00      10/199889      __shedskin__::file::flush() [163]
+                0.00    0.00      62/199889      __shedskin__::file::readline(int) [126]
+                0.00    0.00    2853/199889      __shedskin__::file::getchar() [96]
+                0.00    0.00   98316/199889      __shedskin__::file::write(__shedskin__::str*) [40]
+                0.00    0.00   98648/199889      __shedskin__::file::putchar(int) [88]
+[80]     0.0    0.00    0.00  199889         __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00       1/163876      __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00      32/163876      __triangle__::Triangle::get_bound() [47]
+                0.00    0.00  163843/163876      __vector3f__::Vector3f::as_list() [82]
+[81]     0.0    0.00    0.00  163876         __shedskin__::list<double>::list(int, ...) [81]
+                0.00    0.00  491658/590329      std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&) [70]
+-----------------------------------------------
+                0.00    0.00       3/163843      __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00  163840/163843      __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*) [43]
+[82]     0.0    0.00    0.00  163843         __vector3f__::Vector3f::as_list() [82]
+                0.00    0.00  163843/163876      __shedskin__::list<double>::list(int, ...) [81]
+-----------------------------------------------
+                0.00    0.00  163840/163840      __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+[83]     0.0    0.00    0.00  163840         __math__::tan(double) [83]
+-----------------------------------------------
+                0.00    0.00       2/162464      __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00      64/162464      __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+                0.00    0.00  162398/162464      __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+[84]     0.0    0.00    0.00  162464         __vector3f__::Vector3f::cross(__vector3f__::Vector3f*) [84]
+-----------------------------------------------
+                0.00    0.00  162398/162398      __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+[85]     0.0    0.00    0.00  162398         __math__::cos(double) [85]
+-----------------------------------------------
+                0.00    0.00  162398/162398      __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*) [15]
+[86]     0.0    0.00    0.00  162398         __math__::sin(double) [86]
+-----------------------------------------------
+                0.00    0.00     528/98847       __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00   98319/98847       __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+[87]     0.0    0.00    0.00   98847         __shedskin__::pyseq<double>::append(double) [87]
+                0.00    0.00   98671/590329      std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&) [70]
+-----------------------------------------------
+                0.00    0.00   98648/98648       __shedskin__::file::write(__shedskin__::str*) [40]
+[88]     0.0    0.00    0.00   98648         __shedskin__::file::putchar(int) [88]
+                0.00    0.00   98648/199889      __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00   98304/98304       __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+[89]     0.0    0.00    0.00   98304         __shedskin__::chr(int) [89]
+-----------------------------------------------
+                0.00    0.00   12674/49207       __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+                0.00    0.00   36533/49207       __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [4]
+[90]     0.0    0.00    0.00   49207         __scene__::Scene::get_default_emission(__vector3f__::Vector3f*) [90]
+-----------------------------------------------
+                0.00    0.00       2/32779       __shedskin__::list<double>::__add__(__shedskin__::list<double>*) [221]
+                0.00    0.00       4/32779       __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+                0.00    0.00   32773/32779       __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+[91]     0.0    0.00    0.00   32779         __shedskin__::pyseq<double>::__len__() [91]
+-----------------------------------------------
+                0.00    0.00       9/32777       __minilight__::__init() [2]
+                0.00    0.00   32768/32777       __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+[92]     0.0    0.00    0.00   32777         __math__::log10(double) [92]
+-----------------------------------------------
+                0.00    0.00       5/32773       __shedskin__::list<double>::__slice__(int, int, int, int) [169]
+                0.00    0.00   32768/32773       __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+[93]     0.0    0.00    0.00   32773         __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+                0.00    0.00   98319/98847       __shedskin__::pyseq<double>::append(double) [87]
+                0.00    0.00   32773/32779       __shedskin__::pyseq<double>::__len__() [91]
+                0.00    0.00   32773/32773       __shedskin__::slicenr(int, int&, int&, int&, int) [94]
+-----------------------------------------------
+                0.00    0.00   32773/32773       __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+[94]     0.0    0.00    0.00   32773         __shedskin__::slicenr(int, int&, int&, int&, int) [94]
+-----------------------------------------------
+                0.00    0.00       4/32772       __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00   32768/32772       __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+[95]     0.0    0.00    0.00   32772         __vector3f__::Vector3f_seq(__shedskin__::list<double>*) [95]
+-----------------------------------------------
+                0.00    0.00    2853/2853        __shedskin__::file::readline(int) [126]
+[96]     0.0    0.00    0.00    2853         __shedskin__::file::getchar() [96]
+                0.00    0.00    2853/199889      __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00      10/2429        __shedskin__::str::__mul__(int) [162]
+                0.00    0.00      16/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int) [150]
+                0.00    0.00     144/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&) [120]
+                0.00    0.00     256/2429        __shedskin__::str::str(char const*, int) [118]
+                0.00    0.00    2003/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+[97]     0.0    0.00    0.00    2429         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00       2/2413        __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+                0.00    0.00       3/2413        __re__::compile(__shedskin__::str*, int) [189]
+                0.00    0.00      14/2413        __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      20/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [146]
+                0.00    0.00     358/2413        __shedskin__::str::split(__shedskin__::str*, int) [113]
+                0.00    0.00    2016/2413        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+[98]     0.0    0.00    0.00    2413         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+-----------------------------------------------
+                0.00    0.00      46/2017        __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00     165/2017        __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00     360/2017        __shedskin__::str::lstrip(__shedskin__::str*) [111]
+                0.00    0.00     360/2017        __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00     370/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const [109]
+                0.00    0.00     716/2017        __shedskin__::str::split(__shedskin__::str*, int) [113]
+[99]     0.0    0.00    0.00    2017         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00    2003/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00       2/2016        __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+                0.00    0.00       3/2016        __re__::compile(__shedskin__::str*, int) [189]
+                0.00    0.00      14/2016        __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      40/2016        __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00     165/2016        __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00     360/2016        __shedskin__::str::lstrip(__shedskin__::str*) [111]
+                0.00    0.00     360/2016        __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00    1072/2016        __shedskin__::str::split(__shedskin__::str*, int) [113]
+[100]    0.0    0.00    0.00    2016         __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+                0.00    0.00    2016/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+-----------------------------------------------
+                0.00    0.00    1226/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+[101]    0.0    0.00    0.00    1226         std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_check_len(unsigned int, char const*) const [101]
+-----------------------------------------------
+                0.00    0.00       2/1226        __shedskin__::tuple2<__shedskin__::str*, __shedskin__::str*>::tuple2(int, ...) [226]
+                0.00    0.00       6/1226        __shedskin__::list<__shedskin__::str*>::list(int, ...) [220]
+                0.00    0.00       9/1226        __shedskin__::__init() [225]
+                0.00    0.00     133/1226        __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00    1076/1226        __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [103]
+[102]    0.0    0.00    0.00    1226         std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+                0.00    0.00    1226/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_check_len(unsigned int, char const*) const [101]
+-----------------------------------------------
+                0.00    0.00       2/1076        __sys__::__init(int, char**) [54]
+                0.00    0.00       2/1076        __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00    1072/1076        __shedskin__::str::split(__shedskin__::str*, int) [113]
+[103]    0.0    0.00    0.00    1076         __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [103]
+                0.00    0.00    1076/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+-----------------------------------------------
+                0.00    0.00       1/1069        __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00    1068/1069        __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+[104]    0.0    0.00    0.00    1069         double __shedskin__::__float<__shedskin__::str*>(__shedskin__::str*) [104]
+-----------------------------------------------
+                0.00    0.00       1/529         __random__::Random::seed(int) [60]
+                0.00    0.00     528/529         __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[105]    0.0    0.00    0.00     529         int __shedskin__::__mods<int>(int, int) [105]
+-----------------------------------------------
+                0.00    0.00      34/491         __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00     457/491         __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[106]    0.0    0.00    0.00     491         __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*) [106]
+                0.00    0.00     274/274         std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__triangle__::Triangle**, std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> > >, __triangle__::Triangle* const&) [117]
+-----------------------------------------------
+                0.00    0.00     388/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+[107]    0.0    0.00    0.00     388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_M_clone(gc_allocator<char> const&, unsigned int) [107]
+-----------------------------------------------
+                0.00    0.00       2/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::resize(unsigned int, char) [201]
+                0.00    0.00      20/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [122]
+                0.00    0.00      35/388         __shedskin__::str::__add__(__shedskin__::str*) [132]
+                0.00    0.00     331/388         __shedskin__::file::readline(int) [126]
+[108]    0.0    0.00    0.00     388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+                0.00    0.00     388/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_M_clone(gc_allocator<char> const&, unsigned int) [107]
+-----------------------------------------------
+                0.00    0.00      14/370         __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00     356/370         __shedskin__::str::split(__shedskin__::str*, int) [113]
+[109]    0.0    0.00    0.00     370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const [109]
+                0.00    0.00     370/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+-----------------------------------------------
+                0.00    0.00      14/370         __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00     356/370         __shedskin__::str::split(__shedskin__::str*, int) [113]
+[110]    0.0    0.00    0.00     370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::~basic_string() [110]
+-----------------------------------------------
+                0.00    0.00       4/360         __shedskin__::str::strip(__shedskin__::str*) [170]
+                0.00    0.00     356/360         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+[111]    0.0    0.00    0.00     360         __shedskin__::str::lstrip(__shedskin__::str*) [111]
+                0.00    0.00     360/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00     360/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+-----------------------------------------------
+                0.00    0.00       1/360         __minilight__::__init() [2]
+                0.00    0.00       3/360         __shedskin__::__int(__shedskin__::str*, int) [184]
+                0.00    0.00     356/360         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+[112]    0.0    0.00    0.00     360         __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00     360/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00     360/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+-----------------------------------------------
+                0.00    0.00       2/358         __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00     356/358         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+[113]    0.0    0.00    0.00     358         __shedskin__::str::split(__shedskin__::str*, int) [113]
+                0.00    0.00    1072/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+                0.00    0.00    1072/1076        __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [103]
+                0.00    0.00     716/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00     358/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+                0.00    0.00     358/358         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find_first_not_of(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int) const [114]
+                0.00    0.00     356/370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const [109]
+                0.00    0.00     356/370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::~basic_string() [110]
+-----------------------------------------------
+                0.00    0.00     358/358         __shedskin__::str::split(__shedskin__::str*, int) [113]
+[114]    0.0    0.00    0.00     358         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find_first_not_of(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int) const [114]
+-----------------------------------------------
+                0.00    0.00       2/356         __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       2/356         __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00     352/356         __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[115]    0.0    0.00    0.00     356         __vector3f__::Vector3f_str(__shedskin__::str*) [115]
+                0.00    0.00    1068/1069        double __shedskin__::__float<__shedskin__::str*>(__shedskin__::str*) [104]
+                0.00    0.00     356/360         __shedskin__::str::lstrip(__shedskin__::str*) [111]
+                0.00    0.00     356/360         __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00     356/358         __shedskin__::str::split(__shedskin__::str*, int) [113]
+-----------------------------------------------
+                0.00    0.00     274/274         std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__triangle__::Triangle**, std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> > >, __triangle__::Triangle* const&) [117]
+[116]    0.0    0.00    0.00     274         std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_check_len(unsigned int, char const*) const [116]
+-----------------------------------------------
+                0.00    0.00     274/274         __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*) [106]
+[117]    0.0    0.00    0.00     274         std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__triangle__::Triangle**, std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> > >, __triangle__::Triangle* const&) [117]
+                0.00    0.00     274/274         std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_check_len(unsigned int, char const*) const [116]
+-----------------------------------------------
+                0.00    0.00     256/256         __shedskin__::__init() [225]
+[118]    0.0    0.00    0.00     256         __shedskin__::str::str(char const*, int) [118]
+                0.00    0.00     256/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00       1/202         __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00     201/202         __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+[119]    0.0    0.00    0.00     202         double __shedskin__::__min<double>(double, double) [119]
+-----------------------------------------------
+                0.00    0.00      14/144         __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00     130/144         __shedskin__::str::str(char const*) [121]
+[120]    0.0    0.00    0.00     144         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&) [120]
+                0.00    0.00     144/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00       1/130         __surfacepoint__::__init() [231]
+                0.00    0.00       1/130         __shedskin__::__init() [225]
+                0.00    0.00       1/130         __spatialindex__::__init() [230]
+                0.00    0.00       1/130         __raytracer__::__init() [229]
+                0.00    0.00       2/130         __triangle__::__init() [227]
+                0.00    0.00       2/130         __scene__::__init() [235]
+                0.00    0.00       2/130         __camera__::__init() [217]
+                0.00    0.00       3/130         __vector3f__::__init() [228]
+                0.00    0.00       4/130         __time__::__init() [51]
+                0.00    0.00       4/130         __image__::__init() [61]
+                0.00    0.00       6/130         __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00       6/130         __shedskin__::str* __shedskin__::do_asprintf<char const*>(char const*, char const*, __shedskin__::pyobj*, __shedskin__::pyobj*) [166]
+                0.00    0.00      10/130         __sys__::__init(int, char**) [54]
+                0.00    0.00      14/130         __shedskin__::str* __shedskin__::do_asprintf<int>(char const*, int, __shedskin__::pyobj*, __shedskin__::pyobj*) [152]
+                0.00    0.00      14/130         __minilight__::__init() [2]
+                0.00    0.00      23/130         __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00      36/130         __random__::__init() [52]
+[121]    0.0    0.00    0.00     130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00     130/144         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&) [120]
+-----------------------------------------------
+                0.00    0.00      14/104         __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      20/104         std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [146]
+                0.00    0.00      70/104         __shedskin__::str::__add__(__shedskin__::str*) [132]
+[122]    0.0    0.00    0.00     104         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [122]
+                0.00    0.00      20/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+-----------------------------------------------
+                0.00    0.00      14/88          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      20/88          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00      54/88          __shedskin__::__fmtpos(__shedskin__::str*) [129]
+[123]    0.0    0.00    0.00      88         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const [123]
+-----------------------------------------------
+                0.00    0.00       1/67          __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00       2/67          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00      64/67          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[124]    0.0    0.00    0.00      67         __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [124]
+                0.00    0.00     201/219718      double __shedskin__::__max<double>(double, double) [79]
+                0.00    0.00     201/202         double __shedskin__::__min<double>(double, double) [119]
+-----------------------------------------------
+                0.00    0.00       2/62          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       2/62          __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00       3/62          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       3/62          __minilight__::__init() [2]
+                0.00    0.00      52/62          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[125]    0.0    0.00    0.00      62         __shedskin__::file::next() [125]
+                0.00    0.00      62/62          __shedskin__::file::readline(int) [126]
+                0.00    0.00       1/3           __shedskin__::str::__len__() [178]
+                0.00    0.00       1/3           int __shedskin__::len<__shedskin__::str*>(__shedskin__::str*) [177]
+-----------------------------------------------
+                0.00    0.00      62/62          __shedskin__::file::next() [125]
+[126]    0.0    0.00    0.00      62         __shedskin__::file::readline(int) [126]
+                0.00    0.00    2853/2853        __shedskin__::file::getchar() [96]
+                0.00    0.00     331/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+                0.00    0.00      62/199889      __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00       2/61          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       2/61          __minilight__::__init() [2]
+                0.00    0.00       2/61          __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00       3/61          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00      52/61          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[127]    0.0    0.00    0.00      61         __shedskin__::__fileiter::next() [127]
+-----------------------------------------------
+                0.00    0.00       2/60          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       2/60          __minilight__::__init() [2]
+                0.00    0.00       2/60          __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00       3/60          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00      51/60          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[128]    0.0    0.00    0.00      60         __shedskin__::str::isspace() [128]
+-----------------------------------------------
+                0.00    0.00      20/54          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00      34/54          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[129]    0.0    0.00    0.00      54         __shedskin__::__fmtpos(__shedskin__::str*) [129]
+                0.00    0.00      54/88          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const [123]
+-----------------------------------------------
+                0.00    0.00       4/38          __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00      14/38          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      20/38          __shedskin__::modgetitem(__shedskin__::list<__shedskin__::pyobj*>*, int) [142]
+[130]    0.0    0.00    0.00      38         __shedskin__::pyseq<__shedskin__::pyobj*>::__len__() [130]
+-----------------------------------------------
+                0.00    0.00       1/37          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       1/37          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00       1/37          __minilight__::__init() [2]
+                0.00    0.00       1/37          __image__::Image::__init__(__shedskin__::file*) [53]
+                0.00    0.00      33/37          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[131]    0.0    0.00    0.00      37         __shedskin__::file::__iter__() [131]
+-----------------------------------------------
+                0.00    0.00       2/35          __sys__::__init(int, char**) [54]
+                0.00    0.00       2/35          __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00      11/35          __minilight__::__init() [2]
+                0.00    0.00      20/35          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[132]    0.0    0.00    0.00      35         __shedskin__::str::__add__(__shedskin__::str*) [132]
+                0.00    0.00      70/104         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [122]
+                0.00    0.00      35/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+-----------------------------------------------
+                0.00    0.00      34/34          __shedskin__::__iter<__shedskin__::str*>::for_has_next() [135]
+[133]    0.0    0.00    0.00      34         __shedskin__::__dictiterkeys<__shedskin__::str*, int>::next() [133]
+-----------------------------------------------
+                0.00    0.00      34/34          __re__::re_object::__exec(__shedskin__::str*, int, int, int) [137]
+[134]    0.0    0.00    0.00      34         __shedskin__::dict<__shedskin__::str*, int>::__iter__() [134]
+-----------------------------------------------
+                0.00    0.00      34/34          __re__::re_object::__exec(__shedskin__::str*, int, int, int) [137]
+[135]    0.0    0.00    0.00      34         __shedskin__::__iter<__shedskin__::str*>::for_has_next() [135]
+                0.00    0.00      34/34          __shedskin__::__dictiterkeys<__shedskin__::str*, int>::next() [133]
+-----------------------------------------------
+                0.00    0.00       1/34          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       1/34          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00      32/34          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[136]    0.0    0.00    0.00      34         __re__::match_object::groups(__shedskin__::str*) [136]
+                0.00    0.00     165/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00     165/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+                0.00    0.00     133/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+-----------------------------------------------
+                0.00    0.00      34/34          __re__::re_object::search(__shedskin__::str*, int, int) [138]
+[137]    0.0    0.00    0.00      34         __re__::re_object::__exec(__shedskin__::str*, int, int, int) [137]
+                0.00    0.00      34/34          __shedskin__::dict<__shedskin__::str*, int>::__iter__() [134]
+                0.00    0.00      34/34          __shedskin__::__iter<__shedskin__::str*>::for_has_next() [135]
+-----------------------------------------------
+                0.00    0.00       1/34          __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*) [44]
+                0.00    0.00       1/34          __camera__::Camera::__init__(__shedskin__::file*) [49]
+                0.00    0.00      32/34          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[138]    0.0    0.00    0.00      34         __re__::re_object::search(__shedskin__::str*, int, int) [138]
+                0.00    0.00      34/34          __re__::re_object::__exec(__shedskin__::str*, int, int, int) [137]
+-----------------------------------------------
+                0.00    0.00      32/32          __triangle__::Triangle::__init__(__shedskin__::file*) [46]
+[139]    0.0    0.00    0.00      32         __shedskin__::list<__vector3f__::Vector3f*>::list(int, ...) [139]
+                0.00    0.00      96/554158      std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&) [72]
+-----------------------------------------------
+                0.00    0.00       1/23          __triangle__::__init() [227]
+                0.00    0.00       1/23          __vector3f__::__init() [228]
+                0.00    0.00       1/23          __surfacepoint__::__init() [231]
+                0.00    0.00       1/23          __scene__::__init() [235]
+                0.00    0.00       1/23          __camera__::__init() [217]
+                0.00    0.00       1/23          __spatialindex__::__init() [230]
+                0.00    0.00       1/23          __image__::__init() [61]
+                0.00    0.00       1/23          __raytracer__::__init() [229]
+                0.00    0.00       2/23          __random__::__init() [52]
+                0.00    0.00      13/23          __shedskin__::__init() [225]
+[140]    0.0    0.00    0.00      23         __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00      23/130         __shedskin__::str::str(char const*) [121]
+-----------------------------------------------
+                0.00    0.00       2/22          __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00      20/22          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[141]    0.0    0.00    0.00      22         __shedskin__::pyseq<__shedskin__::pyobj*>::__getitem__(int) [141]
+-----------------------------------------------
+                0.00    0.00      20/20          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[142]    0.0    0.00    0.00      20         __shedskin__::modgetitem(__shedskin__::list<__shedskin__::pyobj*>*, int) [142]
+                0.00    0.00      20/38          __shedskin__::pyseq<__shedskin__::pyobj*>::__len__() [130]
+-----------------------------------------------
+                0.00    0.00       2/20          __shedskin__::print(int, ...) [195]
+                0.00    0.00      18/20          __shedskin__::__modct(__shedskin__::str*, int, ...) [156]
+[143]    0.0    0.00    0.00      20         __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*) [143]
+                0.00    0.00      18/18          std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::pyobj**, std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> > >, __shedskin__::pyobj* const&) [149]
+-----------------------------------------------
+                0.00    0.00      20/20          __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+[144]    0.0    0.00    0.00      20         double __shedskin__::__float<int>(int) [144]
+-----------------------------------------------
+                0.00    0.00      20/20          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[145]    0.0    0.00    0.00      20         __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00      46/2017        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int) [99]
+                0.00    0.00      40/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+                0.00    0.00      20/88          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const [123]
+                0.00    0.00      20/54          __shedskin__::__fmtpos(__shedskin__::str*) [129]
+                0.00    0.00      20/20          std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [146]
+                0.00    0.00      20/35          __shedskin__::str::__add__(__shedskin__::str*) [132]
+                0.00    0.00      14/370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const [109]
+                0.00    0.00      14/14          __shedskin__::str* __shedskin__::do_asprintf<int>(char const*, int, __shedskin__::pyobj*, __shedskin__::pyobj*) [152]
+                0.00    0.00      14/370         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::~basic_string() [110]
+                0.00    0.00       6/6           __shedskin__::str* __shedskin__::do_asprintf<char const*>(char const*, char const*, __shedskin__::pyobj*, __shedskin__::pyobj*) [166]
+                0.00    0.00       6/6           __shedskin__::str::__str__() [167]
+                0.00    0.00       6/6           __shedskin__::str* __shedskin__::__str<__shedskin__::pyobj*>(__shedskin__::pyobj*) [168]
+-----------------------------------------------
+                0.00    0.00      20/20          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[146]    0.0    0.00    0.00      20         std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [146]
+                0.00    0.00      20/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+                0.00    0.00      20/104         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [122]
+-----------------------------------------------
+                0.00    0.00      18/18          __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*) [198]
+[147]    0.0    0.00    0.00      18         __shedskin__::pyseq<int>::__getitem__(int) [147]
+-----------------------------------------------
+                0.00    0.00      18/18          std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::pyobj**, std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> > >, __shedskin__::pyobj* const&) [149]
+[148]    0.0    0.00    0.00      18         std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_check_len(unsigned int, char const*) const [148]
+-----------------------------------------------
+                0.00    0.00      18/18          __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*) [143]
+[149]    0.0    0.00    0.00      18         std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::pyobj**, std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> > >, __shedskin__::pyobj* const&) [149]
+                0.00    0.00      18/18          std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_check_len(unsigned int, char const*) const [148]
+-----------------------------------------------
+                0.00    0.00       2/16          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int) [200]
+                0.00    0.00      14/16          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[150]    0.0    0.00    0.00      16         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int) [150]
+                0.00    0.00      16/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00      14/14          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+[151]    0.0    0.00    0.00      14         __shedskin__::mod_to_int(__shedskin__::pyobj*) [151]
+-----------------------------------------------
+                0.00    0.00      14/14          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[152]    0.0    0.00    0.00      14         __shedskin__::str* __shedskin__::do_asprintf<int>(char const*, int, __shedskin__::pyobj*, __shedskin__::pyobj*) [152]
+                0.00    0.00      14/130         __shedskin__::str::str(char const*) [121]
+-----------------------------------------------
+                0.00    0.00       4/14          __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+                0.00    0.00      10/14          __minilight__::__init() [2]
+[153]    0.0    0.00    0.00      14         __shedskin__::__box(int) [153]
+-----------------------------------------------
+                0.00    0.00       2/14          __shedskin__::print(int, ...) [195]
+                0.00    0.00      12/14          __shedskin__::__modct(__shedskin__::str*, int, ...) [156]
+[154]    0.0    0.00    0.00      14         __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00      34/54          __shedskin__::__fmtpos(__shedskin__::str*) [129]
+                0.00    0.00      20/22          __shedskin__::pyseq<__shedskin__::pyobj*>::__getitem__(int) [141]
+                0.00    0.00      20/20          __shedskin__::modgetitem(__shedskin__::list<__shedskin__::pyobj*>*, int) [142]
+                0.00    0.00      20/20          __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+                0.00    0.00      14/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+                0.00    0.00      14/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+                0.00    0.00      14/16          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int) [150]
+                0.00    0.00      14/144         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&) [120]
+                0.00    0.00      14/88          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const [123]
+                0.00    0.00      14/14          __shedskin__::mod_to_int(__shedskin__::pyobj*) [151]
+                0.00    0.00      14/38          __shedskin__::pyseq<__shedskin__::pyobj*>::__len__() [130]
+                0.00    0.00      14/104         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [122]
+-----------------------------------------------
+                0.00    0.00       1/14          __random__::Random::seed(int) [60]
+                0.00    0.00      13/14          __minilight__::__init() [2]
+[155]    0.0    0.00    0.00      14         __time__::time() [155]
+-----------------------------------------------
+                0.00    0.00       2/12          __image__::Image::get_formatted(__shedskin__::file*, int) [22]
+                0.00    0.00      10/12          __minilight__::__init() [2]
+[156]    0.0    0.00    0.00      12         __shedskin__::__modct(__shedskin__::str*, int, ...) [156]
+                0.00    0.00      18/20          __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*) [143]
+                0.00    0.00      12/14          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+-----------------------------------------------
+                0.00    0.00      11/11          __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[157]    0.0    0.00    0.00      11         __shedskin__::list<__spatialindex__::SpatialIndex*>::__mul__(int) [157]
+                0.00    0.00      11/11          std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_fill_assign(unsigned int, __spatialindex__::SpatialIndex* const&) [161]
+-----------------------------------------------
+                0.00    0.00      11/11          __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[158]    0.0    0.00    0.00      11         __shedskin__::list<__spatialindex__::SpatialIndex*>::list(int, ...) [158]
+                0.00    0.00      11/11          std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__spatialindex__::SpatialIndex**, std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> > >, __spatialindex__::SpatialIndex* const&) [160]
+-----------------------------------------------
+                0.00    0.00      11/11          std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__spatialindex__::SpatialIndex**, std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> > >, __spatialindex__::SpatialIndex* const&) [160]
+[159]    0.0    0.00    0.00      11         std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_check_len(unsigned int, char const*) const [159]
+-----------------------------------------------
+                0.00    0.00      11/11          __shedskin__::list<__spatialindex__::SpatialIndex*>::list(int, ...) [158]
+[160]    0.0    0.00    0.00      11         std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__spatialindex__::SpatialIndex**, std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> > >, __spatialindex__::SpatialIndex* const&) [160]
+                0.00    0.00      11/11          std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_check_len(unsigned int, char const*) const [159]
+-----------------------------------------------
+                0.00    0.00      11/11          __shedskin__::list<__spatialindex__::SpatialIndex*>::__mul__(int) [157]
+[161]    0.0    0.00    0.00      11         std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_fill_assign(unsigned int, __spatialindex__::SpatialIndex* const&) [161]
+-----------------------------------------------
+                0.00    0.00      10/10          __minilight__::__init() [2]
+[162]    0.0    0.00    0.00      10         __shedskin__::str::__mul__(int) [162]
+                0.00    0.00      10/2429        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&) [97]
+-----------------------------------------------
+                0.00    0.00      10/10          __minilight__::__init() [2]
+[163]    0.0    0.00    0.00      10         __shedskin__::file::flush() [163]
+                0.00    0.00      10/199889      __shedskin__::file::__check_closed() [80]
+-----------------------------------------------
+                0.00    0.00      10/10          __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [3]
+[164]    0.0    0.00    0.00      10         __raytracer__::RayTracer::__init__(__scene__::Scene*) [164]
+-----------------------------------------------
+                0.00    0.00       1/9           __minilight__::__init() [2]
+                0.00    0.00       2/9           __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*) [192]
+                0.00    0.00       6/9           __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+[165]    0.0    0.00    0.00       9         __shedskin__::pyseq<__shedskin__::str*>::__len__() [165]
+-----------------------------------------------
+                0.00    0.00       6/6           __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[166]    0.0    0.00    0.00       6         __shedskin__::str* __shedskin__::do_asprintf<char const*>(char const*, char const*, __shedskin__::pyobj*, __shedskin__::pyobj*) [166]
+                0.00    0.00       6/130         __shedskin__::str::str(char const*) [121]
+-----------------------------------------------
+                0.00    0.00       6/6           __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[167]    0.0    0.00    0.00       6         __shedskin__::str::__str__() [167]
+-----------------------------------------------
+                0.00    0.00       6/6           __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [145]
+[168]    0.0    0.00    0.00       6         __shedskin__::str* __shedskin__::__str<__shedskin__::pyobj*>(__shedskin__::pyobj*) [168]
+-----------------------------------------------
+                0.00    0.00       5/5           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[169]    0.0    0.00    0.00       5         __shedskin__::list<double>::__slice__(int, int, int, int) [169]
+                0.00    0.00       5/32773       __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [93]
+-----------------------------------------------
+                0.00    0.00       1/4           __minilight__::__init() [2]
+                0.00    0.00       3/4           __shedskin__::__int(__shedskin__::str*, int) [184]
+[170]    0.0    0.00    0.00       4         __shedskin__::str::strip(__shedskin__::str*) [170]
+                0.00    0.00       4/360         __shedskin__::str::lstrip(__shedskin__::str*) [111]
+-----------------------------------------------
+                0.00    0.00       1/4           __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [20]
+                0.00    0.00       3/4           __minilight__::__init() [2]
+[171]    0.0    0.00    0.00       4         __shedskin__::str::__eq__(__shedskin__::pyobj*) [171]
+-----------------------------------------------
+                0.00    0.00       1/4           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00       3/4           __image__::Image::__init__(__shedskin__::file*) [53]
+[172]    0.0    0.00    0.00       4         __shedskin__::list<double>::__mul__(int) [172]
+                0.00    0.00       3/4           std::vector<double, gc_allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, unsigned int, double const&) [176]
+                0.00    0.00       1/1           std::vector<double, gc_allocator<double> >::_M_fill_assign(unsigned int, double const&) [236]
+-----------------------------------------------
+                0.00    0.00       4/4           __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double) [34]
+[173]    0.0    0.00    0.00       4         int __shedskin__::__divs<int>(int, int) [173]
+-----------------------------------------------
+                0.00    0.00       4/4           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[174]    0.0    0.00    0.00       4         __shedskin__::__seqiter<double>::next() [174]
+-----------------------------------------------
+                0.00    0.00       1/4           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+                0.00    0.00       3/4           __vector3f__::__init() [228]
+[175]    0.0    0.00    0.00       4         __vector3f__::Vector3f_scalar(double) [175]
+-----------------------------------------------
+                0.00    0.00       1/4           __shedskin__::list<double>::__add__(__shedskin__::list<double>*) [221]
+                0.00    0.00       3/4           __shedskin__::list<double>::__mul__(int) [172]
+[176]    0.0    0.00    0.00       4         std::vector<double, gc_allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, unsigned int, double const&) [176]
+-----------------------------------------------
+                0.00    0.00       1/3           __shedskin__::file::next() [125]
+                0.00    0.00       2/3           __shedskin__::print(int, ...) [195]
+[177]    0.0    0.00    0.00       3         int __shedskin__::len<__shedskin__::str*>(__shedskin__::str*) [177]
+-----------------------------------------------
+                0.00    0.00       1/3           __shedskin__::file::next() [125]
+                0.00    0.00       2/3           __shedskin__::print(int, ...) [195]
+[178]    0.0    0.00    0.00       3         __shedskin__::str::__len__() [178]
+-----------------------------------------------
+                0.00    0.00       3/3           __re__::compile(__shedskin__::str*, int) [189]
+[179]    0.0    0.00    0.00       3         __shedskin__::dict<__shedskin__::str*, int>::dict() [179]
+                0.00    0.00       3/3           std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::reserve(unsigned int) [191]
+                0.00    0.00       3/3           std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >**, std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> > >, unsigned int, __gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >* const&) [190]
+-----------------------------------------------
+                0.00    0.00       1/3           __minilight__::__init() [2]
+                0.00    0.00       2/3           __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [21]
+[180]    0.0    0.00    0.00       3         __shedskin__::file::close() [180]
+-----------------------------------------------
+                0.00    0.00       3/3           __sys__::__init(int, char**) [54]
+[181]    0.0    0.00    0.00       3         __shedskin__::file::file(_IO_FILE*) [181]
+-----------------------------------------------
+                0.00    0.00       3/3           __shedskin__::open(__shedskin__::str*, __shedskin__::str*) [183]
+[182]    0.0    0.00    0.00       3         __shedskin__::file::file(__shedskin__::str*, __shedskin__::str*) [182]
+-----------------------------------------------
+                0.00    0.00       1/3           __minilight__::__init() [2]
+                0.00    0.00       2/3           __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [21]
+[183]    0.0    0.00    0.00       3         __shedskin__::open(__shedskin__::str*, __shedskin__::str*) [183]
+                0.00    0.00       3/3           __shedskin__::file::file(__shedskin__::str*, __shedskin__::str*) [182]
+-----------------------------------------------
+                0.00    0.00       3/3           int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*) [185]
+[184]    0.0    0.00    0.00       3         __shedskin__::__int(__shedskin__::str*, int) [184]
+                0.00    0.00       3/360         __shedskin__::str::rstrip(__shedskin__::str*) [112]
+                0.00    0.00       3/4           __shedskin__::str::strip(__shedskin__::str*) [170]
+-----------------------------------------------
+                0.00    0.00       1/3           __minilight__::__init() [2]
+                0.00    0.00       2/3           __image__::Image::dim(__shedskin__::str*) [199]
+[185]    0.0    0.00    0.00       3         int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*) [185]
+                0.00    0.00       3/3           __shedskin__::__int(__shedskin__::str*, int) [184]
+-----------------------------------------------
+                0.00    0.00       1/3           __random__::Random::_init_by_array(__shedskin__::list<int>*) [219]
+                0.00    0.00       2/3           __image__::Image::dim(__shedskin__::str*) [199]
+[186]    0.0    0.00    0.00       3         int __shedskin__::__max<int>(int, int) [186]
+-----------------------------------------------
+                0.00    0.00       1/3           __random__::Random::_init_by_array(__shedskin__::list<int>*) [219]
+                0.00    0.00       2/3           __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*) [198]
+[187]    0.0    0.00    0.00       3         __shedskin__::pyseq<int>::__len__() [187]
+-----------------------------------------------
+                0.00    0.00       3/3           __re__::compile(__shedskin__::str*, int) [189]
+[188]    0.0    0.00    0.00       3         __re__::__convert_flags(int) [188]
+-----------------------------------------------
+                0.00    0.00       1/3           __triangle__::__init() [227]
+                0.00    0.00       1/3           __scene__::__init() [235]
+                0.00    0.00       1/3           __camera__::__init() [217]
+[189]    0.0    0.00    0.00       3         __re__::compile(__shedskin__::str*, int) [189]
+                0.00    0.00       3/3           __re__::__convert_flags(int) [188]
+                0.00    0.00       3/3           __shedskin__::dict<__shedskin__::str*, int>::dict() [179]
+                0.00    0.00       3/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+                0.00    0.00       3/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+-----------------------------------------------
+                0.00    0.00       3/3           __shedskin__::dict<__shedskin__::str*, int>::dict() [179]
+[190]    0.0    0.00    0.00       3         std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >**, std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> > >, unsigned int, __gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >* const&) [190]
+-----------------------------------------------
+                0.00    0.00       3/3           __shedskin__::dict<__shedskin__::str*, int>::dict() [179]
+[191]    0.0    0.00    0.00       3         std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::reserve(unsigned int) [191]
+-----------------------------------------------
+                0.00    0.00       2/2           __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+[192]    0.0    0.00    0.00       2         __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*) [192]
+                0.00    0.00       2/9           __shedskin__::pyseq<__shedskin__::str*>::__len__() [165]
+                0.00    0.00       2/2           __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+-----------------------------------------------
+                0.00    0.00       2/2           __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*) [192]
+[193]    0.0    0.00    0.00       2         __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+                0.00    0.00       6/9           __shedskin__::pyseq<__shedskin__::str*>::__len__() [165]
+                0.00    0.00       2/2           std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::resize(unsigned int, char) [201]
+                0.00    0.00       2/2413        std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&) [98]
+                0.00    0.00       2/2016        __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [100]
+-----------------------------------------------
+                0.00    0.00       2/2           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[194]    0.0    0.00    0.00       2         int __shedskin__::__cmp<double>(double, double) [194]
+-----------------------------------------------
+                0.00    0.00       2/2           __minilight__::__init() [2]
+[195]    0.0    0.00    0.00       2         __shedskin__::print(int, ...) [195]
+                0.00    0.00       2/20          __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*) [143]
+                0.00    0.00       2/14          __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [154]
+                0.00    0.00       2/2           __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00       2/3           __shedskin__::str::__len__() [178]
+                0.00    0.00       2/3           int __shedskin__::len<__shedskin__::str*>(__shedskin__::str*) [177]
+-----------------------------------------------
+                0.00    0.00       2/2           __shedskin__::print(int, ...) [195]
+[196]    0.0    0.00    0.00       2         __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [196]
+                0.00    0.00       6/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       4/38          __shedskin__::pyseq<__shedskin__::pyobj*>::__len__() [130]
+                0.00    0.00       2/1076        __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [103]
+                0.00    0.00       2/22          __shedskin__::pyseq<__shedskin__::pyobj*>::__getitem__(int) [141]
+                0.00    0.00       2/2           __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*) [192]
+                0.00    0.00       2/35          __shedskin__::str::__add__(__shedskin__::str*) [132]
+-----------------------------------------------
+                0.00    0.00       2/2           __random__::__init() [52]
+[197]    0.0    0.00    0.00       2         __math__::log(double) [197]
+-----------------------------------------------
+                0.00    0.00       2/2           __time__::tm2tuple(tm*) [50]
+[198]    0.0    0.00    0.00       2         __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*) [198]
+                0.00    0.00      18/18          __shedskin__::pyseq<int>::__getitem__(int) [147]
+                0.00    0.00       2/3           __shedskin__::pyseq<int>::__len__() [187]
+-----------------------------------------------
+                0.00    0.00       2/2           __image__::Image::__init__(__shedskin__::file*) [53]
+[199]    0.0    0.00    0.00       2         __image__::Image::dim(__shedskin__::str*) [199]
+                0.00    0.00       2/3           int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*) [185]
+                0.00    0.00       2/3           int __shedskin__::__max<int>(int, int) [186]
+-----------------------------------------------
+                0.00    0.00       2/2           __shedskin__::__init() [225]
+[200]    0.0    0.00    0.00       2         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int) [200]
+                0.00    0.00       2/16          std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int) [150]
+-----------------------------------------------
+                0.00    0.00       2/2           __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [193]
+[201]    0.0    0.00    0.00       2         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::resize(unsigned int, char) [201]
+                0.00    0.00       2/388         std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int) [108]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[202]    0.0    0.00    0.00       1         global constructors keyed to _ZN10__camera__7const_0E [202]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[203]    0.0    0.00    0.00       1         global constructors keyed to _ZN10__random__7const_0E [203]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[204]    0.0    0.00    0.00       1         global constructors keyed to _ZN12__shedskin__9cl_class_E [204]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[205]    0.0    0.00    0.00       1         global constructors keyed to _ZN12__triangle__7const_0E [205]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[206]    0.0    0.00    0.00       1         global constructors keyed to _ZN12__vector3f__7const_0E [206]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[207]    0.0    0.00    0.00       1         global constructors keyed to _ZN13__minilight__7const_0E [207]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[208]    0.0    0.00    0.00       1         global constructors keyed to _ZN13__raytracer__8__name__E [208]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[209]    0.0    0.00    0.00       1         global constructors keyed to _ZN16__spatialindex__8__name__E [209]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[210]    0.0    0.00    0.00       1         global constructors keyed to _ZN16__surfacepoint__8__name__E [210]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[211]    0.0    0.00    0.00       1         global constructors keyed to _ZN6__re__1IE [211]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[212]    0.0    0.00    0.00       1         global constructors keyed to _ZN7__sys__4argvE [212]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[213]    0.0    0.00    0.00       1         global constructors keyed to _ZN8__math__1eE [213]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[214]    0.0    0.00    0.00       1         global constructors keyed to _ZN8__time__5startE [214]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[215]    0.0    0.00    0.00       1         global constructors keyed to _ZN9__image__7const_0E [215]
+-----------------------------------------------
+                0.00    0.00       1/1           __do_global_ctors_aux [949]
+[216]    0.0    0.00    0.00       1         global constructors keyed to _ZN9__scene__7const_0E [216]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[217]    0.0    0.00    0.00       1         __camera__::__init() [217]
+                0.00    0.00       2/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00       1/3           __re__::compile(__shedskin__::str*, int) [189]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::Random::_init_by_array(__shedskin__::list<int>*) [219]
+[218]    0.0    0.00    0.00       1         __random__::Random::_init_genrand(int) [218]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::Random::seed(int) [60]
+[219]    0.0    0.00    0.00       1         __random__::Random::_init_by_array(__shedskin__::list<int>*) [219]
+                0.00    0.00       1/3           __shedskin__::pyseq<int>::__len__() [187]
+                0.00    0.00       1/1           __random__::Random::_init_genrand(int) [218]
+                0.00    0.00       1/3           int __shedskin__::__max<int>(int, int) [186]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::__init() [52]
+[220]    0.0    0.00    0.00       1         __shedskin__::list<__shedskin__::str*>::list(int, ...) [220]
+                0.00    0.00       6/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+-----------------------------------------------
+                0.00    0.00       1/1           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[221]    0.0    0.00    0.00       1         __shedskin__::list<double>::__add__(__shedskin__::list<double>*) [221]
+                0.00    0.00       2/32779       __shedskin__::pyseq<double>::__len__() [91]
+                0.00    0.00       1/4           std::vector<double, gc_allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, unsigned int, double const&) [176]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::Random::Random(int) [59]
+[222]    0.0    0.00    0.00       1         __shedskin__::list<int>::__mul__(int) [222]
+                0.00    0.00       1/1           std::vector<int, gc_allocator<int> >::_M_fill_assign(unsigned int, int const&) [237]
+-----------------------------------------------
+                0.00    0.00       1/1           __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int) [45]
+[223]    0.0    0.00    0.00       1         __shedskin__::pyseq<double>::__iter__() [223]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[224]    0.0    0.00    0.00       1         __shedskin__::__exit(int) [224]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[225]    0.0    0.00    0.00       1         __shedskin__::__init() [225]
+                0.00    0.00     256/256         __shedskin__::str::str(char const*, int) [118]
+                0.00    0.00      13/23          __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00       9/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+                0.00    0.00       2/2           std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int) [200]
+                0.00    0.00       1/130         __shedskin__::str::str(char const*) [121]
+-----------------------------------------------
+                0.00    0.00       1/1           __time__::__init() [51]
+[226]    0.0    0.00    0.00       1         __shedskin__::tuple2<__shedskin__::str*, __shedskin__::str*>::tuple2(int, ...) [226]
+                0.00    0.00       2/1226        std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&) [102]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[227]    0.0    0.00    0.00       1         __triangle__::__init() [227]
+                0.00    0.00       2/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00       1/3           __re__::compile(__shedskin__::str*, int) [189]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[228]    0.0    0.00    0.00       1         __vector3f__::__init() [228]
+                0.00    0.00       3/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       3/4           __vector3f__::Vector3f_scalar(double) [175]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[229]    0.0    0.00    0.00       1         __raytracer__::__init() [229]
+                0.00    0.00       1/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[230]    0.0    0.00    0.00       1         __spatialindex__::__init() [230]
+                0.00    0.00       1/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[231]    0.0    0.00    0.00       1         __surfacepoint__::__init() [231]
+                0.00    0.00       1/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[232]    0.0    0.00    0.00       1         __re__::__init() [232]
+-----------------------------------------------
+                0.00    0.00       1/1           __random__::__init() [52]
+[233]    0.0    0.00    0.00       1         __math__::exp(double) [233]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[234]    0.0    0.00    0.00       1         __math__::__init() [234]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[235]    0.0    0.00    0.00       1         __scene__::__init() [235]
+                0.00    0.00       2/130         __shedskin__::str::str(char const*) [121]
+                0.00    0.00       1/23          __shedskin__::class_::class_(char const*, int, int) [140]
+                0.00    0.00       1/3           __re__::compile(__shedskin__::str*, int) [189]
+-----------------------------------------------
+                0.00    0.00       1/1           __shedskin__::list<double>::__mul__(int) [172]
+[236]    0.0    0.00    0.00       1         std::vector<double, gc_allocator<double> >::_M_fill_assign(unsigned int, double const&) [236]
+-----------------------------------------------
+                0.00    0.00       1/1           __shedskin__::list<int>::__mul__(int) [222]
+[237]    0.0    0.00    0.00       1         std::vector<int, gc_allocator<int> >::_M_fill_assign(unsigned int, int const&) [237]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+ [202] global constructors keyed to _ZN10__camera__7const_0E [194] int __shedskin__::__cmp<double>(double, double) [45] __spatialindex__::SpatialIndex::__init__(__vector3f__::Vector3f*, __shedskin__::list<double>*, __shedskin__::list<__triangle__::Triangle*>*, int)
+ [203] global constructors keyed to _ZN10__random__7const_0E [184] __shedskin__::__int(__shedskin__::str*, int) [230] __spatialindex__::__init()
+ [204] global constructors keyed to _ZN12__shedskin__9cl_class_E [185] int __shedskin__::__int<__shedskin__::str*>(__shedskin__::str*) [27] __surfacepoint__::SurfacePoint::get_emission(__vector3f__::Vector3f*, __vector3f__::Vector3f*, int)
+ [205] global constructors keyed to _ZN12__triangle__7const_0E [74] int __shedskin__::__int<double>(double) [33] __surfacepoint__::SurfacePoint::get_reflection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __vector3f__::Vector3f*)
+ [206] global constructors keyed to _ZN12__vector3f__7const_0E [79] double __shedskin__::__max<double>(double, double) [15] __surfacepoint__::SurfacePoint::get_next_direction(__vector3f__::Vector3f*)
+ [207] global constructors keyed to _ZN13__minilight__7const_0E [186] int __shedskin__::__max<int>(int, int) [31] __surfacepoint__::SurfacePoint::__init__(__triangle__::Triangle*, __vector3f__::Vector3f*)
+ [208] global constructors keyed to _ZN13__raytracer__8__name__E [119] double __shedskin__::__min<double>(double, double) [231] __surfacepoint__::__init()
+ [209] global constructors keyed to _ZN16__spatialindex__8__name__E [42] int __shedskin__::__min<int>(int, int) [136] __re__::match_object::groups(__shedskin__::str*)
+ [210] global constructors keyed to _ZN16__surfacepoint__8__name__E [168] __shedskin__::str* __shedskin__::__str<__shedskin__::pyobj*>(__shedskin__::pyobj*) [188] __re__::__convert_flags(int)
+ [211] global constructors keyed to _ZN6__re__1IE [195] __shedskin__::print(int, ...) [232] __re__::__init()
+ [212] global constructors keyed to _ZN7__sys__4argvE [23] __shedskin__::pyobj::__nonzero__() [189] __re__::compile(__shedskin__::str*, int)
+ [213] global constructors keyed to _ZN8__math__1eE [36] __shedskin__::pyobj::__eq__(__shedskin__::pyobj*) [137] __re__::re_object::__exec(__shedskin__::str*, int, int, int)
+ [214] global constructors keyed to _ZN8__time__5startE [20] __shedskin__::pyobj::__ne__(__shedskin__::pyobj*) [138] __re__::re_object::search(__shedskin__::str*, int, int)
+ [215] global constructors keyed to _ZN9__image__7const_0E [37] __shedskin__::pyobj::__len__() [54] __sys__::__init(int, char**)
+ [216] global constructors keyed to _ZN9__scene__7const_0E [75] __shedskin__::pyseq<__triangle__::Triangle*>::__getitem__(int) [85] __math__::cos(double)
+  [49] __camera__::Camera::__init__(__shedskin__::file*) [106] __shedskin__::pyseq<__triangle__::Triangle*>::append(__triangle__::Triangle*) [233] __math__::exp(double)
+   [3] __camera__::Camera::get_frame(__scene__::Scene*, __image__::Image*) [38] __shedskin__::pyseq<__triangle__::Triangle*>::__len__() [197] __math__::log(double)
+ [217] __camera__::__init()  [103] __shedskin__::pyseq<__shedskin__::str*>::append(__shedskin__::str*) [86] __math__::sin(double)
+ [218] __random__::Random::_init_genrand(int) [165] __shedskin__::pyseq<__shedskin__::str*>::__len__() [83] __math__::tan(double)
+  [10] __random__::Random::_genrand_int32() [141] __shedskin__::pyseq<__shedskin__::pyobj*>::__getitem__(int) [19] __math__::sqrt(double)
+   [9] __random__::Random::_genrand_res53() [143] __shedskin__::pyseq<__shedskin__::pyobj*>::append(__shedskin__::pyobj*) [92] __math__::log10(double)
+ [219] __random__::Random::_init_by_array(__shedskin__::list<int>*) [130] __shedskin__::pyseq<__shedskin__::pyobj*>::__len__() [234] __math__::__init()
+  [60] __random__::Random::seed(int) [93] __shedskin__::pyseq<double>::slice(int, int, int, int, __shedskin__::pyseq<double>*) [198] __time__::struct_time::struct_time(__shedskin__::tuple2<int, int>*)
+  [67] __random__::Random::random() [87] __shedskin__::pyseq<double>::append(double) [155] __time__::time()
+  [59] __random__::Random::Random(int) [91] __shedskin__::pyseq<double>::__len__() [51] __time__::__init()
+  [52] __random__::__init()  [223] __shedskin__::pyseq<double>::__iter__() [55] __time__::gmtime(double)
+  [11] __random__::random()  [147] __shedskin__::pyseq<int>::__getitem__(int) [56] __time__::gmtime()
+ [127] __shedskin__::__fileiter::next() [187] __shedskin__::pyseq<int>::__len__() [50] __time__::tm2tuple(tm*)
+ [151] __shedskin__::mod_to_int(__shedskin__::pyobj*) [173] int __shedskin__::__divs<int>(int, int) [57] __time__::localtime(double)
+ [142] __shedskin__::modgetitem(__shedskin__::list<__shedskin__::pyobj*>*, int) [224] __shedskin__::__exit(int) [58] __time__::localtime()
+ [166] __shedskin__::str* __shedskin__::do_asprintf<char const*>(char const*, char const*, __shedskin__::pyobj*, __shedskin__::pyobj*) [225] __shedskin__::__init() [43] __image__::Image::add_to_pixel(int, int, __vector3f__::Vector3f*)
+ [152] __shedskin__::str* __shedskin__::do_asprintf<int>(char const*, int, __shedskin__::pyobj*, __shedskin__::pyobj*) [135] __shedskin__::__iter<__shedskin__::str*>::for_has_next() [22] __image__::Image::get_formatted(__shedskin__::file*, int)
+ [133] __shedskin__::__dictiterkeys<__shedskin__::str*, int>::next() [154] __shedskin__::__mod4(__shedskin__::str*, __shedskin__::list<__shedskin__::pyobj*>*) [34] __image__::Image::calculate_tone_mapping(__shedskin__::list<double>*, double)
+  [89] __shedskin__::chr(int) [196] __shedskin__::__mod5(__shedskin__::list<__shedskin__::pyobj*>*, int) [199] __image__::Image::dim(__shedskin__::str*)
+ [177] int __shedskin__::len<__shedskin__::str*>(__shedskin__::str*) [105] int __shedskin__::__mods<int>(int, int) [53] __image__::Image::__init__(__shedskin__::file*)
+ [192] __shedskin__::str::join(__shedskin__::pyseq<__shedskin__::str*>*) [140] __shedskin__::class_::class_(char const*, int, int) [61] __image__::__init()
+ [113] __shedskin__::str::split(__shedskin__::str*, int) [76] __shedskin__::tuple2<__vector3f__::Vector3f*, __vector3f__::Vector3f*>::tuple2(int, ...) [13] __scene__::Scene::get_emitter()
+ [170] __shedskin__::str::strip(__shedskin__::str*) [226] __shedskin__::tuple2<__shedskin__::str*, __shedskin__::str*>::tuple2(int, ...) [77] __scene__::Scene::emitters_count()
+ [171] __shedskin__::str::__eq__(__shedskin__::pyobj*) [48] __shedskin__::tuple2<int, int>::tuple2(int, ...) [6] __scene__::Scene::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*)
+ [193] __shedskin__::str::__join(__shedskin__::pyseq<__shedskin__::str*>*, int) [28] int __shedskin__::___bool<int>(int) [90] __scene__::Scene::get_default_emission(__vector3f__::Vector3f*)
+ [111] __shedskin__::str::lstrip(__shedskin__::str*) [104] double __shedskin__::__float<__shedskin__::str*>(__shedskin__::str*) [44] __scene__::Scene::__init__(__shedskin__::file*, __vector3f__::Vector3f*)
+ [112] __shedskin__::str::rstrip(__shedskin__::str*) [144] double __shedskin__::__float<int>(int) [235] __scene__::__init()
+ [132] __shedskin__::str::__add__(__shedskin__::str*) [156] __shedskin__::__modct(__shedskin__::str*, int, ...) [114] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find_first_not_of(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int) const
+ [178] __shedskin__::str::__len__() [41] double __shedskin__::__power<double>(double, double) [123] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::find(char, unsigned int) const
+ [162] __shedskin__::str::__mul__(int) [94] __shedskin__::slicenr(int, int&, int&, int&, int) [109] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::substr(unsigned int, unsigned int) const
+ [167] __shedskin__::str::__str__() [129] __shedskin__::__fmtpos(__shedskin__::str*) [101] std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_check_len(unsigned int, char const*) const
+ [128] __shedskin__::str::isspace() [145] __shedskin__::__modfill(__shedskin__::str**, __shedskin__::pyobj*, __shedskin__::str**, __shedskin__::pyobj*, __shedskin__::pyobj*) [148] std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_check_len(unsigned int, char const*) const
+ [121] __shedskin__::str::str(char const*) [174] __shedskin__::__seqiter<double>::next() [116] std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_check_len(unsigned int, char const*) const
+ [118] __shedskin__::str::str(char const*, int) [227] __triangle__::__init() [71] std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_check_len(unsigned int, char const*) const
+ [100] __shedskin__::str::str(std::basic_string<char, std::char_traits<char>, gc_allocator<char> >) [8] __triangle__::Triangle::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [159] std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_check_len(unsigned int, char const*) const
+ [134] __shedskin__::dict<__shedskin__::str*, int>::__iter__() [16] __triangle__::Triangle::get_sample_point() [69] std::vector<double, gc_allocator<double> >::_M_check_len(unsigned int, char const*) const
+ [179] __shedskin__::dict<__shedskin__::str*, int>::dict() [46] __triangle__::Triangle::__init__(__shedskin__::file*) [18] std::vector<int, gc_allocator<int> >::_M_check_len(unsigned int, char const*) const
+  [80] __shedskin__::file::__check_closed() [47] __triangle__::Triangle::get_bound() [200] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_replace_safe(unsigned int, unsigned int, char const*, unsigned int)
+ [125] __shedskin__::file::next() [95] __vector3f__::Vector3f_seq(__shedskin__::list<double>*) [107] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_M_clone(gc_allocator<char> const&, unsigned int)
+ [180] __shedskin__::file::close() [115] __vector3f__::Vector3f_str(__shedskin__::str*) [97] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_Rep::_S_create(unsigned int, unsigned int, gc_allocator<char> const&)
+ [163] __shedskin__::file::flush() [175] __vector3f__::Vector3f_scalar(double) [122] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::append(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
+  [40] __shedskin__::file::write(__shedskin__::str*) [228] __vector3f__::__init() [201] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::resize(unsigned int, char)
+  [96] __shedskin__::file::getchar() [17] __vector3f__::Vector3f::__getitem__(int) [108] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::reserve(unsigned int)
+  [88] __shedskin__::file::putchar(int) [24] __vector3f__::Vector3f::dot(__vector3f__::Vector3f*) [150] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::_M_mutate(unsigned int, unsigned int, unsigned int)
+ [131] __shedskin__::file::__iter__() [39] __vector3f__::Vector3f::mul(__vector3f__::Vector3f*) [120] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(char const*, gc_allocator<char> const&)
+ [126] __shedskin__::file::readline(int) [73] __vector3f__::Vector3f::copy() [98] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
+ [181] __shedskin__::file::file(_IO_FILE*) [84] __vector3f__::Vector3f::cross(__vector3f__::Vector3f*) [99] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::basic_string(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, unsigned int, unsigned int)
+ [182] __shedskin__::file::file(__shedskin__::str*, __shedskin__::str*) [32] __vector3f__::Vector3f::__add__(__vector3f__::Vector3f*) [110] std::basic_string<char, std::char_traits<char>, gc_allocator<char> >::~basic_string()
+ [139] __shedskin__::list<__vector3f__::Vector3f*>::list(int, ...) [30] __vector3f__::Vector3f::__neg__() [102] std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::str**, std::vector<__shedskin__::str*, gc_allocator<__shedskin__::str*> > >, __shedskin__::str* const&)
+ [157] __shedskin__::list<__spatialindex__::SpatialIndex*>::__mul__(int) [68] __vector3f__::Vector3f::__sub__(__vector3f__::Vector3f*) [149] std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__shedskin__::pyobj**, std::vector<__shedskin__::pyobj*, gc_allocator<__shedskin__::pyobj*> > >, __shedskin__::pyobj* const&)
+ [158] __shedskin__::list<__spatialindex__::SpatialIndex*>::list(int, ...) [82] __vector3f__::Vector3f::as_list() [117] std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__triangle__::Triangle**, std::vector<__triangle__::Triangle*, gc_allocator<__triangle__::Triangle*> > >, __triangle__::Triangle* const&)
+ [220] __shedskin__::list<__shedskin__::str*>::list(int, ...) [124] __vector3f__::Vector3f::clamped(__vector3f__::Vector3f*, __vector3f__::Vector3f*) [72] std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__vector3f__::Vector3f**, std::vector<__vector3f__::Vector3f*, gc_allocator<__vector3f__::Vector3f*> > >, __vector3f__::Vector3f* const&)
+  [29] __shedskin__::list<double>::__getfast__(int) [35] __vector3f__::Vector3f::is_zero() [160] std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_insert_aux(__gnu_cxx::__normal_iterator<__spatialindex__::SpatialIndex**, std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> > >, __spatialindex__::SpatialIndex* const&)
+ [221] __shedskin__::list<double>::__add__(__shedskin__::list<double>*) [25] __vector3f__::Vector3f::unitize() [161] std::vector<__spatialindex__::SpatialIndex*, gc_allocator<__spatialindex__::SpatialIndex*> >::_M_fill_assign(unsigned int, __spatialindex__::SpatialIndex* const&)
+ [172] __shedskin__::list<double>::__mul__(int) [26] __vector3f__::Vector3f::__init__(double, double, double) [190] std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::_M_fill_insert(__gnu_cxx::__normal_iterator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >**, std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> > >, unsigned int, __gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >* const&)
+ [169] __shedskin__::list<double>::__slice__(int, int, int, int) [21] __minilight__::save_image(__shedskin__::str*, __image__::Image*, int) [191] std::vector<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*, gc_allocator<__gnu_cxx::_Hashtable_node<std::pair<__shedskin__::str* const, int> >*> >::reserve(unsigned int)
+  [81] __shedskin__::list<double>::list(int, ...) [2] __minilight__::__init() [70] std::vector<double, gc_allocator<double> >::_M_insert_aux(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, double const&)
+ [222] __shedskin__::list<int>::__mul__(int) [229] __raytracer__::__init() [236] std::vector<double, gc_allocator<double> >::_M_fill_assign(unsigned int, double const&)
+  [12] __shedskin__::list<int>::list(int, ...) [4] __raytracer__::RayTracer::get_radiance(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*) [176] std::vector<double, gc_allocator<double> >::_M_fill_insert(__gnu_cxx::__normal_iterator<double*, std::vector<double, gc_allocator<double> > >, unsigned int, double const&)
+ [183] __shedskin__::open(__shedskin__::str*, __shedskin__::str*) [7] __raytracer__::RayTracer::sample_emitters(__vector3f__::Vector3f*, __surfacepoint__::SurfacePoint*) [14] std::vector<int, gc_allocator<int> >::_M_insert_aux(__gnu_cxx::__normal_iterator<int*, std::vector<int, gc_allocator<int> > >, int const&)
+  [78] double __shedskin__::__abs<double>(double) [164] __raytracer__::RayTracer::__init__(__scene__::Scene*) [237] std::vector<int, gc_allocator<int> >::_M_fill_assign(unsigned int, int const&)
+ [153] __shedskin__::__box(int) [5] __spatialindex__::SpatialIndex::get_intersection(__vector3f__::Vector3f*, __vector3f__::Vector3f*, __triangle__::Triangle*, __vector3f__::Vector3f*) [146] std::basic_string<char, std::char_traits<char>, gc_allocator<char> > std::operator+<char, std::char_traits<char>, gc_allocator<char> >(std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&, std::basic_string<char, std::char_traits<char>, gc_allocator<char> > const&)
