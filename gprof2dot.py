@@ -55,16 +55,23 @@ def fail(a, b):
     assert False
 
 
+tol = 2 ** -23
+
 def ratio(numerator, denominator):
-    numerator = float(numerator)
-    denominator = float(denominator)
-    assert 0.0 <= numerator
-    assert numerator <= denominator
     try:
-        return numerator/denominator
+        ratio = float(numerator)/float(denominator)
     except ZeroDivisionError:
         # 0/0 is undefined, but 1.0 yields more useful results
         return 1.0
+    if ratio < 0.0:
+        if ratio < -tol:
+            sys.stderr.write('warning: negative ratio (%s/%s)\n' % (numerator, denominator))
+        return 0.0
+    if ratio > 1.0:
+        if ratio > 1.0 + tol:
+            sys.stderr.write('warning: ratio greater than one (%s/%s)\n' % (numerator, denominator))
+        return 1.0
+    return ratio
 
 
 class UndefinedEvent(Exception):
