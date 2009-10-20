@@ -1282,33 +1282,6 @@ class SharkParser(LineParser):
         return profile
 
 
-class AQtimeTable:
-
-    def __init__(self, name, fields):
-        self.name = name
-
-        self.fields = fields
-        self.field_column = {}
-        for column in range(len(fields)):
-            self.field_column[fields[column]] = column
-        self.rows = []
-
-    def __len__(self):
-        return len(self.rows)
-
-    def __iter__(self):
-        for values, children in self.rows:
-            fields = {}
-            for name, value in zip(self.fields, values):
-                fields[name] = value
-            children = dict([(child.name, child) for child in children])
-            yield fields, children
-        raise StopIteration
-
-    def add_row(self, values, children=()):
-        self.rows.append((values, children))
-
-
 class SleepyParser(Parser):
     """Parser for GNU gprof output.
 
@@ -1396,6 +1369,33 @@ class SleepyParser(Parser):
         profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
 
         return profile
+
+
+class AQtimeTable:
+
+    def __init__(self, name, fields):
+        self.name = name
+
+        self.fields = fields
+        self.field_column = {}
+        for column in range(len(fields)):
+            self.field_column[fields[column]] = column
+        self.rows = []
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __iter__(self):
+        for values, children in self.rows:
+            fields = {}
+            for name, value in zip(self.fields, values):
+                fields[name] = value
+            children = dict([(child.name, child) for child in children])
+            yield fields, children
+        raise StopIteration
+
+    def add_row(self, values, children=()):
+        self.rows.append((values, children))
 
 
 class AQtimeParser(XmlParser):
