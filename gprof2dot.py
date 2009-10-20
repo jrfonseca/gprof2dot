@@ -1309,6 +1309,95 @@ class AQtimeTable:
         self.rows.append((values, children))
 
 
+class SleepyParser(Parser):
+    """Parser for GNU gprof output.
+
+    See also:
+    - http://www.codersnotes.com/sleepy/
+    - http://sleepygraph.sourceforge.net/
+    """
+
+    def __init__(self, filename):
+        Parser.__init__(self)
+
+        from zipfile import ZipFile
+
+        self.database = ZipFile(filename)
+
+        self.symbols = {}
+        self.calls = {}
+
+        self.profile = Profile()
+    
+    _symbol_re = re.compile(
+        r'^(?P<id>\w+)' + 
+        r'\s+"(?P<module>[^"]*)"' + 
+        r'\s+"(?P<procname>[^"]*)"' + 
+        r'\s+"(?P<sourcefile>[^"]*)"' + 
+        r'\s+(?P<sourceline>\d+)$'
+    )
+
+    def parse_symbols(self):
+        lines = self.database.read('symbols.txt').splitlines()
+        for line in lines:
+            mo = self._symbol_re.match(line)
+            if mo:
+                symbol_id, module, procname, sourcefile, sourceline = mo.groups()
+    
+                function_id = ':'.join([module, procname])
+
+                try:
+                    function = self.profile.functions[function_id]
+                except KeyError:
+                    function = Function(function_id, procname)
+                    function[SAMPLES] = 0
+                    self.profile.add_function(function)
+
+                self.symbols[symbol_id] = function
+
+    def parse_callstacks(self):
+        lines = self.database.read("callstacks.txt").splitlines()
+        for line in lines:
+            fields = line.split()
+            samples = int(fields[0])
+            callstack = fields[1:]
+
+            callstack = [self.symbols[symbol_id] for symbol_id in callstack]
+
+            callee = callstack[0]
+
+            callee[SAMPLES] += samples
+            self.profile[SAMPLES] += samples
+            
+            for caller in callstack[1:]:
+                try:
+                    call = caller.calls[callee.id]
+                except KeyError:
+                    call = Call(callee.id)
+                    call[SAMPLES2] = samples
+                    caller.add_call(call)
+                else:
+                    call[SAMPLES2] += samples
+
+                callee = caller
+
+    def parse(self):
+        profile = self.profile
+        profile[SAMPLES] = 0
+
+        self.parse_symbols()
+        self.parse_callstacks()
+
+        # Compute derived events
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return profile
+
+
 class AQtimeParser(XmlParser):
 
     def __init__(self, stream):
@@ -1674,7 +1763,7 @@ class DotWriter:
         fontname = theme.graph_fontname()
 
         self.attr('graph', fontname=fontname, ranksep=0.25, nodesep=0.125)
-        self.attr('node', fontname=fontname, shape="box", style="filled,rounded", fontcolor="white", width=0, height=0)
+        self.attr('node', fontname=fontname, shape="box", style="filled", fontcolor="white", width=0, height=0)
         self.attr('edge', fontname=fontname)
 
         for function in profile.functions.itervalues():
@@ -1839,9 +1928,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'oprofile', 'pstats', 'shark', 'aqtime'),
+            type="choice", choices=('prof', 'oprofile', 'pstats', 'shark', 'sleepy', 'aqtime'),
             dest="format", default="prof",
-            help="profile format: prof, oprofile, shark, aqtime, or pstats [default: %default]")
+            help="profile format: prof, oprofile, shark, sleepy, aqtime, or pstats [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
@@ -1889,6 +1978,10 @@ class Main:
             else:
                 fp = open(self.args[0], 'rt')
             parser = SharkParser(fp)
+        elif self.options.format == 'sleepy':
+            if len(self.args) != 1:
+                parser.error('exactly one file must be specified for sleepy input')
+            parser = SleepyParser(self.args[0])
         elif self.options.format == 'aqtime':
             if not self.args:
                 fp = sys.stdin
