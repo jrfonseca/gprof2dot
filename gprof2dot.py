@@ -1187,6 +1187,123 @@ class OprofileParser(LineParser):
         return line[:1].isspace()
 
 
+class SysprofParser(XmlParser):
+
+    def __init__(self, stream):
+        XmlParser.__init__(self, stream)
+
+    def parse(self):
+        objects = {}
+        nodes = {}
+
+        self.element_start('profile')
+        while self.token.type == XML_ELEMENT_START:
+            if self.token.name_or_data == 'objects':
+                assert not objects
+                objects = self.parse_items('objects')
+            elif self.token.name_or_data == 'nodes':
+                assert not nodes
+                nodes = self.parse_items('nodes')
+            else:
+                self.parse_value(self.token.name_or_data)
+        self.element_end('profile')
+
+        return self.build_profile(objects, nodes)
+
+    def parse_items(self, name):
+        assert name[-1] == 's'
+        items = {}
+        self.element_start(name)
+        while self.token.type == XML_ELEMENT_START:
+            id, values = self.parse_item(name[:-1])
+            assert id not in items
+            items[id] = values
+        self.element_end(name)
+        return items
+
+    def parse_item(self, name):
+        attrs = self.element_start(name)
+        id = int(attrs['id'])
+        values = self.parse_values()
+        self.element_end(name)
+        return id, values
+
+    def parse_values(self):
+        values = {}
+        while self.token.type == XML_ELEMENT_START:
+            name = self.token.name_or_data
+            value = self.parse_value(name)
+            assert name not in values
+            values[name] = value
+        return values
+
+    def parse_value(self, tag):
+        self.element_start(tag)
+        value = self.character_data()
+        self.element_end(tag)
+        if value.isdigit():
+            return int(value)
+        if value.startswith('"') and value.endswith('"'):
+            return value[1:-1]
+        return value
+
+    def build_profile(self, objects, nodes):
+        profile = Profile()
+        
+        profile[SAMPLES] = 0
+        for id, object in objects.iteritems():
+            # Ignore fake objects (process names, modules, "Everything", "kernel", etc.)
+            if object['self'] == 0:
+                continue
+
+            function = Function(id, object['name'])
+            function[SAMPLES] = object['self']
+            profile.add_function(function)
+            profile[SAMPLES] += function[SAMPLES]
+
+        for id, node in nodes.iteritems():
+            # Ignore fake calls
+            if node['self'] == 0:
+                continue
+
+            # Find a non-ignored parent
+            parent_id = node['parent']
+            while parent_id != 0:
+                parent = nodes[parent_id]
+                caller_id = parent['object']
+                if objects[caller_id]['self'] != 0:
+                    break
+                parent_id = parent['parent']
+            if parent_id == 0:
+                continue
+
+            callee_id = node['object']
+
+            assert objects[caller_id]['self']
+            assert objects[callee_id]['self']
+
+            function = profile.functions[caller_id]
+
+            samples = node['self']
+            try:
+                call = function.calls[callee_id]
+            except KeyError:
+                call = Call(callee_id)
+                call[SAMPLES2] = samples
+                function.add_call(call)
+            else:
+                call[SAMPLES2] += samples
+
+        # Compute derived events
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return profile
+
+
 class SharkParser(LineParser):
     """Parser for MacOSX Shark output.
 
@@ -1928,9 +2045,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'oprofile', 'pstats', 'shark', 'sleepy', 'aqtime'),
+            type="choice", choices=('prof', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime'),
             dest="format", default="prof",
-            help="profile format: prof, oprofile, shark, sleepy, aqtime, or pstats [default: %default]")
+            help="profile format: prof, oprofile, sysprof, shark, sleepy, aqtime, or pstats [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
@@ -1968,6 +2085,12 @@ class Main:
             else:
                 fp = open(self.args[0], 'rt')
             parser = OprofileParser(fp)
+        elif self.options.format == 'sysprof':
+            if not self.args:
+                fp = sys.stdin
+            else:
+                fp = open(self.args[0], 'rt')
+            parser = SysprofParser(fp)
         elif self.options.format == 'pstats':
             if not self.args:
                 parser.error('at least a file must be specified for pstats input')
