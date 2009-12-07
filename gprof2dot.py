@@ -1739,7 +1739,8 @@ class Theme:
             maxfontsize = 10.0,
             minpenwidth = 0.5,
             maxpenwidth = 4.0,
-            gamma = 2.2):
+            gamma = 2.2,
+            skew = 1.0):
         self.bgcolor = bgcolor
         self.mincolor = mincolor
         self.maxcolor = maxcolor
@@ -1749,6 +1750,7 @@ class Theme:
         self.minpenwidth = minpenwidth
         self.maxpenwidth = maxpenwidth
         self.gamma = gamma
+        self.skew = skew
 
     def graph_bgcolor(self):
         return self.hsl_to_rgb(*self.bgcolor)
@@ -1788,10 +1790,18 @@ class Theme:
     
         hmin, smin, lmin = self.mincolor
         hmax, smax, lmax = self.maxcolor
-
-        h = hmin + weight*(hmax - hmin)
-        s = smin + weight*(smax - smin)
-        l = lmin + weight*(lmax - lmin)
+        
+        if self.skew < 0:
+            raise ValueError("Skew must be greater than 0")
+        elif self.skew == 1.0:
+            h = hmin + weight*(hmax - hmin)
+            s = smin + weight*(smax - smin)
+            l = lmin + weight*(lmax - lmin)
+        else:
+            base = self.skew
+            h = hmin + ((hmax-hmin)*(-1.0 + (base ** weight)) / (base - 1.0))
+            s = smin + ((smax-smin)*(-1.0 + (base ** weight)) / (base - 1.0))
+            l = lmin + ((lmax-lmin)*(-1.0 + (base ** weight)) / (base - 1.0))
 
         return self.hsl_to_rgb(h, s, l)
 
@@ -2063,6 +2073,11 @@ class Main:
             action="store_true",
             dest="wrap", default=False,
             help="wrap function names")
+        # add a new option to control skew of the colorization curve
+        parser.add_option(
+            '--skew',
+            type="float", dest="theme_skew", default=1.0,
+            help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Value > 1.0 give less variety to lower percentages")
         (self.options, self.args) = parser.parse_args(sys.argv[1:])
 
         if len(self.args) > 1 and self.options.format != 'pstats':
@@ -2072,6 +2087,10 @@ class Main:
             self.theme = self.themes[self.options.theme]
         except KeyError:
             parser.error('invalid colormap \'%s\'' % self.options.theme)
+        
+        # set skew on the theme now that it has been picked.
+        if self.options.theme_skew:
+            self.theme.skew = self.options.theme_skew
 
         if self.options.format == 'prof':
             if not self.args:
