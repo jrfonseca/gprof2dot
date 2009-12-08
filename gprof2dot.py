@@ -258,7 +258,7 @@ class Profile(Object):
             for cycle in cycles:
                 sys.stderr.write("Cycle:\n")
                 for member in cycle.functions:
-                    sys.stderr.write("\t%s\n" % member.name)
+                    sys.stderr.write("\tFunction %s\n" % member.name)
     
     def _tarjan(self, function, order, stack, orders, lowlinks, visited):
         """Tarjan's strongly connected components algorithm.
@@ -375,6 +375,7 @@ class Profile(Object):
     def _integrate_cycle(self, cycle, outevent, inevent):
         if outevent not in cycle:
 
+            # Compute the outevent for the whole cycle
             total = inevent.null()
             for member in cycle.functions:
                 subtotal = member[inevent]
@@ -385,6 +386,7 @@ class Profile(Object):
                 total += subtotal
             cycle[outevent] = total
             
+            # Compute the time propagated to callers of this cycle
             callees = {}
             for function in self.functions.itervalues():
                 if function.cycle is not cycle:
@@ -395,6 +397,9 @@ class Profile(Object):
                                 callees[callee] += call[CALL_RATIO]
                             except KeyError:
                                 callees[callee] = call[CALL_RATIO]
+            
+            for member in cycle.functions:
+                member[outevent] = outevent.null()
 
             for callee, call_ratio in callees.iteritems():
                 ranks = {}
@@ -405,7 +410,7 @@ class Profile(Object):
                 partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
                 assert partial == max(partials.values())
                 assert not total or abs(1.0 - partial/(call_ratio*total)) <= 0.001
-            
+
         return cycle[outevent]
 
     def _rank_cycle_function(self, cycle, function, rank, ranks):
@@ -528,6 +533,11 @@ class Profile(Object):
                 callee = self.functions[call.callee_id]
                 sys.stderr.write('  Call %s:\n' % (callee.name,))
                 self._dump_events(call.events)
+        for cycle in self.cycles:
+            sys.stderr.write('Cycle:\n')
+            self._dump_events(cycle.events)
+            for function in cycle.functions:
+                sys.stderr.write('  Function %s\n' % (function.name,))
 
     def _dump_events(self, events):
         for event, value in events.iteritems():
@@ -1002,7 +1012,13 @@ class GprofParser(Parser):
             profile.add_function(function)
 
             if entry.cycle is not None:
-                cycles[entry.cycle].add_function(function)
+                try:
+                    cycle = cycles[entry.cycle]
+                except KeyError:
+                    sys.stderr.write('warning: <cycle %u as a whole> entry missing\n' % entry.cycle) 
+                    cycle = Cycle()
+                    cycles[entry.cycle] = cycle
+                cycle.add_function(function)
 
             profile[TIME] = profile[TIME] + function[TIME]
 
