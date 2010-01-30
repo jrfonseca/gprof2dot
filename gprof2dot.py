@@ -39,6 +39,9 @@ except ImportError:
     pass
 
 
+def times(x):
+    return u"%u\xd7" % (x,)
+
 def percentage(p):
     return "%.02f%%" % (p*100.0,)
 
@@ -118,7 +121,7 @@ class Event(object):
 MODULE = Event("Module", None, equal)
 PROCESS = Event("Process", None, equal)
 
-CALLS = Event("Calls", 0, add)
+CALLS = Event("Calls", 0, add, times)
 SAMPLES = Event("Samples", 0, add)
 SAMPLES2 = Event("Samples", 0, add)
 
