@@ -2013,7 +2013,7 @@ class DotWriter:
         if isinstance(id, (int, float)):
             s = str(id)
         elif isinstance(id, basestring):
-            if id.isalnum():
+            if id.isalnum() and not id.startswith('0x'):
                 s = id
             else:
                 s = self.escape(id)
