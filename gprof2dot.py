@@ -1175,6 +1175,7 @@ class CallgrindParser(LineParser):
             self.profile[SAMPLES] += events[0]
         else:
             callee = self.get_callee()
+            callee[CALLS] += calls
     
             try:
                 call = function.calls[callee.id]
@@ -1304,6 +1305,7 @@ class CallgrindParser(LineParser):
         except KeyError:
             function = Function(id, name)
             function[SAMPLES] = 0
+            function[CALLS] = 0
             self.profile.add_function(function)
         return function
 
