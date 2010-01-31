@@ -130,8 +130,6 @@ TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
 TOTAL_TIME = Event("Total time", 0.0, fail)
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
-CALL_RATIO = Event("Call ratio", 0.0, add, percentage)
-
 PRUNE_RATIO = Event("Prune ratio", 0.0, add, percentage)
 
 
@@ -175,7 +173,8 @@ class Call(Object):
 
     def __init__(self, callee_id):
         Object.__init__(self)
-        self.callee_id = callee_id    
+        self.callee_id = callee_id
+        self.ratio = None
 
 
 class Function(Object):
@@ -313,14 +312,14 @@ class Profile(Object):
         # Compute the ratios
         for function in self.functions.itervalues():
             for call in function.calls.itervalues():
-                assert CALL_RATIO not in call
+                assert call.ratio is None
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
                     if callee.cycle is not None and callee.cycle is not function.cycle:
                         total = cycle_totals[callee.cycle]
                     else:
                         total = function_totals[callee]
-                    call[CALL_RATIO] = ratio(call[event], total)
+                    call.ratio = ratio(call[event], total)
 
     def integrate(self, outevent, inevent):
         """Propagate function time ratio allong the function calls.
@@ -339,7 +338,7 @@ class Profile(Object):
             for call in function.calls.itervalues():
                 assert outevent not in call
                 if call.callee_id != function.id:
-                    assert CALL_RATIO in call
+                    assert call.ratio is not None
 
         # Aggregate the input for each cycle 
         for cycle in self.cycles:
@@ -369,9 +368,9 @@ class Profile(Object):
     
     def _integrate_call(self, call, outevent, inevent):
         assert outevent not in call
-        assert CALL_RATIO in call
+        assert call.ratio is not None
         callee = self.functions[call.callee_id]
-        subtotal = call[CALL_RATIO]*self._integrate_function(callee, outevent, inevent)
+        subtotal = call.ratio *self._integrate_function(callee, outevent, inevent)
         call[outevent] = subtotal
         return subtotal
 
@@ -397,9 +396,9 @@ class Profile(Object):
                         callee = self.functions[call.callee_id]
                         if callee.cycle is cycle:
                             try:
-                                callees[callee] += call[CALL_RATIO]
+                                callees[callee] += call.ratio
                             except KeyError:
-                                callees[callee] = call[CALL_RATIO]
+                                callees[callee] = call.ratio
             
             for member in cycle.functions:
                 member[outevent] = outevent.null()
@@ -433,7 +432,7 @@ class Profile(Object):
                     callee = self.functions[call.callee_id]
                     if callee.cycle is cycle:
                         if ranks[callee] > ranks[function]:
-                            call_ratios[callee] = call_ratios.get(callee, 0.0) + call[CALL_RATIO]
+                            call_ratios[callee] = call_ratios.get(callee, 0.0) + call.ratio
                             self._call_ratios_cycle(cycle, callee, ranks, call_ratios, visited)
 
     def _integrate_cycle_function(self, cycle, function, partial_ratio, partials, ranks, call_ratios, outevent, inevent):
@@ -448,7 +447,7 @@ class Profile(Object):
                     else:
                         if ranks[callee] > ranks[function]:
                             callee_partial = self._integrate_cycle_function(cycle, callee, partial_ratio, partials, ranks, call_ratios, outevent, inevent)
-                            call_ratio = ratio(call[CALL_RATIO], call_ratios[callee])
+                            call_ratio = ratio(call.ratio, call_ratios[callee])
                             call_partial = call_ratio*callee_partial
                             try:
                                 call[outevent] += call_partial
