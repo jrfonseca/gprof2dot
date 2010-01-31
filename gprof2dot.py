@@ -1330,8 +1330,8 @@ class OprofileParser(LineParser):
     """
 
     _fields_re = {
-        'samples': r'(?P<samples>\d+)',
-        '%': r'(?P<percentage>\S+)',
+        'samples': r'(\d+)',
+        '%': r'(\S+)',
         'linenr info': r'(?P<source>\(no location information\)|\S+:\d+)',
         'image name': r'(?P<image>\S+(?:\s\(tgid:[^)]*\))?)',
         'app name': r'(?P<application>\S+)',
@@ -1439,8 +1439,7 @@ class OprofileParser(LineParser):
         if not mo:
             raise ParseError('failed to parse', line)
         fields = mo.groupdict()
-        entry.samples = int(fields.get('samples', 0))
-        entry.percentage = float(fields.get('percentage', 0.0))
+        entry.samples = int(mo.group(1))
         if 'source' in fields and fields['source'] != '(no location information)':
             source = fields['source']
             filename, lineno = source.split(':')
