@@ -127,8 +127,6 @@ TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
 TOTAL_TIME = Event("Total time", 0.0, fail)
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
-PRUNE_RATIO = Event("Prune ratio", 0.0, add, percentage)
-
 
 class Object(object):
     """Base class for all objects in profile which can store events."""
@@ -172,6 +170,7 @@ class Call(Object):
         Object.__init__(self)
         self.callee_id = callee_id
         self.ratio = None
+        self.weight = None
 
 
 class Function(Object):
@@ -184,6 +183,7 @@ class Function(Object):
         self.module = None
         self.process = None
         self.calls = {}
+        self.weight = None
         self.cycle = None
     
     def add_call(self, call):
@@ -490,7 +490,7 @@ class Profile(Object):
         # compute the prune ratios
         for function in self.functions.itervalues():
             try:
-                function[PRUNE_RATIO] = function[TOTAL_TIME_RATIO]
+                function.weight = function[TOTAL_TIME_RATIO]
             except UndefinedEvent:
                 pass
 
@@ -499,32 +499,27 @@ class Profile(Object):
 
                 if TOTAL_TIME_RATIO in call:
                     # handle exact cases first
-                    call[PRUNE_RATIO] = call[TOTAL_TIME_RATIO] 
+                    call.weight = call[TOTAL_TIME_RATIO] 
                 else:
                     try:
                         # make a safe estimate
-                        call[PRUNE_RATIO] = min(function[TOTAL_TIME_RATIO], callee[TOTAL_TIME_RATIO]) 
+                        call.weight = min(function[TOTAL_TIME_RATIO], callee[TOTAL_TIME_RATIO]) 
                     except UndefinedEvent:
                         pass
 
         # prune the nodes
         for function_id in self.functions.keys():
             function = self.functions[function_id]
-            try:
-                if function[PRUNE_RATIO] < node_thres:
+            if function.weight is not None:
+                if function.weight < node_thres:
                     del self.functions[function_id]
-            except UndefinedEvent:
-                pass
 
         # prune the egdes
         for function in self.functions.itervalues():
             for callee_id in function.calls.keys():
                 call = function.calls[callee_id]
-                try:
-                    if callee_id not in self.functions or call[PRUNE_RATIO] < edge_thres:
-                        del function.calls[callee_id]
-                except UndefinedEvent:
-                    pass
+                if callee_id not in self.functions or call.weight is not None and call.weight < edge_thres:
+                    del function.calls[callee_id]
     
     def dump(self):
         for function in self.functions.itervalues():
@@ -2206,9 +2201,9 @@ class DotWriter:
                     label = event.format(function[event])
                     labels.append(label)
 
-            try:
-                weight = function[PRUNE_RATIO]
-            except UndefinedEvent:
+            if function.weight is not None:
+                weight = function.weight
+            else:
                 weight = 0.0
 
             label = '\n'.join(labels)
@@ -2228,13 +2223,12 @@ class DotWriter:
                         label = event.format(call[event])
                         labels.append(label)
 
-                try:
-                    weight = call[PRUNE_RATIO]
-                except UndefinedEvent:
-                    try:
-                        weight = callee[PRUNE_RATIO]
-                    except UndefinedEvent:
-                        weight = 0.0
+                if call.weight is not None:
+                    weight = call.weight
+                elif callee.weight is not None:
+                    weight = callee.weight
+                else:
+                    weight = 0.0
 
                 label = '\n'.join(labels)
 
