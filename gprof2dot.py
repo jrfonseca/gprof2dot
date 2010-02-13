@@ -118,9 +118,6 @@ class Event(object):
         return self._formatter(val)
 
 
-MODULE = Event("Module", None, equal)
-PROCESS = Event("Process", None, equal)
-
 CALLS = Event("Calls", 0, add, times)
 SAMPLES = Event("Samples", 0, add)
 SAMPLES2 = Event("Samples", 0, add)
@@ -184,6 +181,8 @@ class Function(Object):
         Object.__init__(self)
         self.id = id
         self.name = name
+        self.module = None
+        self.process = None
         self.calls = {}
         self.cycle = None
     
@@ -1384,9 +1383,9 @@ class OprofileParser(LineParser):
             profile[SAMPLES] += _function.samples
 
             if _function.application:
-                function[PROCESS] = os.path.basename(_function.application)
+                function.process = os.path.basename(_function.application)
             if _function.image:
-                function[MODULE] = os.path.basename(_function.image)
+                function.module = os.path.basename(_function.image)
 
             total_callee_samples = 0
             for _callee in _callees.itervalues():
@@ -1684,7 +1683,7 @@ class SharkParser(LineParser):
             profile[SAMPLES] += _function.samples
 
             if _function.image:
-                function[MODULE] = os.path.basename(_function.image)
+                function.module = os.path.basename(_function.image)
 
             for _callee in _callees.itervalues():
                 call = Call(_callee.id)
@@ -2197,10 +2196,10 @@ class DotWriter:
 
         for function in profile.functions.itervalues():
             labels = []
-            for event in PROCESS, MODULE:
-                if event in function.events:
-                    label = event.format(function[event])
-                    labels.append(label)
+            if function.process is not None:
+                labels.append(function.process)
+            if function.module is not None:
+                labels.append(function.module)
             labels.append(function.name)
             for event in TOTAL_TIME_RATIO, TIME_RATIO, CALLS:
                 if event in function.events:
