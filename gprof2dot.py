@@ -183,6 +183,7 @@ class Function(Object):
         self.module = None
         self.process = None
         self.calls = {}
+        self.called = None
         self.weight = None
         self.cycle = None
     
@@ -981,11 +982,11 @@ class GprofParser(Parser):
             function = Function(entry.index, entry.name)
             function[TIME] = entry.self
             if entry.called is not None:
-                function[CALLS] = entry.called
+                function.called = entry.called
             if entry.called_self is not None:
                 call = Call(entry.index)
                 call[CALLS] = entry.called_self
-                function[CALLS] += entry.called_self
+                function.called += entry.called_self
             
             # populate the function calls
             for child in entry.children:
@@ -1000,7 +1001,7 @@ class GprofParser(Parser):
                     # to add them here
                     missing = Function(child.index, child.name)
                     function[TIME] = 0.0
-                    function[CALLS] = 0
+                    function.called = 0
                     profile.add_function(missing)
 
                 function.add_call(call)
@@ -1169,7 +1170,7 @@ class CallgrindParser(LineParser):
             self.profile[SAMPLES] += events[0]
         else:
             callee = self.get_callee()
-            callee[CALLS] += calls
+            callee.called += calls
     
             try:
                 call = function.calls[callee.id]
@@ -1299,7 +1300,7 @@ class CallgrindParser(LineParser):
         except KeyError:
             function = Function(id, name)
             function[SAMPLES] = 0
-            function[CALLS] = 0
+            function.called = 0
             self.profile.add_function(function)
         return function
 
@@ -1987,7 +1988,7 @@ class PstatsParser:
         self.profile[TOTAL_TIME] = self.stats.total_tt
         for fn, (cc, nc, tt, ct, callers) in self.stats.stats.iteritems():
             callee = self.get_function(fn)
-            callee[CALLS] = nc
+            callee.called = nc
             callee[TOTAL_TIME] = ct
             callee[TIME] = tt
             self.profile[TIME] += tt
@@ -2196,10 +2197,12 @@ class DotWriter:
             if function.module is not None:
                 labels.append(function.module)
             labels.append(function.name)
-            for event in TOTAL_TIME_RATIO, TIME_RATIO, CALLS:
+            for event in TOTAL_TIME_RATIO, TIME_RATIO:
                 if event in function.events:
                     label = event.format(function[event])
                     labels.append(label)
+            if function.called is not None:
+                labels.append(u"%u\xd7" % (function.called,))
 
             if function.weight is not None:
                 weight = function.weight
