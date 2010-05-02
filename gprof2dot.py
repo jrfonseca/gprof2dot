@@ -1696,6 +1696,108 @@ class SharkParser(LineParser):
         return profile
 
 
+class XPerfParser(Parser):
+    """Parser for CSVs generted by XPerf, from Microsoft Windows Performance Tools.
+    """
+
+    def __init__(self, stream):
+        Parser.__init__(self)
+        self.stream = stream
+        self.profile = Profile()
+        self.profile[SAMPLES] = 0
+        self.column = {}
+
+    def parse(self):
+        import csv
+        reader = csv.reader(
+            self.stream, 
+            delimiter = ',',
+            quotechar = None,
+            escapechar = None,
+            doublequote = False,
+            skipinitialspace = True,
+            lineterminator = '\r\n',
+            quoting = csv.QUOTE_NONE)
+        it = iter(reader)
+        row = reader.next()
+        self.parse_header(row)
+        for row in it:
+            self.parse_row(row)
+                
+        # compute derived data
+        self.profile.validate()
+        self.profile.find_cycles()
+        self.profile.ratio(TIME_RATIO, SAMPLES)
+        self.profile.call_ratios(SAMPLES2)
+        self.profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return self.profile
+
+    def parse_header(self, row):
+        for column in range(len(row)):
+            name = row[column]
+            assert name not in self.column
+            self.column[name] = column
+
+    def parse_row(self, row):
+        fields = {}
+        for name, column in self.column.iteritems():
+            value = row[column]
+            for factory in int, float:
+                try:
+                    value = factory(value)
+                except ValueError:
+                    pass
+                else:
+                    break
+            fields[name] = value
+        
+        process = fields['Process Name']
+        symbol = fields['Module'] + '!' + fields['Function']
+        weight = fields['Weight']
+        count = fields['Count']
+
+        function = self.get_function(process, symbol)
+        function[SAMPLES] += weight * count
+        self.profile[SAMPLES] += weight * count
+
+        stack = fields['Stack']
+        if stack != '?':
+            stack = stack.split('/')
+            assert stack[0] == '[Root]'
+            if stack[-1] != symbol:
+                # XXX: some cases the sampled function does not appear in the stack
+                stack.append(symbol)
+            caller = None
+            for symbol in stack[1:]:
+                callee = self.get_function(process, symbol)
+                if caller is not None:
+                    try:
+                        call = caller.calls[callee.id]
+                    except KeyError:
+                        call = Call(callee.id)
+                        call[SAMPLES2] = count
+                        caller.add_call(call)
+                    else:
+                        call[SAMPLES2] += count
+                caller = callee
+
+    def get_function(self, process, symbol):
+        function_id = process + '!' + symbol
+
+        try:
+            function = self.profile.functions[function_id]
+        except KeyError:
+            module, name = symbol.split('!')
+            function = Function(function_id, name)
+            function.process = process
+            function.module = module
+            function[SAMPLES] = 0
+            self.profile.add_function(function)
+
+        return function
+
+
 class SleepyParser(Parser):
     """Parser for GNU gprof output.
 
@@ -1737,6 +1839,7 @@ class SleepyParser(Parser):
                     function = self.profile.functions[function_id]
                 except KeyError:
                     function = Function(function_id, procname)
+                    function.module = module
                     function[SAMPLES] = 0
                     self.profile.add_function(function)
 
@@ -2353,9 +2456,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'callgrind', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime'),
+            type="choice", choices=('prof', 'callgrind', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, sysprof, shark, sleepy, aqtime, or pstats [default: %default]")
+            help="profile format: prof, callgrind, oprofile, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
@@ -2418,6 +2521,12 @@ class Main:
             if not self.args:
                 parser.error('at least a file must be specified for pstats input')
             parser = PstatsParser(*self.args)
+        elif self.options.format == 'xperf':
+            if not self.args:
+                fp = sys.stdin
+            else:
+                fp = open(self.args[0], 'rt')
+            parser = XPerfParser(fp)
         elif self.options.format == 'shark':
             if not self.args:
                 fp = sys.stdin
