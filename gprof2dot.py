@@ -1788,7 +1788,7 @@ class XPerfParser(Parser):
         try:
             function = self.profile.functions[function_id]
         except KeyError:
-            module, name = symbol.split('!')
+            module, name = symbol.split('!', 1)
             function = Function(function_id, name)
             function.process = process
             function.module = module
