@@ -192,6 +192,15 @@ class Function(Object):
             sys.stderr.write('warning: overwriting call from function %s to %s\n' % (str(self.id), str(call.callee_id)))
         self.calls[call.callee_id] = call
 
+    def get_call(self, callee_id):
+        if not callee_id in self.calls:
+            call = Call(callee_id)
+            call[SAMPLES] = 0
+            call[SAMPLES2] = 0
+            call[CALLS] = 0
+            self.calls[callee_id] = call
+        return self.calls[callee_id]
+
     # TODO: write utility functions
 
     def __repr__(self):
@@ -1484,6 +1493,107 @@ class OprofileParser(LineParser):
         return line[:1].isspace()
 
 
+class HProfParser(LineParser):
+    """Parser for java hprof output
+    
+    See also:
+    - http://java.sun.com/developer/technicalArticles/Programming/HPROF.html
+    """
+
+    trace_re = re.compile(r'\t(.*)\((.*):(.*)\)')
+    trace_id_re = re.compile(r'^TRACE (\d+):$')
+
+    def __init__(self, infile):
+        LineParser.__init__(self, infile)
+        self.traces = {}
+        self.samples = {}
+
+    def parse(self):
+        # read lookahead
+        self.readline()
+
+        while not self.lookahead().startswith('------'): self.consume()
+        while not self.lookahead().startswith('TRACE '): self.consume()
+
+        self.parse_traces()
+
+        while not self.lookahead().startswith('CPU'):
+            self.consume()
+
+        self.parse_samples()
+
+        # populate the profile
+        profile = Profile()
+        profile[SAMPLES] = 0
+
+        functions = {}
+
+        # build up callgraph
+        for id, trace in self.traces.iteritems():
+            if not id in self.samples: continue
+            mtime = self.samples[id][0]
+            last = None
+
+            for func, file, line in trace:
+                if not func in functions:
+                    function = Function(func, func)
+                    function[SAMPLES] = 0
+                    profile.add_function(function)
+                    functions[func] = function
+
+                function = functions[func]
+                # allocate time to the deepest method in the trace
+                if not last:
+                    function[SAMPLES] += mtime
+                    profile[SAMPLES] += mtime
+                else:
+                    c = function.get_call(last)
+                    c[SAMPLES2] += mtime
+
+                last = func
+
+        # compute derived data
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return profile
+
+    def parse_traces(self):
+        while self.lookahead().startswith('TRACE '):
+            self.parse_trace()
+
+    def parse_trace(self):
+        l = self.consume()
+        mo = self.trace_id_re.match(l)
+        tid = mo.group(1)
+        last = None
+        trace = []
+
+        while self.lookahead().startswith('\t'):
+            l = self.consume()
+            match = self.trace_re.search(l)
+            if not match:
+                #sys.stderr.write('Invalid line: %s\n' % l)
+                break
+            else:
+                function_name, file, line = match.groups()
+                trace += [(function_name, file, line)]
+
+        self.traces[int(tid)] = trace
+
+    def parse_samples(self):
+        self.consume()
+        self.consume()
+
+        while not self.lookahead().startswith('CPU'):
+            rank, percent_self, percent_accum, count, traceid, method = self.lookahead().split()
+            self.samples[int(traceid)] = (int(count), method)
+            self.consume()
+
+
 class SysprofParser(XmlParser):
 
     def __init__(self, stream):
@@ -2456,7 +2566,7 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'callgrind', 'oprofile', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
+            type="choice", choices=('prof', 'callgrind', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
             help="profile format: prof, callgrind, oprofile, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
         parser.add_option(
@@ -2517,6 +2627,12 @@ class Main:
             else:
                 fp = open(self.args[0], 'rt')
             parser = SysprofParser(fp)
+        elif self.options.format == 'hprof':
+            if not self.args:
+                fp = sys.stdin
+            else:
+                fp = open(self.args[0], 'rt')
+            parser = HProfParser(fp)        
         elif self.options.format == 'pstats':
             if not self.args:
                 parser.error('at least a file must be specified for pstats input')
