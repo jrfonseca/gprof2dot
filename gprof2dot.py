@@ -604,12 +604,15 @@ class LineParser(Parser):
         self._file = file
         self.__line = None
         self.__eof = False
+        self.line_no = 0
 
     def readline(self):
         line = self._file.readline()
         if not line:
             self.__line = ''
             self.__eof = True
+        else:
+            self.line_no += 1
         self.__line = line.rstrip('\r\n')
 
     def lookahead(self):
@@ -1091,6 +1094,9 @@ class CallgrindParser(LineParser):
             pass
         while self.parse_body_line():
             pass
+        if not self.eof() and False:
+            sys.stderr.write('warning: line %u: unexpected line\n' % self.line_no)
+            sys.stderr.write('%s\n' % self.lookahead())
         return True
 
     def parse_header_line(self):
@@ -1146,10 +1152,14 @@ class CallgrindParser(LineParser):
             self.parse_position_spec() or \
             self.parse_association_spec()
 
-    _cost_re = re.compile(r'^(\d+|\+\d+|-\d+|\*)( \d+)+$')
+    __subpos_re = r'(0x[0-9a-fA-F]+|\d+|\+\d+|-\d+|\*)'
+    _cost_re = re.compile(r'^' + 
+        __subpos_re + r'( +' + __subpos_re + r')*' +
+        r'( +\d+)*' +
+    '$')
 
     def parse_cost_line(self, calls=None):
-        line = self.lookahead()
+        line = self.lookahead().rstrip()
         mo = self._cost_re.match(line)
         if not mo:
             return False
@@ -1157,10 +1167,11 @@ class CallgrindParser(LineParser):
         function = self.get_function()
 
         values = line.split(' ')
-        assert len(values) == self.num_positions + self.num_events
+        assert len(values) <= self.num_positions + self.num_events
 
         positions = values[0 : self.num_positions]
         events = values[self.num_positions : ]
+        events += ['0']*(self.num_events - len(events))
 
         for i in range(self.num_positions):
             position = positions[i]
@@ -1168,6 +1179,8 @@ class CallgrindParser(LineParser):
                 position = self.last_positions[i]
             elif position[0] in '-+':
                 position = self.last_positions[i] + int(position)
+            elif position.startswith('0x'):
+                position = int(position, 16)
             else:
                 position = int(position)
             self.last_positions[i] = position
@@ -1210,7 +1223,7 @@ class CallgrindParser(LineParser):
 
         return True
 
-    _position_re = re.compile('^(?P<position>c?(?:ob|fl|fi|fe|fn))=\s*(?:\((?P<id>\d+)\))?(?:\s*(?P<name>.+))?')
+    _position_re = re.compile('^(?P<position>[cj]?(?:ob|fl|fi|fe|fn))=\s*(?:\((?P<id>\d+)\))?(?:\s*(?P<name>.+))?')
 
     _position_table_map = {
         'ob': 'ob',
@@ -1223,6 +1236,7 @@ class CallgrindParser(LineParser):
         'cfi': 'fl',
         'cfe': 'fl',
         'cfn': 'fn',
+        'jfi': 'fl',
     }
 
     _position_map = {
@@ -1236,10 +1250,16 @@ class CallgrindParser(LineParser):
         'cfi': 'cfl',
         'cfe': 'cfl',
         'cfn': 'cfn',
+        'jfi': 'jfi',
     }
 
     def parse_position_spec(self):
         line = self.lookahead()
+        
+        if line.startswith('jump=') or line.startswith('jcnd='):
+            self.consume()
+            return True
+
         mo = self._position_re.match(line)
         if not mo:
             return False
@@ -1252,6 +1272,7 @@ class CallgrindParser(LineParser):
             else:
                 name = self.position_ids.get((table, id), '')
         self.positions[self._position_map[position]] = name
+
         self.consume()
         return True
 
