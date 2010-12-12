@@ -2568,7 +2568,7 @@ class Main:
             '-f', '--format',
             type="choice", choices=('prof', 'callgrind', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
+            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
