@@ -1256,6 +1256,8 @@ class CallgrindParser(LineParser):
         return True
 
     def parse_empty(self):
+        if self.eof():
+            return False
         line = self.lookahead()
         if line.strip():
             return False

@@ -1,0 +1,20 @@
+version: 1
+creator: callgrind-3.5.0-Debian
+pid: 14542
+cmd:  /u0/home/dzhioev/yabra_new/debug/searcher/search_server/search_server /u0/home/dzhioev/wiki_indexed/wiki 22223
+part: 2
+
+
+desc: I1 cache: 32768 B, 64 B, 8-way associative
+desc: D1 cache: 32768 B, 64 B, 8-way associative
+desc: L2 cache: 6291456 B, 64 B, 24-way associative
+
+desc: Timerange: Basic block 41049019564 - 41049019565
+desc: Trigger: Program termination
+
+positions: instr line
+events: Ir Dr Dw I1mr D1mr D1mw I2mr D2mr D2mw
+summary: 0
+
+
+totals: 0
