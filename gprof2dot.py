@@ -1166,7 +1166,7 @@ class CallgrindParser(LineParser):
 
         function = self.get_function()
 
-        values = line.split(' ')
+        values = line.split()
         assert len(values) <= self.num_positions + self.num_events
 
         positions = values[0 : self.num_positions]
