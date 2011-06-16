@@ -1946,6 +1946,8 @@ class SleepyParser(Parser):
 
         self.database = ZipFile(filename)
 
+        self.version_0_7 = 'Version 0.7 required' in self.database.namelist()
+
         self.symbols = {}
         self.calls = {}
 
@@ -1960,7 +1962,7 @@ class SleepyParser(Parser):
     )
 
     def parse_symbols(self):
-        lines = self.database.read('symbols.txt').splitlines()
+        lines = self.database.read('Symbols.txt').splitlines()
         for line in lines:
             mo = self._symbol_re.match(line)
             if mo:
@@ -1979,10 +1981,10 @@ class SleepyParser(Parser):
                 self.symbols[symbol_id] = function
 
     def parse_callstacks(self):
-        lines = self.database.read("callstacks.txt").splitlines()
+        lines = self.database.read("Callstacks.txt").splitlines()
         for line in lines:
             fields = line.split()
-            samples = int(fields[0])
+            samples = float(fields[0])
             callstack = fields[1:]
 
             callstack = [self.symbols[symbol_id] for symbol_id in callstack]
