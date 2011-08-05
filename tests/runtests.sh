@@ -5,6 +5,13 @@ PYTHON=python
 TESTDIR=`dirname "$0"`
 GPROF2DOT=$TESTDIR/../gprof2dot.py
 
+SNAPSHOT=
+if [ "$1" == "-s" ]
+then
+	SNAPSHOT=y
+	shift
+fi
+
 if [ "$1" ]
 then
 	FORMATS=$@
@@ -22,7 +29,7 @@ do
 		echo dot -Tpng -o $NAME.png $NAME.dot
 		dot -Tpng -o $NAME.png $NAME.dot || continue
 
-		if [ ! -f $NAME.orig.dot ]
+		if [ "$SNAPSHOT" ]
 		then
 			cp -f $NAME.dot $NAME.orig.dot
 			cp -f $NAME.png $NAME.orig.png
