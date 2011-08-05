@@ -1078,7 +1078,11 @@ class CallgrindParser(LineParser):
 
         self.parse_key('version')
         self.parse_key('creator')
-        self.parse_part()
+        while self.parse_part():
+            pass
+        if not self.eof():
+            sys.stderr.write('warning: line %u: unexpected line\n' % self.line_no)
+            sys.stderr.write('%s\n' % self.lookahead())
 
         # compute derived data
         self.profile.validate()
@@ -1090,13 +1094,14 @@ class CallgrindParser(LineParser):
         return self.profile
 
     def parse_part(self):
+        if not self.parse_header_line():
+            return False
         while self.parse_header_line():
             pass
+        if not self.parse_body_line():
+            return False
         while self.parse_body_line():
             pass
-        if not self.eof() and False:
-            sys.stderr.write('warning: line %u: unexpected line\n' % self.line_no)
-            sys.stderr.write('%s\n' % self.lookahead())
         return True
 
     def parse_header_line(self):
@@ -1331,6 +1336,8 @@ class CallgrindParser(LineParser):
             function = self.profile.functions[id]
         except KeyError:
             function = Function(id, name)
+            if module:
+                function.module = os.path.basename(module)
             function[SAMPLES] = 0
             function.called = 0
             self.profile.add_function(function)
