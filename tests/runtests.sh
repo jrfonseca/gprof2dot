@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PYTHON=python2.5
+PYTHON=python
 
 TESTDIR=`dirname "$0"`
 GPROF2DOT=$TESTDIR/../gprof2dot.py
