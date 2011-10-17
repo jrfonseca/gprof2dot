@@ -1362,6 +1362,166 @@ class CallgrindParser(LineParser):
         return self.make_function(module, filename, function)
 
 
+class PerfParser(LineParser):
+    """Parser for linux perf callgraph output.
+
+    It expects output generated with
+
+        perf record -g
+        perf report --stdio --show-nr-samples -g flat,0 > myfile.perf
+    """
+
+    _fields_re = {
+        'samples': r'(\d+)',
+        '%': r'(\S+)',
+        'linenr info': r'(?P<source>\(no location information\)|\S+:\d+)',
+        'image name': r'(?P<image>\S+(?:\s\(tgid:[^)]*\))?)',
+        'app name': r'(?P<application>\S+)',
+        'symbol name': r'(?P<symbol>\(no symbols\)|.+?)',
+    }
+
+    def __init__(self, infile):
+        LineParser.__init__(self, infile)
+        self.fields = []
+        self.profile = Profile()
+
+    def parse(self):
+        profile = self.profile
+
+        # read lookahead
+        self.readline()
+
+        self.parse_header()
+
+        profile[SAMPLES] = 0
+        while self.lookahead():
+            self.parse_entry()
+
+        reverse_call_samples = {}
+
+        # compute derived data
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return profile
+
+    spans_re = re.compile('^#( \.+)+')
+    span_re = re.compile('\.+')
+
+    def parse_header(self):
+        header = None
+        while True:
+            line = self.lookahead()
+            mo = self.spans_re.match(line)
+            if mo:
+                break
+            header = self.consume()
+
+        spans = self.consume()
+
+        self.fields = []
+        for span in self.span_re.finditer(spans):
+            start = span.start()
+            end = span.end()
+            name = header[start:end].strip()
+            self.fields.append((name, start, end))
+
+        self.fields[-1] = (name, start, None)
+
+        self.skip_comments()
+
+    def parse_entry(self):
+        self.skip_comments()
+        if self.eof():
+            return
+
+        line = self.consume()
+
+        fields = {}
+
+        prev_end = 0
+        for field_name, field_start, field_end in self.fields:
+            assert line[prev_end : field_start].isspace()
+            value = line[field_start : field_end].strip()
+            fields[field_name] = value
+            prev_end = field_end
+
+        samples = float(fields['Samples'])
+        function_name = fields['Symbol']
+        if function_name.startswith('['):
+            function_name = function_name[4:]
+        function_id = function_name
+
+        try:
+            function = self.profile.functions[function_id]
+        except KeyError:
+            function = Function(function_id, function_name)
+            function[SAMPLES] = samples
+            self.profile.add_function(function)
+        else:
+            function[SAMPLES] += samples
+        self.profile[SAMPLES] += samples
+
+        self.parse_subentries(function)
+
+    def parse_subentries(self, function):
+
+        _, start, end = self.fields[0]
+        while True:
+            line = self.lookahead()
+            if not line[start:end].isspace():
+                break
+            self.parse_subentry(function)
+
+    def parse_subentry(self, callee):
+        samples2 = self.parse_percentage(self.consume().strip())
+
+        stack = []
+        while True:
+            line = self.consume().strip()
+            if not line:
+                break
+            stack.append(line)
+
+        if len(stack) < 2:
+            # XXX
+            return
+
+        #assert function.name == stack[0]
+        caller_name = stack[1]
+        caller_id = caller_name
+
+        try:
+            caller = self.profile.functions[caller_id]
+        except KeyError:
+            caller = Function(caller_id, caller_name)
+            caller[SAMPLES] = 0
+            self.profile.add_function(caller)
+
+        # FIXME: call ratios are inverted
+
+        try:
+            call = caller.calls[callee.id]
+        except KeyError:
+            call = Call(callee.id)
+            call[SAMPLES2] = samples2
+            caller.add_call(call)
+        else:
+            call[SAMPLES2] += samples2
+
+    def parse_percentage(self, s):
+        assert s[-1:] == '%'
+        s = s[:-1]
+        return 100.0 * float(s)
+
+    def skip_comments(self):
+        while self.lookahead().startswith('#'):
+            self.consume()
+
+
 class OprofileParser(LineParser):
     """Parser for oprofile callgraph output.
     
@@ -2612,7 +2772,7 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'callgrind', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
+            type="choice", choices=('prof', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
             help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
         parser.add_option(
@@ -2661,6 +2821,12 @@ class Main:
             else:
                 fp = open(self.args[0], 'rt')
             parser = CallgrindParser(fp)
+        elif self.options.format == 'perf':
+            if not self.args:
+                fp = sys.stdin
+            else:
+                fp = open(self.args[0], 'rt')
+            parser = PerfParser(fp)
         elif self.options.format == 'oprofile':
             if not self.args:
                 fp = sys.stdin
