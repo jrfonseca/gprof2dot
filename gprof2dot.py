@@ -1465,20 +1465,27 @@ class PerfParser(LineParser):
             function[SAMPLES] += samples
         self.profile[SAMPLES] += samples
 
-        self.parse_subentries(samples)
+        overhead = self.parse_percentage(fields['Overhead'])
 
-    def parse_subentries(self, samples):
+        if overhead:
+            factor = samples/overhead
+        else:
+            factor = samples
+
+        self.parse_subentries(factor)
+
+    def parse_subentries(self, factor):
 
         _, start, end = self.fields[0]
         while True:
             line = self.lookahead()
             if not line[start:end].isspace():
                 break
-            self.parse_subentry(samples)
+            self.parse_subentry(factor)
 
-    def parse_subentry(self, samples):
+    def parse_subentry(self, factor):
         ratio = self.parse_percentage(self.consume().strip())
-        samples2 = samples * ratio
+        samples2 = factor * ratio
 
         stack = []
         while True:
