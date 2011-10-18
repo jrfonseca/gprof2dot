@@ -1465,19 +1465,20 @@ class PerfParser(LineParser):
             function[SAMPLES] += samples
         self.profile[SAMPLES] += samples
 
-        self.parse_subentries(function)
+        self.parse_subentries(samples)
 
-    def parse_subentries(self, function):
+    def parse_subentries(self, samples):
 
         _, start, end = self.fields[0]
         while True:
             line = self.lookahead()
             if not line[start:end].isspace():
                 break
-            self.parse_subentry(function)
+            self.parse_subentry(samples)
 
-    def parse_subentry(self, callee):
-        samples2 = self.parse_percentage(self.consume().strip())
+    def parse_subentry(self, samples):
+        ratio = self.parse_percentage(self.consume().strip())
+        samples2 = samples * ratio
 
         stack = []
         while True:
@@ -1486,31 +1487,40 @@ class PerfParser(LineParser):
                 break
             stack.append(line)
 
-        if len(stack) < 2:
-            # XXX
-            return
-
+        # XXX:
         #assert function.name == stack[0]
-        caller_name = stack[1]
-        caller_id = caller_name
 
-        try:
-            caller = self.profile.functions[caller_id]
-        except KeyError:
-            caller = Function(caller_id, caller_name)
-            caller[SAMPLES] = 0
-            self.profile.add_function(caller)
+        for i in range(1, len(stack)):
+            callee_name = stack[i - 1]
+            callee_id = callee_name
 
-        # FIXME: call ratios are inverted
+            caller_name = stack[i]
+            caller_id = caller_name
 
-        try:
-            call = caller.calls[callee.id]
-        except KeyError:
-            call = Call(callee.id)
-            call[SAMPLES2] = samples2
-            caller.add_call(call)
-        else:
-            call[SAMPLES2] += samples2
+            try:
+                caller = self.profile.functions[caller_id]
+            except KeyError:
+                caller = Function(caller_id, caller_name)
+                caller[SAMPLES] = 0
+                self.profile.add_function(caller)
+
+            try:
+                callee = self.profile.functions[callee_id]
+            except KeyError:
+                callee = Function(callee_id, callee_name)
+                callee[SAMPLES] = 0
+                self.profile.add_function(callee)
+
+            # FIXME: call ratios are inverted
+
+            try:
+                call = caller.calls[callee_id]
+            except KeyError:
+                call = Call(callee_id)
+                call[SAMPLES2] = samples2
+                caller.add_call(call)
+            else:
+                call[SAMPLES2] += samples2
 
     def parse_percentage(self, s):
         assert s[-1:] == '%'
