@@ -1368,36 +1368,21 @@ class PerfParser(LineParser):
     It expects output generated with
 
         perf record -g
-        perf report --stdio --show-nr-samples -g flat,0 > myfile.perf
+        perf script | gprof2dot.py --format=perf
     """
-
-    _fields_re = {
-        'samples': r'(\d+)',
-        '%': r'(\S+)',
-        'linenr info': r'(?P<source>\(no location information\)|\S+:\d+)',
-        'image name': r'(?P<image>\S+(?:\s\(tgid:[^)]*\))?)',
-        'app name': r'(?P<application>\S+)',
-        'symbol name': r'(?P<symbol>\(no symbols\)|.+?)',
-    }
 
     def __init__(self, infile):
         LineParser.__init__(self, infile)
-        self.fields = []
         self.profile = Profile()
 
     def parse(self):
-        profile = self.profile
-
         # read lookahead
         self.readline()
 
-        self.parse_header()
-
+        profile = self.profile
         profile[SAMPLES] = 0
-        while self.lookahead():
+        while not self.eof():
             self.parse_entry()
-
-        reverse_call_samples = {}
 
         # compute derived data
         profile.validate()
@@ -1408,135 +1393,79 @@ class PerfParser(LineParser):
 
         return profile
 
-    spans_re = re.compile('^#( \.+)+')
-    span_re = re.compile('\.+')
-
-    def parse_header(self):
-        header = None
-        while True:
-            line = self.lookahead()
-            mo = self.spans_re.match(line)
-            if mo:
-                break
-            header = self.consume()
-
-        spans = self.consume()
-
-        self.fields = []
-        for span in self.span_re.finditer(spans):
-            start = span.start()
-            end = span.end()
-            name = header[start:end].strip()
-            self.fields.append((name, start, end))
-
-        self.fields[-1] = (name, start, None)
-
-        self.skip_comments()
+    entry_re = re.compile(r'^(?P<process>.*)\s(?P<pid>\d+)\s(?P<samples>\S+):\s(?P<event>\S+):\s*$')
 
     def parse_entry(self):
-        self.skip_comments()
         if self.eof():
             return
 
         line = self.consume()
 
-        fields = {}
+        mo = self.entry_re.match(line)
+        assert mo
+        if not mo:
+            return
 
-        prev_end = 0
-        for field_name, field_start, field_end in self.fields:
-            assert line[prev_end : field_start].isspace()
-            value = line[field_start : field_end].strip()
-            fields[field_name] = value
-            prev_end = field_end
+        samples = float(mo.group('samples'))
 
-        samples = float(fields['Samples'])
-        function_name = fields['Symbol']
-        if function_name.startswith('['):
-            function_name = function_name[4:]
-        function_id = function_name
+        chain = self.parse_chain()
+        assert chain
+        if not chain:
+            return
+
+        callee = chain[0]
+        callee[SAMPLES] += samples
+        self.profile[SAMPLES] += samples
+
+        for caller in chain[1:]:
+            try:
+                call = caller.calls[callee.id]
+            except KeyError:
+                call = Call(callee.id)
+                call[SAMPLES2] = samples
+                caller.add_call(call)
+            else:
+                call[SAMPLES2] += samples
+
+            callee = caller
+
+    def parse_chain(self):
+        chain = []
+        while self.lookahead():
+            function = self.parse_chain_entry()
+            if function is None:
+                break
+            chain.append(function)
+        if self.lookahead() == '':
+            self.consume()
+        return chain
+
+    chain_entry_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>[^)]*)\)$')
+
+    def parse_chain_entry(self):
+        line = self.consume()
+        mo = self.chain_entry_re.match(line)
+        assert mo
+        if not mo:
+            return None
+
+        function_name = mo.group('symbol')
+        if not function_name:
+            function_name = mo.group('address')
+
+        module = mo.group('module')
+
+        function_id = function_name + ':' + module
 
         try:
             function = self.profile.functions[function_id]
         except KeyError:
             function = Function(function_id, function_name)
-            function[SAMPLES] = samples
+            function.module = os.path.basename(module)
+            function[SAMPLES] = 0
             self.profile.add_function(function)
-        else:
-            function[SAMPLES] += samples
-        self.profile[SAMPLES] += samples
 
-        overhead = self.parse_percentage(fields['Overhead'])
-
-        if overhead:
-            factor = samples/overhead
-        else:
-            factor = samples
-
-        self.parse_subentries(factor)
-
-    def parse_subentries(self, factor):
-
-        _, start, end = self.fields[0]
-        while True:
-            line = self.lookahead()
-            if not line[start:end].isspace():
-                break
-            self.parse_subentry(factor)
-
-    def parse_subentry(self, factor):
-        ratio = self.parse_percentage(self.consume().strip())
-        samples2 = factor * ratio
-
-        stack = []
-        while True:
-            line = self.consume().strip()
-            if not line:
-                break
-            stack.append(line)
-
-        # XXX:
-        #assert function.name == stack[0]
-
-        for i in range(1, len(stack)):
-            callee_name = stack[i - 1]
-            callee_id = callee_name
-
-            caller_name = stack[i]
-            caller_id = caller_name
-
-            try:
-                caller = self.profile.functions[caller_id]
-            except KeyError:
-                caller = Function(caller_id, caller_name)
-                caller[SAMPLES] = 0
-                self.profile.add_function(caller)
-
-            try:
-                callee = self.profile.functions[callee_id]
-            except KeyError:
-                callee = Function(callee_id, callee_name)
-                callee[SAMPLES] = 0
-                self.profile.add_function(callee)
-
-            # FIXME: call ratios are inverted
-
-            try:
-                call = caller.calls[callee_id]
-            except KeyError:
-                call = Call(callee_id)
-                call[SAMPLES2] = samples2
-                caller.add_call(call)
-            else:
-                call[SAMPLES2] += samples2
-
-    def parse_percentage(self, s):
-        assert s[-1:] == '%'
-        s = s[:-1]
-        return 100.0 * float(s)
-
-    def skip_comments(self):
-        while self.lookahead().startswith('#'):
-            self.consume()
+        return function
 
 
 class OprofileParser(LineParser):
