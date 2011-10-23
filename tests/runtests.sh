@@ -16,7 +16,15 @@ if [ "$1" ]
 then
 	FORMATS=$@
 else
-	FORMATS="prof pstats oprofile shark"
+	FORMATS="
+		prof
+		pstats
+		oprofile
+		shark
+		callgrind
+		hprof
+		perf
+	"
 fi
 
 for FORMAT in $FORMATS
