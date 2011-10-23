@@ -5,11 +5,11 @@ PYTHON=${PYTHON:-python}
 TESTDIR=`dirname "$0"`
 GPROF2DOT=$TESTDIR/../gprof2dot.py
 
-SNAPSHOT=
-if [ "$1" == "-s" ]
+FORCE=
+if [ "$1" == "-f" ]
 then
-	SNAPSHOT=y
-	shift
+       FORCE=y
+       shift
 fi
 
 if [ "$1" ]
@@ -29,7 +29,7 @@ do
 		echo dot -Tpng -o $NAME.png $NAME.dot
 		dot -Tpng -o $NAME.png $NAME.dot || continue
 
-		if [ "$SNAPSHOT" ]
+		if [ ! -f $NAME.orig.dot -o "$FORCE" ]
 		then
 			cp -f $NAME.dot $NAME.orig.dot
 			cp -f $NAME.png $NAME.orig.png
