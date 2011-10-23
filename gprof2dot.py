@@ -1382,7 +1382,7 @@ class PerfParser(LineParser):
         profile = self.profile
         profile[SAMPLES] = 0
         while not self.eof():
-            self.parse_entry()
+            self.parse_event()
 
         # compute derived data
         profile.validate()
@@ -1393,58 +1393,50 @@ class PerfParser(LineParser):
 
         return profile
 
-    entry_re = re.compile(r'^(?P<process>.*)\s(?P<pid>\d+)\s(?P<samples>\S+):\s(?P<event>\S+):\s*$')
-
-    def parse_entry(self):
+    def parse_event(self):
         if self.eof():
             return
 
         line = self.consume()
+        assert line
 
-        mo = self.entry_re.match(line)
-        assert mo
-        if not mo:
+        callchain = self.parse_callchain()
+        assert callchain
+        if not callchain:
             return
 
-        samples = float(mo.group('samples'))
+        callee = callchain[0]
+        callee[SAMPLES] += 1
+        self.profile[SAMPLES] += 1
 
-        chain = self.parse_chain()
-        assert chain
-        if not chain:
-            return
-
-        callee = chain[0]
-        callee[SAMPLES] += samples
-        self.profile[SAMPLES] += samples
-
-        for caller in chain[1:]:
+        for caller in callchain[1:]:
             try:
                 call = caller.calls[callee.id]
             except KeyError:
                 call = Call(callee.id)
-                call[SAMPLES2] = samples
+                call[SAMPLES2] = 1
                 caller.add_call(call)
             else:
-                call[SAMPLES2] += samples
+                call[SAMPLES2] += 1
 
             callee = caller
 
-    def parse_chain(self):
-        chain = []
+    def parse_callchain(self):
+        callchain = []
         while self.lookahead():
-            function = self.parse_chain_entry()
+            function = self.parse_call()
             if function is None:
                 break
-            chain.append(function)
+            callchain.append(function)
         if self.lookahead() == '':
             self.consume()
-        return chain
+        return callchain
 
-    chain_entry_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>[^)]*)\)$')
+    call_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>[^)]*)\)$')
 
-    def parse_chain_entry(self):
+    def parse_call(self):
         line = self.consume()
-        mo = self.chain_entry_re.match(line)
+        mo = self.call_re.match(line)
         assert mo
         if not mo:
             return None
