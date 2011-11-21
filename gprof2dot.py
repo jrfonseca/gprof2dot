@@ -201,6 +201,32 @@ class Function(Object):
             self.calls[callee_id] = call
         return self.calls[callee_id]
 
+    _parenthesis_re = re.compile(r'\([^()]*\)')
+    _angles_re = re.compile(r'<[^<>]*>')
+    _const_re = re.compile(r'\s+const$')
+
+    def stripped_name(self):
+        """Remove extraneous information from C++ demangled function names."""
+
+        name = self.name
+
+        # Strip function parameters from name by recursively removing paired parenthesis
+        while True:
+            name, n = self._parenthesis_re.subn('', name)
+            if not n:
+                break
+
+        # Strip const qualifier
+        name = self._const_re.sub('', name)
+
+        # Strip template parameters from name by recursively removing paired angles
+        while True:
+            name, n = self._angles_re.subn('', name)
+            if not n:
+                break
+
+        return name
+
     # TODO: write utility functions
 
     def __repr__(self):
@@ -2535,8 +2561,28 @@ class DotWriter:
       http://www.graphviz.org/doc/info/lang.html
     """
 
+    strip = False
+    wrap = False
+
     def __init__(self, fp):
         self.fp = fp
+
+    def wrap_function_name(self, name):
+        """Split the function name on multiple lines."""
+
+        if len(name) > 32:
+            ratio = 2.0/3.0
+            height = max(int(len(name)/(1.0 - ratio) + 0.5), 1)
+            width = max(len(name)/height, 32)
+            # TODO: break lines in symbols
+            name = textwrap.fill(name, width, break_long_words=False)
+
+        # Take away spaces
+        name = name.replace(", ", ",")
+        name = name.replace("> >", ">>")
+        name = name.replace("> >", ">>") # catch consecutive
+
+        return name
 
     def graph(self, profile, theme):
         self.begin_graph()
@@ -2553,7 +2599,15 @@ class DotWriter:
                 labels.append(function.process)
             if function.module is not None:
                 labels.append(function.module)
-            labels.append(function.name)
+
+            if self.strip:
+                function_name = function.stripped_name()
+            else:
+                function_name = function.name
+            if self.wrap:
+                function_name = self.wrap_function_name(function_name)
+            labels.append(function_name)
+
             for event in TOTAL_TIME_RATIO, TIME_RATIO:
                 if event in function.events:
                     label = event.format(function[event])
@@ -2821,67 +2875,13 @@ class Main:
 
         self.write_graph()
 
-    _parenthesis_re = re.compile(r'\([^()]*\)')
-    _angles_re = re.compile(r'<[^<>]*>')
-    _const_re = re.compile(r'\s+const$')
-
-    def strip_function_name(self, name):
-        """Remove extraneous information from C++ demangled function names."""
-
-        # Strip function parameters from name by recursively removing paired parenthesis
-        while True:
-            name, n = self._parenthesis_re.subn('', name)
-            if not n:
-                break
-
-        # Strip const qualifier
-        name = self._const_re.sub('', name)
-
-        # Strip template parameters from name by recursively removing paired angles
-        while True:
-            name, n = self._angles_re.subn('', name)
-            if not n:
-                break
-
-        return name
-
-    def wrap_function_name(self, name):
-        """Split the function name on multiple lines."""
-
-        if len(name) > 32:
-            ratio = 2.0/3.0
-            height = max(int(len(name)/(1.0 - ratio) + 0.5), 1)
-            width = max(len(name)/height, 32)
-            # TODO: break lines in symbols
-            name = textwrap.fill(name, width, break_long_words=False)
-
-        # Take away spaces
-        name = name.replace(", ", ",")
-        name = name.replace("> >", ">>")
-        name = name.replace("> >", ">>") # catch consecutive
-
-        return name
-
-    def compress_function_name(self, name):
-        """Compress function name according to the user preferences."""
-
-        if self.options.strip:
-            name = self.strip_function_name(name)
-
-        if self.options.wrap:
-            name = self.wrap_function_name(name)
-
-        # TODO: merge functions with same resulting name
-
-        return name
-
     def write_graph(self):
         dot = DotWriter(self.output)
+        dot.strip = self.options.strip
+        dot.wrap = self.options.wrap
+
         profile = self.profile
         profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
-
-        for function in profile.functions.itervalues():
-            function.name = self.compress_function_name(function.name)
 
         dot.graph(profile, self.theme)
 
