@@ -1427,7 +1427,6 @@ class PerfParser(LineParser):
         assert line
 
         callchain = self.parse_callchain()
-        assert callchain
         if not callchain:
             return
 
