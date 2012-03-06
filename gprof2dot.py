@@ -1401,6 +1401,13 @@ class PerfParser(LineParser):
         LineParser.__init__(self, infile)
         self.profile = Profile()
 
+    def readline(self):
+        # Override LineParser.readline to ignore comment lines
+        while True:
+            LineParser.readline(self)
+            if self.eof() or not self.lookahead().startswith('#'):
+                break
+
     def parse(self):
         # read lookahead
         self.readline()
