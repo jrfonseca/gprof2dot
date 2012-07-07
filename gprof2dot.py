@@ -1199,9 +1199,12 @@ class CallgrindParser(LineParser):
 
         if calls is None:
             # Unlike other aspects, call object (cob) is relative not to the
-            # last call object, but to the caller's object (ob), so update it
-            # when processing a functions cost line
-            self.positions['cob'] = self.positions['ob']
+            # last call object, but to the caller's object (ob), so try to
+            # update it when processing a functions cost line
+            try:
+                self.positions['cob'] = self.positions['ob']
+            except KeyError:
+                pass
 
         values = line.split()
         assert len(values) <= self.num_positions + self.num_events
