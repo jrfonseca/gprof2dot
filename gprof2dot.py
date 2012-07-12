@@ -2809,69 +2809,33 @@ class Main:
         # set skew on the theme now that it has been picked.
         if self.options.theme_skew:
             self.theme.skew = self.options.theme_skew
-
-        if self.options.format == 'prof':
+            
+        stdinFormats = {
+            "prof": GprofParser,
+            "callgrind": CallgrindParser,
+            "perf": PerfParser,
+            "oprofile": OprofileParser,
+            "sysprof": SysprofParser,
+            "hprof": HProfParser,
+            "xperf": XPerfParser, 
+            "shark": SharkParser,
+            "aqtime": AQtimeParser
+        }
+        
+        if self.options.format in stdinFormats:
             if not self.args:
                 fp = sys.stdin
             else:
                 fp = open(self.args[0], 'rt')
-            parser = GprofParser(fp)
-        elif self.options.format == 'callgrind':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = CallgrindParser(fp)
-        elif self.options.format == 'perf':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = PerfParser(fp)
-        elif self.options.format == 'oprofile':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = OprofileParser(fp)
-        elif self.options.format == 'sysprof':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = SysprofParser(fp)
-        elif self.options.format == 'hprof':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = HProfParser(fp)        
+            parser = stdinFormats[self.options.format](fp)
         elif self.options.format == 'pstats':
             if not self.args:
                 parser.error('at least a file must be specified for pstats input')
             parser = PstatsParser(*self.args)
-        elif self.options.format == 'xperf':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = XPerfParser(fp)
-        elif self.options.format == 'shark':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = SharkParser(fp)
         elif self.options.format == 'sleepy':
             if len(self.args) != 1:
                 parser.error('exactly one file must be specified for sleepy input')
             parser = SleepyParser(self.args[0])
-        elif self.options.format == 'aqtime':
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = AQtimeParser(fp)
         else:
             parser.error('invalid format \'%s\'' % self.options.format)
 
