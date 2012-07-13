@@ -30,6 +30,7 @@ import re
 import textwrap
 import optparse
 import xml.parsers.expat
+import collections
 
 
 try:
@@ -296,6 +297,53 @@ class Profile(Object):
                 sys.stderr.write("Cycle:\n")
                 for member in cycle.functions:
                     sys.stderr.write("\tFunction %s\n" % member.name)
+
+    def prune_root(self, root):
+        visited = set()
+        frontier = set([root])
+        while len(frontier) > 0:
+            node = frontier.pop()
+            visited.add(node)
+            f = self.functions[node]
+            newNodes = f.calls.keys()
+            frontier = frontier.union(set(newNodes) - visited)
+        subtreeFunctions = {}
+        for n in visited:
+            subtreeFunctions[n] = self.functions[n]
+        self.functions = subtreeFunctions
+
+    def prune_leaf(self, leaf):
+        edgesUp = collections.defaultdict(set)
+        for f in self.functions.keys():
+            for n in self.functions[f].calls.keys():
+                edgesUp[n].add(f)
+        # build the tree up
+        visited = set()
+        frontier = set([leaf])
+        while len(frontier) > 0:
+            node = frontier.pop()
+            visited.add(node)
+            frontier = frontier.union(edgesUp[node] - visited)
+        downTree = set(self.functions.keys())
+        upTree = visited
+        path = downTree.intersection(upTree)
+        pathFunctions = {}
+        for n in path:
+            f = self.functions[n]
+            newCalls = {}
+            for c in f.calls.keys():
+                if c in path:
+                    newCalls[c] = f.calls[c]
+            f.calls = newCalls
+            pathFunctions[n] = f
+        self.functions = pathFunctions
+
+
+    def getFunctionId(self, funcName):
+        for f in self.functions:
+            if self.functions[f].name == funcName:
+                return f
+        return False
     
     def _tarjan(self, function, order, stack, orders, lowlinks, visited):
         """Tarjan's strongly connected components algorithm.
@@ -2791,6 +2839,17 @@ class Main:
             action="store_true",
             dest="wrap", default=False,
             help="wrap function names")
+        # add option to create subtree or show paths
+        parser.add_option(
+            '-z', '--root',
+            type="string",
+            dest="root", default="",
+            help="prun call graph to show only decedents of specified root function")
+        parser.add_option(
+            '-l', '--leaf',
+            type="string",
+            dest="leaf", default="",
+            help="prun call graph to show only ancestors of specified leaf function")
         # add a new option to control skew of the colorization curve
         parser.add_option(
             '--skew',
@@ -2855,6 +2914,19 @@ class Main:
 
         profile = self.profile
         profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
+        
+        if self.options.root:
+            rootId = profile.getFunctionId(self.options.root)
+            if not rootId:
+                sys.stderr.write('root node ' + self.options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
+                sys.exit(1)
+            profile.prune_root(rootId)
+        if self.options.leaf:
+            leafId = profile.getFunctionId(self.options.leaf)
+            if not leafId:
+                sys.stderr.write('leaf node ' + self.options.leaf + ' not found (maybe already pruned : try -e0 -n0 flags)\n')
+                sys.exit(1)
+            profile.prune_leaf(leafId)
 
         dot.graph(profile, self.theme)
 
