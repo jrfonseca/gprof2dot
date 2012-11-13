@@ -2661,6 +2661,8 @@ class PstatsParser:
         try:
             self.stats = pstats.Stats(*filename)
         except ValueError:
+            if sys.version_info[0] >= 3:
+                raise
             import hotshot.stats
             self.stats = hotshot.stats.load(filename[0])
         self.profile = Profile()
