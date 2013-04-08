@@ -24,6 +24,7 @@ else
 		callgrind
 		hprof
 		perf
+		axe
 	"
 fi
 

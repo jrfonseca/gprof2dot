@@ -1,0 +1,254 @@
+Index  % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                          Index
+-----  ----------------  -------------  -----------------  ----------------------------  -----
+                         0.0            31.29                <spontaneous>               [2]
+[0]    100.0             0.0            31.29              __libc_start_main             [0]
+                         0.0            31.29                main                        [1]
+                                                                                         
+                         0.0            31.29                __libc_start_main           [0]
+[1]    100.0             0.0            31.29              main                          [1]
+                         0.0            31.268               tachyon_video::on_process   [6]
+                         0.0            0.022                main_init_parts             [32]
+                                                                                         
+[2]    100.0             0.0            31.29              <spontaneous>                 [2]
+                         0.0            31.29                __libc_start_main           [0]
+                                                                                         
+                         0.0            31.268               thread_trace                [5]
+[3]    99.93             0.0            31.268             draw_trace                    [3]
+                         0.016          31.252               render_one_pixel            [9]
+                                                                                         
+                         0.0            31.268               trace_region                [8]
+[4]    99.93             0.0            31.268             trace_shm                     [4]
+                         0.0            31.268               thread_trace                [5]
+                                                                                         
+                         0.0            31.268               trace_shm                   [4]
+[5]    99.93             0.0            31.268             thread_trace                  [5]
+                         0.0            31.268               draw_trace                  [3]
+                                                                                         
+                         0.0            31.268               main                        [1]
+[6]    99.93             0.0            31.268             tachyon_video::on_process     [6]
+                         0.0            31.268               rt_renderscene              [7]
+                                                                                         
+                         0.0            31.268               tachyon_video::on_process   [6]
+[7]    99.93             0.0            31.268             rt_renderscene                [7]
+                         0.0            31.268               trace_region                [8]
+                                                                                         
+                         0.0            31.268               rt_renderscene              [7]
+[8]    99.93             0.0            31.268             trace_region                  [8]
+                         0.0            31.268               trace_shm                   [4]
+                                                                                         
+                         0.016          31.252               draw_trace                  [3]
+[9]    99.93             0.016          31.252             render_one_pixel              [9]
+                         0.012          16.502               trace <cycle 2>             [11]
+                         14.71          0.0                  initialize_2D_buffer        [15]
+                         0.008          0.012                camray                      [35]
+                         0.008          0.0                  setup_2D_buffer             [45]
+                                                                                         
+                         0.012          16.502               render_one_pixel            [9]
+[10]   52.78             0.12           16.502             <cycle 2 as a whole>          [10]
+                         0.012          16.502               trace <cycle 2>             [11]
+                         0.008          -0.008               shade_reflection <cycle 2>  [18]
+                         0.1            -0.1                 shader <cycle 2>            [16]
+                                                                                         
+                         0.012          16.502               render_one_pixel            [9]
+                                                             shade_reflection <cycle 2>  [18]
+[11]   52.78             0.012          16.502             trace <cycle 2>               [11]
+                                                             shader <cycle 2>            [16]
+                         0.012          5.586                intersect_objects           [12]
+                         0.02           0.0                  VNorm                       [28]
+                                                                                         
+                         0.032          10.53                shader <cycle 2>            [16]
+                         0.012          5.586                trace <cycle 2>             [11]
+[12]   51.65             0.044          16.116             intersect_objects             [12]
+                         6.184          9.838                grid_intersect <cycle 1>    [14]
+                         0.094          0.0                  light_intersect             [24]
+                                                                                         
+                         6.184          9.838                intersect_objects           [12]
+[13]   51.2              6.592          9.838              <cycle 1 as a whole>          [13]
+                         6.592          9.43                 grid_intersect <cycle 1>    [14]
+                                                                                         
+                         6.184          9.838                intersect_objects           [12]
+                                                             grid_intersect <cycle 1>    [14]
+[14]   51.2              6.592          9.838              grid_intersect <cycle 1>      [14]
+                         8.068          0.344                sphere_intersect            [17]
+                                                             grid_intersect <cycle 1>    [14]
+                         0.492          0.0                  grid_bounds_intersect       [19]
+                         0.172          0.02                 Raypnt                      [21]
+                         0.114          0.0                  tri_intersect               [22]
+                         0.096          0.008                pos2grid                    [23]
+                         0.084          0.0                  VScale                      [26]
+                         0.032          0.0                  add_intersection            [27]
+                                                                                         
+                         14.71          0.0                  render_one_pixel            [9]
+[15]   47.01             14.71          0.0                initialize_2D_buffer          [15]
+                                                                                         
+                                                             trace <cycle 2>             [11]
+[16]   45.36             0.1            14.152             shader <cycle 2>              [16]
+                                                             shade_reflection <cycle 2>  [18]
+                         0.032          10.53                intersect_objects           [12]
+                         0.084          0.008                shade_phong                 [25]
+                         0.032          0.0                  shadow_intersection         [29]
+                         0.012          0.016                tri_normal                  [30]
+                         0.016          0.0                  ColorAddS                   [36]
+                         0.016          0.0                  reset_intersection          [37]
+                         0.012          0.0                  sphere_normal               [39]
+                         0.008          0.0                  ColorAccum                  [44]
+                                                                                         
+                         8.068          0.344                grid_intersect <cycle 1>    [14]
+[17]   26.88             8.068          0.344              sphere_intersect              [17]
+                         0.312          0.0                  [Import thunk mcount]       [20]
+                         0.032          0.0                  add_intersection            [27]
+                                                                                         
+                                                             shader <cycle 2>            [16]
+[18]   24.29             0.008          7.6                shade_reflection <cycle 2>    [18]
+                                                             trace <cycle 2>             [11]
+                         0.01           0.0                  VAddS                       [42]
+                                                                                         
+                         0.492          0.0                  grid_intersect <cycle 1>    [14]
+[19]   1.57              0.492          0.0                grid_bounds_intersect         [19]
+                                                                                         
+                         0.312          0.0                  sphere_intersect            [17]
+                         0.02           0.0                  Raypnt                      [21]
+                         0.008          0.0                  pos2grid                    [23]
+[20]   1.09              0.34           0.0                [Import thunk mcount]         [20]
+                                                                                         
+                         0.172          0.02                 grid_intersect <cycle 1>    [14]
+[21]   0.61              0.172          0.02               Raypnt                        [21]
+                         0.02           0.0                  [Import thunk mcount]       [20]
+                                                                                         
+                         0.114          0.0                  grid_intersect <cycle 1>    [14]
+[22]   0.36              0.114          0.0                tri_intersect                 [22]
+                                                                                         
+                         0.096          0.008                grid_intersect <cycle 1>    [14]
+[23]   0.33              0.096          0.008              pos2grid                      [23]
+                         0.008          0.0                  [Import thunk mcount]       [20]
+                                                                                         
+                         0.094          0.0                  intersect_objects           [12]
+[24]   0.3               0.094          0.0                light_intersect               [24]
+                                                                                         
+                         0.084          0.008                shader <cycle 2>            [16]
+[25]   0.29              0.084          0.008              shade_phong                   [25]
+                         0.008          0.0                  VNorm                       [28]
+                                                                                         
+                         0.084          0.0                  grid_intersect <cycle 1>    [14]
+[26]   0.27              0.084          0.0                VScale                        [26]
+                                                                                         
+                         0.032          0.0                  sphere_intersect            [17]
+                         0.032          0.0                  grid_intersect <cycle 1>    [14]
+[27]   0.2               0.064          0.0                add_intersection              [27]
+                                                                                         
+                         0.02           0.0                  trace <cycle 2>             [11]
+                         0.008          0.0                  shade_phong                 [25]
+                         0.008          0.0                  tri_normal                  [30]
+[28]   0.12              0.036          0.0                VNorm                         [28]
+                                                                                         
+                         0.032          0.0                  shader <cycle 2>            [16]
+[29]   0.1               0.032          0.0                shadow_intersection           [29]
+                                                                                         
+                         0.012          0.016                shader <cycle 2>            [16]
+[30]   0.09              0.012          0.016              tri_normal                    [30]
+                         0.008          0.0                  VDot                        [43]
+                         0.008          0.0                  VNorm                       [28]
+                                                                                         
+                         0.0            0.022                main_init_parts             [32]
+[31]   0.07              0.0            0.022              readmodel                     [31]
+                         0.0            0.022                GetObject                   [33]
+                                                                                         
+                         0.0            0.022                main                        [1]
+[32]   0.07              0.0            0.022              main_init_parts               [32]
+                         0.0            0.022                readmodel                   [31]
+                                                                                         
+                         0.0            0.022                readmodel                   [31]
+[33]   0.07              0.0            0.022              GetObject                     [33]
+                         0.01           0.012                GetSphere                   [34]
+                                                                                         
+                         0.01           0.012                GetObject                   [33]
+[34]   0.07              0.01           0.012              GetSphere                     [34]
+                         0.0            0.012                GetString                   [41]
+                                                                                         
+                         0.008          0.012                render_one_pixel            [9]
+[35]   0.06              0.008          0.012              camray                        [35]
+                         0.012          0.0                  VSub                        [38]
+                                                                                         
+                         0.016          0.0                  shader <cycle 2>            [16]
+[36]   0.05              0.016          0.0                ColorAddS                     [36]
+                                                                                         
+                         0.016          0.0                  shader <cycle 2>            [16]
+[37]   0.05              0.016          0.0                reset_intersection            [37]
+                                                                                         
+                         0.012          0.0                  camray                      [35]
+[38]   0.04              0.012          0.0                VSub                          [38]
+                                                                                         
+                         0.012          0.0                  shader <cycle 2>            [16]
+[39]   0.04              0.012          0.0                sphere_normal                 [39]
+                                                                                         
+                         0.012          0.0                  GetString                   [41]
+[40]   0.04              0.012          0.0                stringcmp                     [40]
+                                                                                         
+                         0.0            0.012                GetSphere                   [34]
+[41]   0.04              0.0            0.012              GetString                     [41]
+                         0.012          0.0                  stringcmp                   [40]
+                                                                                         
+                         0.01           0.0                  shade_reflection <cycle 2>  [18]
+[42]   0.03              0.01           0.0                VAddS                         [42]
+                                                                                         
+                         0.008          0.0                  tri_normal                  [30]
+[43]   0.03              0.008          0.0                VDot                          [43]
+                                                                                         
+                         0.008          0.0                  shader <cycle 2>            [16]
+[44]   0.03              0.008          0.0                ColorAccum                    [44]
+                                                                                         
+                         0.008          0.0                  render_one_pixel            [9]
+[45]   0.03              0.008          0.0                setup_2D_buffer               [45]
+                                                                                         
+
+
+Index by function name
+
+Index  Function
+-----  -------------------------
+[2]    <spontaneous>
+[44]   ColorAccum
+[36]   ColorAddS
+[33]   GetObject
+[34]   GetSphere
+[41]   GetString
+[21]   Raypnt
+[42]   VAddS
+[43]   VDot
+[28]   VNorm
+[26]   VScale
+[38]   VSub
+[20]   [Import thunk mcount]
+[0]    __libc_start_main
+[27]   add_intersection
+[35]   camray
+[3]    draw_trace
+[19]   grid_bounds_intersect
+[14]   grid_intersect
+[15]   initialize_2D_buffer
+[12]   intersect_objects
+[24]   light_intersect
+[1]    main
+[32]   main_init_parts
+[23]   pos2grid
+[31]   readmodel
+[9]    render_one_pixel
+[37]   reset_intersection
+[7]    rt_renderscene
+[45]   setup_2D_buffer
+[25]   shade_phong
+[18]   shade_reflection
+[16]   shader
+[29]   shadow_intersection
+[17]   sphere_intersect
+[39]   sphere_normal
+[40]   stringcmp
+[6]    tachyon_video::on_process
+[5]    thread_trace
+[11]   trace
+[8]    trace_region
+[4]    trace_shm
+[22]   tri_intersect
+[30]   tri_normal
+[13]   <cycle 1>
+[10]   <cycle 2>
