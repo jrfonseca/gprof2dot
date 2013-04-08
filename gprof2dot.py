@@ -2803,8 +2803,7 @@ class Main:
         """Main program."""
 
         parser = optparse.OptionParser(
-            usage="\n\t%prog [options] [file] ...",
-            version="%%prog")
+            usage="\n\t%prog [options] [file] ...")
         parser.add_option(
             '-o', '--output', metavar='FILE',
             type="string", dest="output",
