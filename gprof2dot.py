@@ -20,8 +20,6 @@
 
 __author__ = "Jose Fonseca"
 
-__version__ = "1.0"
-
 
 import sys
 import math
@@ -2806,7 +2804,7 @@ class Main:
 
         parser = optparse.OptionParser(
             usage="\n\t%prog [options] [file] ...",
-            version="%%prog %s" % __version__)
+            version="%%prog")
         parser.add_option(
             '-o', '--output', metavar='FILE',
             type="string", dest="output",
