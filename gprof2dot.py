@@ -391,25 +391,38 @@ class Profile(Object):
         function_totals = {}
         for function in self.functions.itervalues():
             function_totals[function] = 0.0
+
+        # Pass 1:  function_total gets the sum of call[event] for all
+        #          incoming arrows.  Same for cycle_total for all arrows
+        #          that are coming into the *cycle* but are not part of it.
         for function in self.functions.itervalues():
             for call in function.calls.itervalues():
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
-                    function_totals[callee] += call[event]
-                    if callee.cycle is not None and callee.cycle is not function.cycle:
-                        cycle_totals[callee.cycle] += call[event]
+                    if event in call.events:
+                        function_totals[callee] += call[event]
+                        if callee.cycle is not None and callee.cycle is not function.cycle:
+                            cycle_totals[callee.cycle] += call[event]
+                    else:
+                        sys.stderr.write("call_ratios: No data for " + function.name + " call to " + callee.name + "\n")
 
-        # Compute the ratios
+        # Pass 2:  Compute the ratios.  Each call[event] is scaled by the
+        #          function_total of the callee.  Calls into cycles use the
+        #          cycle_total, but not calls within cycles.
         for function in self.functions.itervalues():
             for call in function.calls.itervalues():
                 assert call.ratio is None
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
-                    if callee.cycle is not None and callee.cycle is not function.cycle:
-                        total = cycle_totals[callee.cycle]
+                    if event in call.events:
+                        if callee.cycle is not None and callee.cycle is not function.cycle:
+                            total = cycle_totals[callee.cycle]
+                        else:
+                            total = function_totals[callee]
+                        call.ratio = ratio(call[event], total)
                     else:
-                        total = function_totals[callee]
-                    call.ratio = ratio(call[event], total)
+                        # Warnings here would only repeat those issued above.
+                        call.ratio = 0.0
 
     def integrate(self, outevent, inevent):
         """Propagate function time ratio along the function calls.
@@ -1121,6 +1134,287 @@ class GprofParser(Parser):
         profile.call_ratios(CALLS)
         profile.integrate(TOTAL_TIME, TIME)
         profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
+
+        return profile
+
+
+# Clone&hack of GprofParser for VTune Amplifier XE 2013 gprof-cc output.
+# Tested only with AXE 2013 for Windows.
+#   - Use total times as reported by AXE.
+#   - In the absence of call counts, call ratios are faked from the relative
+#     proportions of total time.  This affects only the weighting of the calls.
+#   - Different header, separator, and end marker.
+#   - Extra whitespace after function names.
+#   - You get a full entry for <spontaneous>, which does not have parents.
+#   - Cycles do have parents.  These are saved but unused (as they are
+#     for functions).
+#   - Disambiguated "unrecognized call graph entry" error messages.
+# Notes:
+#   - Total time of functions as reported by AXE passes the val3 test.
+#   - CPU Time:Children in the input is sometimes a negative number.  This
+#     value goes to the variable descendants, which is unused.
+#   - The format of gprof-cc reports is unaffected by the use of
+#       -knob enable-call-counts=true (no call counts, ever), or
+#       -show-as=samples (results are quoted in seconds regardless).
+class AXEParser(Parser):
+    "Parser for VTune Amplifier XE 2013 gprof-cc report output."
+
+    def __init__(self, fp):
+        Parser.__init__(self)
+        self.fp = fp
+        self.functions = {}
+        self.cycles = {}
+
+    def readline(self):
+        line = self.fp.readline()
+        if not line:
+            sys.stderr.write('error: unexpected end of file\n')
+            sys.exit(1)
+        line = line.rstrip('\r\n')
+        return line
+
+    _int_re = re.compile(r'^\d+$')
+    _float_re = re.compile(r'^\d+\.\d+$')
+
+    def translate(self, mo):
+        """Extract a structure from a match object, while translating the types in the process."""
+        attrs = {}
+        groupdict = mo.groupdict()
+        for name, value in groupdict.iteritems():
+            if value is None:
+                value = None
+            elif self._int_re.match(value):
+                value = int(value)
+            elif self._float_re.match(value):
+                value = float(value)
+            attrs[name] = (value)
+        return Struct(attrs)
+
+    _cg_header_re = re.compile(
+        '^Index |'
+        '^----- '
+    )
+
+    _cg_ignore_re = re.compile(
+        # internal calls (such as "mcount")
+        # FIXME: is this applicable?
+        r'^.*\((\d+)\)$'
+    )
+
+    _cg_primary_re = re.compile(
+        r'^\[(?P<index>\d+)\]?' + 
+        r'\s+(?P<percentage_time>\d+\.\d+)' + 
+        r'\s+(?P<self>\d+\.\d+)' + 
+        r'\s+(?P<descendants>\d+\.\d+)' + 
+        r'\s+(?P<name>\S.*?)' +
+        r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
+        r'\s+\[(\d+)\]$'
+    )
+
+    _cg_parent_re = re.compile(
+        r'^\s+(?P<self>\d+\.\d+)?' + 
+        r'\s+(?P<descendants>\d+\.\d+)?' + 
+        r'\s+(?P<name>\S.*?)' +
+        r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
+        r'\s+\[(?P<index>\d+)\]$'
+    )
+
+    _cg_child_re = _cg_parent_re
+
+    _cg_cycle_header_re = re.compile(
+        r'^\[(?P<index>\d+)\]?' + 
+        r'\s+(?P<percentage_time>\d+\.\d+)' + 
+        r'\s+(?P<self>\d+\.\d+)' + 
+        r'\s+(?P<descendants>\d+\.\d+)' + 
+        r'\s+<cycle\s(?P<cycle>\d+)\sas\sa\swhole>' +
+        r'\s+\[(\d+)\]$'
+    )
+
+    _cg_cycle_member_re = re.compile(
+        r'^\s+(?P<self>\d+\.\d+)?' + 
+        r'\s+(?P<descendants>\d+\.\d+)?' + 
+        r'\s+(?P<name>\S.*?)' +
+        r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
+        r'\s+\[(?P<index>\d+)\]$'
+    )
+
+    def parse_function_entry(self, lines):
+        parents = []
+        children = []
+
+        while True:
+            if not lines:
+                sys.stderr.write('warning: unexpected end of entry\n')
+                return
+            line = lines.pop(0)
+            if line.startswith('['):
+                break
+        
+            # read function parent line
+            mo = self._cg_parent_re.match(line)
+            if not mo:
+                if self._cg_ignore_re.match(line):
+                    continue
+                sys.stderr.write('warning: unrecognized call graph entry (1): %r\n' % line)
+            else:
+                parent = self.translate(mo)
+                parents.append(parent)
+
+        # read primary line
+        mo = self._cg_primary_re.match(line)
+        if not mo:
+            sys.stderr.write('warning: unrecognized call graph entry (2): %r\n' % line)
+            return
+        else:
+            function = self.translate(mo)
+
+        while lines:
+            line = lines.pop(0)
+            
+            # read function subroutine line
+            mo = self._cg_child_re.match(line)
+            if not mo:
+                if self._cg_ignore_re.match(line):
+                    continue
+                sys.stderr.write('warning: unrecognized call graph entry (3): %r\n' % line)
+            else:
+                child = self.translate(mo)
+                children.append(child)
+        
+        function.parents = parents
+        function.children = children
+
+        self.functions[function.index] = function
+
+    def parse_cycle_entry(self, lines):
+
+        # Process the parents that were not there in gprof format.
+        parents = []
+        while True:
+            if not lines:
+                sys.stderr.write('warning: unexpected end of cycle entry\n')
+                return
+            line = lines.pop(0)
+            if line.startswith('['):
+                break
+            mo = self._cg_parent_re.match(line)
+            if not mo:
+                if self._cg_ignore_re.match(line):
+                    continue
+                sys.stderr.write('warning: unrecognized call graph entry (6): %r\n' % line)
+            else:
+                parent = self.translate(mo)
+                parents.append(parent)
+
+        # read cycle header line
+        mo = self._cg_cycle_header_re.match(line)
+        if not mo:
+            sys.stderr.write('warning: unrecognized call graph entry (4): %r\n' % line)
+            return
+        cycle = self.translate(mo)
+
+        # read cycle member lines
+        cycle.functions = []
+        for line in lines[1:]:
+            mo = self._cg_cycle_member_re.match(line)
+            if not mo:
+                sys.stderr.write('warning: unrecognized call graph entry (5): %r\n' % line)
+                continue
+            call = self.translate(mo)
+            cycle.functions.append(call)
+        
+        cycle.parents = parents
+        self.cycles[cycle.cycle] = cycle
+
+    def parse_cg_entry(self, lines):
+        if any("as a whole" in linelooper for linelooper in lines):
+            self.parse_cycle_entry(lines)
+        else:
+            self.parse_function_entry(lines)
+
+    def parse_cg(self):
+        """Parse the call graph."""
+
+        # skip call graph header
+        line = self.readline()
+        while self._cg_header_re.match(line):
+            line = self.readline()
+
+        # process call graph entries
+        entry_lines = []
+        # An EOF in readline terminates the program without returning.
+        while line != 'Index  Function':
+            if line.isspace():
+                self.parse_cg_entry(entry_lines)
+                entry_lines = []
+            else:
+                entry_lines.append(line)            
+            line = self.readline()
+
+    def parse(self):
+        sys.stderr.write('warning: for axe format, edge weights are unreliable estimates derived from\nfunction total times.\n')
+        self.parse_cg()
+        self.fp.close()
+
+        profile = Profile()
+        profile[TIME] = 0.0
+        
+        cycles = {}
+        for index in self.cycles.iterkeys():
+            cycles[index] = Cycle()
+
+        for entry in self.functions.itervalues():
+            # populate the function
+            function = Function(entry.index, entry.name)
+            function[TIME] = entry.self
+            function[TOTAL_TIME_RATIO] = entry.percentage_time / 100.0
+            
+            # populate the function calls
+            for child in entry.children:
+                call = Call(child.index)
+                # The following bogus value affects only the weighting of
+                # the calls.
+                call[TOTAL_TIME_RATIO] = function[TOTAL_TIME_RATIO]
+
+                if child.index not in self.functions:
+                    # NOTE: functions that were never called but were discovered by gprof's 
+                    # static call graph analysis dont have a call graph entry so we need
+                    # to add them here
+                    # FIXME: Is this applicable?
+                    missing = Function(child.index, child.name)
+                    function[TIME] = 0.0
+                    profile.add_function(missing)
+
+                function.add_call(call)
+
+            profile.add_function(function)
+
+            if entry.cycle is not None:
+                try:
+                    cycle = cycles[entry.cycle]
+                except KeyError:
+                    sys.stderr.write('warning: <cycle %u as a whole> entry missing\n' % entry.cycle) 
+                    cycle = Cycle()
+                    cycles[entry.cycle] = cycle
+                cycle.add_function(function)
+
+            profile[TIME] = profile[TIME] + function[TIME]
+
+        for cycle in cycles.itervalues():
+            profile.add_cycle(cycle)
+
+        # Compute derived events.
+        profile.validate()
+        profile.ratio(TIME_RATIO, TIME)
+        # Lacking call counts, fake call ratios based on total times.
+        profile.call_ratios(TOTAL_TIME_RATIO)
+        # The TOTAL_TIME_RATIO of functions is already set.  Propagate that
+        # total time to the calls.  (TOTAL_TIME is neither set nor used.)
+        for function in profile.functions.itervalues():
+            for call in function.calls.itervalues():
+                if call.ratio is not None:
+                    callee = profile.functions[call.callee_id]
+                    call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO];
 
         return profile
 
@@ -2845,9 +3139,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         parser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
+            type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, or xperf [default: %default]")
+            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, or xperf [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
@@ -2895,6 +3189,7 @@ class Main:
             
         stdinFormats = {
             "prof": GprofParser,
+            "axe": AXEParser,
             "callgrind": CallgrindParser,
             "perf": PerfParser,
             "oprofile": OprofileParser,
