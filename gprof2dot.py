@@ -405,7 +405,7 @@ class Profile(Object):
                     call.ratio = ratio(call[event], total)
 
     def integrate(self, outevent, inevent):
-        """Propagate function time ratio allong the function calls.
+        """Propagate function time ratio along the function calls.
 
         Must be called after finding the cycles.
 
