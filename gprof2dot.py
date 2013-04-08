@@ -18,7 +18,7 @@
 
 """Generate a dot graph from the output of several profilers."""
 
-__author__ = "Jose Fonseca"
+__author__ = "Jose Fonseca et al"
 
 
 import sys
