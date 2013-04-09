@@ -121,6 +121,16 @@ CALLS = Event("Calls", 0, add, times)
 SAMPLES = Event("Samples", 0, add)
 SAMPLES2 = Event("Samples", 0, add)
 
+# Count of samples where a given function was either executing or on the stack.
+# This is used to calculate the total time ratio according to the
+# straightforward method described in Mike Dunlavey's answer to
+# stackoverflow.com/questions/1777556/alternatives-to-gprof, item 4 (the myth
+# "that recursion is a tricky confusing issue"), last edited 2012-08-30: it's
+# just the ratio of TOTAL_SAMPLES over the number of samples in the profile.
+#
+# Used only when total == callstacks
+TOTAL_SAMPLES = Event("Samples", 0, add)
+
 TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
 TOTAL_TIME = Event("Total time", 0.0, fail)
@@ -1740,9 +1750,10 @@ class PerfParser(LineParser):
         perf script | gprof2dot.py --format=perf
     """
 
-    def __init__(self, infile):
+    def __init__(self, infile, total):
         LineParser.__init__(self, infile)
         self.profile = Profile()
+        self.total = total
 
     def readline(self):
         # Override LineParser.readline to ignore comment lines
@@ -1765,7 +1776,21 @@ class PerfParser(LineParser):
         profile.find_cycles()
         profile.ratio(TIME_RATIO, SAMPLES)
         profile.call_ratios(SAMPLES2)
-        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+        if self.total == "callratios":
+            # Heuristic approach.  TOTAL_SAMPLES is unused.
+            profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+        elif self.total == "callstacks":
+            # Use the actual call chains for functions.
+            profile[TOTAL_SAMPLES] = profile[SAMPLES]
+            profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
+            # Then propagate that total time to the calls.
+            for function in profile.functions.itervalues():
+                for call in function.calls.itervalues():
+                    if call.ratio is not None:
+                        callee = profile.functions[call.callee_id]
+                        call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO];
+        else:
+            assert False
 
         return profile
 
@@ -1795,6 +1820,11 @@ class PerfParser(LineParser):
                 call[SAMPLES2] += 1
 
             callee = caller
+
+        # Increment TOTAL_SAMPLES only once on each function.
+        stack = set(callchain)
+        for function in stack:
+            function[TOTAL_SAMPLES] += 1
 
     def parse_callchain(self):
         callchain = []
@@ -1830,6 +1860,7 @@ class PerfParser(LineParser):
             function = Function(function_id, function_name)
             function.module = os.path.basename(module)
             function[SAMPLES] = 0
+            function[TOTAL_SAMPLES] = 0
             self.profile.add_function(function)
 
         return function
@@ -3116,6 +3147,11 @@ class Main:
             dest="format", default="prof",
             help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
         parser.add_option(
+            '--total',
+            type="choice", choices=('callratios', 'callstacks'),
+            dest="total", default="callratios",
+            help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
+        parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
             dest="theme", default="color",
@@ -3178,7 +3214,13 @@ class Main:
                 fp = sys.stdin
             else:
                 fp = open(self.args[0], 'rt')
-            parser = stdinFormats[self.options.format](fp)
+            # For now, make an exception for perf as it is the only parser
+            # that supports the total parameter.  When there are more, modify
+            # the signature of Parser.
+            if self.options.format == "perf":
+                parser = PerfParser(fp,self.options.total)
+            else:
+                parser = stdinFormats[self.options.format](fp)
         elif self.options.format == 'pstats':
             if not self.args:
                 parser.error('at least a file must be specified for pstats input')
