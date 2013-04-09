@@ -2701,6 +2701,8 @@ class Theme:
             mincolor = (0.0, 0.0, 0.0),
             maxcolor = (0.0, 0.0, 1.0),
             fontname = "Arial",
+            fontcolor = "white",
+            nodestyle = "filled",
             minfontsize = 10.0,
             maxfontsize = 10.0,
             minpenwidth = 0.5,
@@ -2711,6 +2713,8 @@ class Theme:
         self.mincolor = mincolor
         self.maxcolor = maxcolor
         self.fontname = fontname
+        self.fontcolor = fontcolor
+        self.nodestyle = nodestyle
         self.minfontsize = minfontsize
         self.maxfontsize = maxfontsize
         self.minpenwidth = minpenwidth
@@ -2724,6 +2728,9 @@ class Theme:
     def graph_fontname(self):
         return self.fontname
 
+    def graph_fontcolor(self):
+        return self.fontcolor
+
     def graph_fontsize(self):
         return self.minfontsize
 
@@ -2731,10 +2738,16 @@ class Theme:
         return self.color(weight)
 
     def node_fgcolor(self, weight):
-        return self.graph_bgcolor()
+        if self.nodestyle == "filled":
+            return self.graph_bgcolor()
+        else:
+            return self.color(weight)
 
     def node_fontsize(self, weight):
         return self.fontsize(weight)
+
+    def node_style(self):
+        return self.nodestyle
 
     def edge_color(self, weight):
         return self.color(weight)
@@ -2838,6 +2851,17 @@ BW_COLORMAP = Theme(
     maxpenwidth = 8.0,
 )
 
+PRINT_COLORMAP = Theme(
+    minfontsize = 18.0,
+    maxfontsize = 30.0,
+    fontcolor = "black",
+    nodestyle = "solid",
+    mincolor = (0.0, 0.0, 0.0), # black
+    maxcolor = (0.0, 0.0, 0.0), # black
+    minpenwidth = 0.1,
+    maxpenwidth = 8.0,
+)
+
 
 class DotWriter:
     """Writer for the DOT language.
@@ -2874,9 +2898,11 @@ class DotWriter:
         self.begin_graph()
 
         fontname = theme.graph_fontname()
+        fontcolor = theme.graph_fontcolor()
+        nodestyle = theme.node_style()
 
         self.attr('graph', fontname=fontname, ranksep=0.25, nodesep=0.125)
-        self.attr('node', fontname=fontname, shape="box", style="filled", fontcolor="white", width=0, height=0)
+        self.attr('node', fontname=fontname, shape="box", style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
         for function in profile.functions.itervalues():
@@ -3028,6 +3054,7 @@ class Main:
             "pink": PINK_COLORMAP,
             "gray": GRAY_COLORMAP,
             "bw": BW_COLORMAP,
+            "print": PRINT_COLORMAP,
     }
 
     def main(self):
@@ -3061,9 +3088,9 @@ class Main:
             help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
         optparser.add_option(
             '-c', '--colormap',
-            type="choice", choices=('color', 'pink', 'gray', 'bw'),
+            type="choice", choices=('color', 'pink', 'gray', 'bw', 'print'),
             dest="theme", default="color",
-            help="color map: color, pink, gray, or bw [default: %default]")
+            help="color map: color, pink, gray, bw, or print [default: %default]")
         optparser.add_option(
             '-s', '--strip',
             action="store_true",
