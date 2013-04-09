@@ -3114,7 +3114,7 @@ class Main:
             '-f', '--format',
             type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, or xperf [default: %default]")
+            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
         parser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
@@ -3135,17 +3135,17 @@ class Main:
             '-z', '--root',
             type="string",
             dest="root", default="",
-            help="prun call graph to show only decedents of specified root function")
+            help="prune call graph to show only descendants of specified root function")
         parser.add_option(
             '-l', '--leaf',
             type="string",
             dest="leaf", default="",
-            help="prun call graph to show only ancestors of specified leaf function")
+            help="prune call graph to show only ancestors of specified leaf function")
         # add a new option to control skew of the colorization curve
         parser.add_option(
             '--skew',
             type="float", dest="theme_skew", default=1.0,
-            help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Value > 1.0 give less variety to lower percentages")
+            help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
         (self.options, self.args) = parser.parse_args(sys.argv[1:])
 
         if len(self.args) > 1 and self.options.format != 'pstats':
