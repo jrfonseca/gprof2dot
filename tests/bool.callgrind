@@ -1,0 +1,7805 @@
+version: 1
+creator: callgrind-3.3.0-Debian
+pid: 25640
+cmd:  ./a.out
+part: 1
+
+
+desc: I1 cache: 
+desc: D1 cache: 
+desc: L2 cache: 
+
+desc: Timerange: Basic block 0 - 73200000
+desc: Trigger: Program termination
+
+positions: line
+events: Ir
+summary: 309292148
+
+
+ob=(14) /home/pvanhoof/repos/gnome/glib/a.out
+fl=(23) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crti.S
+fn=(3204) 0x08048900
+15 1
++1 1
++1 1
++1 1
++1 1
++3 1
++1 1
++1 1
++1 1
+-25 1
+fi=(22) ???
+cfi=(22)
+cfn=(3208) 0x08048B60
+calls=1 0 
+0 8
+0 1
+fi=(22)
+cfi=(22)
+cfn=(3214) 0x08049330
+calls=1 0 
+0 11
+fi=(24) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crtn.S
+10 1
++1 1
++1 1
++1 1
+fe=(23)
+
+fl=(22)
+fn=(3222) main
+0 10
+cob=(1) /lib/ld-2.7.so
+cfi=(1) ???
+cfn=(2749) 0x00012C30'2
+calls=1 0 
+0 435730
+0 5
+cfn=(3910) test_perf_main
+calls=1 0 
+0 308006024
+
+fn=(4006) oclass_new
+0 1588660
+cfn=(4008) oclass_get_type
+calls=397165 0 
+0 3578727
+0 1588660
+cob=(12) /opt/glib-perform/lib/libgobject-2.0.so.0.1900.0
+cfi=(19) ???
+cfn=(4018) g_object_newv
+calls=397164 0 
+0 283241255
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 45283
+0 1588656
+
+fn=(4008)
+0 2382995
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 4236
+0 1191496
+
+fn=(4004) oclass_instantiate
+0 3177320
+cfn=(4006)
+calls=397165 0 
+0 291631241
+0 3971640
+
+fn=(3164) 0x08048B00
+0 13
+cob=(1)
+cfi=(1)
+cfn=(2748) 0x00012C30
+calls=1 0 
+0 308445151
+
+fn=(3214)
+0 11
+
+fn=(3910)
+0 4
+cfn=(3912) test_perf_new
+calls=1 0 
+0 84320
+0 8
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 53133
+0 4
+cfn=(4872) test_perf_test_oclass
+calls=1 0 
+0 307868553
+0 2
+
+fn=(3996) test_perf_instance_init
+0 5
+cfn=(3914) test_perf_get_type
+calls=1 0 
+0 9
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1276
+0 9
+cfn=(4004)
+calls=1 0 
+0 49564
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1519
+0 7
+
+fn=(4128) oclass_instance_init
+0 1588656
+
+fn=(3200) __libc_csu_init
+0 6
+cfn=(3202) 0x0804932A
+calls=1 0 
+0 2
+0 3
+cfi=(23)
+cfn=(3204)
+calls=1 15 
+0 34
+0 12
+
+fn=(3202)
+0 2
+
+fn=(4110) oclass_class_init
+0 6
+cob=(12)
+cfi=(19)
+cfn=(3966) g_type_class_peek_parent
+calls=1 0 
+0 37
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1153
+0 3
+
+fn=(3912)
+0 4
+cfn=(3914)
+calls=1 0 
+0 10997
+0 2
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 73313
+0 4
+
+fn=(3914)
+0 19
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1178
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 9802
+0 10
+
+fn=(4872)
+0 7
+cfn=(3914)
+calls=1 0 
+0 9
+0 23
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1774
+0 10
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1333
+0 1985822
+cfn=(4004)
+calls=397164 0 
+0 298730637
+0 7148938
+
+fn=(3208)
+0 8
+
+fn=(3960) test_perf_class_init
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1149
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1228
+0 2
+
+ob=(1)
+fl=(1)
+fn=(2) 0x00000A60
+0 6
+cfn=(4) 0x0001579B
+calls=1 0 
+0 2
+0 232
+cfn=(96) 0x00008AF0
+calls=1 0 
+0 41
+0 14
+cfn=(106) 0x00013740
+calls=1 0 
+0 816483
+0 277
+
+fn=(4)
+0 7410
+
+fn=(144) 0x000142C0
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 13
+
+fn=(486) 0x00007250
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 9
+cfn=(490) 0x00012D20
+calls=1 0 
+0 2662
+0 4
+cfn=(290) malloc
+calls=1 0 
+0 54
+0 13
+cfn=(290)
+calls=1 0 
+0 94
+0 395
+cfn=(688) 0x00014FE0
+calls=1 0 
+0 184
+0 5
+cfn=(158) 0x000151B0
+calls=1 0 
+0 94
+0 11
+cfn=(300) 0x00015640
+calls=1 0 
+0 42
+0 270
+cfn=(290)
+calls=1 0 
+0 54
+0 14
+cfn=(764) 0x00004B90
+calls=1 0 
+0 1511
+0 6
+
+fn=(688)
+0 4962
+
+fn=(1032) 0x00005220
+0 354
+cfn=(4)
+calls=59 0 
+0 118
+0 826
+cfn=(1038) 0x00014A50
+calls=59 0 
+0 1004
+0 281
+cfn=(1048) 0x00014AD0
+calls=13 0 
+0 130
+0 2071
+
+fn=(1088) 0x00005AC0
+0 78
+cfn=(4)
+calls=13 0 
+0 26
+0 104
+cfn=(864) 0x0000E170
+calls=13 0 
+0 325
+0 91
+cfn=(1098) 0x00014A10
+calls=13 0 
+0 260
+0 2197
+cfn=(270) 0x00009E80
+calls=13 0 
+0 7581
+0 1835
+cfn=(1826) 0x0000FDF0
+calls=1 0 
+0 23
+0 1698
+cfn=(650) 0x00014CC0
+calls=13 0 
+0 299
+0 1109
+cfn=(650)
+calls=13 0 
+0 299
+0 4544
+cfn=(1302) 0x00014A90
+calls=1 0 
+0 8
+0 36
+cfn=(1302)
+calls=12 0 
+0 96
+0 208
+cfn=(96)
+calls=13 0 
+0 533
+0 653
+cfn=(650)
+calls=4 0 
+0 92
+0 214
+cfn=(1724) 0x00015540
+calls=12 0 
+0 3007
+0 36
+
+fn=(1956) 0x000154A0
+0 151
+
+fn=(2022) 0x0000F0E0
+0 8
+cfn=(4)
+calls=1 0 
+0 2
+0 178
+cfn=(2030) 0x0000EC70
+calls=15 0 
+0 70721
+0 60
+
+fn=(158)
+0 3477
+
+fn=(290)
+0 304
+cfn=(4)
+calls=76 0 
+0 152
+0 456
+cfn=(294) __libc_memalign
+calls=76 0 
+0 3059
+0 304
+
+fn=(964) 0x0000E200
+0 14608
+cfn=(4)
+calls=1826 0 
+0 3652
+0 10956
+cfn=(386) 0x00015150
+calls=1826 0 
+0 56619
+0 22095
+cfn=(386)
+calls=1877 0 
+0 116878
+0 16536
+
+fn=(2012) 0x0000D4E0
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 7
+cfn=(936) 0x00000860
+calls=1 0 
+0 9
+0 10
+cfn=(2018) 0x00001D00
+calls=1 0 
+0 70990
+0 9
+
+fn=(2258) 0x0000A430
+0 120
+cfn=(4)
+calls=15 0 
+0 30
+0 46773
+cfn=(2340) 0x00009120
+calls=171 0 
+0 166767
+0 1885
+cfn=(2340)
+calls=145 0 
+0 288733
+0 5922
+cfn=(2536) 0x0000A210
+calls=6 0 
+0 167
+0 53030
+
+fn=(2588) 0x00014D60
+0 10
+
+fn=(2690) 0x00014D20
+0 9
+
+fn=(896) _dl_debug_state
+0 8
+
+fn=(942) 0x00014E00
+0 495
+
+fn=(1358) 0x0000BC20
+0 23
+cfn=(4)
+calls=1 0 
+0 2
+0 1325
+cfn=(688)
+calls=44 0 
+0 3531
+0 528
+cfn=(932) 0x0000D550
+calls=44 0 
+0 153288
+0 2103
+cfn=(290)
+calls=13 0 
+0 702
+0 195
+cfn=(300)
+calls=13 0 
+0 442
+0 65
+cfn=(300)
+calls=13 0 
+0 442
+0 248
+cfn=(290)
+calls=1 0 
+0 54
+0 5179
+cfn=(1956)
+calls=3 0 
+0 151
+0 272
+cfn=(300)
+calls=1 0 
+0 46
+0 2
+
+fn=(1606) 0x00008330
+0 8884
+
+fn=(2030)
+0 165
+cfn=(4)
+calls=15 0 
+0 30
+0 2833
+cfn=(964)
+calls=291 0 
+0 39423
+0 1898
+cfn=(2054) 0x0000E880
+calls=1 0 
+0 200
+0 1078
+cfn=(2054)
+calls=77 0 
+0 19116
+0 1632
+cfn=(286) calloc
+calls=14 0 
+0 1189
+0 3157
+
+fn=(2054)
+0 702
+cfn=(4)
+calls=78 0 
+0 156
+0 5640
+cfn=(386)
+calls=78 0 
+0 12038
+0 780
+
+fn=(2364) 0x00008DA0
+0 4400
+cfn=(4)
+calls=400 0 
+0 800
+0 243792
+cfn=(964)
+calls=1130 0 
+0 144526
+0 29927
+cfn=(2400) 0x00008BC0
+calls=379 0 
+0 95052
+0 764
+
+fn=(96)
+0 135
+cfn=(4)
+calls=15 0 
+0 30
+0 450
+
+fn=(580) 0x000155A0
+0 4821
+
+fn=(768) 0x00013BC0
+0 40
+cfn=(4)
+calls=5 0 
+0 10
+0 1657
+
+fn=(928) 0x00001010
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 19
+cfn=(932)
+calls=1 0 
+0 2657
+0 13
+
+fn=(948) 0x000010C0
+0 14
+cfn=(950) 0x000078C0
+calls=1 0 
+0 2573
+0 5
+
+fn=(1302)
+0 112
+
+fn=(2206) 0x00010640
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 10
+cfn=(294)
+calls=1 0 
+0 78
+0 9
+cfn=(1724)
+calls=1 0 
+0 321
+0 2
+cfn=(2216) 0x000105E0
+calls=1 0 
+0 111
+0 10
+
+fn=(2536)
+0 30
+cfn=(4)
+calls=6 0 
+0 12
+0 83
+cfn=(2588)
+calls=1 0 
+0 10
+0 32
+
+fn=(2660) _dl_allocate_tls_init
+0 7
+cfn=(4)
+calls=1 0 
+0 2
+0 68
+cfn=(580)
+calls=1 0 
+0 32
+0 5
+cfn=(1724)
+calls=1 0 
+0 46
+0 13
+
+fn=(2708) 0x00000800
+0 2
+
+fn=(2748)
+0 60
+cfn=(2750) 0x0000D340
+calls=10 0 
+0 30240
+0 50
+cob=(3) /lib/tls/i686/cmov/libc-2.7.so
+cfi=(3) ???
+cfn=(3172) (below main)
+calls=1 0 
+0 308441989
+cob=(3)
+cfi=(3)
+cfn=(2834) strstr
+calls=1 0 
+0 85
+cob=(3)
+cfi=(3)
+cfn=(2828) uname
+calls=1 0 
+0 10
+cob=(3)
+cfi=(3)
+cfn=(2820) __libc_pthread_init
+calls=1 0 
+0 441
+cob=(3)
+cfi=(3)
+cfn=(2814) __libc_dl_error_tsd
+calls=1 0 
+0 10
+cob=(3)
+cfi=(3)
+cfn=(2804) sysconf
+calls=1 0 
+0 52
+cob=(3)
+cfi=(3)
+cfn=(2796) getrlimit
+calls=1 0 
+0 21
+cfn=(2790) _dl_get_tls_static_info
+calls=1 0 
+0 14
+cob=(3)
+cfi=(3)
+cfn=(2784) memcpy
+calls=1 0 
+0 47
+cob=(3)
+cfi=(3)
+cfn=(2776) memset
+calls=1 0 
+0 51
+
+fn=(2749)
+0 444
+cfn=(2750)
+calls=74 0 
+0 137092
+0 370
+cob=(6) /opt/glib-perform/lib/libglib-2.0.so.0.1900.0
+cfi=(7) ???
+cfn=(4916) g_timer_start
+calls=1 0 
+0 65
+cob=(3)
+cfi=(3)
+cfn=(4868) fflush
+calls=1 0 
+0 82
+cob=(3)
+cfi=(3)
+cfn=(4830) fputs
+calls=1 0 
+0 1886
+cob=(3)
+cfi=(3)
+cfn=(4762) iconv_close
+calls=1 0 
+0 614
+cob=(3)
+cfi=(3)
+cfn=(4616) iconv
+calls=1 0 
+0 998
+cob=(3)
+cfi=(3)
+cfn=(4364) __sigsetjmp
+calls=1 0 
+0 35
+cob=(3)
+cfi=(3)
+cfn=(4320) iconv_open
+calls=1 0 
+0 7002
+cob=(3)
+cfi=(3)
+cfn=(2834)
+calls=1 0 
+0 121
+cob=(3)
+cfi=(3)
+cfn=(4250) fopen64
+calls=1 0 
+0 948
+cob=(3)
+cfi=(3)
+cfn=(4236) nl_langinfo
+calls=1 0 
+0 30
+cob=(3)
+cfi=(3)
+cfn=(3784) free
+calls=2 0 
+0 244
+cob=(3)
+cfi=(3)
+cfn=(3320) malloc
+calls=2 0 
+0 490
+cob=(3)
+cfi=(3)
+cfn=(4166) vasprintf
+calls=1 0 
+0 3578
+cob=(6)
+cfi=(7)
+cfn=(4156) g_print
+calls=1 0 
+0 51933
+cob=(6)
+cfi=(7)
+cfn=(4148) g_timer_new
+calls=1 0 
+0 345
+cob=(6)
+cfi=(7)
+cfn=(4140) g_datalist_id_remove_no_notify
+calls=1 0 
+0 35
+cob=(6)
+cfi=(7)
+cfn=(4134) g_datalist_id_get_data
+calls=1 0 
+0 38
+cob=(6)
+cfi=(7)
+cfn=(4126) g_datalist_init
+calls=1 0 
+0 16
+cob=(12)
+cfi=(19)
+cfn=(4116) g_type_check_class_cast
+calls=1 0 
+0 57
+cob=(6)
+cfi=(7)
+cfn=(4108) g_slist_copy
+calls=1 0 
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4088) g_intern_string
+calls=1 0 
+0 410
+cob=(6)
+cfi=(7)
+cfn=(4072) g_strdelimit
+calls=1 0 
+0 3450
+cob=(6)
+cfi=(7)
+cfn=(3926) g_strdup
+calls=1 0 
+0 251
+cob=(6)
+cfi=(7)
+cfn=(4052) g_atomic_int_compare_and_exchange
+calls=1 0 
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4030) g_slist_prepend
+calls=1 0 
+0 5191
+cob=(12)
+cfi=(19)
+cfn=(4018)
+calls=1 0 
+0 44407
+cob=(12)
+cfi=(19)
+cfn=(3700) g_type_register_static
+calls=1 0 
+0 3162
+cob=(12)
+cfi=(19)
+cfn=(4002) g_type_instance_get_private
+calls=1 0 
+0 83
+cob=(6)
+cfi=(7)
+cfn=(3782) g_free
+calls=1 0 
+0 124
+cob=(3)
+cfi=(3)
+cfn=(2776)
+calls=2 0 
+0 34
+cob=(6)
+cfi=(7)
+cfn=(3984) g_slice_alloc0
+calls=1 0 
+0 9255
+cob=(6)
+cfi=(7)
+cfn=(3978) g_static_rec_mutex_unlock
+calls=1 0 
+0 21
+cob=(12)
+cfi=(19)
+cfn=(3972) g_type_class_add_private
+calls=1 0 
+0 101
+cob=(12)
+cfi=(19)
+cfn=(3966)
+calls=1 0 
+0 31
+cob=(6)
+cfi=(7)
+cfn=(3956) g_slist_free
+calls=1 0 
+0 49
+cob=(6)
+cfi=(7)
+cfn=(3950) g_static_rec_mutex_lock
+calls=1 0 
+0 23
+cob=(12)
+cfi=(19)
+cfn=(3940) g_type_create_instance
+calls=1 0 
+0 72239
+cob=(12)
+cfi=(19)
+cfn=(3760) g_type_register_fundamental
+calls=1 0 
+0 8618
+cob=(12)
+cfi=(19)
+cfn=(3920) g_type_fundamental_next
+calls=1 0 
+0 73
+cob=(6)
+cfi=(7)
+cfn=(3870) g_memdup
+calls=1 0 
+0 22
+cob=(6)
+cfi=(7)
+cfn=(3860) g_malloc
+calls=1 0 
+0 123
+cob=(6)
+cfi=(7)
+cfn=(3854) g_quark_to_string
+calls=1 0 
+0 32
+cob=(3)
+cfi=(3)
+cfn=(3778) strcat
+calls=1 0 
+0 30
+cob=(3)
+cfi=(3)
+cfn=(3256) strlen
+calls=2 0 
+0 43
+cob=(3)
+cfi=(3)
+cfn=(3768) index
+calls=2 0 
+0 83
+cob=(3)
+cfi=(3)
+cfn=(3754) memmove
+calls=1 0 
+0 26
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=2 0 
+0 35
+cob=(6)
+cfi=(7)
+cfn=(3726) g_static_rw_lock_reader_unlock
+calls=1 0 
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3632) g_hash_table_lookup
+calls=1 0 
+0 43
+cob=(6)
+cfi=(7)
+cfn=(3716) g_static_rw_lock_reader_lock
+calls=1 0 
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3710) g_quark_try_string
+calls=1 0 
+0 334
+cob=(6)
+cfi=(7)
+cfn=(3264) g_realloc
+calls=1 0 
+0 219
+cob=(6)
+cfi=(7)
+cfn=(3690) g_static_rw_lock_writer_unlock
+calls=1 0 
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3626) g_hash_table_insert
+calls=1 0 
+0 85
+cob=(3)
+cfi=(3)
+cfn=(3676) strcmp
+calls=1 0 
+0 39
+cob=(6)
+cfi=(7)
+cfn=(3668) g_quark_from_string
+calls=1 0 
+0 3065
+cob=(6)
+cfi=(7)
+cfn=(3434) g_malloc0
+calls=2 0 
+0 865
+cob=(6)
+cfi=(7)
+cfn=(3652) g_intern_static_string
+calls=1 0 
+0 270
+cob=(6)
+cfi=(7)
+cfn=(3422) g_hash_table_new
+calls=1 0 
+0 404
+cob=(3)
+cfi=(3)
+cfn=(3458) posix_memalign
+calls=1 0 
+0 543
+cob=(3)
+cfi=(3)
+cfn=(3448) gettimeofday
+calls=1 0 
+0 11
+cob=(3)
+cfi=(3)
+cfn=(2804)
+calls=1 0 
+0 52
+cob=(6)
+cfi=(7)
+cfn=(3262) g_quark_from_static_string
+calls=1 0 
+0 82773
+cob=(3)
+cfi=(3)
+cfn=(3254) getenv
+calls=1 0 
+0 374
+cob=(6)
+cfi=(7)
+cfn=(3246) g_getenv
+calls=1 0 
+0 3242
+cob=(6)
+cfi=(7)
+cfn=(3240) g_static_rw_lock_writer_lock
+calls=1 0 
+0 23
+cob=(12)
+cfi=(19)
+cfn=(3230) g_type_init
+calls=1 0 
+0 434889
+
+fn=(194) 0x00001D60
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 14
+cfn=(198) 0x00001450
+calls=1 0 
+0 607
+0 11
+cfn=(270)
+calls=1 0 
+0 299
+0 132
+cfn=(386)
+calls=1 0 
+0 31
+0 395
+cfn=(96)
+calls=1 0 
+0 41
+0 17
+cfn=(486)
+calls=1 0 
+0 5430
+0 3
+cfn=(864)
+calls=1 0 
+0 32
+0 60
+cfn=(896)
+calls=1 0 
+0 4
+0 15
+cfn=(508) 0x00014B90
+calls=1 0 
+0 18
+0 15
+cfn=(1358)
+calls=1 0 
+0 168598
+0 238
+cfn=(2012)
+calls=1 0 
+0 71032
+0 297
+cfn=(2258)
+calls=14 0 
+0 554756
+0 49
+cfn=(2600) 0x0000FC70
+calls=1 0 
+0 28
+0 46
+cfn=(2648) 0x00012D10
+calls=1 0 
+0 4
+0 11
+cfn=(2660)
+calls=1 0 
+0 173
+0 12
+cfn=(864)
+calls=1 0 
+0 25
+0 2
+cfn=(896)
+calls=1 0 
+0 4
+0 1
+cfn=(2684) 0x00008430
+calls=1 0 
+0 30
+0 28
+cfn=(2258)
+calls=1 0 
+0 8671
+0 8
+cfn=(2160) 0x00001B40
+calls=1 0 
+0 884
+0 22
+cfn=(158)
+calls=1 0 
+0 120
+0 10
+cfn=(300)
+calls=1 0 
+0 44
+0 10
+cfn=(768)
+calls=1 0 
+0 890
+0 4
+cfn=(768)
+calls=1 0 
+0 27
+0 15
+cfn=(928)
+calls=1 0 
+0 2696
+0 9
+cfn=(452) 0x00014DA0
+calls=1 0 
+0 8
+0 81
+
+fn=(294)
+0 462
+cfn=(4)
+calls=77 0 
+0 154
+0 1518
+cfn=(650)
+calls=5 0 
+0 115
+0 888
+
+fn=(1530) 0x00008480
+0 48
+cfn=(4)
+calls=8 0 
+0 16
+0 240
+cfn=(386)
+calls=8 0 
+0 352
+0 96
+cfn=(386)
+calls=24 0 
+0 1328
+0 192
+cfn=(508)
+calls=8 0 
+0 144
+0 1320
+cfn=(1606)
+calls=72 0 
+0 7924
+0 364
+cfn=(1538) 0x0000E7D0
+calls=1 0 
+0 111
+0 171
+cfn=(1606)
+calls=1 0 
+0 94
+0 24
+cfn=(1606)
+calls=8 0 
+0 866
+0 721
+
+fn=(2344) 0x00008AB0
+0 59128
+
+fn=(2790)
+0 4
+cfn=(4)
+calls=1 0 
+0 2
+0 8
+
+fn=(386)
+0 278612
+
+fn=(764)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 15
+cfn=(768)
+calls=1 0 
+0 462
+0 10
+cfn=(768)
+calls=2 0 
+0 328
+0 15
+cfn=(158)
+calls=2 0 
+0 115
+0 115
+cfn=(290)
+calls=2 0 
+0 108
+0 28
+cfn=(580)
+calls=2 0 
+0 73
+0 234
+
+fn=(932)
+0 225
+cfn=(4)
+calls=45 0 
+0 90
+0 315
+cfn=(936)
+calls=45 0 
+0 405
+0 315
+cfn=(942)
+calls=45 0 
+0 495
+0 405
+cfn=(1400) 0x0000BBB0
+calls=44 0 
+0 150428
+cfn=(948)
+calls=1 0 
+0 2592
+0 675
+
+fn=(936)
+0 47
+cfn=(514) 0x00015797
+calls=47 0 
+0 94
+0 282
+
+fn=(950)
+0 405
+cfn=(4)
+calls=45 0 
+0 90
+0 5780
+cfn=(964)
+calls=405 0 
+0 57395
+0 1203
+cfn=(688)
+calls=13 0 
+0 1033
+0 31
+cfn=(1010) 0x00006F80
+calls=1 0 
+0 457
+0 14
+cfn=(1032)
+calls=1 0 
+0 156
+0 328
+cfn=(1088)
+calls=13 0 
+0 25352
+0 4113
+cfn=(386)
+calls=289 0 
+0 19593
+0 614
+cfn=(158)
+calls=12 0 
+0 582
+0 384
+cfn=(1442) 0x000056E0
+calls=12 0 
+0 15242
+0 148
+cfn=(1418) 0x000076B0
+calls=8 0 
+0 136
+0 336
+cfn=(1418)
+calls=14 0 
+0 232
+0 244
+cfn=(1418)
+calls=12 0 
+0 192
+0 64
+cfn=(1530)
+calls=8 0 
+0 14011
+0 144
+cfn=(1032)
+calls=8 0 
+0 1648
+0 48
+cfn=(158)
+calls=8 0 
+0 631
+0 24
+cfn=(290)
+calls=8 0 
+0 432
+0 56
+cfn=(300)
+calls=8 0 
+0 315
+0 48
+
+fn=(1098)
+0 84
+cfn=(4)
+calls=14 0 
+0 28
+0 168
+
+fn=(2216)
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 10
+cfn=(286)
+calls=1 0 
+0 82
+0 12
+
+fn=(2750)
+0 756
+cfn=(4)
+calls=84 0 
+0 168
+0 4368
+cfn=(2340)
+calls=84 0 
+0 159850
+0 2190
+
+fn=(198)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 19
+cfn=(204) 0x00013AD0
+calls=1 0 
+0 55
+0 4
+cfn=(204)
+calls=2 0 
+0 248
+0 273
+
+fn=(1480) 0x000149D0
+0 192
+cfn=(4)
+calls=32 0 
+0 64
+0 504
+
+fn=(2160)
+0 7
+cfn=(4)
+calls=1 0 
+0 2
+0 20
+cfn=(286)
+calls=1 0 
+0 82
+0 105
+cfn=(2180) 0x000106F0
+calls=1 0 
+0 91
+0 1
+cfn=(2206)
+calls=1 0 
+0 548
+0 28
+
+fn=(2340)
+0 2400
+cfn=(4)
+calls=400 0 
+0 800
+0 2400
+cfn=(2344)
+calls=400 0 
+0 59128
+0 16483
+cfn=(2364)
+calls=400 0 
+0 519261
+0 14878
+
+fn=(0) 0x00000810
+0 2
+cfn=(2)
+calls=1 0 
+0 817055
+0 2
+cfn=(2708)
+calls=1 0 
+0 2
+0 17
+cfn=(2712) 0x0000DA30
+calls=1 0 
+0 29903
+0 3
+cob=(14)
+cfi=(22)
+cfn=(3164)
+calls=1 0 
+0 308445164
+
+fn=(1038)
+0 646
+cfn=(514)
+calls=46 0 
+0 92
+0 276
+
+fn=(1418)
+0 560
+
+fn=(2018)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 6
+cfn=(2022)
+calls=1 0 
+0 70969
+0 7
+
+fn=(106)
+0 8
+cfn=(4)
+calls=1 0 
+0 2
+0 360
+cfn=(144)
+calls=1 0 
+0 20
+0 7
+cfn=(178) 0x00014300
+calls=1 0 
+0 27
+0 14
+cfn=(194)
+calls=1 0 
+0 815965
+0 54
+cfn=(158)
+calls=1 0 
+0 24
+0 2
+
+fn=(178)
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 20
+
+fn=(270)
+0 84
+cfn=(4)
+calls=14 0 
+0 28
+0 98
+cfn=(158)
+calls=14 0 
+0 698
+0 154
+cfn=(286)
+calls=14 0 
+0 1197
+0 210
+cfn=(300)
+calls=14 0 
+0 495
+0 1509
+cfn=(158)
+calls=13 0 
+0 1063
+0 252
+cfn=(290)
+calls=13 0 
+0 743
+0 130
+cfn=(580)
+calls=13 0 
+0 518
+0 701
+
+fn=(452)
+0 8
+
+fn=(490)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 649
+cfn=(508)
+calls=1 0 
+0 18
+0 408
+cfn=(158)
+calls=2 0 
+0 42
+0 83
+cfn=(290)
+calls=1 0 
+0 54
+0 39
+cfn=(580)
+calls=1 0 
+0 22
+0 24
+cfn=(580)
+calls=3 0 
+0 66
+0 112
+cfn=(580)
+calls=4 0 
+0 92
+0 44
+cfn=(580)
+calls=4 0 
+0 92
+0 909
+
+fn=(864)
+0 90
+cfn=(4)
+calls=15 0 
+0 30
+0 262
+
+fn=(1010)
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 8
+cfn=(688)
+calls=1 0 
+0 214
+0 4
+cfn=(158)
+calls=1 0 
+0 108
+0 3
+cfn=(290)
+calls=1 0 
+0 54
+0 7
+cfn=(300)
+calls=1 0 
+0 44
+0 8
+
+fn=(1442)
+0 120
+cfn=(4)
+calls=12 0 
+0 24
+0 452
+cfn=(580)
+calls=20 0 
+0 732
+0 3834
+cfn=(580)
+calls=50 0 
+0 1337
+0 300
+cfn=(580)
+calls=50 0 
+0 1857
+0 650
+cfn=(1032)
+calls=50 0 
+0 2980
+0 1062
+cfn=(1480)
+calls=32 0 
+0 760
+0 352
+cfn=(290)
+calls=4 0 
+0 216
+0 36
+cfn=(300)
+calls=4 0 
+0 172
+0 358
+
+fn=(1538)
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 9
+cfn=(1038)
+calls=1 0 
+0 10
+0 8
+cfn=(1098)
+calls=1 0 
+0 20
+0 9
+cfn=(1302)
+calls=1 0 
+0 8
+0 15
+cfn=(650)
+calls=1 0 
+0 23
+0 2
+
+fn=(1826)
+0 5
+cfn=(4)
+calls=1 0 
+0 2
+0 16
+
+fn=(2180)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 83
+
+fn=(204)
+0 303
+
+fn=(286)
+0 240
+cfn=(4)
+calls=30 0 
+0 60
+0 300
+cfn=(290)
+calls=30 0 
+0 1710
+0 240
+
+fn=(508)
+0 100
+cfn=(514)
+calls=10 0 
+0 20
+0 60
+
+fn=(514)
+0 206
+
+fn=(650)
+0 828
+
+fn=(1724)
+0 3374
+
+fn=(2400)
+0 3411
+cfn=(4)
+calls=379 0 
+0 758
+0 14329
+cfn=(386)
+calls=184 0 
+0 27716
+0 4361
+cfn=(386)
+calls=210 0 
+0 44057
+0 420
+
+fn=(2718) 0x0000D910
+0 128
+cfn=(4)
+calls=16 0 
+0 32
+0 449
+cob=(13) /usr/lib/libgstreamer-0.10.so.0.16.0
+cfi=(21) ???
+cfn=(3134) 0x00016230
+calls=1 0 
+0 47
+cob=(12)
+cfi=(18) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crti.S
+cfn=(3112) 0x00006724
+calls=1 15 
+0 47
+cob=(11) /opt/glib-perform/lib/libgmodule-2.0.so.0.1900.0
+cfi=(15) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crti.S
+cfn=(3090) 0x00000AB8
+calls=1 15 
+0 47
+cob=(10) /usr/lib/libxml2.so.2.6.31
+cfi=(14) ???
+cfn=(3068) 0x0001CF4C
+calls=1 0 
+0 47
+cob=(9) /lib/tls/i686/cmov/libdl-2.7.so
+cfi=(13) ???
+cfn=(3032) 0x00000914
+calls=1 0 
+0 47
+cob=(8) /opt/glib-perform/lib/libgthread-2.0.so.0.1900.0
+cfi=(10) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crti.S
+cfn=(3010) 0x00000DC8
+calls=1 15 
+0 47
+cob=(7) /lib/tls/i686/cmov/librt-2.7.so
+cfi=(9) ???
+cfn=(2988) 0x0000154C
+calls=1 0 
+0 47
+cob=(6)
+cfi=(6) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crti.S
+cfn=(2966) 0x00010EA8
+calls=1 15 
+0 47
+cob=(5) /usr/lib/libz.so.1.2.3.3
+cfi=(5) ???
+cfn=(2944) 0x000015BC
+calls=1 0 
+0 47
+cob=(4) /lib/tls/i686/cmov/libm-2.7.so
+cfi=(4) ???
+cfn=(2922) 0x0000333C
+calls=1 0 
+0 47
+cob=(3)
+cfi=(3)
+cfn=(2872) 0x000162C0
+calls=1 0 
+0 199
+cob=(2) /lib/tls/i686/cmov/libpthread-2.7.so
+cfi=(2) ???
+cfn=(2732) 0x00003DA0
+calls=1 0 
+0 28328
+0 52
+cob=(9)
+cfi=(13)
+cfn=(3058) 0x000018D0
+calls=1 0 
+0 12
+0 13
+
+fn=(300)
+0 2042
+
+fn=(1048)
+0 130
+
+fn=(1400)
+0 1102
+cfn=(950)
+calls=34 0 
+0 82487
+0 110
+cfn=(950)
+calls=10 0 
+0 66421
+0 308
+
+fn=(2600)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 20
+
+fn=(2648)
+0 4
+
+fn=(2684)
+0 4
+cfn=(4)
+calls=1 0 
+0 2
+0 10
+cfn=(2690)
+calls=1 0 
+0 9
+0 5
+
+fn=(2712)
+0 6
+cfn=(4)
+calls=1 0 
+0 2
+0 30
+cfn=(2718)
+calls=1 0 
+0 32
+0 140
+cfn=(2718)
+calls=14 0 
+0 1278
+0 40
+cfn=(2718)
+calls=1 0 
+0 28373
+0 2
+
+fn=(2738) 0x000007F0
+0 318
+
+ob=(4)
+fl=(4)
+fn=(2926) 0x000034A0
+0 4
+cfn=(2928) 0x000034D7
+calls=1 0 
+0 2
+0 9
+
+fn=(2928)
+0 4
+
+fn=(2936) 0x0001D3E0
+0 5
+cfn=(2928)
+calls=1 0 
+0 2
+0 10
+
+fn=(2922)
+0 10
+cfn=(2926)
+calls=1 0 
+0 15
+0 1
+cfn=(2936)
+calls=1 0 
+0 17
+0 4
+
+ob=(5)
+fl=(5)
+fn=(2948) 0x00001970
+0 4
+cfn=(2950) 0x000019A7
+calls=1 0 
+0 2
+0 9
+
+fn=(2950)
+0 4
+
+fn=(2958) 0x0000F3B0
+0 5
+cfn=(2950)
+calls=1 0 
+0 2
+0 10
+
+fn=(2944)
+0 10
+cfn=(2948)
+calls=1 0 
+0 15
+0 1
+cfn=(2958)
+calls=1 0 
+0 17
+0 4
+
+ob=(6)
+fl=(7)
+fn=(3716)
+0 3177872
+cfn=(2972) 0x00011857
+calls=397234 0 
+0 794468
+0 5164042
+
+fn=(3726)
+0 2780638
+cfn=(2972)
+calls=397234 0 
+0 794468
+0 5561276
+
+fn=(4140)
+0 3177312
+cfn=(2972)
+calls=397164 0 
+0 794328
+0 9929100
+
+fn=(4150) gettime
+0 12
+cfn=(2972)
+calls=2 0 
+0 4
+0 12
+cob=(3)
+cfi=(3)
+cfn=(3448)
+calls=2 0 
+0 22
+0 36
+
+fn=(4220) g_array_new
+0 11
+cfn=(4222) g_array_sized_new
+calls=1 0 
+0 97
+0 2
+
+fn=(3854)
+0 110
+cfn=(2972)
+calls=22 0 
+0 44
+0 550
+
+fn=(3956)
+0 24
+cfn=(3958) g_slice_free_chain_with_offset
+calls=3 0 
+0 233
+0 6
+
+fn=(4158) g_strdup_vprintf
+0 11
+cfn=(4160) g_vasprintf
+calls=1 0 
+0 6534
+0 3
+
+fn=(4302) strdup_convert
+0 8
+cfn=(2972)
+calls=1 0 
+0 2
+0 6
+cfn=(4304) g_utf8_validate
+calls=1 0 
+0 159
+0 21
+cfn=(4306) g_convert_with_fallback
+calls=1 0 
+0 18223
+0 2
+
+fn=(4306)
+0 8
+cfn=(2972)
+calls=1 0 
+0 2
+0 27
+cfn=(4308) g_convert
+calls=1 0 
+0 18118
+0 14
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=1 0 
+0 52
+0 2
+
+fn=(4310) open_converter
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 9
+cfn=(4312) g_iconv_open
+calls=1 0 
+0 9973
+0 10
+
+fn=(3246)
+0 6
+cfn=(2972)
+calls=1 0 
+0 2
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3225
+0 4
+
+fn=(3266) g_mem_init_nomessage
+0 4
+cfn=(2972)
+calls=1 0 
+0 2
+0 20
+cfn=(3268) _g_getenv_nomalloc
+calls=1 0 
+0 388
+0 5
+
+fn=(3422)
+0 40
+cfn=(3424) g_hash_table_new_full
+calls=4 0 
+0 17624
+0 8
+
+fn=(3630) g_str_hash
+0 25164
+
+fn=(3926)
+0 40
+cfn=(2972)
+calls=5 0 
+0 10
+0 35
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=4 0 
+0 162
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2881
+0 15
+cfn=(3860)
+calls=5 0 
+0 1166
+0 30
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=4 0 
+0 76
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2901
+0 35
+
+fn=(4210) 0x0001409D
+0 2
+
+fn=(4916)
+0 7
+cfn=(2972)
+calls=1 0 
+0 2
+0 6
+cfn=(4150)
+calls=1 0 
+0 43
+0 7
+
+fn=(3268)
+0 12
+cfn=(2972)
+calls=2 0 
+0 4
+0 10
+cob=(3)
+cfi=(3)
+cfn=(3254)
+calls=2 0 
+0 730
+0 20
+
+fn=(3424)
+0 20
+cfn=(2972)
+calls=4 0 
+0 8
+0 24
+cfn=(3426) g_slice_alloc
+calls=4 0 
+0 16015
+0 12
+cfn=(3596) g_hash_table_set_shift
+calls=4 0 
+0 160
+0 72
+cfn=(3434)
+calls=4 0 
+0 1281
+0 32
+
+fn=(3428) g_slice_init_nomessage
+0 6
+cfn=(2972)
+calls=1 0 
+0 2
+0 10
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2921
+0 13
+cfn=(3268)
+calls=1 0 
+0 388
+0 22
+cfn=(3434)
+calls=1 0 
+0 378
+0 7
+cfn=(3434)
+calls=1 0 
+0 378
+0 11
+cfn=(3434)
+calls=1 0 
+0 378
+0 38
+cfn=(3442) g_get_current_time
+calls=1 0 
+0 3038
+0 12
+
+fn=(3442)
+0 7
+cfn=(2972)
+calls=1 0 
+0 2
+0 7
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3013
+0 9
+
+fn=(3626)
+0 824
+cfn=(3628) g_hash_table_insert_internal
+calls=103 0 
+0 21889
+
+fn=(3632)
+0 1904
+cfn=(2972)
+calls=238 0 
+0 476
+0 1666
+cfn=(3682) g_direct_hash
+calls=66 0 
+0 330
+cfn=(3630)
+calls=172 0 
+0 18436
+0 9971
+cfn=(3670) g_str_equal
+calls=115 0 
+0 14062
+0 2701
+
+fn=(3870)
+0 208
+cfn=(2972)
+calls=26 0 
+0 52
+0 132
+cfn=(3860)
+calls=1 0 
+0 123
+0 6
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 16
+0 182
+
+fn=(4108)
+0 15
+
+fn=(4134)
+0 3177312
+cfn=(2972)
+calls=397164 0 
+0 794328
+0 11120592
+
+fn=(4228) g_nearest_pow
+0 18
+
+fn=(4304)
+0 159
+
+fn=(4308)
+0 7
+cfn=(2972)
+calls=1 0 
+0 2
+0 13
+cfn=(4310)
+calls=1 0 
+0 9999
+0 14
+cfn=(4608) g_convert_with_iconv
+calls=1 0 
+0 4462
+0 3
+cfn=(4754) close_converter
+calls=1 0 
+0 3611
+0 7
+
+fn=(4314) try_conversion
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 9932
+0 10
+
+fn=(3710)
+0 483
+cfn=(2972)
+calls=69 0 
+0 138
+0 1104
+cfn=(3632)
+calls=69 0 
+0 20068
+0 759
+
+fn=(3782)
+0 60
+cfn=(2972)
+calls=12 0 
+0 24
+0 116
+cob=(3)
+cfi=(3)
+cfn=(3784)
+calls=10 0 
+0 1180
+0 60
+
+fn=(3860)
+0 170
+cfn=(2972)
+calls=34 0 
+0 68
+0 340
+cob=(3)
+cfi=(3)
+cfn=(3320)
+calls=34 0 
+0 6164
+0 272
+
+fn=(4052)
+0 210
+
+fn=(4072)
+0 16
+cfn=(2972)
+calls=2 0 
+0 4
+0 34
+cob=(3)
+cfi=(3)
+cfn=(3768)
+calls=1 0 
+0 29
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3011
+0 40
+cob=(3)
+cfi=(3)
+cfn=(3768)
+calls=10 0 
+0 494
+0 86
+
+fn=(4148)
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 4
+cfn=(3860)
+calls=1 0 
+0 279
+0 4
+cfn=(4150)
+calls=1 0 
+0 43
+0 8
+
+fn=(4218) g_static_private_set
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 4
+cfn=(4216) g_thread_self
+calls=1 0 
+0 24
+0 38
+cfn=(4224) g_array_set_size
+calls=1 0 
+0 344
+0 17
+cfn=(4220)
+calls=1 0 
+0 110
+0 3
+
+fn=(3240)
+0 3177800
+cfn=(2972)
+calls=397225 0 
+0 794450
+0 5163925
+
+fn=(3426)
+0 2780204
+cfn=(2972)
+calls=397172 0 
+0 794344
+0 19064263
+cfn=(3428)
+calls=1 0 
+0 7602
+0 15
+cfn=(3434)
+calls=1 0 
+0 762
+0 551243
+cfn=(3450) slab_allocator_alloc_chunk
+calls=7791 0 
+0 1245375
+0 31164
+cfn=(3450)
+calls=7791 0 
+0 288267
+0 1168599
+cfn=(3450)
+calls=373951 0 
+0 29109403
+0 15582
+cfn=(3450)
+calls=7791 0 
+0 291383
+0 2734522
+
+fn=(3682)
+0 565
+
+fn=(3690)
+0 2780575
+cfn=(2972)
+calls=397225 0 
+0 794450
+0 5561150
+
+fn=(3978)
+0 18
+cfn=(2972)
+calls=3 0 
+0 6
+0 39
+
+fn=(4160)
+0 7
+cfn=(2972)
+calls=1 0 
+0 2
+0 10
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 6491
+0 4
+cfn=(4208) g_mem_is_system_malloc
+calls=1 0 
+0 11
+0 9
+
+fn=(4238) _g_locale_charset_unalias
+0 8
+cfn=(2972)
+calls=1 0 
+0 2
+0 4
+cfn=(4240) _g_locale_get_charset_aliases
+calls=1 0 
+0 10553
+0 16
+
+fn=(2970) 0x00011820
+0 4
+cfn=(2972)
+calls=1 0 
+0 2
+0 9
+
+fn=(2972)
+0 7946538
+
+fn=(2980) 0x0008BEF0
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 10
+
+fn=(3450)
+0 2781268
+cfn=(2972)
+calls=397324 0 
+0 794648
+0 11257522
+cfn=(3452) allocator_aligned_page_size
+calls=26494 0 
+0 450398
+0 238446
+cob=(3)
+cfi=(3)
+cfn=(3458)
+calls=26493 0 
+0 11355266
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3666
+0 3258442
+cfn=(3552) allocator_slab_stack_push
+calls=26494 0 
+0 450386
+0 344386
+
+fn=(3596)
+0 64
+cfn=(2972)
+calls=8 0 
+0 16
+0 290
+
+fn=(4156)
+0 6
+cfn=(2972)
+calls=1 0 
+0 2
+0 10
+cfn=(4158)
+calls=1 0 
+0 6548
+0 11
+cfn=(3782)
+calls=1 0 
+0 124
+0 9
+cfn=(4212) g_get_charset
+calls=1 0 
+0 19001
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2947
+0 4
+cfn=(4302)
+calls=1 0 
+0 18421
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 4711
+0 2
+cfn=(3782)
+calls=1 0 
+0 124
+0 1
+
+fn=(4212)
+0 6
+cfn=(2972)
+calls=1 0 
+0 2
+0 5
+cfn=(4214) g_static_private_get
+calls=1 0 
+0 431
+0 4
+cfn=(4230) _g_locale_charset_raw
+calls=1 0 
+0 3023
+0 19
+cfn=(3782)
+calls=1 0 
+0 20
+0 3
+cfn=(3782)
+calls=1 0 
+0 20
+0 3
+cfn=(3926)
+calls=1 0 
+0 370
+0 4
+cob=(3)
+cfi=(3)
+cfn=(3254)
+calls=1 0 
+0 355
+0 10
+cfn=(4238)
+calls=1 0 
+0 10583
+0 12
+cfn=(3926)
+calls=1 0 
+0 401
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2995
+0 6
+cfn=(3434)
+calls=1 0 
+0 169
+0 6
+cfn=(4218)
+calls=1 0 
+0 547
+0 1
+
+fn=(4610) g_iconv
+0 12
+cfn=(2972)
+calls=2 0 
+0 4
+0 22
+cob=(3)
+cfi=(3)
+cfn=(4616)
+calls=1 0 
+0 301
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3825
+0 8
+
+fn=(3264)
+0 1536
+cfn=(2972)
+calls=256 0 
+0 512
+0 3072
+cob=(3)
+cfi=(3)
+cfn=(3270) realloc
+calls=256 0 
+0 112736
+0 2561
+cfn=(3266)
+calls=1 0 
+0 419
+0 2
+
+fn=(3628)
+0 721
+cfn=(2972)
+calls=103 0 
+0 206
+0 1442
+cfn=(3682)
+calls=47 0 
+0 235
+cfn=(3630)
+calls=56 0 
+0 6728
+0 6337
+cfn=(3780) g_hash_table_resize
+calls=4 0 
+0 5388
+0 832
+
+fn=(3670)
+0 690
+cfn=(2972)
+calls=115 0 
+0 230
+0 575
+cob=(3)
+cfi=(3)
+cfn=(3676)
+calls=114 0 
+0 8863
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2899
+0 805
+
+fn=(3780)
+0 138
+cfn=(3596)
+calls=4 0 
+0 210
+0 24
+cfn=(3434)
+calls=4 0 
+0 2083
+0 2233
+cfn=(3782)
+calls=4 0 
+0 656
+0 44
+
+fn=(4222)
+0 5
+cfn=(2972)
+calls=1 0 
+0 2
+0 4
+cfn=(3426)
+calls=1 0 
+0 57
+0 29
+
+fn=(4226) g_array_maybe_expand
+0 9
+cfn=(2972)
+calls=1 0 
+0 2
+0 15
+cfn=(4228)
+calls=1 0 
+0 18
+0 8
+cfn=(3264)
+calls=1 0 
+0 219
+0 8
+
+fn=(4240)
+0 6
+cfn=(2972)
+calls=1 0 
+0 2
+0 21
+cob=(3)
+cfi=(3)
+cfn=(3254)
+calls=1 0 
+0 384
+0 6
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=1 0 
+0 69
+0 16
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3189
+0 9
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 21
+0 14
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3865
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2939
+0 6
+
+fn=(4312)
+0 10
+cfn=(4314)
+calls=1 0 
+0 9955
+0 8
+
+fn=(4608)
+0 7
+cfn=(2972)
+calls=1 0 
+0 2
+0 16
+cfn=(3860)
+calls=1 0 
+0 182
+0 24
+cfn=(4610)
+calls=1 0 
+0 324
+0 33
+cfn=(4610)
+calls=1 0 
+0 3848
+0 26
+
+fn=(3552)
+0 450386
+
+fn=(4208)
+0 1
+cfn=(4210)
+calls=1 0 
+0 2
+0 8
+
+fn=(4214)
+0 4
+cfn=(4216)
+calls=1 0 
+0 421
+0 6
+
+fn=(4756) g_iconv_close
+0 4
+cfn=(2972)
+calls=1 0 
+0 2
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3584
+0 4
+
+fn=(3434)
+0 790
+cfn=(2972)
+calls=158 0 
+0 316
+0 1738
+cob=(3)
+cfi=(3)
+cfn=(3436) calloc
+calls=158 0 
+0 40727
+0 1106
+
+fn=(3452)
+0 450398
+
+fn=(3668)
+0 441
+cfn=(2972)
+calls=49 0 
+0 98
+0 637
+cfn=(3632)
+calls=49 0 
+0 16303
+0 690
+cfn=(3926)
+calls=2 0 
+0 6329
+0 34
+cfn=(3626)
+calls=2 0 
+0 392
+0 2
+
+fn=(4088)
+0 9
+cfn=(2972)
+calls=1 0 
+0 2
+0 13
+cfn=(3632)
+calls=1 0 
+0 369
+0 17
+
+fn=(4126)
+0 2382984
+cfn=(2972)
+calls=397164 0 
+0 794328
+0 3177312
+
+fn=(4216)
+0 10
+cfn=(2972)
+calls=2 0 
+0 4
+0 36
+cfn=(3434)
+calls=1 0 
+0 379
+0 16
+
+fn=(4224)
+0 9
+cfn=(2972)
+calls=1 0 
+0 2
+0 9
+cfn=(4226)
+calls=1 0 
+0 279
+0 23
+cob=(3)
+cfi=(3)
+cfn=(2776)
+calls=1 0 
+0 21
+0 1
+
+fn=(3262)
+0 72
+cfn=(2972)
+calls=8 0 
+0 16
+0 101
+cfn=(3632)
+calls=7 0 
+0 2290
+0 224
+cfn=(3626)
+calls=7 0 
+0 2648
+0 9
+cfn=(3626)
+calls=1 0 
+0 358
+0 13
+cfn=(3264)
+calls=1 0 
+0 65997
+0 13
+cfn=(3422)
+calls=1 0 
+0 16348
+0 7
+
+fn=(3652)
+0 414
+cfn=(2972)
+calls=46 0 
+0 92
+0 644
+cfn=(3632)
+calls=46 0 
+0 7652
+0 920
+cfn=(3626)
+calls=46 0 
+0 12736
+0 598
+
+fn=(3950)
+0 21
+cfn=(2972)
+calls=3 0 
+0 6
+0 42
+
+fn=(3958)
+0 24
+cfn=(2972)
+calls=3 0 
+0 6
+0 203
+
+fn=(3984)
+0 1985825
+cfn=(2972)
+calls=397165 0 
+0 794330
+0 2382990
+cfn=(3426)
+calls=397165 0 
+0 58061419
+0 2780155
+cob=(3)
+cfi=(3)
+cfn=(2776)
+calls=397164 0 
+0 10326264
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2885
+0 2780155
+
+fn=(4030)
+0 10
+cfn=(3426)
+calls=2 0 
+0 5237
+0 12
+
+fn=(4230)
+0 4
+cfn=(2972)
+calls=1 0 
+0 2
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3009
+0 4
+
+fn=(4754)
+0 8
+cfn=(4756)
+calls=1 0 
+0 3599
+0 4
+
+fl=(6)
+fn=(2966)
+15 1
++1 1
++1 1
++1 1
++1 1
++3 1
++1 1
++1 1
++1 1
+-25 1
+fi=(7)
+cfi=(7)
+cfn=(2970)
+calls=1 0 
+0 15
+0 1
+fi=(7)
+cfi=(7)
+cfn=(2980)
+calls=1 0 
+0 17
+fi=(8) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crtn.S
+10 1
++1 1
++1 1
++1 1
+fe=(6)
+
+ob=(2)
+fl=(2)
+fn=(4358) 0x00006A26
+0 2
+
+fn=(2736) 0x00004210
+0 14
+
+fn=(3290) pthread_mutex_unlock
+0 6
+cfn=(3292) __pthread_mutex_unlock_usercnt
+calls=1 0 
+0 46
+
+fn=(4424) __pthread_unregister_cancel
+0 6
+
+fn=(4270) _pthread_cleanup_push_defer
+0 42
+
+fn=(4272) _pthread_cleanup_pop_restore
+0 34
+
+fn=(4372) __pthread_register_cancel
+0 9
+
+fn=(3288) pthread_mutex_lock
+0 8
+cfn=(2736)
+calls=1 0 
+0 2
+0 36
+
+fn=(2732)
+0 3
+cfn=(2734) __pthread_initialize_minimal
+calls=1 0 
+0 28289
+0 1
+cfn=(2838) 0x00004280
+calls=1 0 
+0 15
+0 1
+cfn=(2846) 0x0000F9D0
+calls=1 0 
+0 17
+0 2
+
+fn=(2778) __libc_sigaction
+0 16
+cfn=(2736)
+calls=2 0 
+0 4
+0 28
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 47
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 2930
+0 30
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=2 0 
+0 4
+0 44
+
+fn=(3292)
+0 10
+cfn=(2736)
+calls=1 0 
+0 2
+0 34
+
+fn=(2734)
+0 8
+cfn=(2736)
+calls=1 0 
+0 2
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 18
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 10
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 31
+cfn=(2778)
+calls=1 0 
+0 2993
+0 8
+cfn=(2778)
+calls=1 0 
+0 110
+0 7
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 3224
+0 17
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 3209
+0 9
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 2985
+0 13
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 3245
+0 3
+cob=(1)
+cfi=(1)
+cfn=(936)
+calls=1 0 
+0 9
+0 26
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 3621
+0 2
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 2835
+0 7
+cob=(1)
+cfi=(1)
+cfn=(2748)
+calls=1 0 
+0 2959
+0 10
+
+fn=(2838)
+0 4
+cfn=(2736)
+calls=1 0 
+0 2
+0 9
+
+fn=(2846)
+0 5
+cfn=(2736)
+calls=1 0 
+0 2
+0 10
+
+fn=(4356) pthread_once
+0 9
+cfn=(4358)
+calls=1 0 
+0 2
+0 17
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 3037
+0 4
+cfn=(4372)
+calls=1 0 
+0 9
+0 1
+cob=(3)
+cfi=(3)
+cfn=(4374) 0x00019840
+calls=1 0 
+0 537
+0 2
+cfn=(4424)
+calls=1 0 
+0 6
+0 8
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 4
+
+ob=(3)
+fl=(3)
+fn=(2872)
+0 5
+cfn=(2798) 0x00016290
+calls=1 0 
+0 2
+0 24
+cfn=(2880) 0x000D6BF0
+calls=1 0 
+0 101
+0 1
+cfn=(2896) 0x00016260
+calls=1 0 
+0 60
+0 6
+
+fn=(3270)
+0 1280
+cfn=(2798)
+calls=256 0 
+0 512
+0 2054
+cfn=(3272) 0x0006FAF0
+calls=1 0 
+0 65516
+0 11104
+cfn=(3794) 0x0006D330
+calls=196 0 
+0 19450
+0 2137
+cfn=(3320)
+calls=59 0 
+0 10565
+0 118
+
+fn=(3271) realloc'2
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 23
+cfn=(3320)
+calls=1 0 
+0 1202
+0 2
+
+fn=(3794)
+0 1568
+cfn=(2798)
+calls=196 0 
+0 392
+0 10381
+cfn=(3322) 0x0006BD80
+calls=12 0 
+0 1584
+0 330
+cfn=(3494) 0x0006B3D0
+calls=12 0 
+0 764
+0 54
+cfn=(2784)
+calls=6 0 
+0 186
+0 4191
+
+fn=(4236)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 23
+
+fn=(4276) _IO_file_fopen
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 39
+cfn=(4278) _IO_file_open
+calls=1 0 
+0 61
+0 6
+
+fn=(4278)
+0 9
+cfn=(2798)
+calls=1 0 
+0 2
+0 13
+cfn=(4280) open
+calls=1 0 
+0 24
+0 13
+
+fn=(4440) 0x00029710
+0 312
+
+fn=(4852) _IO_file_write
+0 23
+cfn=(4854) write
+calls=1 0 
+0 14
+0 16
+
+fn=(2806) getpagesize
+0 3
+cfn=(2808) 0x0011155C
+calls=3 0 
+0 6
+0 30
+
+fn=(2808)
+0 10
+
+fn=(3172)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 15
+cfn=(3174) __cxa_atexit
+calls=1 0 
+0 83
+0 15
+cob=(14)
+cfi=(22)
+cfn=(3200)
+calls=1 0 
+0 57
+0 9
+cfn=(3220) _setjmp
+calls=1 0 
+0 16
+0 16
+cob=(14)
+cfi=(22)
+cfn=(3222)
+calls=1 0 
+0 308441769
+
+fn=(3322)
+0 187355
+cfn=(2798)
+calls=26765 0 
+0 53530
+0 857802
+cfn=(3338) 0x00069D80
+calls=14 0 
+0 2918
+0 2201488
+cfn=(3382) __default_morecore
+calls=69 0 
+0 4689
+0 1456
+cfn=(3382)
+calls=1 0 
+0 39
+0 201
+cfn=(3494)
+calls=6 0 
+0 558
+0 150
+cfn=(4398) mmap
+calls=6 0 
+0 150
+0 73
+cfn=(4398)
+calls=1 0 
+0 25
+0 392
+
+fn=(3466) memalign
+0 158964
+cfn=(2798)
+calls=26494 0 
+0 52988
+0 1139242
+cfn=(3468) 0x0006CED0
+calls=26494 0 
+0 8759354
+0 185458
+
+fn=(3676)
+0 9842
+
+fn=(3778)
+0 1181
+
+fn=(4174) 0x00067460
+0 12
+cfn=(2798)
+calls=2 0 
+0 4
+0 18
+cfn=(4178) 0x000673C0
+calls=2 0 
+0 57
+0 37
+
+fn=(4178)
+0 57
+
+fn=(4250)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 6
+cfn=(4252) 0x0005AD10
+calls=1 0 
+0 930
+0 4
+
+fn=(4252)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 4
+cfn=(3320)
+calls=1 0 
+0 247
+0 14
+cfn=(4174)
+calls=1 0 
+0 73
+0 4
+cfn=(4266) _IO_file_init
+calls=1 0 
+0 160
+0 8
+cfn=(4276)
+calls=1 0 
+0 116
+0 9
+cfn=(4286) _IO_un_link
+calls=1 0 
+0 142
+0 2
+cfn=(3784)
+calls=1 0 
+0 142
+0 2
+
+fn=(4268) _IO_link_in
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 69
+cob=(2)
+cfi=(2)
+cfn=(4272)
+calls=1 0 
+0 17
+0 15
+cob=(2)
+cfi=(2)
+cfn=(4270)
+calls=1 0 
+0 21
+0 7
+
+fn=(4320)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 5
+cfn=(3256)
+calls=1 0 
+0 45
+0 223
+cfn=(3256)
+calls=1 0 
+0 28
+0 108
+cfn=(4322) 0x00017640
+calls=1 0 
+0 6570
+0 15
+
+fn=(4322)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 8
+cfn=(3768)
+calls=1 0 
+0 83
+0 6
+cfn=(3768)
+calls=1 0 
+0 14
+0 11
+cfn=(3768)
+calls=1 0 
+0 45
+0 6
+cfn=(3768)
+calls=1 0 
+0 14
+0 23
+cfn=(4350) 0x00018BA0
+calls=1 0 
+0 5505
+0 13
+cfn=(3320)
+calls=1 0 
+0 329
+0 25
+cfn=(2776)
+calls=1 0 
+0 37
+0 42
+cfn=(3320)
+calls=1 0 
+0 380
+0 21
+
+fn=(4618) 0x00017D80
+0 14
+cfn=(2798)
+calls=2 0 
+0 4
+0 88
+cfn=(4638) _dl_mcount_wrapper_check
+calls=1 0 
+0 16
+0 15
+cfn=(4642) 0x0001DCB0
+calls=1 0 
+0 813
+0 49
+cfn=(4638)
+calls=1 0 
+0 16
+0 19
+cfn=(4642)
+calls=1 0 
+0 121
+0 19
+
+fn=(4840) _IO_file_stat
+0 10
+cfn=(4390) __fxstat64
+calls=1 0 
+0 21
+0 2
+
+fn=(4870) _IO_file_sync
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 18
+
+fn=(2828)
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 4
+
+fn=(2888) rindex
+0 68
+
+fn=(3176) 0x0002E110
+0 9
+cfn=(2798)
+calls=1 0 
+0 2
+0 43
+
+fn=(3286) _dl_addr
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 9
+cob=(2)
+cfi=(2)
+cfn=(3288)
+calls=1 0 
+0 46
+0 63654
+cob=(2)
+cfi=(2)
+cfn=(3290)
+calls=1 0 
+0 52
+0 12
+
+fn=(3320)
+0 505
+cfn=(2798)
+calls=101 0 
+0 202
+0 3232
+cfn=(3322)
+calls=101 0 
+0 14937
+0 808
+
+fn=(3448)
+0 15
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=3 0 
+0 6
+0 12
+
+fn=(3784)
+0 80
+cfn=(2798)
+calls=16 0 
+0 32
+0 528
+cfn=(3494)
+calls=16 0 
+0 1272
+0 80
+
+fn=(4286)
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 68
+cob=(2)
+cfi=(2)
+cfn=(4272)
+calls=1 0 
+0 17
+0 15
+cob=(2)
+cfi=(2)
+cfn=(4270)
+calls=1 0 
+0 21
+0 11
+
+fn=(4378) 0x00020160
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 6
+cfn=(3254)
+calls=1 0 
+0 369
+0 15
+cfn=(4280)
+calls=1 0 
+0 12
+0 8
+cfn=(4390)
+calls=1 0 
+0 21
+0 13
+cfn=(4398)
+calls=1 0 
+0 25
+0 7
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 25
+
+fn=(4616)
+0 14
+cfn=(2798)
+calls=2 0 
+0 4
+0 39
+cfn=(4618)
+calls=1 0 
+0 935
+0 65
+cfn=(4618)
+calls=1 0 
+0 239
+0 3
+
+fn=(4834) _IO_file_overflow
+0 160
+cfn=(2798)
+calls=20 0 
+0 40
+0 687
+cfn=(4842) _IO_do_write
+calls=1 0 
+0 122
+0 4
+cfn=(4836) _IO_doallocbuf
+calls=1 0 
+0 178
+0 13
+cfn=(4842)
+calls=1 0 
+0 11
+0 6
+
+fn=(4504) 0x00019D00
+0 16
+cfn=(2798)
+calls=2 0 
+0 4
+0 12
+cfn=(3676)
+calls=2 0 
+0 102
+0 12
+cfn=(3676)
+calls=2 0 
+0 39
+0 12
+cfn=(3676)
+calls=2 0 
+0 102
+0 12
+cfn=(3676)
+calls=2 0 
+0 39
+0 12
+cfn=(3676)
+calls=2 0 
+0 102
+0 12
+cfn=(3676)
+calls=2 0 
+0 132
+0 8
+cfn=(3676)
+calls=1 0 
+0 16
+0 6
+cfn=(3676)
+calls=1 0 
+0 86
+0 6
+cfn=(3676)
+calls=1 0 
+0 16
+0 6
+cfn=(3676)
+calls=1 0 
+0 123
+0 59
+
+fn=(4810) 0x00020030
+0 4
+cfn=(2798)
+calls=1 0 
+0 2
+0 7
+cfn=(3784)
+calls=1 0 
+0 142
+0 4
+
+fn=(4844) 0x00065200
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 13
+cfn=(4852)
+calls=1 0 
+0 53
+0 27
+
+fn=(2776)
+0 10331151
+
+fn=(2796)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 7
+
+fn=(2798)
+0 304634
+
+fn=(2834)
+0 206
+
+fn=(3254)
+0 30
+cfn=(2798)
+calls=6 0 
+0 12
+0 36
+cfn=(3256)
+calls=6 0 
+0 250
+0 1884
+
+fn=(3436)
+0 948
+cfn=(2798)
+calls=158 0 
+0 316
+0 6952
+cfn=(3322)
+calls=158 0 
+0 22798
+0 4507
+cfn=(2776)
+calls=106 0 
+0 4744
+0 462
+
+fn=(4924) 0x00069440
+0 46180
+cfn=(2798)
+calls=9236 0 
+0 18472
+0 193635
+cfn=(3382)
+calls=9129 0 
+0 356031
+0 119612
+cfn=(3382)
+calls=62 0 
+0 4154
+0 434
+cfn=(3382)
+calls=62 0 
+0 2418
+0 806
+
+fn=(2820)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 8
+cfn=(2822) __register_atfork
+calls=1 0 
+0 49
+0 376
+
+fn=(3174)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 4
+cfn=(3176)
+calls=1 0 
+0 54
+0 18
+
+fn=(3256)
+0 1654
+
+fn=(3494)
+0 212304
+cfn=(2798)
+calls=26538 0 
+0 53076
+0 1839289
+cfn=(3338)
+calls=1 0 
+0 197
+0 329239
+cfn=(4924)
+calls=9236 0 
+0 741742
+0 9236
+
+fn=(3754)
+0 6721
+
+fn=(4200) strchrnul
+0 120
+
+fn=(4266)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 6
+cfn=(4268)
+calls=1 0 
+0 139
+0 6
+
+fn=(4838) _IO_file_doallocate
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 10
+cfn=(4840)
+calls=1 0 
+0 33
+0 17
+cfn=(4398)
+calls=1 0 
+0 25
+0 10
+cfn=(4192) _IO_setb
+calls=1 0 
+0 26
+0 21
+
+fn=(2902) 0x000691A0
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 10
+
+fn=(3276) 0x0006A190
+0 10
+cfn=(2798)
+calls=2 0 
+0 4
+0 31
+cfn=(2806)
+calls=1 0 
+0 13
+0 19
+cfn=(2822)
+calls=1 0 
+0 55
+0 356
+cfn=(3286)
+calls=1 0 
+0 63781
+0 7
+
+fn=(3382)
+0 55938
+cfn=(3384) sbrk
+calls=9323 0 
+0 264778
+0 46615
+
+fn=(4166)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 4
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1403
+0 12
+cfn=(4174)
+calls=1 0 
+0 55
+0 7
+cfn=(4186) 0x00069050
+calls=1 0 
+0 68
+0 11
+cfn=(4198) vfprintf
+calls=1 0 
+0 383
+0 22
+cfn=(3320)
+calls=1 0 
+0 157
+0 11
+cfn=(2784)
+calls=1 0 
+0 21
+0 3
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1409
+0 4
+
+fn=(4350)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 23
+cfn=(4434) 0x00020530
+calls=1 0 
+0 1813
+0 23
+cob=(2)
+cfi=(2)
+cfn=(4356)
+calls=1 0 
+0 3638
+0 1
+
+fn=(4764) 0x00017FA0
+0 10
+cfn=(2798)
+calls=1 0 
+0 2
+0 27
+cfn=(3784)
+calls=1 0 
+0 142
+0 9
+cfn=(3784)
+calls=1 0 
+0 142
+0 3
+cfn=(4786) 0x00018200
+calls=1 0 
+0 256
+0 6
+
+fn=(4786)
+0 8
+cfn=(2798)
+calls=1 0 
+0 2
+0 18
+cfn=(4796) 0x00018120
+calls=1 0 
+0 23
+0 3
+cfn=(4796)
+calls=1 0 
+0 23
+0 9
+cfn=(4810)
+calls=1 0 
+0 159
+0 11
+
+fn=(4854)
+0 8
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=1 0 
+0 2
+0 4
+
+fn=(2784)
+0 4000
+
+fn=(3384)
+0 46615
+cfn=(2798)
+calls=9323 0 
+0 18646
+0 195651
+cfn=(3386) brk
+calls=1 0 
+0 23
+0 538
+cfn=(3386)
+calls=131 0 
+0 3037
+0 268
+
+fn=(3768)
+0 2179
+
+fn=(4186)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 16
+cfn=(4192)
+calls=1 0 
+0 26
+0 18
+
+fn=(4202) _IO_default_xsputn
+0 18
+cfn=(2798)
+calls=2 0 
+0 4
+0 511
+cfn=(4834)
+calls=19 0 
+0 966
+0 111
+
+fn=(4280)
+0 14
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=2 0 
+0 4
+0 9
+cfn=(2808)
+calls=1 0 
+0 2
+0 7
+
+fn=(4642)
+0 20
+cfn=(2798)
+calls=2 0 
+0 4
+0 401
+cfn=(4638)
+calls=1 0 
+0 16
+0 15
+cfn=(4678) 0x0001AE50
+calls=1 0 
+0 372
+0 35
+cfn=(4638)
+calls=1 0 
+0 16
+0 13
+cfn=(4678)
+calls=1 0 
+0 40
+0 2
+
+fn=(4796)
+0 18
+cfn=(2798)
+calls=2 0 
+0 4
+0 24
+
+fn=(2804)
+0 14
+cfn=(2798)
+calls=2 0 
+0 4
+0 56
+cfn=(2806)
+calls=2 0 
+0 26
+0 4
+
+fn=(2912) 0x0010EB10
+0 4
+cfn=(2798)
+calls=1 0 
+0 2
+0 11
+
+fn=(3338)
+0 90
+cfn=(2798)
+calls=15 0 
+0 30
+0 2995
+
+fn=(3468)
+0 238446
+cfn=(2798)
+calls=26494 0 
+0 52988
+0 794820
+cfn=(3322)
+calls=26494 0 
+0 3271507
+0 291704
+cfn=(3494)
+calls=10 0 
+0 888
+0 847828
+cfn=(3494)
+calls=26494 0 
+0 3181601
+0 79572
+
+fn=(4638)
+0 16
+cfn=(2798)
+calls=4 0 
+0 8
+0 40
+
+fn=(4762)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 4
+cfn=(4764)
+calls=1 0 
+0 597
+0 6
+
+fn=(4830)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 6
+cfn=(3256)
+calls=1 0 
+0 52
+0 26
+cfn=(4832) _IO_file_xsputn
+calls=1 0 
+0 1761
+0 33
+
+fn=(4832)
+0 9
+cfn=(2798)
+calls=1 0 
+0 2
+0 22
+cfn=(4834)
+calls=1 0 
+0 255
+0 33
+cfn=(4202)
+calls=1 0 
+0 1438
+0 2
+
+fn=(4842)
+0 26
+cfn=(4844)
+calls=1 0 
+0 103
+0 4
+
+fn=(2814)
+0 1
+cfn=(2808)
+calls=1 0 
+0 2
+0 7
+
+fn=(2880)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 10
+cfn=(2888)
+calls=1 0 
+0 68
+0 14
+
+fn=(3220)
+0 16
+
+fn=(3272)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 10
+cfn=(3276)
+calls=1 0 
+0 64257
+0 8
+cfn=(3271)
+calls=1 0 
+0 1234
+
+fn=(4364)
+0 20
+cfn=(2798)
+calls=1 0 
+0 2
+0 13
+
+fn=(4374)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 8
+cfn=(4378)
+calls=1 0 
+0 510
+0 11
+
+fn=(4434)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 22
+cfn=(4440)
+calls=1 0 
+0 93
+0 36
+cfn=(3676)
+calls=1 0 
+0 60
+0 23
+cfn=(4440)
+calls=1 0 
+0 219
+0 35
+cfn=(3676)
+calls=1 0 
+0 123
+0 40
+cfn=(3320)
+calls=1 0 
+0 150
+0 59
+cfn=(4504)
+calls=1 0 
+0 648
+0 9
+cfn=(4504)
+calls=1 0 
+0 286
+0 1
+
+fn=(4678)
+0 20
+cfn=(2798)
+calls=2 0 
+0 4
+0 388
+
+fn=(4836)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 15
+cfn=(4838)
+calls=1 0 
+0 152
+0 2
+
+fn=(2822)
+0 14
+cfn=(2798)
+calls=2 0 
+0 4
+0 86
+
+fn=(2896)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 6
+cfn=(2902)
+calls=1 0 
+0 17
+0 1
+cfn=(2912)
+calls=1 0 
+0 17
+0 12
+
+fn=(3386)
+0 660
+cfn=(2798)
+calls=132 0 
+0 264
+0 528
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=132 0 
+0 264
+0 1344
+
+fn=(3458)
+0 132470
+cfn=(2798)
+calls=26494 0 
+0 52988
+0 423910
+cfn=(3460) 0x0006DFF0
+calls=1 0 
+0 502
+0 423900
+cfn=(3466)
+calls=26493 0 
+0 10295546
+0 26493
+
+fn=(3460)
+0 5
+cfn=(2798)
+calls=1 0 
+0 2
+0 8
+cfn=(3276)
+calls=1 0 
+0 19
+0 8
+cfn=(3466)
+calls=1 0 
+0 460
+
+fn=(4192)
+0 14
+cfn=(2798)
+calls=2 0 
+0 4
+0 34
+
+fn=(4198)
+0 6
+cfn=(2798)
+calls=1 0 
+0 2
+0 33
+cfn=(4200)
+calls=1 0 
+0 120
+0 20
+cfn=(4202)
+calls=1 0 
+0 172
+0 30
+
+fn=(4390)
+0 12
+cfn=(2798)
+calls=2 0 
+0 4
+0 8
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=2 0 
+0 4
+0 14
+
+fn=(4398)
+0 144
+cob=(1)
+cfi=(1)
+cfn=(2738)
+calls=9 0 
+0 18
+0 63
+
+fn=(4868)
+0 7
+cfn=(2798)
+calls=1 0 
+0 2
+0 23
+cfn=(4870)
+calls=1 0 
+0 27
+0 23
+
+ob=(7)
+fl=(9)
+fn=(2992) 0x000019F0
+0 4
+cfn=(2994) 0x00001A27
+calls=1 0 
+0 2
+0 9
+
+fn=(2994)
+0 4
+
+fn=(3002) 0x00005EB0
+0 5
+cfn=(2994)
+calls=1 0 
+0 2
+0 10
+
+fn=(2988)
+0 10
+cfn=(2992)
+calls=1 0 
+0 15
+0 1
+cfn=(3002)
+calls=1 0 
+0 17
+
+ob=(10)
+fl=(14)
+fn=(3072) 0x0001D5C0
+0 4
+cfn=(3074) 0x0001D5F7
+calls=1 0 
+0 2
+0 9
+
+fn=(3074)
+0 4
+
+fn=(3082) 0x000F9F40
+0 5
+cfn=(3074)
+calls=1 0 
+0 2
+0 10
+
+fn=(3068)
+0 10
+cfn=(3072)
+calls=1 0 
+0 15
+
+ob=(7)
+fl=(9)
+fn=(2988)
+0 4
+
+ob=(10)
+fl=(14)
+fn=(3068)
+0 1
+cfn=(3082)
+calls=1 0 
+0 17
+0 4
+
+ob=(8)
+fl=(11) ???
+fn=(3014) 0x00001110
+0 4
+cfn=(3016) 0x00001147
+calls=1 0 
+0 2
+0 9
+
+fn=(3016)
+0 4
+
+fn=(3024) 0x00002780
+0 5
+cfn=(3016)
+calls=1 0 
+0 2
+0 10
+
+fl=(10)
+fn=(3010)
+15 1
++1 1
++1 1
++1 1
++1 1
++3 1
++1 1
++1 1
++1 1
+-25 1
+fi=(11)
+cfi=(11)
+cfn=(3014)
+calls=1 0 
+0 15
+0 1
+fi=(11)
+cfi=(11)
+cfn=(3024)
+calls=1 0 
+0 17
+fe=(10)
+
+ob=(11)
+fl=(16) ???
+fn=(3094) 0x00000DB0
+0 4
+cfn=(3096) 0x00000DE7
+calls=1 0 
+0 2
+0 9
+
+fn=(3096)
+0 4
+
+fn=(3104) 0x00001DF0
+0 5
+cfn=(3096)
+calls=1 0 
+0 2
+0 10
+
+fl=(15)
+fn=(3090)
+15 1
++1 1
++1 1
++1 1
++1 1
++3 1
++1 1
++1 1
++1 1
+-25 1
+fi=(16)
+cfi=(16)
+cfn=(3094)
+calls=1 0 
+0 15
+0 1
+fi=(16)
+cfi=(16)
+cfn=(3104)
+calls=1 0 
+0 17
+fi=(17) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crtn.S
+10 1
++1 1
++1 1
++1 1
+fe=(15)
+
+ob=(8)
+fl=(10)
+fn=(3010)
+fi=(12) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crtn.S
+10 1
++1 1
++1 1
++1 1
+fe=(10)
+
+ob=(12)
+fl=(19)
+fn=(3654) type_node_fundamental_new_W
+0 105
+cfn=(3118) 0x00006E17
+calls=21 0 
+0 42
+0 399
+cfn=(3656) type_node_any_new_W
+calls=21 0 
+0 28666
+0 444
+
+fn=(3738) type_add_flags_W
+0 360
+cfn=(3118)
+calls=45 0 
+0 90
+0 1502
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=45 0 
+0 11076
+0 720
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=44 0 
+0 1144
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2945
+0 720
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=45 0 
+0 10981
+0 135
+
+fn=(3818) g_object_type_init
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 11
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 420
+0 8
+cfn=(3760)
+calls=1 0 
+0 2921
+0 7
+cfn=(3792) g_value_register_transform_func
+calls=1 0 
+0 626
+0 7
+
+fn=(3846) g_param_type_register_static
+0 154
+cfn=(3118)
+calls=22 0 
+0 44
+0 660
+cfn=(3704) g_type_from_name
+calls=22 0 
+0 10752
+0 176
+cfn=(3848) g_type_name
+calls=22 0 
+0 2602
+0 220
+cob=(6)
+cfi=(7)
+cfn=(3860)
+calls=21 0 
+0 4242
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1240
+0 506
+cfn=(3700)
+calls=22 0 
+0 72236
+0 132
+
+fn=(3848)
+0 88
+cfn=(3118)
+calls=22 0 
+0 44
+0 348
+cob=(6)
+cfi=(7)
+cfn=(3854)
+calls=21 0 
+0 672
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1356
+0 94
+
+fn=(3942) g_type_test_flags
+0 28
+cfn=(3118)
+calls=4 0 
+0 8
+0 154
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=1 0 
+0 23
+0 25
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=1 0 
+0 23
+0 7
+
+fn=(4092) signal_add_class_closure
+0 9
+cfn=(3118)
+calls=1 0 
+0 2
+0 10
+cfn=(4094) g_closure_ref
+calls=1 0 
+0 63
+0 13
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 17
+0 6
+cfn=(4096) g_closure_sink
+calls=1 0 
+0 126
+0 18
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 244
+0 8
+cfn=(4100) g_closure_set_marshal
+calls=1 0 
+0 23
+0 14
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 12
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 26
+0 6
+
+fn=(4116)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 47
+
+fn=(3116) 0x00006DE0
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 9
+
+fn=(3118)
+0 4767490
+
+fn=(3126) 0x00033DA0
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 10
+
+fn=(3704)
+0 408
+cfn=(3118)
+calls=68 0 
+0 136
+0 544
+cob=(6)
+cfi=(7)
+cfn=(3710)
+calls=67 0 
+0 21813
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1671
+0 944
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=65 0 
+0 1495
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1571
+0 264
+cob=(6)
+cfi=(7)
+cfn=(3632)
+calls=65 0 
+0 2821
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1393
+0 264
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=65 0 
+0 1495
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1624
+0 66
+
+fn=(3760)
+0 95
+cfn=(3118)
+calls=19 0 
+0 38
+0 551
+cfn=(3702) check_type_name_I
+calls=19 0 
+0 9334
+0 437
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=19 0 
+0 437
+0 95
+cfn=(3654)
+calls=19 0 
+0 21446
+0 57
+cfn=(3738)
+calls=19 0 
+0 11265
+0 171
+cfn=(3730) check_type_info_I
+calls=19 0 
+0 1571
+0 95
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=19 0 
+0 437
+0 114
+cfn=(3756) check_value_table_I
+calls=19 0 
+0 6578
+0 142
+cfn=(3684) type_data_make_W
+calls=17 0 
+0 15047
+0 6
+cfn=(3684)
+calls=2 0 
+0 816
+0 19
+
+fn=(3844) g_param_spec_types_init
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=1 0 
+0 279
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 390
+0 4
+cfn=(3846)
+calls=1 0 
+0 7217
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 474
+0 4
+cfn=(3846)
+calls=1 0 
+0 3826
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 696
+0 4
+cfn=(3846)
+calls=1 0 
+0 4207
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 538
+0 4
+cfn=(3846)
+calls=1 0 
+0 3973
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 454
+0 4
+cfn=(3846)
+calls=1 0 
+0 3763
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 480
+0 4
+cfn=(3846)
+calls=1 0 
+0 4021
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 2570
+0 4
+cfn=(3846)
+calls=1 0 
+0 3730
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 410
+0 4
+cfn=(3846)
+calls=1 0 
+0 3829
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 494
+0 4
+cfn=(3846)
+calls=1 0 
+0 3994
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 450
+0 4
+cfn=(3846)
+calls=1 0 
+0 6032
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 480
+0 4
+cfn=(3846)
+calls=1 0 
+0 3668
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 410
+0 4
+cfn=(3846)
+calls=1 0 
+0 4095
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 448
+0 4
+cfn=(3846)
+calls=1 0 
+0 3609
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 598
+0 4
+cfn=(3846)
+calls=1 0 
+0 4210
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 468
+0 4
+cfn=(3846)
+calls=1 0 
+0 3856
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 410
+0 4
+cfn=(3846)
+calls=1 0 
+0 3997
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 448
+0 4
+cfn=(3846)
+calls=1 0 
+0 3793
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 488
+0 4
+cfn=(3846)
+calls=1 0 
+0 4154
+0 5
+cfn=(3896) g_value_array_get_type
+calls=1 0 
+0 4567
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 678
+0 4
+cfn=(3846)
+calls=1 0 
+0 4286
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 430
+0 4
+cfn=(3846)
+calls=1 0 
+0 4231
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 534
+0 4
+cfn=(3846)
+calls=1 0 
+0 4103
+0 17
+cfn=(3900) g_gtype_get_type
+calls=1 0 
+0 3075
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 656
+0 4
+cfn=(3846)
+calls=1 0 
+0 4370
+0 10
+
+fn=(4060) g_signal_new_valist
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 25
+cfn=(4062) g_signal_newv
+calls=1 0 
+0 11897
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3782)
+calls=1 0 
+0 124
+0 10
+cob=(6)
+cfi=(7)
+cfn=(3860)
+calls=1 0 
+0 225
+0 10
+
+fn=(3232) g_type_init_with_debug_flags
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 11
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1571
+0 15
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 4357
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 84277
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 785
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 847
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1711
+0 5
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1759
+0 4
+cfn=(3654)
+calls=1 0 
+0 7449
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 390
+0 4
+cfn=(3654)
+calls=1 0 
+0 761
+0 5
+cfn=(3684)
+calls=1 0 
+0 388
+0 6
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1656
+0 1
+cfn=(3692) g_value_c_init
+calls=1 0 
+0 1371
+0 1
+cfn=(3698) g_type_plugin_get_type
+calls=1 0 
+0 15195
+0 2
+cfn=(3758) g_value_types_init
+calls=1 0 
+0 51982
+0 1
+cfn=(3786) g_enum_types_init
+calls=1 0 
+0 6246
+0 1
+cfn=(3788) g_boxed_type_init
+calls=1 0 
+0 3370
+0 1
+cfn=(3790) g_param_type_init
+calls=1 0 
+0 3564
+0 1
+cfn=(3818)
+calls=1 0 
+0 4006
+0 2
+cfn=(3844)
+calls=1 0 
+0 114168
+0 1
+cfn=(3902) g_value_transforms_init
+calls=1 0 
+0 128030
+0 1
+cfn=(3908) g_signal_init
+calls=1 0 
+0 881
+0 5
+
+fn=(3692)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 9
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1349
+0 7
+
+fn=(3732) type_node_new_W
+0 130
+cfn=(3118)
+calls=26 0 
+0 52
+0 624
+cfn=(3656)
+calls=26 0 
+0 36789
+0 156
+
+fn=(3756)
+0 225
+cfn=(3118)
+calls=45 0 
+0 90
+0 549
+cfn=(3762) check_collect_format_I
+calls=18 0 
+0 4265
+0 162
+cfn=(3762)
+calls=18 0 
+0 1656
+0 387
+
+fn=(3990) instance_real_class_cmp
+0 14
+
+fn=(4002)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 73
+
+fn=(4018)
+0 2382990
+cfn=(3118)
+calls=397165 0 
+0 794330
+0 1985825
+cfn=(4020) g_type_fundamental
+calls=397165 0 
+0 7943284
+0 1985820
+cfn=(4024) g_type_class_peek_static
+calls=397164 0 
+0 35744758
+0 6354624
+cfn=(4118) g_object_constructor
+calls=397164 0 
+0 185148818
+0 3971640
+cob=(6)
+cfi=(7)
+cfn=(4134)
+calls=397163 0 
+0 15092194
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1454
+0 2382984
+cob=(6)
+cfi=(7)
+cfn=(4140)
+calls=397163 0 
+0 13900705
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1652
+0 2780151
+cfn=(4142) g_type_class_unref
+calls=1 0 
+0 105
+0 2780151
+cfn=(3944) g_type_class_ref
+calls=1 0 
+0 34174
+0 3
+
+fn=(4038) g_object_do_class_init
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 671
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 841
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 907
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 685
+0 3
+cfn=(4040) g_param_spec_pool_new
+calls=1 0 
+0 740
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3262)
+calls=1 0 
+0 587
+0 20
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 686
+0 12
+cfn=(4042) g_signal_new
+calls=1 0 
+0 17861
+0 5
+cfn=(4102) g_type_add_interface_check
+calls=1 0 
+0 244
+0 5
+
+fn=(4040)
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3860)
+calls=1 0 
+0 210
+0 24
+cob=(6)
+cfi=(7)
+cfn=(3422)
+calls=1 0 
+0 488
+0 7
+
+fn=(4090) signal_key_cmp
+0 20
+
+fn=(4102)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 160
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 6
+
+fn=(3684)
+0 414
+cfn=(3118)
+calls=46 0 
+0 92
+0 647
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=17 0 
+0 281
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2864
+0 138
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=18 0 
+0 378
+0 440
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=16 0 
+0 4425
+0 644
+cob=(3)
+cfi=(3)
+cfn=(3778)
+calls=17 0 
+0 557
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2872
+0 72
+cob=(3)
+cfi=(3)
+cfn=(3256)
+calls=18 0 
+0 294
+0 219
+cob=(3)
+cfi=(3)
+cfn=(3778)
+calls=18 0 
+0 594
+0 2002
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=26 0 
+0 7246
+0 923
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=2 0 
+0 550
+0 319
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=2 0 
+0 502
+0 256
+
+fn=(3790)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 374
+0 8
+cfn=(3760)
+calls=1 0 
+0 2856
+0 7
+cfn=(3792)
+calls=1 0 
+0 304
+0 4
+
+fn=(3900)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 328
+0 6
+cfn=(3700)
+calls=1 0 
+0 2721
+0 6
+
+fn=(3940)
+0 3177312
+cfn=(3118)
+calls=397164 0 
+0 794328
+0 5957460
+cfn=(3942)
+calls=1 0 
+0 118
+0 794330
+cfn=(3944)
+calls=397164 0 
+0 40120735
+0 2780155
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 10502
+0 794326
+cob=(6)
+cfi=(7)
+cfn=(3984)
+calls=397163 0 
+0 79099456
+0 10326283
+cfn=(4120) g_object_init
+calls=397163 0 
+0 17078009
+0 5163155
+cfn=(3990)
+calls=1 0 
+0 14
+0 19
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 19
+0 5163144
+cob=(14)
+cfi=(22)
+cfn=(4128)
+calls=397163 0 
+0 1588652
+cob=(14)
+cfi=(22)
+cfn=(3996)
+calls=1 0 
+0 52397
+0 2780166
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1188
+0 9
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 259
+0 14
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 15
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 26
+0 9
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 17
+0 1
+
+fn=(3941) g_type_create_instance'2
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 17
+cfn=(3944)
+calls=1 0 
+0 101
+0 9
+cob=(6)
+cfi=(7)
+cfn=(3984)
+calls=1 0 
+0 5312
+0 26
+cfn=(4120)
+calls=1 0 
+0 1305
+0 26
+cob=(14)
+cfi=(22)
+cfn=(4128)
+calls=1 0 
+0 4
+0 7
+
+fn=(4062)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 10
+cfn=(3942)
+calls=1 0 
+0 50
+0 12
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1359
+0 7
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 4653
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3710)
+calls=1 0 
+0 405
+0 17
+cfn=(4078) g_type_parent
+calls=1 0 
+0 18
+0 8
+cfn=(4080) g_type_interfaces
+calls=1 0 
+0 356
+0 15
+cob=(6)
+cfi=(7)
+cfn=(3782)
+calls=1 0 
+0 124
+0 19
+cfn=(4082) g_type_check_is_value_type
+calls=1 0 
+0 117
+0 36
+cob=(6)
+cfi=(7)
+cfn=(3870)
+calls=1 0 
+0 169
+0 18
+cfn=(4092)
+calls=1 0 
+0 783
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3782)
+calls=1 0 
+0 124
+0 24
+cob=(6)
+cfi=(7)
+cfn=(3860)
+calls=1 0 
+0 207
+0 9
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 11
+cob=(6)
+cfi=(7)
+cfn=(3668)
+calls=1 0 
+0 407
+0 23
+cob=(6)
+cfi=(7)
+cfn=(4072)
+calls=1 0 
+0 264
+0 3
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1747
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3668)
+calls=1 0 
+0 407
+0 26
+cfn=(4090)
+calls=1 0 
+0 20
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 13
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 26
+0 3
+
+fn=(4094)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 27
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 11
+
+fn=(4100)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 17
+
+fn=(3702)
+0 405
+cfn=(3118)
+calls=45 0 
+0 90
+0 5493
+cfn=(3704)
+calls=45 0 
+0 25307
+0 135
+
+fn=(3786)
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 13
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 290
+0 6
+cfn=(3760)
+calls=1 0 
+0 2696
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 400
+0 6
+cfn=(3760)
+calls=1 0 
+0 2814
+0 8
+
+fn=(3792)
+0 1360
+cfn=(3118)
+calls=170 0 
+0 340
+0 19187
+cfn=(3820) transform_entries_cmp
+calls=1006 0 
+0 14860
+0 21851
+cfn=(3820)
+calls=1006 0 
+0 14860
+0 3490
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 14
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 26
+0 5286
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=169 0 
+0 33254
+0 2704
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=169 0 
+0 5402
+0 2028
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=169 0 
+0 3042
+0 6
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 18
+0 170
+
+fn=(3908)
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3422)
+calls=1 0 
+0 432
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 160
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 244
+0 3
+
+fn=(3966)
+0 24
+cfn=(3118)
+calls=4 0 
+0 8
+0 104
+
+fn=(4020)
+0 1588664
+cfn=(4022) 0x00013C30
+calls=397166 0 
+0 794330
+0 5560311
+
+fn=(4098) g_closure_unref
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 31
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 10
+
+fn=(4142)
+0 7
+cfn=(3118)
+calls=1 0 
+0 2
+0 11
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 13
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 26
+
+fn=(3820)
+0 29720
+
+fn=(3898) g_boxed_type_register_static
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 15
+cfn=(3704)
+calls=1 0 
+0 450
+0 8
+cfn=(3700)
+calls=1 0 
+0 3391
+0 31
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 186
+0 13
+cob=(3)
+cfi=(3)
+cfn=(3754)
+calls=1 0 
+0 26
+0 3
+
+fn=(3944)
+0 2382996
+cfn=(3118)
+calls=397166 0 
+0 794332
+0 2780162
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=397166 0 
+0 9134818
+0 7943348
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=2 0 
+0 46
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3950)
+calls=1 0 
+0 23
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1502
+0 14
+cob=(6)
+cfi=(7)
+cfn=(3978)
+calls=1 0 
+0 21
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1503
+0 4765988
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=397164 0 
+0 9134772
+0 3177324
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=2 0 
+0 46
+0 46
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=2 0 
+0 524
+0 36
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=1 0 
+0 32
+0 13
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 20
+cob=(6)
+cfi=(7)
+cfn=(4030)
+calls=1 0 
+0 68
+0 26
+cfn=(4036) g_object_base_class_init
+calls=1 0 
+0 1275
+0 9
+cob=(6)
+cfi=(7)
+cfn=(3956)
+calls=1 0 
+0 107
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1245
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=2 0 
+0 46
+0 40
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=2 0 
+0 46
+0 22
+cob=(14)
+cfi=(22)
+cfn=(4110)
+calls=1 0 
+0 1204
+cob=(14)
+cfi=(22)
+cfn=(3960)
+calls=1 0 
+0 2390
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=2 0 
+0 46
+0 34
+cfn=(3945) g_type_class_ref'2
+calls=1 0 
+0 30725
+0 27
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=2 0 
+0 46
+0 13
+
+fn=(3945)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 33
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3950)
+calls=1 0 
+0 23
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3978)
+calls=1 0 
+0 21
+0 18
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 23
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=1 0 
+0 367
+0 19
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 11
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 6453
+0 13
+cfn=(4036)
+calls=1 0 
+0 54
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3956)
+calls=1 0 
+0 107
+0 3
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 20
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 11
+cfn=(4038)
+calls=1 0 
+0 23296
+0 4
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 27
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 5
+
+fn=(4024)
+0 2382984
+cfn=(3118)
+calls=397164 0 
+0 794328
+0 3971640
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=397164 0 
+0 9134772
+0 794331
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=1 0 
+0 23
+0 794326
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=397163 0 
+0 9134749
+0 8737605
+
+fn=(4082)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 12
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=1 0 
+0 23
+0 15
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=1 0 
+0 23
+0 34
+
+fn=(3896)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 410
+0 6
+cfn=(3898)
+calls=1 0 
+0 4131
+0 6
+
+fn=(3972)
+0 10
+cfn=(3118)
+calls=1 0 
+0 2
+0 32
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=1 0 
+0 23
+0 10
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=1 0 
+0 23
+0 1
+
+fn=(4046) g_closure_new_simple
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=1 0 
+0 173
+0 15
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1682
+0 14
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 16
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 15
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 12
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2869
+0 7
+
+fn=(4120)
+0 1985820
+cfn=(3118)
+calls=397164 0 
+0 794328
+0 3177312
+cob=(6)
+cfi=(7)
+cfn=(4126)
+calls=397163 0 
+0 6354608
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1278
+0 4765968
+
+fn=(3230)
+0 5
+cfn=(3232)
+calls=1 0 
+0 434882
+0 2
+
+fn=(3730)
+0 405
+cfn=(3118)
+calls=45 0 
+0 90
+0 3136
+
+fn=(3762)
+0 252
+cfn=(3118)
+calls=36 0 
+0 72
+0 792
+cob=(3)
+cfi=(3)
+cfn=(3768)
+calls=35 0 
+0 1417
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2956
+0 432
+
+fn=(4036)
+0 10
+cfn=(3118)
+calls=2 0 
+0 4
+0 10
+cfn=(3966)
+calls=2 0 
+0 68
+0 9
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1211
+0 17
+
+fn=(4042)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 28
+cfn=(4060)
+calls=1 0 
+0 12305
+0 13
+cfn=(3942)
+calls=1 0 
+0 50
+0 34
+cfn=(4044) g_signal_type_cclosure_new
+calls=1 0 
+0 5420
+0 1
+
+fn=(4044)
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 7
+cfn=(3942)
+calls=1 0 
+0 50
+0 8
+cfn=(4046)
+calls=1 0 
+0 5043
+0 3
+cfn=(4020)
+calls=1 0 
+0 21
+0 8
+cfn=(4058) g_closure_set_meta_marshal
+calls=1 0 
+0 266
+0 7
+
+fn=(4080)
+0 8
+cfn=(3118)
+calls=1 0 
+0 2
+0 14
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=1 0 
+0 23
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3860)
+calls=1 0 
+0 257
+0 16
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=1 0 
+0 23
+0 7
+
+fn=(3656)
+0 376
+cfn=(3118)
+calls=47 0 
+0 94
+0 417
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=26 0 
+0 7334
+0 954
+cob=(3)
+cfi=(3)
+cfn=(2784)
+calls=25 0 
+0 425
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 2900
+0 892
+cob=(6)
+cfi=(7)
+cfn=(3870)
+calls=24 0 
+0 528
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1130
+0 219
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 219
+0 425
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=25 0 
+0 7255
+0 312
+cob=(6)
+cfi=(7)
+cfn=(3668)
+calls=26 0 
+0 9491
+0 168
+cob=(6)
+cfi=(7)
+cfn=(3668)
+calls=20 0 
+0 11556
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 4488
+0 423
+cob=(6)
+cfi=(7)
+cfn=(3626)
+calls=46 0 
+0 6494
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1435
+0 749
+cob=(6)
+cfi=(7)
+cfn=(3434)
+calls=20 0 
+0 5623
+cob=(1)
+cfi=(1)
+cfn=(2749)
+calls=1 0 
+0 1401
+0 147
+
+fn=(3700)
+0 156
+cfn=(3118)
+calls=26 0 
+0 52
+0 598
+cfn=(3702)
+calls=26 0 
+0 22096
+0 130
+cfn=(3728) check_derivation_I
+calls=26 0 
+0 1014
+0 390
+cob=(6)
+cfi=(7)
+cfn=(3240)
+calls=26 0 
+0 598
+0 494
+cfn=(3730)
+calls=26 0 
+0 2060
+0 130
+cob=(6)
+cfi=(7)
+cfn=(3690)
+calls=26 0 
+0 598
+0 130
+cfn=(3732)
+calls=26 0 
+0 37751
+0 78
+cfn=(3738)
+calls=26 0 
+0 18408
+0 130
+cfn=(3756)
+calls=26 0 
+0 756
+0 83
+cfn=(3684)
+calls=1 0 
+0 556
+0 75
+cfn=(3684)
+calls=25 0 
+0 9922
+0 26
+
+fn=(4118)
+0 2382984
+cfn=(3118)
+calls=397164 0 
+0 794328
+0 1985820
+cfn=(3940)
+calls=397163 0 
+0 175610065
+cfn=(3941)
+calls=1 0 
+0 6817
+0 4368804
+
+fn=(3698)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 8
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 448
+0 6
+cfn=(3700)
+calls=1 0 
+0 14721
+0 6
+
+fn=(3788)
+0 4
+cfn=(3118)
+calls=1 0 
+0 2
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 244
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 504
+0 8
+cfn=(3760)
+calls=1 0 
+0 2590
+0 6
+
+fn=(4022)
+0 794332
+
+fn=(3728)
+0 130
+cfn=(3118)
+calls=26 0 
+0 52
+0 832
+
+fn=(3758)
+0 9
+cfn=(3118)
+calls=1 0 
+0 2
+0 21
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 328
+0 6
+cfn=(3760)
+calls=1 0 
+0 11353
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 1278
+0 6
+cfn=(3760)
+calls=1 0 
+0 2882
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 350
+0 6
+cfn=(3760)
+calls=1 0 
+0 2827
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 270
+0 6
+cfn=(3760)
+calls=1 0 
+0 2648
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 328
+0 6
+cfn=(3760)
+calls=1 0 
+0 3644
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 328
+0 6
+cfn=(3760)
+calls=1 0 
+0 2843
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 374
+0 6
+cfn=(3760)
+calls=1 0 
+0 2819
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 400
+0 6
+cfn=(3760)
+calls=1 0 
+0 2845
+0 5
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 330
+0 6
+cfn=(3760)
+calls=1 0 
+0 2819
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 400
+0 6
+cfn=(3760)
+calls=1 0 
+0 2841
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 330
+0 6
+cfn=(3760)
+calls=1 0 
+0 2815
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 428
+0 6
+cfn=(3760)
+calls=1 0 
+0 3006
+0 7
+cob=(6)
+cfi=(7)
+cfn=(3652)
+calls=1 0 
+0 388
+0 6
+cfn=(3760)
+calls=1 0 
+0 2914
+0 8
+
+fn=(3902)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 10
+cfn=(3792)
+calls=1 0 
+0 747
+0 6
+cfn=(3792)
+calls=1 0 
+0 496
+0 6
+cfn=(3792)
+calls=1 0 
+0 496
+0 5
+cfn=(3792)
+calls=1 0 
+0 561
+0 6
+cfn=(3792)
+calls=1 0 
+0 561
+0 4
+cfn=(3792)
+calls=1 0 
+0 567
+0 4
+cfn=(3792)
+calls=1 0 
+0 567
+0 6
+cfn=(3792)
+calls=1 0 
+0 567
+0 6
+cfn=(3792)
+calls=1 0 
+0 567
+0 4
+cfn=(3792)
+calls=1 0 
+0 632
+0 4
+cfn=(3792)
+calls=1 0 
+0 632
+0 6
+cfn=(3792)
+calls=1 0 
+0 632
+0 6
+cfn=(3792)
+calls=1 0 
+0 632
+0 6
+cfn=(3792)
+calls=1 0 
+0 638
+0 6
+cfn=(3792)
+calls=1 0 
+0 614
+0 5
+cfn=(3792)
+calls=1 0 
+0 622
+0 6
+cfn=(3792)
+calls=1 0 
+0 630
+0 6
+cfn=(3792)
+calls=1 0 
+0 630
+0 5
+cfn=(3792)
+calls=1 0 
+0 630
+0 6
+cfn=(3792)
+calls=1 0 
+0 630
+0 6
+cfn=(3792)
+calls=1 0 
+0 630
+0 6
+cfn=(3792)
+calls=1 0 
+0 695
+0 6
+cfn=(3792)
+calls=1 0 
+0 695
+0 5
+cfn=(3792)
+calls=1 0 
+0 695
+0 5
+cfn=(3792)
+calls=1 0 
+0 695
+0 6
+cfn=(3792)
+calls=1 0 
+0 695
+0 6
+cfn=(3792)
+calls=1 0 
+0 703
+0 6
+cfn=(3792)
+calls=1 0 
+0 703
+0 6
+cfn=(3792)
+calls=1 0 
+0 679
+0 5
+cfn=(3792)
+calls=1 0 
+0 685
+0 5
+cfn=(3792)
+calls=1 0 
+0 693
+0 5
+cfn=(3792)
+calls=1 0 
+0 693
+0 5
+cfn=(3792)
+calls=1 0 
+0 693
+0 4
+cfn=(3792)
+calls=1 0 
+0 693
+0 4
+cfn=(3792)
+calls=1 0 
+0 693
+0 5
+cfn=(3792)
+calls=1 0 
+0 701
+0 5
+cfn=(3792)
+calls=1 0 
+0 701
+0 4
+cfn=(3792)
+calls=1 0 
+0 701
+0 4
+cfn=(3792)
+calls=1 0 
+0 701
+0 5
+cfn=(3792)
+calls=1 0 
+0 701
+0 5
+cfn=(3792)
+calls=1 0 
+0 677
+0 5
+cfn=(3792)
+calls=1 0 
+0 685
+0 5
+cfn=(3792)
+calls=1 0 
+0 685
+0 5
+cfn=(3792)
+calls=1 0 
+0 693
+0 5
+cfn=(3792)
+calls=1 0 
+0 693
+0 4
+cfn=(3792)
+calls=1 0 
+0 758
+0 4
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 766
+0 5
+cfn=(3792)
+calls=1 0 
+0 766
+0 5
+cfn=(3792)
+calls=1 0 
+0 766
+0 5
+cfn=(3792)
+calls=1 0 
+0 742
+0 5
+cfn=(3792)
+calls=1 0 
+0 750
+0 5
+cfn=(3792)
+calls=1 0 
+0 750
+0 5
+cfn=(3792)
+calls=1 0 
+0 750
+0 5
+cfn=(3792)
+calls=1 0 
+0 750
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 758
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 6
+cfn=(3792)
+calls=1 0 
+0 740
+0 6
+cfn=(3792)
+calls=1 0 
+0 748
+0 5
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 5
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 764
+0 6
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 6
+cfn=(3792)
+calls=1 0 
+0 740
+0 6
+cfn=(3792)
+calls=1 0 
+0 748
+0 5
+cfn=(3792)
+calls=1 0 
+0 748
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 5
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 6
+cfn=(3792)
+calls=1 0 
+0 756
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 764
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+
+ob=(9)
+fl=(13)
+fn=(3036) 0x00000AD0
+0 4
+cfn=(3038) 0x00000B07
+calls=1 0 
+0 2
+0 9
+
+fn=(3038)
+0 4
+
+fn=(3046) 0x00001A40
+0 5
+cfn=(3038)
+calls=1 0 
+0 2
+0 10
+
+fn=(3032)
+0 10
+cfn=(3036)
+calls=1 0 
+0 15
+
+ob=(12)
+fl=(19)
+fn=(3902)
+0 5
+cfn=(3792)
+calls=1 0 
+0 805
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 805
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 5
+cfn=(3792)
+calls=1 0 
+0 813
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 4
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 821
+0 5
+cfn=(3792)
+calls=1 0 
+0 829
+0 5
+cfn=(3792)
+calls=1 0 
+0 805
+0 5
+cfn=(3792)
+calls=1 0 
+0 811
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 803
+0 5
+cfn=(3792)
+calls=1 0 
+0 811
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 803
+0 5
+cfn=(3792)
+calls=1 0 
+0 811
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 803
+0 5
+cfn=(3792)
+calls=1 0 
+0 811
+0 5
+cfn=(3792)
+calls=1 0 
+0 811
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 819
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 827
+0 5
+cfn=(3792)
+calls=1 0 
+0 803
+0 6
+
+fn=(3920)
+0 5
+cfn=(3118)
+calls=1 0 
+0 2
+0 6
+cob=(6)
+cfi=(7)
+cfn=(3716)
+calls=1 0 
+0 23
+0 3
+cob=(6)
+cfi=(7)
+cfn=(3726)
+calls=1 0 
+0 23
+0 11
+
+fn=(4058)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 39
+cob=(6)
+cfi=(7)
+cfn=(3264)
+calls=1 0 
+0 172
+0 24
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 8
+
+fn=(4078)
+0 4
+cfn=(4022)
+calls=1 0 
+0 2
+0 12
+
+fn=(4096)
+0 6
+cfn=(3118)
+calls=1 0 
+0 2
+0 27
+cob=(6)
+cfi=(7)
+cfn=(4052)
+calls=1 0 
+0 15
+0 12
+cfn=(4098)
+calls=1 0 
+0 64
+
+fl=(18)
+fn=(3112)
+15 1
++1 1
++1 1
++1 1
++1 1
++3 1
++1 1
++1 1
++1 1
+
+ob=(9)
+fl=(13)
+fn=(3032)
+0 1
+cfn=(3046)
+calls=1 0 
+0 17
+0 4
+
+fn=(3058)
+0 2
+cfn=(3060) 0x000018F2
+calls=1 0 
+0 2
+
+ob=(12)
+fl=(18)
+fn=(3112)
+0 1
+fi=(19)
+cfi=(19)
+cfn=(3116)
+calls=1 0 
+0 15
+0 1
+fi=(19)
+cfi=(19)
+cfn=(3126)
+calls=1 0 
+0 17
+fe=(18)
+
+ob=(9)
+fl=(13)
+fn=(3058)
+0 8
+
+fn=(3060)
+0 2
+
+ob=(12)
+fl=(18)
+fn=(3112)
+fi=(20) /build/buildd/glibc-2.7/build-tree/i386-libc/csu/crtn.S
+10 1
++1 1
++1 1
++1 1
+fe=(18)
+
+ob=(13)
+fl=(21)
+fn=(3138) 0x00017CC0
+0 4
+cfn=(3140) 0x00017CF7
+calls=1 0 
+0 2
+0 9
+
+fn=(3140)
+0 4
+
+fn=(3148) 0x00086180
+0 5
+cfn=(3140)
+calls=1 0 
+0 2
+0 10
+
+fn=(3134)
+0 10
+cfn=(3138)
+calls=1 0 
+0 15
+0 1
+cfn=(3148)
+calls=1 0 
+0 17
+0 4
+
+totals: 309292148
