@@ -128,13 +128,15 @@ SAMPLES2 = Event("Samples", 0, add)
 # "that recursion is a tricky confusing issue"), last edited 2012-08-30: it's
 # just the ratio of TOTAL_SAMPLES over the number of samples in the profile.
 #
-# Used only when total == callstacks
+# Used only when totalMethod == callstacks
 TOTAL_SAMPLES = Event("Samples", 0, add)
 
 TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
 TOTAL_TIME = Event("Total time", 0.0, fail)
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
+
+totalMethod = 'callratios'
 
 
 class Object(object):
@@ -1750,10 +1752,9 @@ class PerfParser(LineParser):
         perf script | gprof2dot.py --format=perf
     """
 
-    def __init__(self, infile, total):
+    def __init__(self, infile):
         LineParser.__init__(self, infile)
         self.profile = Profile()
-        self.total = total
 
     def readline(self):
         # Override LineParser.readline to ignore comment lines
@@ -1776,10 +1777,10 @@ class PerfParser(LineParser):
         profile.find_cycles()
         profile.ratio(TIME_RATIO, SAMPLES)
         profile.call_ratios(SAMPLES2)
-        if self.total == "callratios":
+        if totalMethod == "callratios":
             # Heuristic approach.  TOTAL_SAMPLES is unused.
             profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
-        elif self.total == "callstacks":
+        elif totalMethod == "callstacks":
             # Use the actual call chains for functions.
             profile[TOTAL_SAMPLES] = profile[SAMPLES]
             profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
@@ -3127,70 +3128,72 @@ class Main:
     def main(self):
         """Main program."""
 
-        parser = optparse.OptionParser(
+        global totalMethod
+
+        optparser = optparse.OptionParser(
             usage="\n\t%prog [options] [file] ...")
-        parser.add_option(
+        optparser.add_option(
             '-o', '--output', metavar='FILE',
             type="string", dest="output",
             help="output filename [stdout]")
-        parser.add_option(
+        optparser.add_option(
             '-n', '--node-thres', metavar='PERCENTAGE',
             type="float", dest="node_thres", default=0.5,
             help="eliminate nodes below this threshold [default: %default]")
-        parser.add_option(
+        optparser.add_option(
             '-e', '--edge-thres', metavar='PERCENTAGE',
             type="float", dest="edge_thres", default=0.1,
             help="eliminate edges below this threshold [default: %default]")
-        parser.add_option(
+        optparser.add_option(
             '-f', '--format',
             type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
             help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
-        parser.add_option(
+        optparser.add_option(
             '--total',
             type="choice", choices=('callratios', 'callstacks'),
-            dest="total", default="callratios",
+            dest="totalMethod", default=totalMethod,
             help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
-        parser.add_option(
+        optparser.add_option(
             '-c', '--colormap',
             type="choice", choices=('color', 'pink', 'gray', 'bw'),
             dest="theme", default="color",
             help="color map: color, pink, gray, or bw [default: %default]")
-        parser.add_option(
+        optparser.add_option(
             '-s', '--strip',
             action="store_true",
             dest="strip", default=False,
             help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
-        parser.add_option(
+        optparser.add_option(
             '-w', '--wrap',
             action="store_true",
             dest="wrap", default=False,
             help="wrap function names")
         # add option to create subtree or show paths
-        parser.add_option(
+        optparser.add_option(
             '-z', '--root',
             type="string",
             dest="root", default="",
             help="prune call graph to show only descendants of specified root function")
-        parser.add_option(
+        optparser.add_option(
             '-l', '--leaf',
             type="string",
             dest="leaf", default="",
             help="prune call graph to show only ancestors of specified leaf function")
         # add a new option to control skew of the colorization curve
-        parser.add_option(
+        optparser.add_option(
             '--skew',
             type="float", dest="theme_skew", default=1.0,
             help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
-        (self.options, self.args) = parser.parse_args(sys.argv[1:])
+        (self.options, self.args) = optparser.parse_args(sys.argv[1:])
 
         if len(self.args) > 1 and self.options.format != 'pstats':
-            parser.error('incorrect number of arguments')
+            optparser.error('incorrect number of arguments')
 
         try:
             self.theme = self.themes[self.options.theme]
         except KeyError:
-            parser.error('invalid colormap \'%s\'' % self.options.theme)
+            optparser.error('invalid colormap \'%s\'' % self.options.theme)
         
         # set skew on the theme now that it has been picked.
         if self.options.theme_skew:
@@ -3209,28 +3212,24 @@ class Main:
             "aqtime": AQtimeParser
         }
         
+        totalMethod = self.options.totalMethod
+
         if self.options.format in stdinFormats:
             if not self.args:
                 fp = sys.stdin
             else:
                 fp = open(self.args[0], 'rt')
-            # For now, make an exception for perf as it is the only parser
-            # that supports the total parameter.  When there are more, modify
-            # the signature of Parser.
-            if self.options.format == "perf":
-                parser = PerfParser(fp,self.options.total)
-            else:
-                parser = stdinFormats[self.options.format](fp)
+            parser = stdinFormats[self.options.format](fp)
         elif self.options.format == 'pstats':
             if not self.args:
-                parser.error('at least a file must be specified for pstats input')
+                optparser.error('at least a file must be specified for pstats input')
             parser = PstatsParser(*self.args)
         elif self.options.format == 'sleepy':
             if len(self.args) != 1:
-                parser.error('exactly one file must be specified for sleepy input')
+                optparser.error('exactly one file must be specified for sleepy input')
             parser = SleepyParser(self.args[0])
         else:
-            parser.error('invalid format \'%s\'' % self.options.format)
+            optparser.error('invalid format \'%s\'' % self.options.format)
 
         self.profile = parser.parse()
         
