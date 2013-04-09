@@ -20,7 +20,6 @@ else
 		prof
 		pstats
 		oprofile
-		shark
 		callgrind
 		hprof
 		perf

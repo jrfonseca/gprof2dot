@@ -2252,101 +2252,6 @@ class SysprofParser(XmlParser):
         return profile
 
 
-class SharkParser(LineParser):
-    """Parser for MacOSX Shark output.
-
-    Author: tom@dbservice.com
-    """
-
-    def __init__(self, infile):
-        LineParser.__init__(self, infile)
-        self.stack = []
-        self.entries = {}
-
-    def add_entry(self, function):
-        try:
-            entry = self.entries[function.id]
-        except KeyError:
-            self.entries[function.id] = (function, { })
-        else:
-            function_total, callees_total = entry
-            function_total.samples += function.samples
-    
-    def add_callee(self, function, callee):
-        func, callees = self.entries[function.id]
-        try:
-            entry = callees[callee.id]
-        except KeyError:
-            callees[callee.id] = callee
-        else:
-            entry.samples += callee.samples
-        
-    def parse(self):
-        self.readline()
-        self.readline()
-        self.readline()
-        self.readline()
-
-        match = re.compile(r'(?P<prefix>[|+ ]*)(?P<samples>\d+), (?P<symbol>[^,]+), (?P<image>.*)')
-
-        while self.lookahead():
-            line = self.consume()
-            mo = match.match(line)
-            if not mo:
-                raise ParseError('failed to parse', line)
-
-            fields = mo.groupdict()
-            prefix = len(fields.get('prefix', 0)) / 2 - 1
-
-            symbol = str(fields.get('symbol', 0))
-            image = str(fields.get('image', 0))
-
-            entry = Struct()
-            entry.id = ':'.join([symbol, image])
-            entry.samples = int(fields.get('samples', 0))
-
-            entry.name = symbol
-            entry.image = image
-
-            # adjust the callstack
-            if prefix < len(self.stack):
-                del self.stack[prefix:]
-
-            if prefix == len(self.stack):
-                self.stack.append(entry)
-
-            # if the callstack has had an entry, it's this functions caller
-            if prefix > 0:
-                self.add_callee(self.stack[prefix - 1], entry)
-                
-            self.add_entry(entry)
-                
-        profile = Profile()
-        profile[SAMPLES] = 0
-        for _function, _callees in self.entries.itervalues():
-            function = Function(_function.id, _function.name)
-            function[SAMPLES] = _function.samples
-            profile.add_function(function)
-            profile[SAMPLES] += _function.samples
-
-            if _function.image:
-                function.module = os.path.basename(_function.image)
-
-            for _callee in _callees.itervalues():
-                call = Call(_callee.id)
-                call[SAMPLES] = _callee.samples
-                function.add_call(call)
-                
-        # compute derived data
-        profile.validate()
-        profile.find_cycles()
-        profile.ratio(TIME_RATIO, SAMPLES)
-        profile.call_ratios(SAMPLES)
-        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
-
-        return profile
-
-
 class XPerfParser(Parser):
     """Parser for CSVs generted by XPerf, from Microsoft Windows Performance Tools.
     """
@@ -3146,9 +3051,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         optparser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'shark', 'sleepy', 'aqtime', 'xperf'),
+            type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'sleepy', 'aqtime', 'xperf'),
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, hprof, sysprof, shark, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
+            help="profile format: prof, callgrind, oprofile, hprof, sysprof, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
         optparser.add_option(
             '--total',
             type="choice", choices=('callratios', 'callstacks'),
@@ -3208,7 +3113,6 @@ class Main:
             "sysprof": SysprofParser,
             "hprof": HProfParser,
             "xperf": XPerfParser, 
-            "shark": SharkParser,
             "aqtime": AQtimeParser
         }
         
