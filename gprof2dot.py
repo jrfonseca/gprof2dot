@@ -2664,8 +2664,8 @@ class PstatsParser:
         self.profile = Profile()
         self.function_ids = {}
 
-    def get_function_name(self, info):
-        filename, line, name = info
+    def get_function_name(self, key):
+        filename, line, name = key
         module = os.path.splitext(filename)[0]
         module = os.path.basename(module)
         return "%s:%d:%s" % (module, line, name)
