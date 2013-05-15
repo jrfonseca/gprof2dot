@@ -2369,8 +2369,6 @@ class SleepyParser(Parser):
 
         self.database = ZipFile(filename)
 
-        self.version_0_7 = 'Version 0.7 required' in self.database.namelist()
-
         self.symbols = {}
         self.calls = {}
 
@@ -2384,12 +2382,17 @@ class SleepyParser(Parser):
         r'\s+(?P<sourceline>\d+)$'
     )
 
+    def read(self, name):
+        # Some versions of verysleepy use lowercase filenames
+        for database_name in self.database.namelist():
+            if name.lower() == database_name.lower():
+                name = database_name
+                break
+
+        return self.database.read(name)
+
     def parse_symbols(self):
-        if self.version_0_7:
-            symbols_txt = 'Symbols.txt'
-        else:
-            symbols_txt = 'symbols.txt'
-        lines = self.database.read(symbols_txt).splitlines()
+        lines = self.read('Symbols.txt').splitlines()
         for line in lines:
             mo = self._symbol_re.match(line)
             if mo:
@@ -2408,11 +2411,7 @@ class SleepyParser(Parser):
                 self.symbols[symbol_id] = function
 
     def parse_callstacks(self):
-        if self.version_0_7:
-            callstacks_txt = 'Callstacks.txt'
-        else:
-            callstacks_txt = 'callstacks.txt'
-        lines = self.database.read(callstacks_txt).splitlines()
+        lines = self.read('Callstacks.txt').splitlines()
         for line in lines:
             fields = line.split()
             samples = float(fields[0])
