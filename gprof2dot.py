@@ -2316,6 +2316,9 @@ class XPerfParser(Parser):
         weight = fields['Weight']
         count = fields['Count']
 
+        if process == 'Idle':
+            return
+
         function = self.get_function(process, symbol)
         function[SAMPLES] += weight * count
         self.profile[SAMPLES] += weight * count
