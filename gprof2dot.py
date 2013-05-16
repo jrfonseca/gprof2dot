@@ -2382,18 +2382,19 @@ class SleepyParser(Parser):
         r'\s+(?P<sourceline>\d+)$'
     )
 
-    def read(self, name):
+    def openEntry(self, name):
         # Some versions of verysleepy use lowercase filenames
         for database_name in self.database.namelist():
             if name.lower() == database_name.lower():
                 name = database_name
                 break
 
-        return self.database.read(name)
+        return self.database.open(name, 'rU')
 
     def parse_symbols(self):
-        lines = self.read('Symbols.txt').splitlines()
-        for line in lines:
+        for line in self.openEntry('Symbols.txt'):
+            line = line.decode('UTF-8')
+
             mo = self._symbol_re.match(line)
             if mo:
                 symbol_id, module, procname, sourcefile, sourceline = mo.groups()
@@ -2411,8 +2412,9 @@ class SleepyParser(Parser):
                 self.symbols[symbol_id] = function
 
     def parse_callstacks(self):
-        lines = self.read('Callstacks.txt').splitlines()
-        for line in lines:
+        for line in self.openEntry('Callstacks.txt'):
+            line = line.decode('UTF-8')
+
             fields = line.split()
             samples = float(fields[0])
             callstack = fields[1:]

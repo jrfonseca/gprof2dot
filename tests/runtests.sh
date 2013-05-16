@@ -24,6 +24,8 @@ else
 		hprof
 		perf
 		axe
+		sysprof
+		sleepy
 	"
 fi
 
