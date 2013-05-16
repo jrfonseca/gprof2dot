@@ -17,15 +17,15 @@ then
 	FORMATS=$@
 else
 	FORMATS="
-		prof
-		pstats
-		oprofile
+		axe
 		callgrind
 		hprof
+		oprofile
 		perf
-		axe
-		sysprof
+		prof
+		pstats
 		sleepy
+		sysprof
 	"
 fi
 

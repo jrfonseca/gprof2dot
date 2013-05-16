@@ -686,6 +686,9 @@ class ParseError(Exception):
 class Parser:
     """Parser interface."""
 
+    stdinInput = True
+    multipleInput = False
+
     def __init__(self):
         pass
 
@@ -2362,6 +2365,8 @@ class SleepyParser(Parser):
     - http://sleepygraph.sourceforge.net/
     """
 
+    stdinInput = False
+
     def __init__(self, filename):
         Parser.__init__(self)
 
@@ -2624,6 +2629,9 @@ class AQtimeParser(XmlParser):
 
 class PstatsParser:
     """Parser python profiling statistics saved with te pstats module."""
+
+    stdinInput = False
+    multipleInput = True
 
     def __init__(self, *filename):
         import pstats
@@ -3058,10 +3066,34 @@ class Main:
             "print": PRINT_COLORMAP,
     }
 
+    formats = {
+        "aqtime": AQtimeParser,
+        "axe": AXEParser,
+        "callgrind": CallgrindParser,
+        "hprof": HProfParser,
+        "oprofile": OprofileParser,
+        "perf": PerfParser,
+        "prof": GprofParser,
+        "pstats": PstatsParser,
+        "sleepy": SleepyParser,
+        "sysprof": SysprofParser,
+        "xperf": XPerfParser,
+    }
+
+    def naturalJoin(self, values):
+        if len(values) >= 2:
+            return ', '.join(values[:-1]) + ' or ' + values[-1]
+
+        else:
+            return ''.join(values)
+
     def main(self):
         """Main program."""
 
         global totalMethod
+
+        formatNames = list(self.formats.keys())
+        formatNames.sort()
 
         optparser = optparse.OptionParser(
             usage="\n\t%prog [options] [file] ...")
@@ -3079,9 +3111,9 @@ class Main:
             help="eliminate edges below this threshold [default: %default]")
         optparser.add_option(
             '-f', '--format',
-            type="choice", choices=('prof', 'axe', 'callgrind', 'perf', 'oprofile', 'hprof', 'sysprof', 'pstats', 'sleepy', 'aqtime', 'xperf'),
+            type="choice", choices=formatNames,
             dest="format", default="prof",
-            help="profile format: prof, callgrind, oprofile, hprof, sysprof, sleepy, aqtime, pstats, axe, perf, or xperf [default: %default]")
+            help="profile format: %s [default: %%default]" % self.naturalJoin(formatNames))
         optparser.add_option(
             '--total',
             type="choice", choices=('callratios', 'callstacks'),
@@ -3132,36 +3164,27 @@ class Main:
         if self.options.theme_skew:
             self.theme.skew = self.options.theme_skew
             
-        stdinFormats = {
-            "prof": GprofParser,
-            "axe": AXEParser,
-            "callgrind": CallgrindParser,
-            "perf": PerfParser,
-            "oprofile": OprofileParser,
-            "sysprof": SysprofParser,
-            "hprof": HProfParser,
-            "xperf": XPerfParser, 
-            "aqtime": AQtimeParser
-        }
-        
         totalMethod = self.options.totalMethod
 
-        if self.options.format in stdinFormats:
+        try:
+            Format = self.formats[self.options.format]
+        except KeyError:
+            optparser.error('invalid format \'%s\'' % self.options.format)
+
+        if Format.stdinInput:
             if not self.args:
                 fp = sys.stdin
             else:
                 fp = open(self.args[0], 'rt')
-            parser = stdinFormats[self.options.format](fp)
-        elif self.options.format == 'pstats':
+            parser = Format(fp)
+        elif Format.multipleInput:
             if not self.args:
-                optparser.error('at least a file must be specified for pstats input')
-            parser = PstatsParser(*self.args)
-        elif self.options.format == 'sleepy':
-            if len(self.args) != 1:
-                optparser.error('exactly one file must be specified for sleepy input')
-            parser = SleepyParser(self.args[0])
+                optparser.error('at least a file must be specified for %s input' % self.options.format)
+            parser = Format(*self.args)
         else:
-            optparser.error('invalid format \'%s\'' % self.options.format)
+            if len(self.args) != 1:
+                optparser.error('exactly one file must be specified for %s input' % self.options.format)
+            parser = Format(self.args[0])
 
         self.profile = parser.parse()
         
