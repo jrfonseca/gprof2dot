@@ -2295,11 +2295,13 @@ class XPerfParser(Parser):
             skipinitialspace = True,
             lineterminator = '\r\n',
             quoting = csv.QUOTE_NONE)
-        it = iter(reader)
-        row = reader.next()
-        self.parse_header(row)
-        for row in it:
-            self.parse_row(row)
+        header = True
+        for row in reader:
+            if header:
+                self.parse_header(row)
+                header = False
+            else:
+                self.parse_row(row)
                 
         # compute derived data
         self.profile.validate()
