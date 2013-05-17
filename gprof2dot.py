@@ -136,8 +136,8 @@ class Event(object):
 
 
 CALLS = Event("Calls", 0, add, times)
-SAMPLES = Event("Samples", 0, add)
-SAMPLES2 = Event("Samples", 0, add)
+SAMPLES = Event("Samples", 0, add, times)
+SAMPLES2 = Event("Samples", 0, add, times)
 
 # Count of samples where a given function was either executing or on the stack.
 # This is used to calculate the total time ratio according to the
@@ -147,7 +147,7 @@ SAMPLES2 = Event("Samples", 0, add)
 # just the ratio of TOTAL_SAMPLES over the number of samples in the profile.
 #
 # Used only when totalMethod == callstacks
-TOTAL_SAMPLES = Event("Samples", 0, add)
+TOTAL_SAMPLES = Event("Samples", 0, add, times)
 
 TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
@@ -2929,6 +2929,9 @@ class DotWriter:
 
         return name
 
+    show_function_events = [TOTAL_TIME_RATIO, TIME_RATIO]
+    show_edge_events = [TOTAL_TIME_RATIO, CALLS]
+
     def graph(self, profile, theme):
         self.begin_graph()
 
@@ -2955,7 +2958,7 @@ class DotWriter:
                 function_name = self.wrap_function_name(function_name)
             labels.append(function_name)
 
-            for event in TOTAL_TIME_RATIO, TIME_RATIO:
+            for event in self.show_function_events:
                 if event in function.events:
                     label = event.format(function[event])
                     labels.append(label)
@@ -2979,7 +2982,7 @@ class DotWriter:
                 callee = profile.functions[call.callee_id]
 
                 labels = []
-                for event in TOTAL_TIME_RATIO, CALLS:
+                for event in self.show_edge_events:
                     if event in call.events:
                         label = event.format(call[event])
                         labels.append(label)
@@ -3162,6 +3165,11 @@ class Main:
             action="store_true",
             dest="wrap", default=False,
             help="wrap function names")
+        optparser.add_option(
+            '--show-samples',
+            action="store_true",
+            dest="show_samples", default=False,
+            help="show function samples")
         # add option to create subtree or show paths
         optparser.add_option(
             '-z', '--root',
@@ -3230,6 +3238,8 @@ class Main:
         dot = DotWriter(self.output)
         dot.strip = self.options.strip
         dot.wrap = self.options.wrap
+        if self.options.show_samples:
+            dot.show_function_events.append(SAMPLES)
 
         profile = self.profile
         profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
