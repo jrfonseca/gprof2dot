@@ -29,6 +29,7 @@ import textwrap
 import optparse
 import xml.parsers.expat
 import collections
+import locale
 
 
 # Python 2.x/3.x compatibility
@@ -731,7 +732,13 @@ class LineParser(Parser):
             self.__eof = True
         else:
             self.line_no += 1
-        self.__line = line.rstrip('\r\n')
+        line = line.rstrip('\r\n')
+        if not PYTHON_3:
+            encoding = self._stream.encoding
+            if encoding is None:
+                encoding = locale.getpreferredencoding()
+            line = line.decode(encoding)
+        self.__line = line
 
     def lookahead(self):
         assert self.__line is not None
