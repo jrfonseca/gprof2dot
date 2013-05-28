@@ -717,15 +717,15 @@ class Parser:
 class LineParser(Parser):
     """Base class for parsers that read line-based formats."""
 
-    def __init__(self, file):
+    def __init__(self, stream):
         Parser.__init__(self)
-        self._file = file
+        self._stream = stream
         self.__line = None
         self.__eof = False
         self.line_no = 0
 
     def readline(self):
-        line = self._file.readline()
+        line = self._stream.readline()
         if not line:
             self.__line = ''
             self.__eof = True
