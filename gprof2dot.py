@@ -40,6 +40,7 @@ if sys.version_info[0] >= 3:
     def compat_keys(x): return list(x.keys())  # keys() is a generator in Python 3
     basestring = str  # No class basestring in Python 3
     unichr = chr # No unichr in Python 3
+    xrange = range # No xrange in Python 3
 else:
     PYTHON_3 = False
     def compat_iteritems(x): return x.iteritems()
