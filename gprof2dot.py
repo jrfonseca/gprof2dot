@@ -1229,12 +1229,6 @@ class AXEParser(Parser):
 
     _cg_footer_re = re.compile('^Index\s+Function\s*$')
 
-    _cg_ignore_re = re.compile(
-        # internal calls (such as "mcount")
-        # FIXME: is this applicable?
-        r'^.*\((\d+)\)$'
-    )
-
     _cg_primary_re = re.compile(
         r'^\[(?P<index>\d+)\]?' + 
         r'\s+(?P<percentage_time>\d+\.\d+)' + 
@@ -1287,12 +1281,11 @@ class AXEParser(Parser):
             # read function parent line
             mo = self._cg_parent_re.match(line)
             if not mo:
-                if self._cg_ignore_re.match(line):
-                    continue
                 sys.stderr.write('warning: unrecognized call graph entry (1): %r\n' % line)
             else:
                 parent = self.translate(mo)
-                parents.append(parent)
+                if parent.name != '<spontaneous>':
+                    parents.append(parent)
 
         # read primary line
         mo = self._cg_primary_re.match(line)
@@ -1308,17 +1301,17 @@ class AXEParser(Parser):
             # read function subroutine line
             mo = self._cg_child_re.match(line)
             if not mo:
-                if self._cg_ignore_re.match(line):
-                    continue
                 sys.stderr.write('warning: unrecognized call graph entry (3): %r\n' % line)
             else:
                 child = self.translate(mo)
-                children.append(child)
-        
-        function.parents = parents
-        function.children = children
+                if child.name != '<spontaneous>':
+                    children.append(child)
 
-        self.functions[function.index] = function
+        if function.name != '<spontaneous>':
+            function.parents = parents
+            function.children = children
+
+            self.functions[function.index] = function
 
     def parse_cycle_entry(self, lines):
 
@@ -1333,12 +1326,11 @@ class AXEParser(Parser):
                 break
             mo = self._cg_parent_re.match(line)
             if not mo:
-                if self._cg_ignore_re.match(line):
-                    continue
                 sys.stderr.write('warning: unrecognized call graph entry (6): %r\n' % line)
             else:
                 parent = self.translate(mo)
-                parents.append(parent)
+                if parent.name != '<spontaneous>':
+                    parents.append(parent)
 
         # read cycle header line
         mo = self._cg_cycle_header_re.match(line)
