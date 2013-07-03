@@ -1224,8 +1224,10 @@ class AXEParser(Parser):
 
     _cg_header_re = re.compile(
         '^Index |'
-        '^----- '
+        '^-----+ '
     )
+
+    _cg_footer_re = re.compile('^Index\s+Function\s*$')
 
     _cg_ignore_re = re.compile(
         # internal calls (such as "mcount")
@@ -1375,7 +1377,7 @@ class AXEParser(Parser):
         # process call graph entries
         entry_lines = []
         # An EOF in readline terminates the program without returning.
-        while line != 'Index  Function':
+        while not self._cg_footer_re.match(line):
             if line.isspace():
                 self.parse_cg_entry(entry_lines)
                 entry_lines = []
