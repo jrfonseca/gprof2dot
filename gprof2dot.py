@@ -3262,5 +3262,9 @@ class Main:
         dot.graph(profile, self.theme)
 
 
-if __name__ == '__main__':
+def main():
     Main().main()
+
+
+if __name__ == '__main__':
+    main()
