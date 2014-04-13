@@ -1,0 +1,72 @@
+{
+	"title": "Schema for JSON profiles.",
+	"type": "object",
+	"properties": {
+		"version": {
+			"type": "integer",
+			"minimum": 0
+		},
+		"costs": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"description": {
+						"type": "string"
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false
+			},
+			"minItems": 1
+		},
+		"functions": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"module": {
+						"type": "string"
+					},
+					"process": {
+						"type": "string"
+					}
+				},
+				"additionalProperties": false,
+				"required": ["name"]
+			}
+		},
+		"events": {
+			"type": "array",
+			"items": {
+				"type": "object",
+				"properties": {
+					"callchain": {
+						"type": "array",
+						"items": {
+							"description": "function index, callee to caller ordering",
+							"type": "integer"
+						},
+						"minItems": 1
+					},
+					"cost": {
+						"type": "array",
+						"items": {
+							"type": "number"
+						},
+						"minItems": 1
+					}
+				},
+				"additionalProperties": false,
+				"required": ["callchain", "cost"]
+			}
+		}
+	},
+	"additionalProperties": false,
+	"required": ["version", "costs", "functions", "events"]
+}

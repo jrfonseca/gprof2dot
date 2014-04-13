@@ -30,6 +30,7 @@ import optparse
 import xml.parsers.expat
 import collections
 import locale
+import json
 
 
 # Python 2.x/3.x compatibility
@@ -716,6 +717,79 @@ class Parser:
         raise NotImplementedError
 
     
+class JsonParser(Parser):
+    """Parser for a custom JSON representation of profile data.
+
+    See schema.json for details.
+    """
+
+
+    def __init__(self, stream):
+        Parser.__init__(self)
+        self.stream = stream
+
+    def parse(self):
+
+        obj = json.load(self.stream)
+
+        assert obj['version'] == 0
+
+        profile = Profile()
+        profile[SAMPLES] = 0
+
+        fns = obj['functions']
+
+        for functionIndex in range(len(fns)):
+            fn = fns[functionIndex]
+            function = Function(functionIndex, fn['name'])
+            try:
+                function.module = fn['module']
+            except KeyError:
+                pass
+            try:
+                function.process = fn['process']
+            except KeyError:
+                pass
+            function[SAMPLES] = 0
+            profile.add_function(function)
+
+        for event in obj['events']:
+            callchain = []
+
+            for functionIndex in event['callchain']:
+                function = profile.functions[functionIndex]
+                callchain.append(function)
+
+            cost = event['cost'][0]
+
+            callee = callchain[0]
+            callee[SAMPLES] += cost
+            profile[SAMPLES] += cost
+
+            for caller in callchain[1:]:
+                try:
+                    call = caller.calls[callee.id]
+                except KeyError:
+                    call = Call(callee.id)
+                    call[SAMPLES2] = cost
+                    caller.add_call(call)
+                else:
+                    call[SAMPLES2] += cost
+
+                callee = caller
+
+        #profile.dump()
+
+        # compute derived data
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+
+        return profile
+
+
 class LineParser(Parser):
     """Base class for parsers that read line-based formats."""
 
@@ -2936,6 +3010,7 @@ class Main:
         "axe": AXEParser,
         "callgrind": CallgrindParser,
         "hprof": HProfParser,
+        "json": JsonParser,
         "oprofile": OprofileParser,
         "perf": PerfParser,
         "prof": GprofParser,

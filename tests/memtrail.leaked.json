@@ -1,0 +1,96 @@
+{
+  "costs": [
+    {
+      "description": "Memory", 
+      "unit": "bytes"
+    }
+  ], 
+  "events": [
+    {
+      "callchain": [
+        0, 
+        1, 
+        2, 
+        3
+      ], 
+      "cost": [
+        1
+      ]
+    }, 
+    {
+      "callchain": [
+        4, 
+        1, 
+        2, 
+        3
+      ], 
+      "cost": [
+        1024
+      ]
+    }, 
+    {
+      "callchain": [
+        0, 
+        1, 
+        2, 
+        3
+      ], 
+      "cost": [
+        512
+      ]
+    }, 
+    {
+      "callchain": [
+        5, 
+        1, 
+        2, 
+        3
+      ], 
+      "cost": [
+        2048
+      ]
+    }, 
+    {
+      "callchain": [
+        6, 
+        1, 
+        2, 
+        3
+      ], 
+      "cost": [
+        1024
+      ]
+    }
+  ], 
+  "functions": [
+    {
+      "module": "sample", 
+      "name": "test_cxx"
+    }, 
+    {
+      "module": "sample", 
+      "name": "main"
+    }, 
+    {
+      "module": "libc.so.6", 
+      "name": "__libc_start_main"
+    }, 
+    {
+      "module": "sample", 
+      "name": "_start"
+    }, 
+    {
+      "module": "sample", 
+      "name": "test_memalign"
+    }, 
+    {
+      "module": "sample", 
+      "name": "test_calloc"
+    }, 
+    {
+      "module": "sample", 
+      "name": "test_malloc"
+    }
+  ], 
+  "version": 0
+}

@@ -28,6 +28,7 @@ formats = [
     "axe",
     "callgrind",
     "hprof",
+    "json",
     "oprofile",
     "perf",
     "prof",
