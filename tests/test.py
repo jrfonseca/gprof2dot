@@ -25,7 +25,6 @@ import shutil
 
 
 formats = [
-    "aqtime",
     "axe",
     "callgrind",
     "hprof",
