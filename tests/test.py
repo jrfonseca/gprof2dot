@@ -17,6 +17,7 @@
 #
 
 
+import difflib
 import optparse
 import os.path
 import sys
@@ -51,12 +52,19 @@ def run(cmd):
         raise
 
 
+def diff(a, b):
+    a_lines = open(a, 'rt').readlines()
+    b_lines = open(b, 'rt').readlines()
+    diff_lines = difflib.unified_diff(a_lines, b_lines, fromfile=a, tofile=b)
+    sys.stdout.write(''.join(diff_lines))
+
+
 def main():
     """Main program."""
 
     global formats
 
-    test_dir = os.path.dirname(__file__)
+    test_dir = os.path.dirname(os.path.abspath(__file__))
 
     optparser = optparse.OptionParser(
         usage="\n\t%prog [options] [format] ...")
@@ -101,7 +109,7 @@ def main():
                     shutil.copy(dot, ref_dot)
                     shutil.copy(png, ref_png)
                 else:
-                    run(['diff', ref_dot, dot])
+                    diff(ref_dot, dot)
 
 
 if __name__ == '__main__':
