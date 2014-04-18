@@ -2807,6 +2807,15 @@ PRINT_COLORMAP = Theme(
 )
 
 
+def sorted_iteritems(d):
+    # Used mostly for result reproducibility (while testing.)
+    keys = compat_keys(d)
+    keys.sort()
+    for key in keys:
+        value = d[key]
+        yield key, value
+
+
 class DotWriter:
     """Writer for the DOT language.
 
@@ -2852,7 +2861,7 @@ class DotWriter:
         self.attr('node', fontname=fontname, shape="box", style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
-        for function in compat_itervalues(profile.functions):
+        for _, function in sorted_iteritems(profile.functions):
             labels = []
             if function.process is not None:
                 labels.append(function.process)
@@ -2887,7 +2896,7 @@ class DotWriter:
                 fontsize = "%.2f" % theme.node_fontsize(weight),
             )
 
-            for call in compat_itervalues(function.calls):
+            for _, call in sorted_iteritems(function.calls):
                 callee = profile.functions[call.callee_id]
 
                 labels = []
@@ -2948,7 +2957,7 @@ class DotWriter:
             return
         self.write(' [')
         first = True
-        for name, value in compat_iteritems(attrs):
+        for name, value in sorted_iteritems(attrs):
             if first:
                 first = False
             else:
