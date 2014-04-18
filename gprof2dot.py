@@ -68,12 +68,6 @@ def percentage(p):
 def add(a, b):
     return a + b
 
-def equal(a, b):
-    if a == b:
-        return a
-    else:
-        return None
-
 def fail(a, b):
     assert False
 
@@ -1789,16 +1783,6 @@ class CallgrindParser(LineParser):
             return None
         key, value = pair
         return value
-        line = self.lookahead()
-        mo = self._key_re.match(line)
-        if not mo:
-            return None
-        key, value = line.split(':', 1)
-        if key not in keys:
-            return None
-        value = value.strip()
-        self.consume()
-        return key, value
 
     def parse_keys(self, keys):
         line = self.lookahead()
@@ -2570,8 +2554,9 @@ class PstatsParser:
         try:
             self.stats = pstats.Stats(*filename)
         except ValueError:
-            if sys.version_info[0] >= 3:
-                raise
+            if PYTHON_3:
+                sys.stderr.write('error: failed to load %s\n' % ', '.join(filename))
+                sys.exit(1)
             import hotshot.stats
             self.stats = hotshot.stats.load(filename[0])
         self.profile = Profile()
