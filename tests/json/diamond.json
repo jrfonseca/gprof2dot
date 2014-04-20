@@ -1,0 +1,32 @@
+{
+  "version": 0,
+  "costs": [
+    {
+      "description": "Memory"
+    }
+  ],
+  "functions": [
+    {
+      "name": "a"
+    },
+    {
+      "name": "b"
+    },
+    {
+      "name": "c"
+    },
+    {
+      "name": "d"
+    }
+  ],
+  "events": [
+    {
+      "callchain": [ 3, 1, 0 ],
+      "cost": [ 7 ]
+    },
+    {
+      "callchain": [ 3, 2, 0 ],
+      "cost": [ 1 ]
+    }
+  ]
+}
