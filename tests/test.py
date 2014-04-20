@@ -87,17 +87,18 @@ def main():
         formats = args
 
     for format in formats:
-        for filename in os.listdir(test_dir):
+        test_subdir = os.path.join(test_dir, format)
+        for filename in os.listdir(test_subdir):
             name, ext = os.path.splitext(filename)
             if ext == '.' + format:
                 sys.stdout.write(filename + '\n')
 
-                profile = os.path.join(test_dir, filename)
-                dot = os.path.join(test_dir, name + '.dot')
-                png = os.path.join(test_dir, name + '.png')
+                profile = os.path.join(test_subdir, filename)
+                dot = os.path.join(test_subdir, name + '.dot')
+                png = os.path.join(test_subdir, name + '.png')
                 
-                ref_dot = os.path.join(test_dir, name + '.orig.dot')
-                ref_png = os.path.join(test_dir, name + '.orig.png')
+                ref_dot = os.path.join(test_subdir, name + '.orig.dot')
+                ref_png = os.path.join(test_subdir, name + '.orig.png')
 
                 if run([ options.python, options.gprof2dot, '-f', format, '-o', dot, profile]) != 0:
                     continue
