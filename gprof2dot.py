@@ -264,13 +264,11 @@ class Cycle(Object):
 
     def __init__(self):
         Object.__init__(self)
-        # XXX: Do cycles need an id?
         self.functions = set()
 
     def add_function(self, function):
         assert function not in self.functions
         self.functions.add(function)
-        # XXX: Aggregate events?
         if function.cycle is not None:
             for other in function.cycle.functions:
                 if function not in self.functions:
@@ -690,6 +688,7 @@ class ParseError(Exception):
     """Raised when parsing to signal mismatches."""
 
     def __init__(self, msg, line):
+        Exception.__init__(self)
         self.msg = msg
         # TODO: store more source line information
         self.line = line
@@ -772,7 +771,8 @@ class JsonParser(Parser):
 
                 callee = caller
 
-        #profile.dump()
+        if False:
+            profile.dump()
 
         # compute derived data
         profile.validate()
@@ -899,14 +899,7 @@ class XmlTokenizer:
             self.index = 0
             data = self.fp.read(size)
             self.final = len(data) < size
-            try:
-                self.parser.Parse(data, self.final)
-            except xml.parsers.expat.ExpatError as e:
-                #if e.code == xml.parsers.expat.errors.XML_ERROR_NO_ELEMENTS:
-                if e.code == 3:
-                    pass
-                else:
-                    raise e
+            self.parser.Parse(data, self.final)
         if self.index >= len(self.tokens):
             line, column = self.pos()
             token = XmlToken(XML_EOF, None, None, line, column)
@@ -922,6 +915,7 @@ class XmlTokenizer:
 class XmlTokenMismatch(Exception):
 
     def __init__(self, expected, found):
+        Exception.__init__(self)
         self.expected = expected
         self.found = found
 
@@ -1295,7 +1289,7 @@ class AXEParser(Parser):
         '^-----+ '
     )
 
-    _cg_footer_re = re.compile('^Index\s+Function\s*$')
+    _cg_footer_re = re.compile(r'^Index\s+Function\s*$')
 
     _cg_primary_re = re.compile(
         r'^\[(?P<index>\d+)\]?' + 
@@ -1508,7 +1502,7 @@ class AXEParser(Parser):
             for call in compat_itervalues(function.calls):
                 if call.ratio is not None:
                     callee = profile.functions[call.callee_id]
-                    call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO];
+                    call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
 
         return profile
 
@@ -1520,7 +1514,7 @@ class CallgrindParser(LineParser):
     - http://valgrind.org/docs/manual/cl-format.html
     """
 
-    _call_re = re.compile('^calls=\s*(\d+)\s+((\d+|\+\d+|-\d+|\*)\s+)+$')
+    _call_re = re.compile(r'^calls=\s*(\d+)\s+((\d+|\+\d+|-\d+|\*)\s+)+$')
 
     def __init__(self, infile):
         LineParser.__init__(self, infile)
@@ -1706,7 +1700,7 @@ class CallgrindParser(LineParser):
 
         return True
 
-    _position_re = re.compile('^(?P<position>[cj]?(?:ob|fl|fi|fe|fn))=\s*(?:\((?P<id>\d+)\))?(?:\s*(?P<name>.+))?')
+    _position_re = re.compile(r'^(?P<position>[cj]?(?:ob|fl|fi|fe|fn))=\s*(?:\((?P<id>\d+)\))?(?:\s*(?P<name>.+))?')
 
     _position_table_map = {
         'ob': 'ob',
@@ -1870,7 +1864,7 @@ class PerfParser(LineParser):
                 for call in compat_itervalues(function.calls):
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
-                        call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO];
+                        call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
         else:
             assert False
 
@@ -2612,8 +2606,10 @@ class PstatsParser:
                     call[TOTAL_TIME] = ratio(value, nc)*ct
 
                 caller.add_call(call)
-        #self.stats.print_stats()
-        #self.stats.print_callees()
+
+        if False:
+            self.stats.print_stats()
+            self.stats.print_callees()
 
         # Compute derived events
         self.profile.validate()
