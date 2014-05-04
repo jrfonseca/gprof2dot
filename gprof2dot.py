@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2008-2009 Jose Fonseca
+# Copyright 2008-2014 Jose Fonseca
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU Lesser General Public License as published
@@ -54,6 +54,11 @@ try:
     import debug
 except ImportError:
     pass
+
+
+
+########################################################################
+# Model
 
 
 MULTIPLICATION_SIGN = unichr(0xd7)
@@ -658,6 +663,11 @@ class Profile(Object):
     def _dump_events(self, events):
         for event, value in compat_iteritems(events):
             sys.stderr.write('    %s: %s\n' % (event.name, event.format(value)))
+
+
+
+########################################################################
+# Parsers
 
 
 class Struct:
@@ -2619,6 +2629,25 @@ class PstatsParser:
         return self.profile
 
 
+formats = {
+    "axe": AXEParser,
+    "callgrind": CallgrindParser,
+    "hprof": HProfParser,
+    "json": JsonParser,
+    "oprofile": OprofileParser,
+    "perf": PerfParser,
+    "prof": GprofParser,
+    "pstats": PstatsParser,
+    "sleepy": SleepyParser,
+    "sysprof": SysprofParser,
+    "xperf": XPerfParser,
+}
+
+
+########################################################################
+# Output
+
+
 class Theme:
 
     def __init__(self, 
@@ -2786,6 +2815,15 @@ PRINT_COLORMAP = Theme(
     minpenwidth = 0.1,
     maxpenwidth = 8.0,
 )
+
+
+themes = {
+    "color": TEMPERATURE_COLORMAP,
+    "pink": PINK_COLORMAP,
+    "gray": GRAY_COLORMAP,
+    "bw": BW_COLORMAP,
+    "print": PRINT_COLORMAP,
+}
 
 
 def sorted_iteritems(d):
@@ -2985,182 +3023,156 @@ class DotWriter:
         self.fp.write(s)
 
 
-class Main:
-    """Main program."""
 
-    themes = {
-            "color": TEMPERATURE_COLORMAP,
-            "pink": PINK_COLORMAP,
-            "gray": GRAY_COLORMAP,
-            "bw": BW_COLORMAP,
-            "print": PRINT_COLORMAP,
-    }
+########################################################################
+# Main program
 
-    formats = {
-        "axe": AXEParser,
-        "callgrind": CallgrindParser,
-        "hprof": HProfParser,
-        "json": JsonParser,
-        "oprofile": OprofileParser,
-        "perf": PerfParser,
-        "prof": GprofParser,
-        "pstats": PstatsParser,
-        "sleepy": SleepyParser,
-        "sysprof": SysprofParser,
-        "xperf": XPerfParser,
-    }
 
-    def naturalJoin(self, values):
-        if len(values) >= 2:
-            return ', '.join(values[:-1]) + ' or ' + values[-1]
+def naturalJoin(values):
+    if len(values) >= 2:
+        return ', '.join(values[:-1]) + ' or ' + values[-1]
 
-        else:
-            return ''.join(values)
-
-    def main(self):
-        """Main program."""
-
-        global totalMethod
-
-        formatNames = list(self.formats.keys())
-        formatNames.sort()
-
-        optparser = optparse.OptionParser(
-            usage="\n\t%prog [options] [file] ...")
-        optparser.add_option(
-            '-o', '--output', metavar='FILE',
-            type="string", dest="output",
-            help="output filename [stdout]")
-        optparser.add_option(
-            '-n', '--node-thres', metavar='PERCENTAGE',
-            type="float", dest="node_thres", default=0.5,
-            help="eliminate nodes below this threshold [default: %default]")
-        optparser.add_option(
-            '-e', '--edge-thres', metavar='PERCENTAGE',
-            type="float", dest="edge_thres", default=0.1,
-            help="eliminate edges below this threshold [default: %default]")
-        optparser.add_option(
-            '-f', '--format',
-            type="choice", choices=formatNames,
-            dest="format", default="prof",
-            help="profile format: %s [default: %%default]" % self.naturalJoin(formatNames))
-        optparser.add_option(
-            '--total',
-            type="choice", choices=('callratios', 'callstacks'),
-            dest="totalMethod", default=totalMethod,
-            help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
-        optparser.add_option(
-            '-c', '--colormap',
-            type="choice", choices=('color', 'pink', 'gray', 'bw', 'print'),
-            dest="theme", default="color",
-            help="color map: color, pink, gray, bw, or print [default: %default]")
-        optparser.add_option(
-            '-s', '--strip',
-            action="store_true",
-            dest="strip", default=False,
-            help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
-        optparser.add_option(
-            '-w', '--wrap',
-            action="store_true",
-            dest="wrap", default=False,
-            help="wrap function names")
-        optparser.add_option(
-            '--show-samples',
-            action="store_true",
-            dest="show_samples", default=False,
-            help="show function samples")
-        # add option to create subtree or show paths
-        optparser.add_option(
-            '-z', '--root',
-            type="string",
-            dest="root", default="",
-            help="prune call graph to show only descendants of specified root function")
-        optparser.add_option(
-            '-l', '--leaf',
-            type="string",
-            dest="leaf", default="",
-            help="prune call graph to show only ancestors of specified leaf function")
-        # add a new option to control skew of the colorization curve
-        optparser.add_option(
-            '--skew',
-            type="float", dest="theme_skew", default=1.0,
-            help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
-        (self.options, self.args) = optparser.parse_args(sys.argv[1:])
-
-        if len(self.args) > 1 and self.options.format != 'pstats':
-            optparser.error('incorrect number of arguments')
-
-        try:
-            self.theme = self.themes[self.options.theme]
-        except KeyError:
-            optparser.error('invalid colormap \'%s\'' % self.options.theme)
-        
-        # set skew on the theme now that it has been picked.
-        if self.options.theme_skew:
-            self.theme.skew = self.options.theme_skew
-            
-        totalMethod = self.options.totalMethod
-
-        try:
-            Format = self.formats[self.options.format]
-        except KeyError:
-            optparser.error('invalid format \'%s\'' % self.options.format)
-
-        if Format.stdinInput:
-            if not self.args:
-                fp = sys.stdin
-            else:
-                fp = open(self.args[0], 'rt')
-            parser = Format(fp)
-        elif Format.multipleInput:
-            if not self.args:
-                optparser.error('at least a file must be specified for %s input' % self.options.format)
-            parser = Format(*self.args)
-        else:
-            if len(self.args) != 1:
-                optparser.error('exactly one file must be specified for %s input' % self.options.format)
-            parser = Format(self.args[0])
-
-        self.profile = parser.parse()
-        
-        if self.options.output is None:
-            self.output = sys.stdout
-        else:
-            if PYTHON_3:
-                self.output = open(self.options.output, 'wt', encoding='UTF-8')
-            else:
-                self.output = open(self.options.output, 'wt')
-
-        self.write_graph()
-
-    def write_graph(self):
-        dot = DotWriter(self.output)
-        dot.strip = self.options.strip
-        dot.wrap = self.options.wrap
-        if self.options.show_samples:
-            dot.show_function_events.append(SAMPLES)
-
-        profile = self.profile
-        profile.prune(self.options.node_thres/100.0, self.options.edge_thres/100.0)
-        
-        if self.options.root:
-            rootId = profile.getFunctionId(self.options.root)
-            if not rootId:
-                sys.stderr.write('root node ' + self.options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
-                sys.exit(1)
-            profile.prune_root(rootId)
-        if self.options.leaf:
-            leafId = profile.getFunctionId(self.options.leaf)
-            if not leafId:
-                sys.stderr.write('leaf node ' + self.options.leaf + ' not found (maybe already pruned : try -e0 -n0 flags)\n')
-                sys.exit(1)
-            profile.prune_leaf(leafId)
-
-        dot.graph(profile, self.theme)
+    else:
+        return ''.join(values)
 
 
 def main():
-    Main().main()
+    """Main program."""
+
+    global totalMethod
+
+    formatNames = list(formats.keys())
+    formatNames.sort()
+
+    optparser = optparse.OptionParser(
+        usage="\n\t%prog [options] [file] ...")
+    optparser.add_option(
+        '-o', '--output', metavar='FILE',
+        type="string", dest="output",
+        help="output filename [stdout]")
+    optparser.add_option(
+        '-n', '--node-thres', metavar='PERCENTAGE',
+        type="float", dest="node_thres", default=0.5,
+        help="eliminate nodes below this threshold [default: %default]")
+    optparser.add_option(
+        '-e', '--edge-thres', metavar='PERCENTAGE',
+        type="float", dest="edge_thres", default=0.1,
+        help="eliminate edges below this threshold [default: %default]")
+    optparser.add_option(
+        '-f', '--format',
+        type="choice", choices=formatNames,
+        dest="format", default="prof",
+        help="profile format: %s [default: %%default]" % naturalJoin(formatNames))
+    optparser.add_option(
+        '--total',
+        type="choice", choices=('callratios', 'callstacks'),
+        dest="totalMethod", default=totalMethod,
+        help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
+    optparser.add_option(
+        '-c', '--colormap',
+        type="choice", choices=('color', 'pink', 'gray', 'bw', 'print'),
+        dest="theme", default="color",
+        help="color map: color, pink, gray, bw, or print [default: %default]")
+    optparser.add_option(
+        '-s', '--strip',
+        action="store_true",
+        dest="strip", default=False,
+        help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
+    optparser.add_option(
+        '-w', '--wrap',
+        action="store_true",
+        dest="wrap", default=False,
+        help="wrap function names")
+    optparser.add_option(
+        '--show-samples',
+        action="store_true",
+        dest="show_samples", default=False,
+        help="show function samples")
+    # add option to create subtree or show paths
+    optparser.add_option(
+        '-z', '--root',
+        type="string",
+        dest="root", default="",
+        help="prune call graph to show only descendants of specified root function")
+    optparser.add_option(
+        '-l', '--leaf',
+        type="string",
+        dest="leaf", default="",
+        help="prune call graph to show only ancestors of specified leaf function")
+    # add a new option to control skew of the colorization curve
+    optparser.add_option(
+        '--skew',
+        type="float", dest="theme_skew", default=1.0,
+        help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
+    (options, args) = optparser.parse_args(sys.argv[1:])
+
+    if len(args) > 1 and options.format != 'pstats':
+        optparser.error('incorrect number of arguments')
+
+    try:
+        theme = themes[options.theme]
+    except KeyError:
+        optparser.error('invalid colormap \'%s\'' % options.theme)
+
+    # set skew on the theme now that it has been picked.
+    if options.theme_skew:
+        theme.skew = options.theme_skew
+
+    totalMethod = options.totalMethod
+
+    try:
+        Format = formats[options.format]
+    except KeyError:
+        optparser.error('invalid format \'%s\'' % options.format)
+
+    if Format.stdinInput:
+        if not args:
+            fp = sys.stdin
+        else:
+            fp = open(args[0], 'rt')
+        parser = Format(fp)
+    elif Format.multipleInput:
+        if not args:
+            optparser.error('at least a file must be specified for %s input' % options.format)
+        parser = Format(*args)
+    else:
+        if len(args) != 1:
+            optparser.error('exactly one file must be specified for %s input' % options.format)
+        parser = Format(args[0])
+
+    profile = parser.parse()
+
+    if options.output is None:
+        output = sys.stdout
+    else:
+        if PYTHON_3:
+            output = open(options.output, 'wt', encoding='UTF-8')
+        else:
+            output = open(options.output, 'wt')
+
+    dot = DotWriter(output)
+    dot.strip = options.strip
+    dot.wrap = options.wrap
+    if options.show_samples:
+        dot.show_function_events.append(SAMPLES)
+
+    profile = profile
+    profile.prune(options.node_thres/100.0, options.edge_thres/100.0)
+
+    if options.root:
+        rootId = profile.getFunctionId(options.root)
+        if not rootId:
+            sys.stderr.write('root node ' + options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
+            sys.exit(1)
+        profile.prune_root(rootId)
+    if options.leaf:
+        leafId = profile.getFunctionId(options.leaf)
+        if not leafId:
+            sys.stderr.write('leaf node ' + options.leaf + ' not found (maybe already pruned : try -e0 -n0 flags)\n')
+            sys.exit(1)
+        profile.prune_leaf(leafId)
+
+    dot.graph(profile, theme)
 
 
 if __name__ == '__main__':
