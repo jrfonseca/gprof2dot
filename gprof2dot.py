@@ -1561,7 +1561,7 @@ class CallgrindParser(LineParser):
         self.profile.validate()
         self.profile.find_cycles()
         self.profile.ratio(TIME_RATIO, SAMPLES)
-        self.profile.call_ratios(CALLS)
+        self.profile.call_ratios(SAMPLES2)
         self.profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
 
         return self.profile
@@ -1686,11 +1686,11 @@ class CallgrindParser(LineParser):
             except KeyError:
                 call = Call(callee.id)
                 call[CALLS] = calls
-                call[SAMPLES] = events[0]
+                call[SAMPLES2] = events[0]
                 function.add_call(call)
             else:
                 call[CALLS] += calls
-                call[SAMPLES] += events[0]
+                call[SAMPLES2] += events[0]
 
         self.consume()
         return True
