@@ -535,7 +535,7 @@ class Profile(Object):
                 self._call_ratios_cycle(cycle, callee, ranks, call_ratios, set())
                 partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
                 assert partial == max(partials.values())
-                assert not total or abs(1.0 - partial/(call_ratio*total)) <= 0.001
+                assert abs(call_ratio*total - partial) <= 0.001*call_ratio*total
 
         return cycle[outevent]
 
