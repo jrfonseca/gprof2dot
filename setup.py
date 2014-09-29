@@ -11,13 +11,12 @@
 # - http://docs.python.org/2/distutils/packageindex.html
 #
 
-import time
 import sys
 from setuptools import setup
 
 setup(
     name='gprof2dot',
-    version=time.strftime('%Y.%m.%d'),
+    version='2014.09.29',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
     url='https://code.google.com/p/jrfonseca/wiki/Gprof2Dot',
