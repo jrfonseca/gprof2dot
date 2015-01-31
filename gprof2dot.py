@@ -3128,6 +3128,8 @@ def main():
     if Format.stdinInput:
         if not args:
             fp = sys.stdin
+        elif PYTHON_3:
+            fp = open(args[0], 'rt', encoding='UTF-8')
         else:
             fp = open(args[0], 'rt')
         parser = Format(fp)

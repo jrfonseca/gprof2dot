@@ -25,6 +25,12 @@ import subprocess
 import shutil
 
 
+if sys.version_info[0] >= 3:
+    PYTHON_3 = True
+else:
+    PYTHON_3 = False
+
+
 formats = [
     "axe",
     "callgrind",
@@ -53,8 +59,12 @@ def run(cmd):
 
 
 def diff(a, b):
-    a_lines = open(a, 'rt').readlines()
-    b_lines = open(b, 'rt').readlines()
+    if PYTHON_3:
+        a_lines = open(a, 'rt', encoding='UTF-8').readlines()
+        b_lines = open(b, 'rt', encoding='UTF-8').readlines()
+    else:
+        a_lines = open(a, 'rt').readlines()
+        b_lines = open(b, 'rt').readlines()
     diff_lines = difflib.unified_diff(a_lines, b_lines, fromfile=a, tofile=b)
     sys.stdout.write(''.join(diff_lines))
 
