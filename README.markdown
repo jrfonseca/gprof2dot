@@ -31,7 +31,8 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
 # Changelog
 
-  * **2014-04-13**: Support custom and straightfoward JSON format.
+  * **2014-05-28**: Derive callgrind's call ratios based on the call samples, and not call count.
+  * **2014-04-13**: Support custom and straightforward JSON format.
   * **2014-04-13**: Drop AQtime support.
   * **2013-05-17**: Add option to show function samples
   * **2013-05-17**: Python 3 compatibility, based on Sebastian Pipping, and Alex Volkov independent work.
