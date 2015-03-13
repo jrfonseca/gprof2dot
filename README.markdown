@@ -88,8 +88,8 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
 # Download
 
-  * [gprof2dot.py](http://gprof2dot.jrfonseca.googlecode.com/git/gprof2dot.py)
-  * [Git repository](http://code.google.com/p/jrfonseca/source/checkout?repo=gprof2dot)
+  * [gprof2dot.py](gprof2dot.py)
+  * [Git repository](https://github.com/jrfonseca/gprof2dot)
 
 # Documentation
 
@@ -165,7 +165,7 @@ See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) fo
 
 ### python hotshot profiler
 
-The hotshot profiler does not include a main function. Download this [hotshotmain.py](http://gprof2dot.jrfonseca.googlecode.com/git/hotshotmain.py) script instead.
+The hotshot profiler does not include a main function. Use the [hotshotmain.py](hotshotmain.py) script instead.
 
     hotshotmain.py -o output.pstats path/to/your/script arg1 arg2
     gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
