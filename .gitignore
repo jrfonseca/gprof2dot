@@ -5,3 +5,4 @@
 *.png
 *.pyc
 dist
+!sample.png
