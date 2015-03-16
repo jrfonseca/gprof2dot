@@ -19,7 +19,7 @@ setup(
     version='2015.02.03',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
-    url='https://code.google.com/p/jrfonseca/wiki/Gprof2Dot',
+    url='https://github.com/jrfonseca/gprof2dot',
     description="Generate a dot graph from the output of several profilers.",
     long_description="""
         gprof2dot.py is a Python script to convert the output from many
