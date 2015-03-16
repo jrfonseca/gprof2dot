@@ -89,8 +89,14 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
 # Download
 
-  * [gprof2dot.py](gprof2dot.py)
+  * [PyPI](https://pypi.python.org/pypi/gprof2dot/)
+
+        pip install gprof2dot
+
+  * [Standalone script](https://raw.githubusercontent.com/jrfonseca/gprof2dot/master/gprof2dot.py)
+
   * [Git repository](https://github.com/jrfonseca/gprof2dot)
+
 
 # Documentation
 
