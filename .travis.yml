@@ -1,14 +1,17 @@
 language: python
 
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - graphviz
+
 python:
 - "2.7"
 - "3.2"
 - "3.3"
 - "3.4"
-
-before_install:
-- sudo apt-get update -qq
-- sudo apt-get install -qq -y graphviz
 
 script:
 - python tests/test.py
