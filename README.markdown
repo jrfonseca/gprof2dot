@@ -29,6 +29,10 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 <!-- pngquant --speed=1 --ordered  --quality 0-85 ... -->
 ![Sample](sample.png)
 
+## Online Demo
+
+You can generate and view gprof2dot callgraphs here: [gprof.jlf-hacks.com](http://gprof.jlf-hacks.com)
+
 # Changelog
 
   * **2014-05-28**: Derive callgrind's call ratios based on the call samples, and not call count.
