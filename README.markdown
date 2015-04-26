@@ -5,16 +5,16 @@ This is a Python script to convert the output from many profilers into a [dot gr
 It has the following features:
 
   * reads output from:
-    * prof, gprof
-    * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
-    * [linux perf](http://perf.wiki.kernel.org/)
+    * [Linux perf](http://perf.wiki.kernel.org/)
+    * [Valgrind's callgrind tool](http://valgrind.org/docs/manual/cl-manual.html)
     * [oprofile](http://oprofile.sourceforge.net/)
-    * [Valgrind](http://valgrind.org/)'s [callgrind](http://valgrind.org/docs/manual/cl-manual.html) tool
     * [sysprof](http://www.daimi.au.dk/~sandmann/sysprof/)
     * [xperf](http://msdn.microsoft.com/en-us/performance/cc825801.aspx)
+    * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
     * [Very Sleepy](http://www.codersnotes.com/sleepy/)
     * [python profilers](http://docs.python.org/2/library/profile.html#profile-stats)
     * [Java's HPROF](http://java.sun.com/developer/technicalArticles/Programming/HPROF.html)
+    * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
   * prunes nodes and edges below a certain threshold;
   * uses an heuristic to propagate time inside mutually recursive functions;
   * uses color efficiently to draw attention to hot-spots;
@@ -137,15 +137,6 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
 ## Examples
 
-### gprof
-
-    /path/to/your/executable arg1 arg2
-    gprof path/to/your/executable | gprof2dot.py | dot -Tpng -o output.png
-
-### Java HPROF
-
-See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) for details.
-
 ### Linux perf
 
     perf record -g -- /path/to/your/executable
@@ -159,23 +150,6 @@ See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) fo
     opcontrol --stop
     opcontrol --dump
     opreport -cgf | gprof2dot.py -f oprofile | dot -Tpng -o output.png
-
-### python profile
-
-    python -m profile -o output.pstats path/to/your/script arg1 arg2
-    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
-
-### python cProfile (formerly known as lsprof)
-
-    python -m cProfile -o output.pstats path/to/your/script arg1 arg2
-    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
-
-### python hotshot profiler
-
-The hotshot profiler does not include a main function. Use the [hotshotmain.py](hotshotmain.py) script instead.
-
-    hotshotmain.py -o output.pstats path/to/your/script arg1 arg2
-    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
 
 ### xperf
 
@@ -207,7 +181,6 @@ If you're not familiar with xperf then read [this excellent article](http://blog
 
         gprof2dot.py -f xperf output.csv | dot -Tpng -o output.png
 
-
 ### VTune Amplifier XE
 
   * Collect profile data as (also can be done from GUI):
@@ -220,6 +193,32 @@ If you're not familiar with xperf then read [this excellent article](http://blog
         gprof2dot.py -f axe output.txt | dot -Tpng -o output.png
 
 See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/2013/04/05/making-visualized-call-graph-from-intel-vtune-amplifier-xe-results).
+
+### gprof
+
+    /path/to/your/executable arg1 arg2
+    gprof path/to/your/executable | gprof2dot.py | dot -Tpng -o output.png
+
+### python profile
+
+    python -m profile -o output.pstats path/to/your/script arg1 arg2
+    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
+
+### python cProfile (formerly known as lsprof)
+
+    python -m cProfile -o output.pstats path/to/your/script arg1 arg2
+    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
+
+### python hotshot profiler
+
+The hotshot profiler does not include a main function. Use the [hotshotmain.py](hotshotmain.py) script instead.
+
+    hotshotmain.py -o output.pstats path/to/your/script arg1 arg2
+    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
+
+### Java HPROF
+
+See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) for details.
 
 ## Output
 
@@ -254,13 +253,11 @@ The color of the nodes and edges varies according to the _total time %_ value. I
 
 ## Frequently Asked Questions
 
-### How can I generate a call graph from gprof output?
+### How can I generate a complete call graph?
 
 By default `gprof2dot.py` generates a _partial_ call graph, excluding nodes and edges with little or no impact in the total computation time. If you want the full call graph then set a zero threshold for nodes and edges via the `-n` / `--node-thres`  and `-e` / `--edge-thres` options, as:
 
     gprof2dot.py -n0 -e0
-
-For an even more complete call graph, also run gprof with the `-c` / `--static-call-graph`, which identifies by statical analysis of the binary machine code other functions that could have been called, but never were.
 
 ### The node labels are too wide. How can I narrow them?
 
@@ -278,11 +275,7 @@ You can still force displaying the whole graph by setting a zero threshold for n
 
     gprof2dot.py -n0 -e0
 
-
-But to get meaningful results you will need to find a way to run the program for a longer time period, or run gprof with multiple profiles. See also:
-
-  * [Gprof Manual: Statistical Sampling Error](http://www.gnu.org/software/binutils/manual/gprof-2.9.1/html_chapter/gprof_6.html#SEC20)
-  * [Gprof Manual: Answers to Common Questions: How do I analyze a program that runs for less than a second?](http://www.gnu.org/software/binutils/manual/gprof-2.9.1/html_chapter/gprof_7.html)
+But to get meaningful results you will need to find a way to run the program for a longer time period (aggregate results from multiple runs).
 
 ### Why don't the percentages add up?
 
@@ -297,10 +290,7 @@ Options which are _essential_ to produce suitable results are:
   * **`-g`** : produce debugging information
   * **`-fno-omit-frame-pointer`** : use the frame pointer (frame pointer usage is disabled by default in some architectures like x86\_64 and for some optimization levels; it is impossible to walk the call stack without it)
 
-_Only_ if you're using gprof will you need:
-
-  * **`-pg`** : generate profiling instrumentation code
-But these days you'll get much better results with a sampling profiler.
+_If_ you're using gprof you will also need `-pg` option, but nowadays you can get much better results with other profiling tools, most of which require no special code instrumentation when compiling.
 
 You want the code you are profiling to be as close as possible as the code that you will
 be releasing. So you _should_ include all options that you use in your release code, typically:
@@ -308,7 +298,7 @@ be releasing. So you _should_ include all options that you use in your release c
   * **`-O2`** : optimizations that do not involve a space-speed tradeoff
   * **`-DNDEBUG`** : disable debugging code in the standard library (such as the assert macro)
 
-However, due to the profiling mechanism used by gprof (and other profilers), many of the optimizations performed by gcc interfere with the accuracy/granularity of the profiling. You _should_ pass these options to disable those particular optimizations:
+However many of the optimizations performed by gcc interfere with the accuracy/granularity of the profiling results.  You _should_ pass these options to disable those particular optimizations:
 
   * **`-fno-inline-functions`** : do not inline functions into their parents (otherwise the time spent on these functions will be attributed to the caller)
   * **`-fno-inline-functions-called-once`** : similar to above
@@ -324,22 +314,4 @@ See the [full list of gcc optimization options](http://gcc.gnu.org/onlinedocs/gc
 
 # Links
 
-## Profiling tools
-
-  * gprof
-    * Graham, Kessler, and McKusick, [gprof: A Call Graph Execution Profiler](http://citeseer.ist.psu.edu/graham82gprof.html), In Proceedings of the SIGPLAN '82 Symposium on Compiler Construction (Boston, MA, June 1982), pp. 120--126
-    * [GNU gprof Manual](http://www.gnu.org/software/binutils/manual/gprof-2.9.1/)
-    * Vinayak Hegde, [Profiling programs using gprof](http://linuxgazette.net/100/vinayak.html), Linux Gazette
-  * [Google Performance Tools](http://code.google.com/p/google-perftools/wiki/GooglePerformanceTools)
-
-## Profiling visualization tools
-  * [KCachegrind](http://kcachegrind.sourceforge.net/)
-    * [pyprof2calltree](http://pypi.python.org/pypi/pyprof2calltree/)
-  * [Google's gprof2dot](http://code.google.com/p/google-gprof2dot/)
-  * [cgprof](http://mvertes.free.fr/cgprof/)
-    * [Tutorial on using graphviz and cgprof](http://user.cs.tu-berlin.de/~pdmef/graphviz/)
-  * [gprof filters](http://www.graphviz.org/Resources.php#generators-and-translators)
-  * [RunSnakeRun](http://www.vrplumber.com/programming/runsnakerun/)
-
-## Call-graph generation tools
-  * [pycallgraph](http://pycallgraph.slowchop.com/) -- a call graph generator for Python programs.
+See the [wiki](https://github.com/jrfonseca/gprof2dot/wiki) for external resources, including complementary/alternative tools.
