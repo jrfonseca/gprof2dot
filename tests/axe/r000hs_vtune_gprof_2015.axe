@@ -1,0 +1,330 @@
+Index  % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                                     Index
+-----  ----------------  -------------  -----------------  ---------------------------------------  -----
+                         0.0            16.945               func@0x6b2dacf0                        [3]  
+[1]    100.0             0.0            16.945             BaseThreadInitThunk                      [1]  
+                         0.0            0.016                GetSphere                              [43] 
+                         0.0            0.562                _tmainCRTStartup                       [22] 
+                         0.0            16.336               thread_video                           [8]  
+                         0.0            0.031                video::main_loop                       [33] 
+                                                                                                         
+                                                             <spontaneous>                               
+[2]    100.0             0.0            16.945             func@0x6b2daccf                          [2]  
+                         0.0            16.945               func@0x6b2dacf0                        [3]  
+                                                                                                         
+                         0.0            16.945               func@0x6b2daccf                        [2]  
+[3]    100.0             0.0            16.945             func@0x6b2dacf0                          [3]  
+                         0.0            16.945               BaseThreadInitThunk                    [1]  
+                                                                                                         
+                         0.0            16.336               rt_renderscene                         [5]  
+[4]    96.4              0.0            16.336             renderscene                              [4]  
+                         0.0            16.336               trace_region                           [9]  
+                                                                                                         
+                         0.0            16.336               tachyon_video::on_process              [6]  
+[5]    96.4              0.0            16.336             rt_renderscene                           [5]  
+                         0.0            16.336               renderscene                            [4]  
+                                                                                                         
+                         0.0            16.336               thread_video                           [8]  
+[6]    96.4              0.0            16.336             tachyon_video::on_process                [6]  
+                         0.0            16.336               rt_renderscene                         [5]  
+                                                                                                         
+                         0.0            16.336               trace_shm                              [10] 
+[7]    96.4              0.0            16.336             thread_trace                             [7]  
+                         0.016          0.0                  chkstk                                 [57] 
+                         0.0            16.320               draw_trace                             [11] 
+                                                                                                         
+                         0.0            16.336               BaseThreadInitThunk                    [1]  
+[8]    96.4              0.0            16.336             thread_video                             [8]  
+                         0.0            16.336               tachyon_video::on_process              [6]  
+                                                                                                         
+                         0.0            16.336               renderscene                            [4]  
+[9]    96.4              0.0            16.336             trace_region                             [9]  
+                         0.0            16.336               trace_shm                              [10] 
+                                                                                                         
+                         0.0            16.336               trace_region                           [9]  
+[10]   96.4              0.0            16.336             trace_shm                                [10] 
+                         0.0            16.336               thread_trace                           [7]  
+                                                                                                         
+                         0.0            16.320               thread_trace                           [7]  
+[11]   96.31             0.0            16.320             draw_trace                               [11] 
+                         0.046          16.242               render_one_pixel                       [12] 
+                         0.0            0.031                drawing_area::~drawing_area            [42] 
+                                                                                                         
+                         0.046          16.242               draw_trace                             [11] 
+[12]   96.13             0.046          16.242             render_one_pixel                         [12] 
+                         9.593          0.0                  initialize_2D_buffer                   [13] 
+                         0.032          0.0                  video::get_color                       [37] 
+                         0.031          6.586                trace <cycle 1>                        [20] 
+                                                                                                         
+                         9.593          0.0                  render_one_pixel                       [12] 
+[13]   56.62             9.593          0.0                initialize_2D_buffer                     [13] 
+                                                                                                         
+                         0.031          6.586                render_one_pixel                       [12] 
+[14]   39.05             0.031          6.586              <cycle 1 as a whole>                     [14] 
+                         0.031          4.326                shader <cycle 1>                       [18] 
+                         0.0            0.0                  shade_reflection <cycle 1>             [61] 
+                         0.0            2.260                trace <cycle 1>                        [20] 
+                                                                                                         
+                         0.005          4.242                shader <cycle 1>                       [18] 
+                         0.032          2.228                trace <cycle 1>                        [20] 
+[15]   38.4              0.037          6.470              intersect_objects                        [15] 
+                         3.379          3.060                grid_intersect <cycle 2>               [16] 
+                         0.031          0.0                  light_intersect                        [39] 
+                                                                                                         
+                                                             grid_intersect <cycle 2>               [16] 
+                         3.379          3.060                intersect_objects                      [15] 
+[16]   38.0              3.379          3.060              grid_intersect <cycle 2>                 [16] 
+                         2.430          0.062                sphere_intersect                       [19] 
+                         0.279          0.0                  grid_bounds_intersect                  [29] 
+                         0.079          0.0                  tri_intersect                          [30] 
+                         0.078          0.0                  Raypnt                                 [31] 
+                         0.078          0.0                  pos2grid                               [32] 
+                         0.054          0.0                  ColorScale                             [34] 
+                                                             grid_intersect <cycle 2>               [16] 
+                                                                                                         
+                         3.379          3.060                intersect_objects                      [15] 
+[17]   38.0              3.379          3.060              <cycle 2 as a whole>                     [17] 
+                         3.379          3.060                grid_intersect <cycle 2>               [16] 
+                                                                                                         
+                                                             trace <cycle 1>                        [20] 
+[18]   25.71             0.031          4.326              shader <cycle 1>                         [18] 
+                         0.016          0.0                  shadow_intersection                    [48] 
+                         0.016          0.0                  libm_sse2_sqrt_precise                 [36] 
+                         0.005          4.242                intersect_objects                      [15] 
+                         0.0            0.047                shade_phong                            [35] 
+                                                             shade_reflection <cycle 1>             [61] 
+                                                                                                         
+                         2.430          0.062                grid_intersect <cycle 2>               [16] 
+[19]   14.71             2.430          0.062              sphere_intersect                         [19] 
+                         0.031          0.0                  libm_sse2_sqrt_precise                 [36] 
+                         0.016          0.0                  [Import thunk libm_sse2_sqrt_precise]  [47] 
+                         0.016          0.0                  add_intersection                       [53] 
+                                                                                                         
+                                                             shade_reflection <cycle 1>             [61] 
+                         0.031          6.586                render_one_pixel                       [12] 
+[20]   13.34             0.0            2.260              trace <cycle 1>                          [20] 
+                         0.032          2.228                intersect_objects                      [15] 
+                                                             shader <cycle 1>                       [18] 
+                                                                                                         
+                         0.0            0.562                _tmainCRTStartup                       [22] 
+[21]   3.32              0.0            0.562              WinMain                                  [21] 
+                         0.0            0.562                main                                   [23] 
+                                                                                                         
+                         0.0            0.562                BaseThreadInitThunk                    [1]  
+[22]   3.32              0.0            0.562              _tmainCRTStartup                         [22] 
+                         0.0            0.562                WinMain                                [21] 
+                                                                                                         
+                         0.0            0.562                WinMain                                [21] 
+[23]   3.32              0.0            0.562              main                                     [23] 
+                         0.0            0.500                loop_once                              [24] 
+                         0.0            0.015                main_init_parts                        [59] 
+                         0.0            0.016                video::init_window                     [56] 
+                         0.0            0.031                video::main_loop                       [33] 
+                                                                                                         
+                         0.0            0.500                main                                   [23] 
+                         0.0            0.016                video::main_loop                       [33] 
+[24]   3.04              0.0            0.516              loop_once                                [24] 
+                         0.016          0.469                KiUserCallbackDispatcher               [26] 
+                         0.016          0.0                  UpdateWindow                           [52] 
+                         0.0            0.016                DispatchMessageA                       [49] 
+                                                                                                         
+                         0.0            0.016                DispatchMessageA                       [49] 
+                         0.0            0.469                KiUserCallbackDispatcher               [26] 
+[25]   2.86              0.0            0.484              InternalWndProc                          [25] 
+                         0.016          0.0                  GdipCreateFromHDC                      [50] 
+                         0.0            0.469                Gdiplus::Graphics::DrawImage           [28] 
+                                                                                                         
+                         0.016          0.469                loop_once                              [24] 
+[26]   2.86              0.016          0.469              KiUserCallbackDispatcher                 [26] 
+                         0.0            0.469                InternalWndProc                        [25] 
+                                                                                                         
+                         0.469          0.0                  Gdiplus::Graphics::DrawImage           [28] 
+[27]   2.77              0.469          0.0                GdipDrawImagePointRectI                  [27] 
+                                                                                                         
+                         0.0            0.469                InternalWndProc                        [25] 
+[28]   2.77              0.0            0.469              Gdiplus::Graphics::DrawImage             [28] 
+                         0.469          0.0                  GdipDrawImagePointRectI                [27] 
+                                                                                                         
+                         0.279          0.0                  grid_intersect <cycle 2>               [16] 
+[29]   1.65              0.279          0.0                grid_bounds_intersect                    [29] 
+                                                                                                         
+                         0.079          0.0                  grid_intersect <cycle 2>               [16] 
+[30]   0.46              0.079          0.0                tri_intersect                            [30] 
+                                                                                                         
+                         0.078          0.0                  grid_intersect <cycle 2>               [16] 
+[31]   0.46              0.078          0.0                Raypnt                                   [31] 
+                                                                                                         
+                         0.078          0.0                  grid_intersect <cycle 2>               [16] 
+[32]   0.46              0.078          0.0                pos2grid                                 [32] 
+                                                                                                         
+                         0.0            0.031                BaseThreadInitThunk                    [1]  
+                         0.0            0.031                main                                   [23] 
+[33]   0.37              0.0            0.063              video::main_loop                         [33] 
+                         0.031          0.0                  Sleep                                  [40] 
+                         0.016          0.0                  MsgWaitForMultipleObjects              [51] 
+                         0.0            0.016                loop_once                              [24] 
+                                                                                                         
+                         0.054          0.0                  grid_intersect <cycle 2>               [16] 
+[34]   0.32              0.054          0.0                ColorScale                               [34] 
+                                                                                                         
+                         0.0            0.047                shader <cycle 1>                       [18] 
+[35]   0.28              0.0            0.047              shade_phong                              [35] 
+                         0.031          0.0                  libm_sse2_pow_precise                  [38] 
+                         0.016          0.0                  VNorm                                  [46] 
+                                                                                                         
+                         0.016          0.0                  shader <cycle 1>                       [18] 
+                         0.031          0.0                  sphere_intersect                       [19] 
+[36]   0.27              0.047          0.0                libm_sse2_sqrt_precise                   [36] 
+                                                                                                         
+                         0.032          0.0                  render_one_pixel                       [12] 
+[37]   0.19              0.032          0.0                video::get_color                         [37] 
+                                                                                                         
+                         0.031          0.0                  shade_phong                            [35] 
+[38]   0.19              0.031          0.0                libm_sse2_pow_precise                    [38] 
+                                                                                                         
+                         0.031          0.0                  intersect_objects                      [15] 
+[39]   0.18              0.031          0.0                light_intersect                          [39] 
+                                                                                                         
+                         0.031          0.0                  video::main_loop                       [33] 
+[40]   0.18              0.031          0.0                Sleep                                    [40] 
+                                                                                                         
+                         0.031          0.0                  drawing_area::~drawing_area            [42] 
+[41]   0.18              0.031          0.0                InvalidateRect                           [41] 
+                                                                                                         
+                         0.0            0.031                draw_trace                             [11] 
+[42]   0.18              0.0            0.031              drawing_area::~drawing_area              [42] 
+                         0.031          0.0                  InvalidateRect                         [41] 
+                                                                                                         
+                         0.0            0.016                BaseThreadInitThunk                    [1]  
+                         0.0            0.015                GetObject                              [58] 
+[43]   0.18              0.0            0.031              GetSphere                                [43] 
+                         0.015          0.016                GetString                              [44] 
+                                                                                                         
+                         0.015          0.016                GetSphere                              [43] 
+[44]   0.18              0.015          0.016              GetString                                [44] 
+                         0.016          0.0                  stringcmp                              [45] 
+                                                                                                         
+                         0.016          0.0                  GetString                              [44] 
+[45]   0.09              0.016          0.0                stringcmp                                [45] 
+                                                                                                         
+                         0.016          0.0                  shade_phong                            [35] 
+[46]   0.09              0.016          0.0                VNorm                                    [46] 
+                                                                                                         
+                         0.016          0.0                  sphere_intersect                       [19] 
+[47]   0.09              0.016          0.0                [Import thunk libm_sse2_sqrt_precise]    [47] 
+                                                                                                         
+                         0.016          0.0                  shader <cycle 1>                       [18] 
+[48]   0.09              0.016          0.0                shadow_intersection                      [48] 
+                                                                                                         
+                         0.0            0.016                loop_once                              [24] 
+[49]   0.09              0.0            0.016              DispatchMessageA                         [49] 
+                         0.0            0.016                InternalWndProc                        [25] 
+                                                                                                         
+                         0.016          0.0                  InternalWndProc                        [25] 
+[50]   0.09              0.016          0.0                GdipCreateFromHDC                        [50] 
+                                                                                                         
+                         0.016          0.0                  video::main_loop                       [33] 
+[51]   0.09              0.016          0.0                MsgWaitForMultipleObjects                [51] 
+                                                                                                         
+                         0.016          0.0                  loop_once                              [24] 
+[52]   0.09              0.016          0.0                UpdateWindow                             [52] 
+                                                                                                         
+                         0.016          0.0                  sphere_intersect                       [19] 
+[53]   0.09              0.016          0.0                add_intersection                         [53] 
+                                                                                                         
+                         0.016          0.0                  WinInit                                [55] 
+[54]   0.09              0.016          0.0                CreateWindowExA                          [54] 
+                                                                                                         
+                         0.0            0.016                video::init_window                     [56] 
+[55]   0.09              0.0            0.016              WinInit                                  [55] 
+                         0.016          0.0                  CreateWindowExA                        [54] 
+                                                                                                         
+                         0.0            0.016                main                                   [23] 
+[56]   0.09              0.0            0.016              video::init_window                       [56] 
+                         0.0            0.016                WinInit                                [55] 
+                                                                                                         
+                         0.016          0.0                  thread_trace                           [7]  
+[57]   0.09              0.016          0.0                chkstk                                   [57] 
+                                                                                                         
+                         0.0            0.015                readmodel                              [60] 
+[58]   0.09              0.0            0.015              GetObject                                [58] 
+                         0.0            0.015                GetSphere                              [43] 
+                                                                                                         
+                         0.0            0.015                main                                   [23] 
+[59]   0.09              0.0            0.015              main_init_parts                          [59] 
+                         0.0            0.015                readmodel                              [60] 
+                                                                                                         
+                         0.0            0.015                main_init_parts                        [59] 
+[60]   0.09              0.0            0.015              readmodel                                [60] 
+                         0.0            0.015                GetObject                              [58] 
+                                                                                                         
+                                                             shader <cycle 1>                       [18] 
+[61]   0.0               0.0            0.0                shade_reflection <cycle 1>               [61] 
+                                                             trace <cycle 1>                        [20] 
+                                                                                                         
+
+
+Index by function name
+
+Index  Function                             
+-----  -------------------------------------
+[1]    BaseThreadInitThunk                  
+[34]   ColorScale                           
+[54]   CreateWindowExA                      
+[49]   DispatchMessageA                     
+[50]   GdipCreateFromHDC                    
+[27]   GdipDrawImagePointRectI              
+[28]   Gdiplus::Graphics::DrawImage         
+[58]   GetObject                            
+[43]   GetSphere                            
+[44]   GetString                            
+[25]   InternalWndProc                      
+[41]   InvalidateRect                       
+[26]   KiUserCallbackDispatcher             
+[51]   MsgWaitForMultipleObjects            
+[31]   Raypnt                               
+[40]   Sleep                                
+[52]   UpdateWindow                         
+[46]   VNorm                                
+[55]   WinInit                              
+[21]   WinMain                              
+[47]   [Import thunk libm_sse2_sqrt_precise]
+[22]   _tmainCRTStartup                     
+[53]   add_intersection                     
+[57]   chkstk                               
+[11]   draw_trace                           
+[42]   drawing_area::~drawing_area          
+[2]    func@0x6b2daccf                      
+[3]    func@0x6b2dacf0                      
+[29]   grid_bounds_intersect                
+[16]   grid_intersect                       
+[13]   initialize_2D_buffer                 
+[15]   intersect_objects                    
+[38]   libm_sse2_pow_precise                
+[36]   libm_sse2_sqrt_precise               
+[39]   light_intersect                      
+[24]   loop_once                            
+[23]   main                                 
+[59]   main_init_parts                      
+[32]   pos2grid                             
+[60]   readmodel                            
+[12]   render_one_pixel                     
+[4]    renderscene                          
+[5]    rt_renderscene                       
+[35]   shade_phong                          
+[61]   shade_reflection                     
+[18]   shader                               
+[48]   shadow_intersection                  
+[19]   sphere_intersect                     
+[45]   stringcmp                            
+[6]    tachyon_video::on_process            
+[7]    thread_trace                         
+[8]    thread_video                         
+[20]   trace                                
+[9]    trace_region                         
+[10]   trace_shm                            
+[30]   tri_intersect                        
+[37]   video::get_color                     
+[56]   video::init_window                   
+[33]   video::main_loop                     
+[14]   <cycle 1>                            
+[17]   <cycle 2>                            

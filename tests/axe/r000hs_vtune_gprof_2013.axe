@@ -1,0 +1,186 @@
+Index  % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                          Index
+-----  ----------------  -------------  -----------------  ----------------------------  -----
+                         0.0            16.348               RtlUserThreadStart          [1]
+[0]    100.0             0.0            16.348             BaseThreadInitThunk           [0]
+                         0.0            15.771               thread_video                [4]
+                         0.0            0.577                _tmainCRTStartup            [17]
+                                                                                         
+                         0.0            16.348               <spontaneous>               [2]
+[1]    100.0             0.0            16.348             RtlUserThreadStart            [1]
+                         0.0            16.348               BaseThreadInitThunk         [0]
+                                                                                         
+[2]    100.0             0.0            16.348             <spontaneous>                 [2]
+                         0.0            16.348               RtlUserThreadStart          [1]
+                                                                                         
+                         0.0            15.771               thread_video                [4]
+[3]    96.47             0.0            15.771             tachyon_video::on_process     [3]
+                         0.0            15.769               trace_region                [7]
+                         0.002          0.0                  engrid_scene                [32]
+                                                                                         
+                         0.0            15.771               BaseThreadInitThunk         [0]
+[4]    96.47             0.0            15.771             thread_video                  [4]
+                         0.0            15.771               tachyon_video::on_process   [3]
+                                                                                         
+                         0.01           15.759               thread_trace                [6]
+[5]    96.46             0.01           15.759             draw_trace                    [5]
+                         0.01           8.162                trace <cycle 2>             [9]
+                         7.567          0.0                  initialize_2D_buffer        [12]
+                         0.02           0.0                  video::next_frame           [27]
+                                                                                         
+                         0.0            15.769               trace_region                [7]
+[6]    96.46             0.0            15.769             thread_trace                  [6]
+                         0.01           15.759               draw_trace                  [5]
+                                                                                         
+                         0.0            15.769               tachyon_video::on_process   [3]
+[7]    96.46             0.0            15.769             trace_region                  [7]
+                         0.0            15.769               thread_trace                [6]
+                                                                                         
+                         0.01           8.162                draw_trace                  [5]
+[8]    49.99             0.14           8.162              <cycle 2 as a whole>          [8]
+                         0.03           8.142                trace <cycle 2>             [9]
+                         0.11           -0.11                shader <cycle 2>            [13]
+                         0.0            0.0                  shade_reflection <cycle 2>  [15]
+                                                                                         
+                         0.01           8.162                draw_trace                  [5]
+                                                             shade_reflection <cycle 2>  [15]
+[9]    49.99             0.03           8.162              trace <cycle 2>               [9]
+                                                             shader <cycle 2>            [13]
+                         0.877          2.111                grid_intersect <cycle 1>    [11]
+                         0.01           0.0                  VNorm                       [24]
+                         0.01           0.0                  light_intersect             [26]
+                                                                                         
+                         1.718          3.266                shader <cycle 2>            [13]
+                         0.877          2.111                trace <cycle 2>             [9]
+[10]   48.76             2.695          5.377              <cycle 1 as a whole>          [10]
+                         2.695          5.277                grid_intersect <cycle 1>    [11]
+                                                                                         
+                         1.718          3.266                shader <cycle 2>            [13]
+                         0.877          2.111                trace <cycle 2>             [9]
+                                                             grid_intersect <cycle 1>    [11]
+[11]   48.76             2.695          5.377              grid_intersect <cycle 1>      [11]
+                         4.819          0.0                  sphere_intersect            [14]
+                                                             grid_intersect <cycle 1>    [11]
+                         0.298          0.0                  grid_bounds_intersect       [21]
+                         0.09           0.0                  pos2grid                    [22]
+                         0.05           0.02                 tri_intersect               [23]
+                                                                                         
+                         7.567          0.0                  draw_trace                  [5]
+[12]   46.29             7.567          0.0                initialize_2D_buffer          [12]
+                                                                                         
+                                                             trace <cycle 2>             [9]
+[13]   41.79             0.11           6.742              shader <cycle 2>              [13]
+                                                             shade_reflection <cycle 2>  [15]
+                         1.718          3.266                grid_intersect <cycle 1>    [11]
+                         0.01           0.01                 sphere_normal               [25]
+                         0.01           0.0                  shade_phong                 [30]
+                         0.01           0.0                  light_intersect             [26]
+                                                                                         
+                         4.819          0.0                  grid_intersect <cycle 1>    [11]
+[14]   29.48             4.819          0.0                sphere_intersect              [14]
+                                                                                         
+                                                             shader <cycle 2>            [13]
+[15]   21.86             0.0            3.574              shade_reflection <cycle 2>    [15]
+                                                             trace <cycle 2>             [9]
+                                                                                         
+                         0.0            0.577                _tmainCRTStartup            [17]
+[16]   3.53              0.0            0.577              main                          [16]
+                         0.043          0.515                video::main_loop            [18]
+                         0.0            0.02                 video::init_window          [29]
+                                                                                         
+                         0.0            0.577                BaseThreadInitThunk         [0]
+[17]   3.53              0.0            0.577              _tmainCRTStartup              [17]
+                         0.0            0.577                main                        [16]
+                                                                                         
+                         0.043          0.515                main                        [16]
+[18]   3.41              0.043          0.515              video::main_loop              [18]
+                         0.0            0.515                loop_once                   [20]
+                                                                                         
+                         0.515          0.0                  loop_once                   [20]
+                         0.01           0.0                  video::init_window          [29]
+[19]   3.21              0.525          0.0                InternalWndProc               [19]
+                                                                                         
+                         0.0            0.515                video::main_loop            [18]
+[20]   3.15              0.0            0.515              loop_once                     [20]
+                         0.515          0.0                  InternalWndProc             [19]
+                                                                                         
+                         0.298          0.0                  grid_intersect <cycle 1>    [11]
+[21]   1.82              0.298          0.0                grid_bounds_intersect         [21]
+                                                                                         
+                         0.09           0.0                  grid_intersect <cycle 1>    [11]
+[22]   0.55              0.09           0.0                pos2grid                      [22]
+                                                                                         
+                         0.05           0.02                 grid_intersect <cycle 1>    [11]
+[23]   0.43              0.05           0.02               tri_intersect                 [23]
+                         0.02           0.0                  add_intersection            [28]
+                                                                                         
+                         0.01           0.0                  trace <cycle 2>             [9]
+                         0.01           0.0                  sphere_normal               [25]
+[24]   0.12              0.02           0.0                VNorm                         [24]
+                                                                                         
+                         0.01           0.01                 shader <cycle 2>            [13]
+[25]   0.12              0.01           0.01               sphere_normal                 [25]
+                         0.01           0.0                  VNorm                       [24]
+                                                                                         
+                         0.01           0.0                  trace <cycle 2>             [9]
+                         0.01           0.0                  shader <cycle 2>            [13]
+[26]   0.12              0.02           0.0                light_intersect               [26]
+                                                                                         
+                         0.02           0.0                  draw_trace                  [5]
+[27]   0.12              0.02           0.0                video::next_frame             [27]
+                                                                                         
+                         0.02           0.0                  tri_intersect               [23]
+[28]   0.12              0.02           0.0                add_intersection              [28]
+                                                                                         
+                         0.0            0.02                 main                        [16]
+[29]   0.12              0.0            0.02               video::init_window            [29]
+                         0.01           0.0                  InternalWndProc             [19]
+                         0.01           0.0                  WinInit                     [31]
+                                                                                         
+                         0.01           0.0                  shader <cycle 2>            [13]
+[30]   0.06              0.01           0.0                shade_phong                   [30]
+                                                                                         
+                         0.01           0.0                  video::init_window          [29]
+[31]   0.06              0.01           0.0                WinInit                       [31]
+                                                                                         
+                         0.002          0.0                  tachyon_video::on_process   [3]
+[32]   0.01              0.002          0.0                engrid_scene                  [32]
+                                                                                         
+
+
+Index by function name
+
+Index  Function
+-----  -------------------------
+[2]    <spontaneous>
+[0]    BaseThreadInitThunk
+[19]   InternalWndProc
+[1]    RtlUserThreadStart
+[24]   VNorm
+[31]   WinInit
+[17]   _tmainCRTStartup
+[28]   add_intersection
+[5]    draw_trace
+[32]   engrid_scene
+[21]   grid_bounds_intersect
+[11]   grid_intersect
+[12]   initialize_2D_buffer
+[26]   light_intersect
+[20]   loop_once
+[16]   main
+[22]   pos2grid
+[30]   shade_phong
+[15]   shade_reflection
+[13]   shader
+[14]   sphere_intersect
+[25]   sphere_normal
+[3]    tachyon_video::on_process
+[6]    thread_trace
+[4]    thread_video
+[9]    trace
+[7]    trace_region
+[23]   tri_intersect
+[29]   video::init_window
+[18]   video::main_loop
+[27]   video::next_frame
+[10]   <cycle 1>
+[8]    <cycle 2>
