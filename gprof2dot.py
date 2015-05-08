@@ -1308,7 +1308,7 @@ class AXEParser(Parser):
         r'\s+(?P<descendants>\d+\.\d+)' + 
         r'\s+(?P<name>\S.*?)' +
         r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
-        r'\s+\[(\d+)\]$'
+        r'\s+\[(\d+)\]\s*$'
     )
 
     _cg_parent_re = re.compile(
@@ -1316,7 +1316,7 @@ class AXEParser(Parser):
         r'\s+(?P<descendants>\d+\.\d+)?' + 
         r'\s+(?P<name>\S.*?)' +
         r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
-        r'\s+\[(?P<index>\d+)\]$'
+        r'(\s+\[(?P<index>\d+)\]\s*)?$'
     )
 
     _cg_child_re = _cg_parent_re
@@ -1327,7 +1327,7 @@ class AXEParser(Parser):
         r'\s+(?P<self>\d+\.\d+)' + 
         r'\s+(?P<descendants>\d+\.\d+)' + 
         r'\s+<cycle\s(?P<cycle>\d+)\sas\sa\swhole>' +
-        r'\s+\[(\d+)\]$'
+        r'\s+\[(\d+)\]\s*$'
     )
 
     _cg_cycle_member_re = re.compile(
@@ -1335,7 +1335,7 @@ class AXEParser(Parser):
         r'\s+(?P<descendants>\d+\.\d+)?' + 
         r'\s+(?P<name>\S.*?)' +
         r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
-        r'\s+\[(?P<index>\d+)\]$'
+        r'\s+\[(?P<index>\d+)\]\s*$'
     )
 
     def parse_function_entry(self, lines):
