@@ -1450,7 +1450,7 @@ class AXEParser(Parser):
             line = self.readline()
 
     def parse(self):
-        sys.stderr.write('warning: for axe format, edge weights are unreliable estimates derived from\nfunction total times.\n')
+        sys.stderr.write('warning: for axe format, edge weights are unreliable estimates derived from function total times.\n')
         self.parse_cg()
         self.fp.close()
 
