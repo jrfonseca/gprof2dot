@@ -56,6 +56,11 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
   * [Git repository](https://github.com/jrfonseca/gprof2dot)
 
+  * [Docker image](https://github.com/xyb/gprof2dot)
+
+        docker run -d -p 5000:5000 --name dotimage xieyanbo/dotimage
+
+    and use a browser to access http://your.host.ip:5000/
 
 # Documentation
 
