@@ -99,7 +99,7 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 ### Linux perf
 
     perf record -g -- /path/to/your/executable
-    perf script | gprof2dot.py -f perf | dot -Tpng -o output.png
+    perf script | c++filt | gprof2dot.py -f perf | dot -Tpng -o output.png
 
 ### oprofile
 
