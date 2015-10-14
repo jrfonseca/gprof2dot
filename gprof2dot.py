@@ -1937,7 +1937,7 @@ class PerfParser(LineParser):
             return None
 
         function_name = mo.group('symbol')
-        if not function_name:
+        if not function_name or function_name == '[unknown]':
             function_name = mo.group('address')
 
         module = mo.group('module')
