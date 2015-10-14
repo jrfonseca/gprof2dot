@@ -1927,7 +1927,7 @@ class PerfParser(LineParser):
             self.consume()
         return callchain
 
-    call_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>[^)]*)\)$')
+    call_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>.*)\)$')
 
     def parse_call(self):
         line = self.consume()
