@@ -7,7 +7,7 @@
 #   python setup.py sdist upload
 #
 # See also:
-# - https://code.google.com/p/jrfonseca/issues/detail?id=19
+# - https://code.google.com/archive/p/jrfonseca/issues/19
 # - http://docs.python.org/2/distutils/packageindex.html
 #
 
@@ -16,7 +16,7 @@ from setuptools import setup
 
 setup(
     name='gprof2dot',
-    version='2015.02.03',
+    version='2015.12.01',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
     url='https://github.com/jrfonseca/gprof2dot',
