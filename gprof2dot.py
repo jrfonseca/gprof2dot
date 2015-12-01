@@ -217,6 +217,7 @@ class Function(Object):
         self.called = None
         self.weight = None
         self.cycle = None
+        self.filename = None
     
     def add_call(self, call):
         if call.callee_id in self.calls:
@@ -2583,6 +2584,7 @@ class PstatsParser:
             id = len(self.function_ids)
             name = self.get_function_name(key)
             function = Function(id, name)
+            function.filename = key[0]
             self.profile.functions[id] = function
             self.function_ids[key] = id
         else:
@@ -2917,6 +2919,7 @@ class DotWriter:
                 color = self.color(theme.node_bgcolor(weight)), 
                 fontcolor = self.color(theme.node_fgcolor(weight)), 
                 fontsize = "%.2f" % theme.node_fontsize(weight),
+                tooltip = function.filename,
             )
 
             for _, call in sorted_iteritems(function.calls):
@@ -2981,6 +2984,8 @@ class DotWriter:
         self.write(' [')
         first = True
         for name, value in sorted_iteritems(attrs):
+            if value is None:
+                continue
             if first:
                 first = False
             else:
