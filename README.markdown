@@ -1,20 +1,11 @@
 # About _gprof2dot_
 
-This is a Python script to convert the output from many profilers into a [dot graph](http://www.graphviz.org/doc/info/lang.html).
+This is a Python script to convert the output from python's profiles into a [dot graph](http://www.graphviz.org/doc/info/lang.html). It is forked from the original version of the library to address Yelp's specific needs for finer-grained control over display of python profiles.
 
 It has the following features:
 
   * reads output from:
-    * [Linux perf](http://perf.wiki.kernel.org/)
-    * [Valgrind's callgrind tool](http://valgrind.org/docs/manual/cl-manual.html)
-    * [oprofile](http://oprofile.sourceforge.net/)
-    * [sysprof](http://www.daimi.au.dk/~sandmann/sysprof/)
-    * [xperf](http://msdn.microsoft.com/en-us/performance/cc825801.aspx)
-    * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
-    * [Very Sleepy](http://www.codersnotes.com/sleepy/)
     * [python profilers](http://docs.python.org/2/library/profile.html#profile-stats)
-    * [Java's HPROF](http://java.sun.com/developer/technicalArticles/Programming/HPROF.html)
-    * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
   * prunes nodes and edges below a certain threshold;
   * uses an heuristic to propagate time inside mutually recursive functions;
   * uses color efficiently to draw attention to hot-spots;
@@ -72,10 +63,6 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
                             eliminate nodes below this threshold [default: 0.5]
       -e PERCENTAGE, --edge-thres=PERCENTAGE
                             eliminate edges below this threshold [default: 0.1]
-      -f FORMAT, --format=FORMAT
-                            profile format: axe, callgrind, hprof, json, oprofile,
-                            perf, prof, pstats, sleepy, sysprof or xperf [default:
-                            prof]
       --total=TOTALMETHOD   preferred method of calculating total time: callratios
                             or callstacks (currently affects only perf format)
                             [default: callratios]
@@ -96,68 +83,6 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
 
 ## Examples
 
-### Linux perf
-
-    perf record -g -- /path/to/your/executable
-    perf script | c++filt | gprof2dot.py -f perf | dot -Tpng -o output.png
-
-### oprofile
-
-    opcontrol --callgraph=16
-    opcontrol --start
-    /path/to/your/executable arg1 arg2
-    opcontrol --stop
-    opcontrol --dump
-    opreport -cgf | gprof2dot.py -f oprofile | dot -Tpng -o output.png
-
-### xperf
-
-If you're not familiar with xperf then read [this excellent article](http://blogs.msdn.com/b/pigscanfly/archive/2009/08/06/stack-walking-in-xperf.aspx) first. Then do:
-
-  * Start xperf as
-
-        xperf -on Latency -stackwalk profile
-
-  * Run your application.
-
-  * Save the data.
-`
-        xperf -d output.etl
-
-  * Start the visualizer:
-
-        xperf output.etl
-
-  * In _Trace_ menu, select _Load Symbols_. _Configure Symbol Paths_ if necessary.
-
-  * Select an area of interest on the _CPU sampling graph_, right-click, and select _Summary Table_.
-
-  * In the _Columns_ menu, make sure the _Stack_ column is enabled and visible.
-
-  * Right click on a row, choose _Export Full Table_, and save to _output.csv_.
-
-  * Then invoke gprof2dot as
-
-        gprof2dot.py -f xperf output.csv | dot -Tpng -o output.png
-
-### VTune Amplifier XE
-
-  * Collect profile data as (also can be done from GUI):
-
-        amplxe-cl -collect hotspots -result-dir output -- your-app
-
-  * Visualize profile data as:
-
-        amplxe-cl -report gprof-cc -result-dir output -format text -report-output output.txt
-        gprof2dot.py -f axe output.txt | dot -Tpng -o output.png
-
-See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/2013/04/05/making-visualized-call-graph-from-intel-vtune-amplifier-xe-results).
-
-### gprof
-
-    /path/to/your/executable arg1 arg2
-    gprof path/to/your/executable | gprof2dot.py | dot -Tpng -o output.png
-
 ### python profile
 
     python -m profile -o output.pstats path/to/your/script arg1 arg2
@@ -175,9 +100,6 @@ The hotshot profiler does not include a main function. Use the [hotshotmain.py](
     hotshotmain.py -o output.pstats path/to/your/script arg1 arg2
     gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
 
-### Java HPROF
-
-See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) for details.
 
 ## Output
 
@@ -185,7 +107,8 @@ A node in the output graph represents a function and has the following layout:
 
     +------------------------------+
     |        function name         |
-    | total time % ( self time % ) |
+    |       total time % (ms)      |
+    |       self time % (ms)       |
     |         total calls          |
     +------------------------------+
 
@@ -193,6 +116,7 @@ where:
 
   * _total time %_ is the percentage of the running time spent in this function and all its children;
   * _self time %_ is the percentage of the running time spent in this function alone;
+  * (ms) are the actual milliseconds spent in the function
   * _total calls_ is the total number of times this function was called (including recursive calls).
 
 An edge represents the calls between two functions and has the following layout:
@@ -241,36 +165,3 @@ But to get meaningful results you will need to find a way to run the program for
 You likely have an execution time too short, causing the round-off errors to be large.
 
 See question above for ways to increase execution time.
-
-### Which options should I pass to gcc when compiling for profiling?
-
-Options which are _essential_ to produce suitable results are:
-
-  * **`-g`** : produce debugging information
-  * **`-fno-omit-frame-pointer`** : use the frame pointer (frame pointer usage is disabled by default in some architectures like x86\_64 and for some optimization levels; it is impossible to walk the call stack without it)
-
-_If_ you're using gprof you will also need `-pg` option, but nowadays you can get much better results with other profiling tools, most of which require no special code instrumentation when compiling.
-
-You want the code you are profiling to be as close as possible as the code that you will
-be releasing. So you _should_ include all options that you use in your release code, typically:
-
-  * **`-O2`** : optimizations that do not involve a space-speed tradeoff
-  * **`-DNDEBUG`** : disable debugging code in the standard library (such as the assert macro)
-
-However many of the optimizations performed by gcc interfere with the accuracy/granularity of the profiling results.  You _should_ pass these options to disable those particular optimizations:
-
-  * **`-fno-inline-functions`** : do not inline functions into their parents (otherwise the time spent on these functions will be attributed to the caller)
-  * **`-fno-inline-functions-called-once`** : similar to above
-  * **`-fno-optimize-sibling-calls`** : do not optimize sibling and tail recursive calls (otherwise tail calls may be attributed to the parent function)
-
-If the granularity is still too low, you _may_ pass these options to achieve finer granularity:
-
-  * **`-fno-default-inline`** : do not make member functions inline by default merely because they are defined inside the class scope
-  * **`-fno-inline`** : do not pay attention to the inline keyword
-Note however that with these last options the timings of functions called many times will be distorted due to the function call overhead. This is particularly true for typical C++ code which _expects_ that these optimizations to be done for decent performance.
-
-See the [full list of gcc optimization options](http://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more information.
-
-# Links
-
-See the [wiki](https://github.com/jrfonseca/gprof2dot/wiki) for external resources, including complementary/alternative tools.

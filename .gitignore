@@ -6,3 +6,6 @@
 *.pyc
 dist
 !sample.png
+
+.cache/
+.tox/
