@@ -15,15 +15,16 @@ import sys
 from setuptools import setup
 
 setup(
-    name='gprof2dot',
-    version='2015.02.03',
+    name='yelp-gprof2dot',
+    version='1.0.0',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
-    url='https://github.com/jrfonseca/gprof2dot',
-    description="Generate a dot graph from the output of several profilers.",
+    url='https://github.com/Yelp/gprof2dot',
+    description="Generate a dot graph from the output of python profilers.",
     long_description="""
-        gprof2dot.py is a Python script to convert the output from many
-        profilers into a dot graph.
+        gprof2dot.py is a Python script to convert the output from python
+        profilers (anything in pstats format) into a dot graph. It is a
+        fork of the original gprof2dot script to extend python features.
         """,
     license="LGPL",
 
