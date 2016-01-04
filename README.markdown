@@ -1,6 +1,6 @@
 # About _gprof2dot_
 
-This is a Python script to convert the output from python's profiles into a [dot graph](http://www.graphviz.org/doc/info/lang.html).
+This is a Python script to convert the output from python's profiles into a [dot graph](http://www.graphviz.org/doc/info/lang.html). It is forked from the original version of the library to address Yelp's specific needs for finer-grained control over display of python profiles.
 
 It has the following features:
 
