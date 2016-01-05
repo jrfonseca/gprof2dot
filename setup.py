@@ -10,6 +10,8 @@
 # - https://code.google.com/p/jrfonseca/issues/detail?id=19
 # - http://docs.python.org/2/distutils/packageindex.html
 #
+# Original version was written by Jose Fonseca; see
+# https://github.com/jrfonseca/gprof2dot
 
 import sys
 from setuptools import setup
@@ -17,8 +19,8 @@ from setuptools import setup
 setup(
     name='yelp-gprof2dot',
     version='1.0.0',
-    author='Jose Fonseca',
-    author_email='jose.r.fonseca@gmail.com',
+    author='Yelp Performance Team',
+    author_email='team-perf@yelp.com',
     url='https://github.com/Yelp/gprof2dot',
     description="Generate a dot graph from the output of python profilers.",
     long_description="""
