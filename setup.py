@@ -20,7 +20,6 @@ setup(
     name='yelp-gprof2dot',
     version='1.0.0',
     author='Yelp Performance Team',
-    author_email='team-perf@yelp.com',
     url='https://github.com/Yelp/gprof2dot',
     description="Generate a dot graph from the output of python profilers.",
     long_description="""
