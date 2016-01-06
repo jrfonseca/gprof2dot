@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
     name='yelp-gprof2dot',
-    version='1.0.0',
+    version='1.0.1',
     author='Yelp Performance Team',
     url='https://github.com/Yelp/gprof2dot',
     description="Generate a dot graph from the output of python profilers.",

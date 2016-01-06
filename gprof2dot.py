@@ -1017,14 +1017,14 @@ class DotWriter:
 
     def _total_time_ratio_label(self, function, total_time):
         ratio = function[TOTAL_TIME_RATIO]
-        return "{ratio:.2f}% ({time:.0f}ms)".format(
+        return "{ratio:.2%} ({time:.0f}ms)".format(
             ratio=ratio,
             time=ratio*total_time*1000,
         )
 
     def _time_ratio_label(self, function, total_time):
         ratio = function[TIME_RATIO]
-        return "{ratio:.2f}% ({time:.1f}ms)".format(
+        return "{ratio:.2%} ({time:.1f}ms)".format(
             ratio=ratio,
             time=ratio*total_time*1000,
         )
