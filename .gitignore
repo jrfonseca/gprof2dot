@@ -6,3 +6,7 @@
 *.pyc
 dist
 !sample.png
+!tests/pstats/cProfile.orig.dot
+
+.cache/
+.tox/
