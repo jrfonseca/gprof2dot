@@ -552,7 +552,7 @@ class Profile(Object):
                 ranks = {}
                 call_ratios = {}
                 partials = {}
-                self._rank_cycle_function(cycle, callee, 0, ranks)
+                self._rank_cycle_function(cycle, callee, ranks)
                 self._call_ratios_cycle(cycle, callee, ranks, call_ratios, set())
                 partial = self._integrate_cycle_function(cycle, callee, call_ratio, partials, ranks, call_ratios, outevent, inevent)
                 assert partial == max(partials.values())
@@ -560,14 +560,54 @@ class Profile(Object):
 
         return cycle[outevent]
 
-    def _rank_cycle_function(self, cycle, function, rank, ranks):
-        if function not in ranks or ranks[function] > rank:
-            ranks[function] = rank
-            for call in compat_itervalues(function.calls):
-                if call.callee_id != function.id:
-                    callee = self.functions[call.callee_id]
-                    if callee.cycle is cycle:
-                        self._rank_cycle_function(cycle, callee, rank + 1, ranks)
+    def _rank_cycle_function(self, cycle, function, ranks):
+        """Dijkstra's shortest paths algorithm.
+
+        See also:
+        - http://en.wikipedia.org/wiki/Dijkstra's_algorithm
+        """
+
+        import heapq
+        Q = []
+        Qd = {}
+        p = {}
+        visited = set([function])
+
+        ranks[function] = 0
+        for call in compat_itervalues(function.calls):
+            if call.callee_id != function.id:
+                callee = self.functions[call.callee_id]
+                if callee.cycle is cycle:
+                    ranks[callee] = 1
+                    item = [ranks[callee], function, callee]
+                    heapq.heappush(Q, item)
+                    Qd[callee] = item
+
+        while Q:
+            cost, parent, member = heapq.heappop(Q)
+            if member not in visited:
+                p[member]= parent
+                visited.add(member)
+                for call in compat_itervalues(member.calls):
+                    if call.callee_id != member.id:
+                        callee = self.functions[call.callee_id]
+                        if callee.cycle is cycle:
+                            member_rank = ranks[member]
+                            rank = ranks.get(callee)
+                            if rank is not None:
+                                if rank > 1 + member_rank:
+                                    rank = 1 + member_rank
+                                    ranks[callee] = rank
+                                    Qd_callee = Qd[callee]
+                                    Qd_callee[0] = rank
+                                    Qd_callee[1] = member
+                                    heapq._siftdown(Q, 0, Q.index(Qd_callee))
+                            else:
+                                rank = 1 + member_rank
+                                ranks[callee] = rank
+                                item = [rank, member, callee]
+                                heapq.heappush(Q, item)
+                                Qd[callee] = item
 
     def _call_ratios_cycle(self, cycle, function, ranks, call_ratios, visited):
         if function not in visited:
