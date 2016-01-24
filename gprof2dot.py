@@ -174,6 +174,9 @@ class Object(object):
     def __eq__(self, other):
         return self is other
 
+    def __lt__(self, other):
+        return id(self) < id(other)
+
     def __contains__(self, event):
         return event in self.events
     
@@ -312,10 +315,11 @@ class Profile(Object):
         """Find cycles using Tarjan's strongly connected components algorithm."""
 
         # Apply the Tarjan's algorithm successively until all functions are visited
-        visited = set()
+        stack = []
+        data = {}
+        order = 0
         for function in compat_itervalues(self.functions):
-            if function not in visited:
-                self._tarjan(function, 0, [], {}, {}, visited)
+            order = self._tarjan(function, order, stack, data)
         cycles = []
         for function in compat_itervalues(self.functions):
             if function.cycle is not None and function.cycle not in cycles:
@@ -373,29 +377,41 @@ class Profile(Object):
             if self.functions[f].name == funcName:
                 return f
         return False
-    
-    def _tarjan(self, function, order, stack, orders, lowlinks, visited):
+
+    class _TarjanData:
+        def __init__(self, order):
+            self.order = order
+            self.lowlink = order
+            self.onstack = False
+
+    def _tarjan(self, function, order, stack, data):
         """Tarjan's strongly connected components algorithm.
 
         See also:
         - http://en.wikipedia.org/wiki/Tarjan's_strongly_connected_components_algorithm
         """
 
-        visited.add(function)
-        orders[function] = order
-        lowlinks[function] = order
+        try:
+            func_data = data[function.id]
+            return order
+        except KeyError:
+            func_data = self._TarjanData(order)
+            data[function.id] = func_data
         order += 1
         pos = len(stack)
         stack.append(function)
+        func_data.onstack = True
         for call in compat_itervalues(function.calls):
-            callee = self.functions[call.callee_id]
-            # TODO: use a set to optimize lookup
-            if callee not in orders:
-                order = self._tarjan(callee, order, stack, orders, lowlinks, visited)
-                lowlinks[function] = min(lowlinks[function], lowlinks[callee])
-            elif callee in stack:
-                lowlinks[function] = min(lowlinks[function], orders[callee])
-        if lowlinks[function] == orders[function]:
+            try:
+                callee_data = data[call.callee_id]
+                if callee_data.onstack:
+                    func_data.lowlink = min(func_data.lowlink, callee_data.order)
+            except KeyError:
+                callee = self.functions[call.callee_id]
+                order = self._tarjan(callee, order, stack, data)
+                callee_data = data[call.callee_id]
+                func_data.lowlink = min(func_data.lowlink, callee_data.lowlink)
+        if func_data.lowlink == func_data.order:
             # Strongly connected component found
             members = stack[pos:]
             del stack[pos:]
@@ -403,6 +419,10 @@ class Profile(Object):
                 cycle = Cycle()
                 for member in members:
                     cycle.add_function(member)
+                    data[member.id].onstack = False
+            else:
+                for member in members:
+                    data[member.id].onstack = False
         return order
 
     def call_ratios(self, event):
