@@ -3017,6 +3017,7 @@ class DotWriter:
 
     def end_graph(self):
         self.write('}\n')
+        self.fp.close()
 
     def attr(self, what, **attrs):
         self.write("\t")
