@@ -3214,7 +3214,10 @@ def main():
     profile = parser.parse()
 
     if options.output is None:
-        output = sys.stdout
+        if PYTHON_3:
+            output = open(sys.stdout.fileno(), mode='wt', encoding='UTF-8', closefd=False)
+        else:
+            output = sys.stdout
     else:
         if PYTHON_3:
             output = open(options.output, 'wt', encoding='UTF-8')
