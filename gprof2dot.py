@@ -714,13 +714,13 @@ class Profile(Object):
                     weights.append(function[TIME_RATIO])
                 except UndefinedEvent:
                     pass
-            max_ratio = max(weights)
+            max_ratio = max(weights or [1])
 
             # apply rescaled weights for coloriung
             for function in compat_itervalues(self.functions):
                 try:
                     function.weight = function[TIME_RATIO] / max_ratio
-                except UndefinedEvent:
+                except (ZeroDivisionError, UndefinedEvent):
                     pass
     
     def dump(self):
