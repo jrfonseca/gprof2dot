@@ -707,11 +707,19 @@ class Profile(Object):
                 if callee_id not in self.functions or call.weight is not None and call.weight < edge_thres:
                     del function.calls[callee_id]
 
-        # compute the weights for coloring
         if colour_nodes_by_selftime:
+            weights = []
             for function in compat_itervalues(self.functions):
                 try:
-                    function.weight = function[TIME_RATIO]
+                    weights.append(function[TIME_RATIO])
+                except UndefinedEvent:
+                    pass
+            max_ratio = max(weights)
+
+            # apply rescaled weights for coloriung
+            for function in compat_itervalues(self.functions):
+                try:
+                    function.weight = function[TIME_RATIO] / max_ratio
                 except UndefinedEvent:
                     pass
     
