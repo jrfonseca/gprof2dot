@@ -670,7 +670,7 @@ class Profile(Object):
                     call[outevent] = ratio(call[inevent], self[inevent])
         self[outevent] = 1.0
 
-    def prune(self, node_thres, edge_thres):
+    def prune(self, node_thres, edge_thres, colour_nodes_by_selftime):
         """Prune the profile"""
 
         # compute the prune ratios
@@ -706,6 +706,22 @@ class Profile(Object):
                 call = function.calls[callee_id]
                 if callee_id not in self.functions or call.weight is not None and call.weight < edge_thres:
                     del function.calls[callee_id]
+
+        if colour_nodes_by_selftime:
+            weights = []
+            for function in compat_itervalues(self.functions):
+                try:
+                    weights.append(function[TIME_RATIO])
+                except UndefinedEvent:
+                    pass
+            max_ratio = max(weights or [1])
+
+            # apply rescaled weights for coloriung
+            for function in compat_itervalues(self.functions):
+                try:
+                    function.weight = function[TIME_RATIO] / max_ratio
+                except (ZeroDivisionError, UndefinedEvent):
+                    pass
     
     def dump(self):
         for function in compat_itervalues(self.functions):
@@ -3148,6 +3164,11 @@ def main():
         dest="strip", default=False,
         help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
     optparser.add_option(
+        '--colour-nodes-by-selftime',
+        action="store_true",
+        dest="colour_nodes_by_selftime", default=False,
+        help="colour nodes by self time, rather than by total time (sum of self and descendants)")
+    optparser.add_option(
         '-w', '--wrap',
         action="store_true",
         dest="wrap", default=False,
@@ -3231,7 +3252,7 @@ def main():
         dot.show_function_events.append(SAMPLES)
 
     profile = profile
-    profile.prune(options.node_thres/100.0, options.edge_thres/100.0)
+    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.colour_nodes_by_selftime)
 
     if options.root:
         rootId = profile.getFunctionId(options.root)
