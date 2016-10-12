@@ -8,7 +8,7 @@
 #
 # See also:
 # - https://code.google.com/archive/p/jrfonseca/issues/19
-# - http://docs.python.org/2/distutils/packageindex.html
+# - https://docs.python.org/2/distutils/packageindex.html
 #
 
 import sys
@@ -16,7 +16,7 @@ from setuptools import setup
 
 setup(
     name='gprof2dot',
-    version='2015.12.01',
+    version='2016.10.12',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
     url='https://github.com/jrfonseca/gprof2dot',
