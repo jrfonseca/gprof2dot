@@ -3272,10 +3272,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-else:
-    # Importing this module is unsupported.  It more robust and equally easy to
-    # do
-    #
-    #   subprocess.call([sys.executable, 'gprof2dot.py', ...])
-    #
-    raise Exception('using gprof2dot.py as a module is unsupported')
