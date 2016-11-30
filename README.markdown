@@ -9,11 +9,11 @@ It can:
     * [Valgrind's callgrind tool](http://valgrind.org/docs/manual/cl-manual.html)
     * [oprofile](http://oprofile.sourceforge.net/)
     * [sysprof](http://www.daimi.au.dk/~sandmann/sysprof/)
-    * [xperf](http://msdn.microsoft.com/en-us/performance/cc825801.aspx)
+    * [xperf](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/test/wpt/index)
     * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
     * [Very Sleepy](http://www.codersnotes.com/sleepy/)
     * [python profilers](http://docs.python.org/2/library/profile.html#profile-stats)
-    * [Java's HPROF](http://java.sun.com/developer/technicalArticles/Programming/HPROF.html)
+    * [Java's HPROF](http://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html)
     * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
   * prune nodes and edges below a certain threshold;
   * use an heuristic to propagate time inside mutually recursive functions;
@@ -185,7 +185,7 @@ The hotshot profiler does not include a main function. Use the [hotshotmain.py](
 
 ### Java HPROF
 
-See [Russell Power's blog post](http://rjpower.org/wordpress/java-profiling/) for details.
+See [Russell Power's blog post](http://rjp.io/2012/07/03/java-profiling/) for details.
 
 ## Output
 
