@@ -185,6 +185,9 @@ The hotshot profiler does not include a main function. Use the [hotshotmain.py](
 
 ### Java HPROF
 
+    java -agentlib:hprof=cpu=samples ...
+    gprof2dot.py -f hprof java.hprof.txt | dot -Tpng -o output.png
+
 See [Russell Power's blog post](http://rjp.io/2012/07/03/java-profiling/) for details.
 
 ## Output
