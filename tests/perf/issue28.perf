@@ -1,0 +1,109 @@
+perf 12426 136526.798940:          1 cycles:ppp: 
+	    7fffab39798b perf_event_exec+0x800054e0213b ([kernel.kallsyms])
+	    7fffab43d4cf setup_new_exec+0x800054e0206f ([kernel.kallsyms])
+	    7fffab495a2d load_elf_binary+0x800054e0238d ([kernel.kallsyms])
+	    7fffab43bb44 search_binary_handler+0x800054e020a4 ([kernel.kallsyms])
+	    7fffab43d1f5 do_execveat_common.isra.35+0x800054e02565 ([kernel.kallsyms])
+	    7fffab43d66a sys_execve+0x800054e0203a ([kernel.kallsyms])
+	    7fffab205b9e do_syscall_64+0x800054e0205e ([kernel.kallsyms])
+	    7fffaba9c125 return_from_SYSCALL_64+0x800054e02000 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+perf 12426 136526.798946:          1 cycles:ppp: 
+	    7fffab20e72b intel_pmu_handle_irq+0x800054e0221b ([kernel.kallsyms])
+	    7fffab20785c perf_event_nmi_handler+0x800054e0202c ([kernel.kallsyms])
+	    7fffab2334da nmi_handle+0x800054e0206a ([kernel.kallsyms])
+	    7fffab233a63 default_do_nmi+0x800054e02053 ([kernel.kallsyms])
+	    7fffab233c0c do_nmi+0x800054e020ec ([kernel.kallsyms])
+	    7fffaba9d781 end_repeat_nmi+0x800054e0201a ([kernel.kallsyms])
+	    7fffab43d4cf setup_new_exec+0x800054e0206f ([kernel.kallsyms])
+	    7fffab495a2d load_elf_binary+0x800054e0238d ([kernel.kallsyms])
+	    7fffab43bb44 search_binary_handler+0x800054e020a4 ([kernel.kallsyms])
+	    7fffab43d1f5 do_execveat_common.isra.35+0x800054e02565 ([kernel.kallsyms])
+	    7fffab43d66a sys_execve+0x800054e0203a ([kernel.kallsyms])
+	    7fffab205b9e do_syscall_64+0x800054e0205e ([kernel.kallsyms])
+	    7fffaba9c125 return_from_SYSCALL_64+0x800054e02000 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+perf 12426 136526.798948:          6 cycles:ppp: 
+	    7fffab238f93 native_sched_clock+0x800054e02033 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+perf 12426 136526.798951:         85 cycles:ppp: 
+	    7fffab238f93 native_sched_clock+0x800054e02033 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+perf 12426 136526.798953:       1150 cycles:ppp: 
+	    7fffab238f93 native_sched_clock+0x800054e02033 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+perf 12426 136526.798955:      19020 cycles:ppp: 
+	    7fffab38e713 perf_iterate_ctx+0x800054e02063 ([kernel.kallsyms])
+	    7fffab3978c3 perf_event_exec+0x800054e02073 ([kernel.kallsyms])
+	    7fffab43d4cf setup_new_exec+0x800054e0206f ([kernel.kallsyms])
+	    7fffab495a2d load_elf_binary+0x800054e0238d ([kernel.kallsyms])
+	    7fffab43bb44 search_binary_handler+0x800054e020a4 ([kernel.kallsyms])
+	    7fffab43d1f5 do_execveat_common.isra.35+0x800054e02565 ([kernel.kallsyms])
+	    7fffab43d66a sys_execve+0x800054e0203a ([kernel.kallsyms])
+	    7fffab205b9e do_syscall_64+0x800054e0205e ([kernel.kallsyms])
+	    7fffaba9c125 return_from_SYSCALL_64+0x800054e02000 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+issue28 12426 136526.798963:     305736 cycles:ppp: 
+	    7fffab3e7c16 move_page_tables+0x800054e024e6 ([kernel.kallsyms])
+	    7fffab43aece shift_arg_pages+0x800054e020be ([kernel.kallsyms])
+	    7fffab43b1da setup_arg_pages+0x800054e0220a ([kernel.kallsyms])
+	    7fffab495ad5 load_elf_binary+0x800054e02435 ([kernel.kallsyms])
+	    7fffab43bb44 search_binary_handler+0x800054e020a4 ([kernel.kallsyms])
+	    7fffab43d1f5 do_execveat_common.isra.35+0x800054e02565 ([kernel.kallsyms])
+	    7fffab43d66a sys_execve+0x800054e0203a ([kernel.kallsyms])
+	    7fffab205b9e do_syscall_64+0x800054e0205e ([kernel.kallsyms])
+	    7fffaba9c125 return_from_SYSCALL_64+0x800054e02000 ([kernel.kallsyms])
+	    7f5c8a79bb97 [unknown] ([unknown])
+
+issue28 12426 136526.799067:    1489290 cycles:ppp: 
+	    7fffab3d4a89 vma_interval_tree_remove+0x800054e02129 ([kernel.kallsyms])
+	    7fffab3e2b93 vma_adjust+0x800054e021e3 ([kernel.kallsyms])
+	    7fffab3e32d4 __split_vma.isra.32+0x800054e02134 ([kernel.kallsyms])
+	    7fffab3e3de4 split_vma+0x800054e02024 ([kernel.kallsyms])
+	    7fffab3e704b mprotect_fixup+0x800054e021db ([kernel.kallsyms])
+	    7fffab3e730e do_mprotect_pkey+0x800054e0222e ([kernel.kallsyms])
+	    7fffab3e7413 sys_mprotect+0x800054e02013 ([kernel.kallsyms])
+	    7fffaba9c076 entry_SYSCALL_64_fastpath+0x800054e0201e ([kernel.kallsyms])
+	           1b5d7 mprotect+0xffff00c9ad8f4007 (/lib/x86_64-linux-gnu/ld-2.24.so)
+	               0 [unknown] ([unknown])
+	             340 [unknown] ([unknown])
+	    7ffd5a497833 [unknown] ([unknown])
+
+issue28 12426 136526.799584:    1750159 cycles:ppp: 
+	             711 _Zpl6BlivetS_+0xffff53ccb9a82001 (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	             776 main+0xffff53ccb9a82052 (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
+issue28 12426 136526.800261:    1637107 cycles:ppp: 
+	             779 main+0xffff53ccb9a82055 (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
+issue28 12426 136526.800875:    1357371 cycles:ppp: 
+	             771 main+0xffff53ccb9a8204d (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
+issue28 12426 136526.801329:    1256773 cycles:ppp: 
+	             71a _Zpl6BlivetS_+0xffff53ccb9a8200a (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	             776 main+0xffff53ccb9a82052 (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
+issue28 12426 136526.801750:    1186047 cycles:ppp: 
+	             776 main+0xffff53ccb9a82052 (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
+issue28 12426 136526.802148:    1125810 cycles:ppp: 
+	             75e main+0xffff53ccb9a8203a (/home/jfonseca/projects/gprof2dot/tests/src/issue28)
+	           203f1 __libc_start_main+0xffff00c9ae0820f1 (/lib/x86_64-linux-gnu/libc-2.24.so)
+	 60e258d4c544155 [unknown] ([unknown])
+
