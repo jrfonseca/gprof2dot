@@ -2005,6 +2005,7 @@ class PerfParser(LineParser):
         return callchain
 
     call_re = re.compile(r'^\s+(?P<address>[0-9a-fA-F]+)\s+(?P<symbol>.*)\s+\((?P<module>.*)\)$')
+    addr2_re = re.compile(r'\+0x[0-9a-fA-F]+$')
 
     def parse_call(self):
         line = self.consume()
@@ -2014,6 +2015,11 @@ class PerfParser(LineParser):
             return None
 
         function_name = mo.group('symbol')
+
+        # If present, amputate program counter from function name.
+        if function_name:
+            function_name = re.sub(self.addr2_re, '', function_name)
+
         if not function_name or function_name == '[unknown]':
             function_name = mo.group('address')
 
