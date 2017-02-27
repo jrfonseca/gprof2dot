@@ -2979,6 +2979,15 @@ class DotWriter:
                 function_name = function.stripped_name()
             else:
                 function_name = function.name
+
+            # dot can't parse quoted strings longer than YY_BUF_SIZE, which
+            # defaults to 16K. But some annotated C++ functions (e.g., boost,
+            # https://github.com/jrfonseca/gprof2dot/issues/30) can exceed that
+            MAX_FUNCTION_NAME = 4096
+            if len(function_name) >= MAX_FUNCTION_NAME:
+                sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
+                function_name = function_name[:MAX_FUNCTION_NAME - 1] + unichr(0x2026)
+
             if self.wrap:
                 function_name = self.wrap_function_name(function_name)
             labels.append(function_name)
