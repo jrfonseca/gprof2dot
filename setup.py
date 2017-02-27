@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # The purpose of this script is to enable uploading gprof2dot.py to the Python
 # Package Index, which can be easily done by doing:
