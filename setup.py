@@ -7,11 +7,10 @@
 #   python setup.py sdist upload
 #
 # See also:
-# - https://code.google.com/archive/p/jrfonseca/issues/19
+# - https://packaging.python.org/distributing/
 # - https://docs.python.org/2/distutils/packageindex.html
 #
 
-import sys
 from setuptools import setup
 
 setup(
@@ -29,4 +28,24 @@ setup(
 
     py_modules=['gprof2dot'],
     entry_points=dict(console_scripts=['gprof2dot=gprof2dot:main']),
+
+    # https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Development Status :: 6 - Mature',
+
+        'Environment :: Console',
+
+        'Intended Audience :: Developers',
+
+        'Operating System :: OS Independent',
+
+        'License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)',
+
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+
+        'Topic :: Software Development',
+    ],
 )
