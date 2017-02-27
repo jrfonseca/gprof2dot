@@ -2572,11 +2572,11 @@ class SleepyParser(Parser):
                 name = database_name
                 break
 
-        return self.database.open(name, 'rU')
+        return self.database.open(name, 'r')
 
     def parse_symbols(self):
         for line in self.openEntry('Symbols.txt'):
-            line = line.decode('UTF-8')
+            line = line.decode('UTF-8').rstrip('\r\n')
 
             mo = self._symbol_re.match(line)
             if mo:
@@ -2596,7 +2596,7 @@ class SleepyParser(Parser):
 
     def parse_callstacks(self):
         for line in self.openEntry('Callstacks.txt'):
-            line = line.decode('UTF-8')
+            line = line.decode('UTF-8').rstrip('\r\n')
 
             fields = line.split()
             samples = float(fields[0])
