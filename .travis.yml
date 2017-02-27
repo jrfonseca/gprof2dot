@@ -7,10 +7,12 @@ addons:
     packages:
     - graphviz
 
+# https://docs.travis-ci.com/user/languages/python/
 python:
 - "2.7"
 - "3.4"
 - "3.5"
+- "3.6"
 
 script:
 - python tests/test.py
