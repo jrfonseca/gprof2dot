@@ -1,5 +1,7 @@
 language: python
 
+# https://docs.travis-ci.com/user/trusty-ci-environment
+dist: trusty
 sudo: false
 
 addons:
