@@ -49,13 +49,6 @@ else:
     def compat_keys(x): return x.keys()
 
 
-try:
-    # Debugging helper module
-    import debug
-except ImportError:
-    pass
-
-
 
 ########################################################################
 # Model
