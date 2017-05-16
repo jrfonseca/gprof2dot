@@ -51,7 +51,7 @@ else:
 
 try:
     # Debugging helper module
-    import debug
+    from gprof2dot import debug
 except ImportError:
     pass
 
