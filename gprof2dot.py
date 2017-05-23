@@ -31,7 +31,7 @@ import xml.parsers.expat
 import collections
 import locale
 import json
-
+import fnmatch
 
 # Python 2.x/3.x compatibility
 if sys.version_info[0] >= 3:
@@ -324,32 +324,43 @@ class Profile(Object):
                 for member in cycle.functions:
                     sys.stderr.write("\tFunction %s\n" % member.name)
 
-    def prune_root(self, root):
+    def prune_root(self, roots, depth=-1):
         visited = set()
-        frontier = set([root])
+        frontier = set([(root_node, depth) for root_node in roots])
         while len(frontier) > 0:
-            node = frontier.pop()
+            node, node_depth = frontier.pop()
             visited.add(node)
+            if node_depth == 0:
+                continue
             f = self.functions[node]
-            newNodes = f.calls.keys()
-            frontier = frontier.union(set(newNodes) - visited)
+            newNodes = set(f.calls.keys()) - visited
+            frontier = frontier.union({(new_node, node_depth - 1) for new_node in newNodes})
         subtreeFunctions = {}
         for n in visited:
-            subtreeFunctions[n] = self.functions[n]
+            f = self.functions[n]
+            newCalls = {}
+            for c in f.calls.keys():
+                if c in visited:
+                    newCalls[c] = f.calls[c]
+            f.calls = newCalls
+            subtreeFunctions[n] = f
         self.functions = subtreeFunctions
 
-    def prune_leaf(self, leaf):
+    def prune_leaf(self, leafs, depth=-1):
         edgesUp = collections.defaultdict(set)
         for f in self.functions.keys():
             for n in self.functions[f].calls.keys():
                 edgesUp[n].add(f)
         # build the tree up
         visited = set()
-        frontier = set([leaf])
+        frontier = set([(leaf_node, depth) for leaf_node in leafs])
         while len(frontier) > 0:
-            node = frontier.pop()
+            node, node_depth = frontier.pop()
             visited.add(node)
-            frontier = frontier.union(edgesUp[node] - visited)
+            if node_depth == 0:
+                continue
+            newNodes = edgesUp[node] - visited
+            frontier = frontier.union({(new_node, node_depth - 1) for new_node in newNodes})
         downTree = set(self.functions.keys())
         upTree = visited
         path = downTree.intersection(upTree)
@@ -364,6 +375,9 @@ class Profile(Object):
             pathFunctions[n] = f
         self.functions = pathFunctions
 
+    def getFunctionIds(self, funcName):
+        function_names = {v.name: k for (k, v) in self.functions.items()}
+        return [function_names[name] for name in fnmatch.filter(function_names.keys(), funcName)]
 
     def getFunctionId(self, funcName):
         for f in self.functions:
@@ -667,7 +681,7 @@ class Profile(Object):
                     call[outevent] = ratio(call[inevent], self[inevent])
         self[outevent] = 1.0
 
-    def prune(self, node_thres, edge_thres, colour_nodes_by_selftime):
+    def prune(self, node_thres, edge_thres, path, colour_nodes_by_selftime):
         """Prune the profile"""
 
         # compute the prune ratios
@@ -696,6 +710,12 @@ class Profile(Object):
             if function.weight is not None:
                 if function.weight < node_thres:
                     del self.functions[function_id]
+        
+        # prune file paths
+        for function_id in compat_keys(self.functions):
+            function = self.functions[function_id]
+            if not function.filename.startswith(path):
+                del self.functions[function_id]
 
         # prune the egdes
         for function in compat_itervalues(self.functions):
@@ -3201,11 +3221,21 @@ def main():
         type="string",
         dest="leaf", default="",
         help="prune call graph to show only ancestors of specified leaf function")
+    optparser.add_option(
+        '--depth',
+        type="int",
+        dest="depth", default=-1,
+        help="prune call graph to show only descendants or ancestors until specified depth")
     # add a new option to control skew of the colorization curve
     optparser.add_option(
         '--skew',
         type="float", dest="theme_skew", default=1.0,
         help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
+    # add option for filtering by file path
+    optparser.add_option(
+        '-p', '--path',
+        type="string", dest="filter_path", default='',
+        help="Filter all modules not in a specified path")
     (options, args) = optparser.parse_args(sys.argv[1:])
 
     if len(args) > 1 and options.format != 'pstats':
@@ -3264,20 +3294,20 @@ def main():
         dot.show_function_events.append(SAMPLES)
 
     profile = profile
-    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.colour_nodes_by_selftime)
+    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_path, options.colour_nodes_by_selftime)
 
     if options.root:
-        rootId = profile.getFunctionId(options.root)
-        if not rootId:
+        rootIds = profile.getFunctionIds(options.root)
+        if not rootIds:
             sys.stderr.write('root node ' + options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
             sys.exit(1)
-        profile.prune_root(rootId)
+        profile.prune_root(rootIds, options.depth)
     if options.leaf:
-        leafId = profile.getFunctionId(options.leaf)
-        if not leafId:
+        leafIds = profile.getFunctionIds(options.leaf)
+        if not leafIds:
             sys.stderr.write('leaf node ' + options.leaf + ' not found (maybe already pruned : try -e0 -n0 flags)\n')
             sys.exit(1)
-        profile.prune_leaf(leafId)
+        profile.prune_leaf(leafIds, options.depth)
 
     dot.graph(profile, theme)
 
