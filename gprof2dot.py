@@ -681,7 +681,7 @@ class Profile(Object):
                     call[outevent] = ratio(call[inevent], self[inevent])
         self[outevent] = 1.0
 
-    def prune(self, node_thres, edge_thres, path, colour_nodes_by_selftime):
+    def prune(self, node_thres, edge_thres, paths, colour_nodes_by_selftime):
         """Prune the profile"""
 
         # compute the prune ratios
@@ -714,7 +714,7 @@ class Profile(Object):
         # prune file paths
         for function_id in compat_keys(self.functions):
             function = self.functions[function_id]
-            if not function.filename.startswith(path):
+            if paths and not any(function.filename.startswith(path) for path in paths):
                 del self.functions[function_id]
 
         # prune the egdes
@@ -3233,8 +3233,8 @@ def main():
         help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
     # add option for filtering by file path
     optparser.add_option(
-        '-p', '--path',
-        type="string", dest="filter_path", default='',
+        '-p', '--path', action="append",
+        type="string", dest="filter_paths",
         help="Filter all modules not in a specified path")
     (options, args) = optparser.parse_args(sys.argv[1:])
 
@@ -3294,7 +3294,7 @@ def main():
         dot.show_function_events.append(SAMPLES)
 
     profile = profile
-    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_path, options.colour_nodes_by_selftime)
+    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths, options.colour_nodes_by_selftime)
 
     if options.root:
         rootIds = profile.getFunctionIds(options.root)
