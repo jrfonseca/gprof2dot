@@ -1647,6 +1647,10 @@ class CallgrindParser(LineParser):
         # read lookahead
         self.readline()
 
+        # skip '# callgrind format' if any
+        if self.lookahead() == '# callgrind format':
+            self.readline()
+
         self.parse_key('version')
         self.parse_key('creator')
         while self.parse_part():
