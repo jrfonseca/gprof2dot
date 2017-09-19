@@ -24,7 +24,7 @@ deploy:
   provider: pypi
   user: jrfonseca
   password:
-    secure: HAPllYFYXrSl5IPMIoWHCTuk6rxxqoHDZWudtctiVxBGlaBftya08nFi+jfWHZOE3cofoqnkXUV+9qtMG9aLW8wVtZeABy33KQe2MPppn3dNFN/UKKskXBsFpSeFy8xAwwcWou1okrg9kFfZpxwb272e0MHrtMsXjNmpodrUAhM=
+    secure: CUjvaGfHLJFZKjiDnOEv+bPlze0kqQRzs2SZbooeeqW/MS2URVUaaThabF8c3KPl//V2WrFyAaI6vqIHe78fEvTZKerKHhMfjIlP//DlbwkQoXIuHLHeFuIGo3WsZLUqOdOficEArDK7kGM4LdWvDzQa1SHktvGbZyojISGv2tM=
   on:
     tags: true
     distributions: sdist
