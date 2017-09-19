@@ -1647,10 +1647,6 @@ class CallgrindParser(LineParser):
         # read lookahead
         self.readline()
 
-        # skip '# callgrind format' if any
-        if self.lookahead() == '# callgrind format':
-            self.readline()
-
         self.parse_key('version')
         self.parse_key('creator')
         while self.parse_part():
@@ -1928,6 +1924,13 @@ class CallgrindParser(LineParser):
         filename = self.positions.get('cfi', '') 
         function = self.positions.get('cfn', '') 
         return self.make_function(module, filename, function)
+
+    def readline(self):
+        # Override LineParser.readline to ignore comment lines
+        while True:
+            LineParser.readline(self)
+            if self.eof() or not self.lookahead().startswith('#'):
+                break
 
 
 class PerfParser(LineParser):
