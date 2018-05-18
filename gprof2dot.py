@@ -714,7 +714,9 @@ class Profile(Object):
         # prune file paths
         for function_id in compat_keys(self.functions):
             function = self.functions[function_id]
-            if paths and not any(function.filename.startswith(path) for path in paths):
+            if paths and function.filename and not any(function.filename.startswith(path) for path in paths):
+                del self.functions[function_id]
+            elif paths and function.module and not any((function.module.find(path)>-1) for path in paths):
                 del self.functions[function_id]
 
         # prune the egdes
