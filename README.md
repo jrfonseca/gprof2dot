@@ -176,13 +176,6 @@ See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/201
     python -m cProfile -o output.pstats path/to/your/script arg1 arg2
     gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
 
-### python hotshot profiler
-
-The hotshot profiler does not include a main function. Use the [hotshotmain.py](hotshotmain.py) script instead.
-
-    hotshotmain.py -o output.pstats path/to/your/script arg1 arg2
-    gprof2dot.py -f pstats output.pstats | dot -Tpng -o output.png
-
 ### Java HPROF
 
     java -agentlib:hprof=cpu=samples ...
