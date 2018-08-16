@@ -32,6 +32,7 @@ import collections
 import locale
 import json
 import fnmatch
+import tempfile
 
 # Python 2.x/3.x compatibility
 if sys.version_info[0] >= 3:
@@ -48,13 +49,22 @@ else:
     def compat_itervalues(x): return x.itervalues()
     def compat_keys(x): return x.keys()
 
-
-
-########################################################################
+##################################################################
 # Model
 
 
 MULTIPLICATION_SIGN = unichr(0xd7)
+ELLIPSIS = unichr(0x2026)
+try:
+    tempfile.TemporaryFile(mode="w").write(MULTIPLICATION_SIGN)
+    SYSTEM_SUPPORTS_UNICODE = True
+except UnicodeEncodeError as e:
+    SYSTEM_SUPPORTS_UNICODE = False
+    unichr = lambda c : "0x%02x" % int(c)
+    MULTIPLICATION_SIGN = "\\x"
+    ELLIPSIS = "..."
+finally:
+    pass
 
 
 def times(x):
@@ -3010,7 +3020,7 @@ class DotWriter:
             MAX_FUNCTION_NAME = 4096
             if len(function_name) >= MAX_FUNCTION_NAME:
                 sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
-                function_name = function_name[:MAX_FUNCTION_NAME - 1] + unichr(0x2026)
+                function_name = function_name[:MAX_FUNCTION_NAME - 1] + ELLIPSIS 
 
             if self.wrap:
                 function_name = self.wrap_function_name(function_name)
