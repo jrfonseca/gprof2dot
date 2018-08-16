@@ -61,7 +61,7 @@ try:
 except UnicodeEncodeError as e:
     SYSTEM_SUPPORTS_UNICODE = False
     unichr = lambda c : "0x%02x" % int(c)
-    MULTIPLICATION_SIGN = "x"
+    MULTIPLICATION_SIGN = "\\x"
     ELLIPSIS = "..."
 finally:
     pass
