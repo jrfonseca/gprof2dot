@@ -55,6 +55,7 @@ else:
 
 
 MULTIPLICATION_SIGN = unichr(0xd7)
+ELLIPSIS = unichr(0x2026)
 
 
 def times(x):
@@ -3010,7 +3011,7 @@ class DotWriter:
             MAX_FUNCTION_NAME = 4096
             if len(function_name) >= MAX_FUNCTION_NAME:
                 sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
-                function_name = function_name[:MAX_FUNCTION_NAME - 1] + unichr(0x2026)
+                function_name = function_name[:MAX_FUNCTION_NAME - 1] + ELLIPSIS 
 
             if self.wrap:
                 function_name = self.wrap_function_name(function_name)
