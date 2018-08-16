@@ -32,6 +32,7 @@ import collections
 import locale
 import json
 import fnmatch
+import tempfile
 
 # Python 2.x/3.x compatibility
 if sys.version_info[0] >= 3:
@@ -48,14 +49,22 @@ else:
     def compat_itervalues(x): return x.itervalues()
     def compat_keys(x): return x.keys()
 
-
-
-########################################################################
+##################################################################
 # Model
 
 
 MULTIPLICATION_SIGN = unichr(0xd7)
 ELLIPSIS = unichr(0x2026)
+try:
+    tempfile.TemporaryFile(mode="w").write(MULTIPLICATION_SIGN)
+    SYSTEM_SUPPORTS_UNICODE = True
+except UnicodeEncodeError as e:
+    SYSTEM_SUPPORTS_UNICODE = False
+    unichr = lambda c : "0x%02x" % int(c)
+    MULTIPLICATION_SIGN = "x"
+    ELLIPSIS = "..."
+finally:
+    pass
 
 
 def times(x):
