@@ -2065,6 +2065,274 @@ class PerfParser(LineParser):
         return function
 
 
+class DmdParser(LineParser):
+    """Parser for dmd trace.log output.
+
+    It expects output generated with
+
+        dmd -profile programme
+        gprof2dot.py --format=dmd trace.log
+    """
+    def __init__(self, fp):
+        # XXX not adapted for dmd yet
+        Parser.__init__(self)
+        self.fp = fp
+        self.functions = {}
+        self.cycles = {}
+
+    def readline(self):
+        line = self.fp.readline()
+        if not line:
+            sys.stderr.write('error: unexpected end of file\n')
+            sys.exit(1)
+        line = line.rstrip('\r\n')
+        return line
+
+    _int_re = re.compile(r'^-?\d+$')
+    _float_re = re.compile(r'^\d+\.\d+$')
+
+    @staticmethod
+    def demangle(mangled) :
+        try :
+            from sh import ddemangle
+            return ddemangle(_in=mangled).strip()
+        except ImportError :
+            return mangled.replace('__','\n')
+
+    def translate(self, mo):
+        """Extract a structure from a match object, while translating the types in the process."""
+        attrs = {}
+        groupdict = mo.groupdict()
+        for name, value in groupdict.iteritems():
+            if value is None:
+                value = None
+            elif self._int_re.match(value):
+                value = int(value)
+                if value < 0 : value *= -1
+            elif self._float_re.match(value):
+                value = float(value)
+            attrs[name] = (value)
+        attrs['index'] = attrs['name']
+        attrs['name'] = self.demangle(attrs['index'])
+        attrs['called'] = attrs['calls']
+        attrs['called_self'] = None
+        attrs['cycle'] = None # XXX until I implement cycles
+        return Struct(attrs)
+
+    # XXX not adapted for dmd yet
+    _cg_ignore_re = re.compile(
+        # spontaneous
+        r'^\s+<spontaneous>\s*$|'
+        # internal calls (such as "mcount")
+        r'^.*\((\d+)\)$'
+    )
+
+    _cg_primary_re = re.compile(
+        r'(?P<name>\S*\S*?)' +
+        r'\s+(?P<calls>\d+)' +
+        r'\s+(?P<t_total>\d+)' +
+        r'\s+(?P<self>-?\d+)'
+    )
+
+    _cg_parent_re = re.compile(
+        r'^\s+(?P<calls>\d+)' +
+        r'\s+(?P<name>\S*\S*?)' # XXX why \S*\S* ?
+    )
+
+    _cg_child_re = _cg_parent_re
+
+    # XXX not adapted for dmd yet
+    _cg_cycle_header_re = re.compile(
+        r'^\[(?P<index>\d+)\]?' + 
+        r'\s+(?P<percentage_time>\d+\.\d+)' + 
+        r'\s+(?P<self>\d+\.\d+)' + 
+        r'\s+(?P<descendants>\d+\.\d+)' + 
+        r'\s+(?:(?P<called>\d+)(?:\+(?P<called_self>\d+))?)?' + 
+        r'\s+<cycle\s(?P<cycle>\d+)\sas\sa\swhole>' +
+        r'\s\[(\d+)\]$'
+    )
+
+    # XXX not adapted for dmd yet
+    _cg_cycle_member_re = re.compile(
+        r'^\s+(?P<self>\d+\.\d+)?' + 
+        r'\s+(?P<descendants>\d+\.\d+)?' + 
+        r'\s+(?P<called>\d+)(?:\+(?P<called_self>\d+))?' + 
+        r'\s+(?P<name>\S.*?)' +
+        r'(?:\s+<cycle\s(?P<cycle>\d+)>)?' +
+        r'\s\[(?P<index>\d+)\]$'
+    )
+
+    _cg_sep_re = re.compile(r'^--+$')
+    _cg_header_re = _cg_sep_re
+
+    def parse_function_entry(self, lines):
+        parents = []
+        children = []
+
+        while True:
+            if not lines:
+                sys.stderr.write('warning: unexpected end of entry\n')
+            line = lines.pop(0)
+            if len(line.split()) == 4:
+                break
+
+            # read function parent line
+            mo = self._cg_parent_re.match(line)
+            if not mo:
+                if self._cg_ignore_re.match(line):
+                    continue
+                sys.stderr.write('warning: unrecognized call graph entry (6): %r\n' % line)
+            else:
+                parent = self.translate(mo)
+                parents.append(parent)
+
+        # read primary line
+        mo = self._cg_primary_re.match(line)
+        if not mo:
+            sys.stderr.write('warning: unrecognized call graph entry (7): %r.\npattern is: %s.\n' % (line, self._cg_primary_re.pattern))
+            return
+        else:
+            function = self.translate(mo)
+
+        while lines:
+            line = lines.pop(0)
+            
+            # read function subroutine line
+            mo = self._cg_child_re.match(line)
+            if not mo:
+                if self._cg_ignore_re.match(line):
+                    continue
+                sys.stderr.write('warning: unrecognized call graph entry (8): %r\n' % line)
+            else:
+                child = self.translate(mo)
+                children.append(child)
+        
+        function.parents = parents
+        function.children = children
+
+        self.functions[function.index] = function
+
+    def parse_cycle_entry(self, lines):
+        # XXX not adapted for dmd yet
+
+        # read cycle header line
+        line = lines[0]
+        mo = self._cg_cycle_header_re.match(line)
+        if not mo:
+            sys.stderr.write('warning: unrecognized call graph entry (9): %r\n' % line)
+            return
+        cycle = self.translate(mo)
+
+        # read cycle member lines
+        cycle.functions = []
+        for line in lines[1:]:
+            mo = self._cg_cycle_member_re.match(line)
+            if not mo:
+                sys.stderr.write('warning: unrecognized call graph entry (10): %r\n' % line)
+                continue
+            call = self.translate(mo)
+            cycle.functions.append(call)
+        
+        self.cycles[cycle.cycle] = cycle
+
+    def parse_cg_entry(self, lines):
+        # XXX cycles not taken into account...
+        if lines[0].startswith("["):
+            self.parse_cycle_entry(lines)
+        else:
+            self.parse_function_entry(lines)
+
+    def parse_cg(self):
+        """Parse the call graph."""
+
+        # skip call graph header
+        while not self._cg_header_re.match(self.readline()):
+            pass
+        line = self.readline()
+        while self._cg_header_re.match(line):
+            line = self.readline()
+
+        # process call graph entries
+        entry_lines = []
+        while True:
+            if self._cg_sep_re.match(line):
+                self.parse_cg_entry(entry_lines)
+                entry_lines = []
+            elif not line:
+                self.parse_cg_entry(entry_lines)
+                break
+            else:
+                entry_lines.append(line)            
+            line = self.readline()
+    
+    def parse(self):
+        self.parse_cg()
+        self.fp.close()
+
+        profile = Profile()
+        profile[TIME] = 0.0
+        
+        # XXX not adapted for dmd yet
+
+        cycles = {}
+        for index in self.cycles.iterkeys():
+            cycles[index] = Cycle()
+
+        for entry in self.functions.itervalues():
+            # populate the function
+            function = Function(entry.index, entry.name)
+            function[TIME] = entry.self
+            if entry.called is not None:
+                function.called = entry.called
+            if entry.called_self is not None:
+                call = Call(entry.index)
+                call[CALLS] = entry.called_self
+                function.called += entry.called_self
+            
+            # populate the function calls
+            for child in entry.children:
+                call = Call(child.index)
+                
+                assert child.called is not None
+                call[CALLS] = child.called
+
+                if child.index not in self.functions:
+                    # NOTE: functions that were never called but were discovered by gprof's 
+                    # static call graph analysis dont have a call graph entry so we need
+                    # to add them here
+                    missing = Function(child.index, child.name)
+                    function[TIME] = 0.0
+                    function.called = 0
+                    profile.add_function(missing)
+
+                function.add_call(call)
+
+            profile.add_function(function)
+
+            if entry.cycle is not None:
+                try:
+                    cycle = cycles[entry.cycle]
+                except KeyError:
+                    sys.stderr.write('warning: <cycle %u as a whole> entry missing\n' % entry.cycle) 
+                    cycle = Cycle()
+                    cycles[entry.cycle] = cycle
+                cycle.add_function(function)
+
+            profile[TIME] = profile[TIME] + function[TIME]
+
+        for cycle in cycles.itervalues():
+            profile.add_cycle(cycle)
+
+        # Compute derived events
+        profile.validate()
+        profile.ratio(TIME_RATIO, TIME)
+        profile.call_ratios(CALLS)
+        profile.integrate(TOTAL_TIME, TIME)
+        profile.ratio(TOTAL_TIME_RATIO, TOTAL_TIME)
+
+        return profile
+
+
 class OprofileParser(LineParser):
     """Parser for oprofile callgraph output.
     
@@ -2746,6 +3014,7 @@ class PstatsParser:
 formats = {
     "axe": AXEParser,
     "callgrind": CallgrindParser,
+    "dmd": DmdParser,
     "hprof": HProfParser,
     "json": JsonParser,
     "oprofile": OprofileParser,
