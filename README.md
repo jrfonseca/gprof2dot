@@ -47,11 +47,15 @@ This is the result from the [example data](http://linuxgazette.net/100/misc/vina
   * Download and install [Python for Windows](http://www.python.org/download/)
   * Download and install [Graphviz for Windows](http://www.graphviz.org/Download_windows.php)
 
-## Debian/Ubuntu users
+## Linux users
 
-  * Run:
+On Debian/Ubuntu run:
 
-        apt-get install python graphviz
+    apt-get install python3 graphviz
+
+On RedHat/Fedora run
+
+    yum install python3 graphviz
 
 
 # Download
