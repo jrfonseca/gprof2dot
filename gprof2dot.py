@@ -719,7 +719,7 @@ class Profile(Object):
             elif paths and function.module and not any((function.module.find(path)>-1) for path in paths):
                 del self.functions[function_id]
 
-        # prune the egdes
+        # prune the edges
         for function in compat_itervalues(self.functions):
             for callee_id in compat_keys(function.calls):
                 call = function.calls[callee_id]
