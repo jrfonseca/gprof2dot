@@ -1,7 +1,6 @@
 language: python
 
-# https://docs.travis-ci.com/user/trusty-ci-environment
-dist: trusty
+dist: xenial
 sudo: false
 
 addons:
@@ -12,9 +11,8 @@ addons:
 # https://docs.travis-ci.com/user/languages/python/
 python:
 - "2.7"
-- "3.4"
-- "3.5"
 - "3.6"
+- "3.7"
 
 script:
 - python tests/test.py
