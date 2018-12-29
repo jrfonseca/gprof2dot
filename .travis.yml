@@ -1,7 +1,7 @@
 language: python
 
 dist: xenial
-sudo: false
+sudo: required
 
 addons:
   apt:
