@@ -3170,6 +3170,9 @@ def main():
     formatNames = list(formats.keys())
     formatNames.sort()
 
+    themeNames = list(themes.keys())
+    themeNames.sort()
+
     optparser = optparse.OptionParser(
         usage="\n\t%prog [options] [file] ...")
     optparser.add_option(
@@ -3196,9 +3199,9 @@ def main():
         help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
     optparser.add_option(
         '-c', '--colormap',
-        type="choice", choices=('color', 'pink', 'gray', 'bw', 'print'),
+        type="choice", choices=themeNames,
         dest="theme", default="color",
-        help="color map: color, pink, gray, bw, or print [default: %default]")
+        help="color map: %s [default: %%default]" % naturalJoin(themeNames))
     optparser.add_option(
         '-s', '--strip',
         action="store_true",
