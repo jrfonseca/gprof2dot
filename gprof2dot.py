@@ -149,6 +149,14 @@ TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
 TOTAL_TIME = Event("Total time", 0.0, fail)
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
+labels = {
+    'self-time': TIME,
+    'self-time-percentage': TIME_RATIO,
+    'total-time': TOTAL_TIME,
+    'total-time-percentage': TOTAL_TIME_RATIO,
+}
+defaultLabelNames = ['total-time-percentage', 'self-time-percentage']
+
 totalMethod = 'callratios'
 
 
@@ -3173,6 +3181,9 @@ def main():
     themeNames = list(themes.keys())
     themeNames.sort()
 
+    labelNames = list(labels.keys())
+    labelNames.sort()
+
     optparser = optparse.OptionParser(
         usage="\n\t%prog [options] [file] ...")
     optparser.add_option(
@@ -3227,6 +3238,13 @@ def main():
         action="store_true",
         dest="show_samples", default=False,
         help="show function samples")
+    optparser.add_option(
+        '--label', metavar='MEASURE',
+        type='choice', choices=labelNames,
+        action='append',
+        dest='labels',
+        help="measurements to on show the node (can be specified multiple times): %s [default: %s]" % (
+            naturalJoin(labelNames), ', '.join(defaultLabelNames)))
     # add option to create subtree or show paths
     optparser.add_option(
         '-z', '--root',
@@ -3307,6 +3325,9 @@ def main():
     dot = DotWriter(output)
     dot.strip = options.strip
     dot.wrap = options.wrap
+
+    labelNames = options.labels or defaultLabelNames
+    dot.show_function_events = [labels[l] for l in labelNames]
     if options.show_samples:
         dot.show_function_events.append(SAMPLES)
 
