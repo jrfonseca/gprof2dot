@@ -3239,10 +3239,10 @@ def main():
         dest="show_samples", default=False,
         help="show function samples")
     optparser.add_option(
-        '--label', metavar='MEASURE',
+        '--node-label', metavar='MEASURE',
         type='choice', choices=labelNames,
         action='append',
-        dest='labels',
+        dest='node_labels',
         help="measurements to on show the node (can be specified multiple times): %s [default: %s]" % (
             naturalJoin(labelNames), ', '.join(defaultLabelNames)))
     # add option to create subtree or show paths
@@ -3326,7 +3326,7 @@ def main():
     dot.strip = options.strip
     dot.wrap = options.wrap
 
-    labelNames = options.labels or defaultLabelNames
+    labelNames = options.node_labels or defaultLabelNames
     dot.show_function_events = [labels[l] for l in labelNames]
     if options.show_samples:
         dot.show_function_events.append(SAMPLES)
