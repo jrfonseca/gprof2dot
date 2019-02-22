@@ -16,15 +16,3 @@ python:
 
 script:
 - python tests/test.py
-
-# https://docs.travis-ci.com/user/deployment/pypi/
-deploy:
-  provider: pypi
-  user: jrfonseca
-  password:
-    secure: CUjvaGfHLJFZKjiDnOEv+bPlze0kqQRzs2SZbooeeqW/MS2URVUaaThabF8c3KPl//V2WrFyAaI6vqIHe78fEvTZKerKHhMfjIlP//DlbwkQoXIuHLHeFuIGo3WsZLUqOdOficEArDK7kGM4LdWvDzQa1SHktvGbZyojISGv2tM=
-  on:
-    tags: true
-    distributions: sdist
-    repo: jrfonseca/gprof2dot
-  skip_upload_docs: true
