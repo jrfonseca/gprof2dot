@@ -1,0 +1,40 @@
+version: 2
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - test-3.7
+      - test-2.7
+      - deploy:
+          requires:
+            - test-3.7
+            - test-2.7
+          filters:
+            tags:
+              only: /[0-9]+(\.[0-9]+)*/
+            branches:
+              ignore: /.*/
+jobs:
+  test-3.7: &test-template
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      - checkout
+      - run: sudo apt-get update
+      - run: sudo apt-get install --no-install-recommends graphviz
+      - run: python --version
+      - run: python tests/test.py
+  test-2.7:
+    <<: *test-template
+    docker:
+      - image: circleci/python:2.7
+  deploy:
+    docker:
+      - image: circleci/python:3.7
+    steps:
+      # https://circleci.com/blog/continuously-deploying-python-packages-to-pypi-with-circleci/
+      - checkout
+      - run: echo "$PYPIRC" | base64 --decode > ~/.pypirc
+      - run: python setup.py sdist
+      - run: pip install --user twine
+      - run: python -m twine upload dist/*
