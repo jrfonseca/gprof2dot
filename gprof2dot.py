@@ -858,6 +858,7 @@ class JsonParser(Parser):
             except KeyError:
                 pass
             function[SAMPLES] = 0
+            function.called = 0
             profile.add_function(function)
 
         for event in obj['events']:
@@ -866,6 +867,10 @@ class JsonParser(Parser):
             for functionIndex in event['callchain']:
                 function = profile.functions[functionIndex]
                 callchain.append(function)
+
+            # increment the call count of the first in the callchain
+            function = profile.functions[event['callchain'][0]]
+            function.called = function.called + 1
 
             cost = event['cost'][0]
 
