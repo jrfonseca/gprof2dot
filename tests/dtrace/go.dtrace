@@ -1,0 +1,639 @@
+CPU     ID                    FUNCTION:NAME
+  1  29684                        :tick-60s 
+
+
+              pd-server`runtime.exitsyscallfast
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.timerproc+0x92
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.exitsyscallfast_pidle+0x73
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_pthread.dylib`pthread_mutex_unlock+0x7
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semawakeup+0x53
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.timerproc+0xa2
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.mallocgc+0x36
+              pd-server`runtime.newobject+0x38
+              pd-server`github.com/pkg/errors.Errorf+0x8c
+              pd-server`github.com/pingcap/pd/table.DecodeBytes+0x382
+              pd-server`github.com/pingcap/pd/table.Key.MetaOrTable+0x4c
+              pd-server`github.com/pingcap/pd/table.(*tableNamespaceClassifier).GetRegionNamespace+0xa9
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestStoreToAddReplica+0x5af
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestPeerToAddReplica+0x74
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).Check+0x3c2
+              pd-server`github.com/pingcap/pd/server.(*coordinator).checkRegion+0x478
+              pd-server`github.com/pingcap/pd/server.(*coordinator).patrolRegions+0x464
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.wirep+0x49
+              pd-server`runtime.acquirep+0x2b
+              pd-server`runtime.exitsyscallfast_pidle+0x96
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`__commpage_gettimeofday_internal+0x1
+              pd-server`runtime.walltime_trampoline+0xb
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.walltime+0x4c
+              pd-server`time.now+0x22
+              pd-server`time.Now+0x26
+              pd-server`go.uber.org/zap.(*Logger).check+0x37
+              pd-server`go.uber.org/zap.(*Logger).Debug+0x44
+              pd-server`github.com/pingcap/log.Debug+0xc1
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestPeerToAddReplica+0x15d
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).Check+0x3c2
+              pd-server`github.com/pingcap/pd/server.(*coordinator).checkRegion+0x478
+              pd-server`github.com/pingcap/pd/server.(*coordinator).patrolRegions+0x464
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`__semwait_signal+0xa
+              libsystem_c.dylib`usleep+0x35
+              pd-server`runtime.usleep_trampoline+0xb
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.usleep+0x33
+              pd-server`runtime.sysmon+0xdb
+              pd-server`runtime.mstart1+0xc4
+              pd-server`runtime.mstart+0x67
+              pd-server`runtime.mstart_stub+0x2e
+              libsystem_pthread.dylib`_pthread_start+0x42
+              libsystem_pthread.dylib`thread_start+0xd
+                1
+
+              pd-server`runtime.unlock+0x57
+              pd-server`runtime.exitsyscallfast_pidle+0x83
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_pthread.dylib`pthread_mutex_unlock+0x41
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semawakeup+0x53
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.systemstack
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.newobject+0x25
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestStoreToAddReplica+0x61
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestPeerToAddReplica+0x74
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).Check+0x3c2
+              pd-server`github.com/pingcap/pd/server.(*coordinator).checkRegion+0x478
+              pd-server`github.com/pingcap/pd/server.(*coordinator).patrolRegions+0x464
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`mach_absolute_time+0x3d
+              pd-server`runtime.nanotime_trampoline+0xc
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.nanotime+0x44
+              pd-server`runtime.notetsleep_internal+0x140
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.exitsyscall+0x1da
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`write+0xa
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`syscall.syscall+0x53
+              pd-server`syscall.write+0x67
+              pd-server`internal/poll.(*FD).Write+0x179
+              pd-server`net.(*netFD).Write+0x4f
+              pd-server`net.(*conn).Write+0x69
+              pd-server`github.com/soheilhy/cmux.(*MuxConn).Write+0x5a
+              pd-server`google.golang.org/grpc/internal/transport.(*bufWriter).Flush+0x8d
+              pd-server`google.golang.org/grpc/internal/transport.(*loopyWriter).run+0x19f
+              pd-server`google.golang.org/grpc/internal/transport.newHTTP2Server.func2+0xcb
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`cerror_nocancel+0x6
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.asmcgocall+0x4f
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semasleep+0x126
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`github.com/pingcap/pd/server.(*clusterInfo).GetRegionStores+0x21
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestStoreToAddReplica+0x2ea
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestPeerToAddReplica+0x74
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).Check+0x3c2
+              pd-server`github.com/pingcap/pd/server.(*coordinator).checkRegion+0x478
+              pd-server`github.com/pingcap/pd/server.(*coordinator).patrolRegions+0x464
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`__psynch_cvwait+0xa
+              pd-server`runtime.pthread_cond_wait_trampoline+0x10
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_cond_wait+0x3b
+              pd-server`runtime.semasleep+0x85
+              pd-server`runtime.notesleep+0xe0
+              pd-server`runtime.stopm+0xc1
+              pd-server`runtime.findrunnable+0x54a
+              pd-server`runtime.schedule+0x21c
+              pd-server`runtime.park_m+0xa1
+              pd-server`runtime.mcall+0x5b
+              pd-server`runtime.chanrecv+0x2ea
+              pd-server`runtime.chanrecv1+0x2b
+              pd-server`github.com/pingcap/pd/server.StartMonitor+0xf2
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.asmcgocall+0x5c
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semasleep+0x126
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.pthread_mutex_lock_trampoline
+              pd-server`runtime.pthread_mutex_lock+0x3b
+              pd-server`runtime.semawakeup+0x2a
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.casgstatus+0x1c4
+              pd-server`runtime.exitsyscall+0x1a4
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.exitsyscall+0x4
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.notetsleep_internal+0x112
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.siftdownTimer+0x144
+              pd-server`runtime.timerproc+0x1b2
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.procyield+0x6
+              pd-server`sync.(*Mutex).Lock+0x22d
+              pd-server`context.removeChild+0x5e
+              pd-server`context.(*timerCtx).cancel+0xf8
+              pd-server`context.WithDeadline.func3+0x47
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).deleteStream+0x48
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).finishStream+0x42
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).WriteStatus+0x4fe
+              pd-server`google.golang.org/grpc.(*Server).processUnaryRPC+0x9f9
+              pd-server`google.golang.org/grpc.(*Server).handleStream+0xda6
+              pd-server`google.golang.org/grpc.(*Server).serveStreams.func1.1+0x9f
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.notetsleep_internal+0x11f
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_pthread.dylib`_pthread_cond_wait+0x305
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_pthread.dylib`pthread_cond_signal
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_cond_signal+0x3b
+              pd-server`runtime.semawakeup+0x6c
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.releasep+0x79
+              pd-server`runtime.findrunnable+0x43f
+              pd-server`runtime.schedule+0x21c
+              pd-server`runtime.goexit0+0x1dd
+              pd-server`runtime.mcall+0x5b
+              pd-server`runtime.goexit+0x6
+                1
+
+              pd-server`runtime.casgstatus
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.pthread_mutex_unlock+0x1f
+              pd-server`runtime.semasleep+0x126
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.semasleep+0x112
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`DYLD-STUB$$pthread_mutex_unlock
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semasleep+0x126
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.(*semaRoot).queue+0xa8
+              pd-server`runtime.semacquire1+0x18e
+              pd-server`sync.runtime_SemacquireMutex+0x3d
+              pd-server`sync.(*Mutex).Lock+0x109
+              pd-server`context.removeChild+0x5e
+              pd-server`context.(*timerCtx).cancel+0xf8
+              pd-server`context.WithDeadline.func3+0x47
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).deleteStream+0x48
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).finishStream+0x42
+              pd-server`google.golang.org/grpc/internal/transport.(*http2Server).WriteStatus+0x4fe
+              pd-server`google.golang.org/grpc.(*Server).processUnaryRPC+0x9f9
+              pd-server`google.golang.org/grpc.(*Server).handleStream+0xda6
+              pd-server`google.golang.org/grpc.(*Server).serveStreams.func1.1+0x9f
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.step+0x69
+              pd-server`runtime.pcvalue+0x159
+              pd-server`runtime.funcspdelta+0x5f
+              pd-server`runtime.gentraceback+0x1888
+              pd-server`runtime.copystack+0x25b
+              pd-server`runtime.newstack+0x2fd
+              pd-server`runtime.morestack+0x8f
+              pd-server`google.golang.org/grpc.(*Server).processUnaryRPC+0x22a
+              pd-server`google.golang.org/grpc.(*Server).handleStream+0xda6
+              pd-server`google.golang.org/grpc.(*Server).serveStreams.func1.1+0x9f
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleep+0x66
+              pd-server`runtime.sysmon+0x484
+              pd-server`runtime.mstart1+0xc4
+              pd-server`runtime.mstart+0x67
+              pd-server`runtime.mstart_stub+0x2e
+              libsystem_pthread.dylib`_pthread_start+0x42
+              libsystem_pthread.dylib`thread_start+0xd
+                1
+
+              pd-server`runtime.timerproc+0x278
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.libcCall+0x70
+              pd-server`runtime.usleep+0x33
+              pd-server`runtime.sysmon+0xdb
+              pd-server`runtime.mstart1+0xc4
+              pd-server`runtime.mstart+0x67
+              pd-server`runtime.mstart_stub+0x2e
+              libsystem_pthread.dylib`_pthread_start+0x42
+              libsystem_pthread.dylib`thread_start+0xd
+                1
+
+              pd-server`runtime.libcCall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleep+0x66
+              pd-server`runtime.sysmon+0x484
+              pd-server`runtime.mstart1+0xc4
+              pd-server`runtime.mstart+0x67
+              pd-server`runtime.mstart_stub+0x2e
+              libsystem_pthread.dylib`_pthread_start+0x42
+              libsystem_pthread.dylib`thread_start+0xd
+                1
+
+              pd-server`runtime.libcCall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.notetsleep_internal+0x177
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`runtime.pthread_cond_signal_trampoline+0xd
+              pd-server`runtime.pthread_cond_signal+0x3b
+              pd-server`runtime.semawakeup+0x6c
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                1
+
+              pd-server`github.com/prometheus/client_golang/prometheus.(*CounterVec).WithLabelValues+0x2e
+              pd-server`github.com/pingcap/pd/server/schedule.FilterTarget+0x24b
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaSelector).SelectTarget+0xb4
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestStoreToAddReplica+0x4a8
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).selectBestPeerToAddReplica+0x74
+              pd-server`github.com/pingcap/pd/server/schedule.(*ReplicaChecker).Check+0x3c2
+              pd-server`github.com/pingcap/pd/server.(*coordinator).checkRegion+0x478
+              pd-server`github.com/pingcap/pd/server.(*coordinator).patrolRegions+0x464
+              pd-server`runtime.goexit+0x1
+                1
+
+              libsystem_kernel.dylib`mach_absolute_time
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.nanotime+0x44
+              pd-server`runtime.notetsleep_internal+0x140
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              pd-server`runtime.exitsyscallfast+0x5a
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              pd-server`runtime.asmcgocall+0x79
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              pd-server`runtime.asmcgocall+0x8e
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              libsystem_kernel.dylib`__psynch_cvsignal
+              pd-server`runtime.pthread_cond_signal_trampoline+0xc
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_cond_signal+0x3b
+              pd-server`runtime.semawakeup+0x6c
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              libsystem_pthread.dylib`pthread_mutex_unlock
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_mutex_unlock+0x3b
+              pd-server`runtime.semasleep+0x126
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                2
+
+              libsystem_kernel.dylib`__error
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                3
+
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                3
+
+              pd-server`runtime.nanotime_trampoline+0x15
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.nanotime+0x44
+              pd-server`runtime.notetsleep_internal+0x140
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                3
+
+              libsystem_kernel.dylib`mach_absolute_time+0x12
+              pd-server`runtime.nanotime_trampoline+0xc
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.nanotime+0x44
+              pd-server`runtime.notetsleep_internal+0x140
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                4
+
+              libsystem_kernel.dylib`cerror_nocancel+0xf
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                4
+
+              pd-server`runtime.notetsleep_internal+0x122
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                4
+
+              libsystem_pthread.dylib`_pthread_cond_updateval+0x41
+              libsystem_pthread.dylib`_pthread_cond_wait+0x344
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                4
+
+              pd-server`runtime.procyield+0x6
+              pd-server`runtime.exitsyscallfast_pidle+0x31
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                5
+
+              pd-server`runtime.nanotime+0x17
+              pd-server`runtime.notetsleep_internal+0x140
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+                9
+
+              libsystem_kernel.dylib`__psynch_cvwait+0xa
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleep+0x66
+              pd-server`runtime.sysmon+0x484
+              pd-server`runtime.mstart1+0xc4
+              pd-server`runtime.mstart+0x67
+              pd-server`runtime.mstart_stub+0x2e
+              libsystem_pthread.dylib`_pthread_start+0x42
+              libsystem_pthread.dylib`thread_start+0xd
+               15
+
+              libsystem_kernel.dylib`__psynch_cvwait+0xa
+              pd-server`runtime.pthread_cond_timedwait_relative_np_trampoline+0x14
+              pd-server`runtime.asmcgocall+0x70
+              pd-server`runtime.pthread_cond_timedwait_relative_np+0x3b
+              pd-server`runtime.semasleep+0x10d
+              pd-server`runtime.notetsleep_internal+0x10d
+              pd-server`runtime.notetsleepg+0x61
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+               26
+
+              libsystem_kernel.dylib`__psynch_cvsignal+0xa
+              pd-server`runtime.pthread_cond_signal_trampoline+0xc
+              pd-server`runtime.asmcgocall+0xad
+              pd-server`runtime.pthread_cond_signal+0x3b
+              pd-server`runtime.semawakeup+0x6c
+              pd-server`runtime.notewakeup+0x59
+              pd-server`runtime.exitsyscallfast_pidle+0xcf
+              pd-server`runtime.exitsyscallfast.func1+0x41
+              pd-server`runtime.systemstack+0x66
+              pd-server`runtime.exitsyscall+0x65
+              pd-server`runtime.notetsleepg+0x6f
+              pd-server`runtime.timerproc+0x2ea
+              pd-server`runtime.goexit+0x1
+               40

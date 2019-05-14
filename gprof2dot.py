@@ -2750,6 +2750,151 @@ class PstatsParser:
 
         return self.profile
 
+class DtraceParser(LineParser):
+    """Parser for linux perf callgraph output.
+
+    It expects output generated with
+        
+        # Refer to https://github.com/brendangregg/FlameGraph#dtrace
+        # 60 seconds of user-level stacks, including time spent in-kernel, for PID 12345 at 97 Hertz     
+        sudo dtrace -x ustackframes=100 -n 'profile-97 /pid == 12345/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.user_stacks
+        
+        # The dtrace output
+        gprof2dot.py -f dtrace out.user_stacks
+
+        # Notice: sometimes, the dtrace outputs format may be latin-1, and gprof2dot will fail to parse it.
+        # To solve this problem, you should use iconv to convert to UTF-8 explicitly.
+        # TODO: add an encoding flag to tell gprof2dot how to decode the profile file.
+        iconv -f ISO-8859-1 -t UTF-8 out.user_stacks | gprof2dot.py -f dtrace
+    """
+
+    def __init__(self, infile):
+        LineParser.__init__(self, infile)
+        self.profile = Profile()
+
+    def readline(self):
+        # Override LineParser.readline to ignore comment lines
+        while True:
+            LineParser.readline(self)
+            if self.eof():
+                break
+
+            line = self.lookahead().strip()
+            if line.startswith('CPU'):
+                # The format likes:
+                # CPU     ID                    FUNCTION:NAME
+                #   1  29684                        :tick-60s 
+                # Skip next line
+                LineParser.readline(self)
+            elif not line == '':
+                break
+
+
+    def parse(self):
+        # read lookahead
+        self.readline()
+
+        profile = self.profile
+        profile[SAMPLES] = 0
+        while not self.eof():
+            self.parse_event()
+
+        # compute derived data
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        if totalMethod == "callratios":
+            # Heuristic approach.  TOTAL_SAMPLES is unused.
+            profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+        elif totalMethod == "callstacks":
+            # Use the actual call chains for functions.
+            profile[TOTAL_SAMPLES] = profile[SAMPLES]
+            profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
+            # Then propagate that total time to the calls.
+            for function in compat_itervalues(profile.functions):
+                for call in compat_itervalues(function.calls):
+                    if call.ratio is not None:
+                        callee = profile.functions[call.callee_id]
+                        call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
+        else:
+            assert False
+
+        return profile
+
+    def parse_event(self):
+        if self.eof():
+            return
+
+        callchain, count = self.parse_callchain()
+        if not callchain:
+            return
+
+        callee = callchain[0]
+        callee[SAMPLES] += count
+        self.profile[SAMPLES] += count
+
+        for caller in callchain[1:]:
+            try:
+                call = caller.calls[callee.id]
+            except KeyError:
+                call = Call(callee.id)
+                call[SAMPLES2] = count
+                caller.add_call(call)
+            else:
+                call[SAMPLES2] += count
+
+            callee = caller
+
+        # Increment TOTAL_SAMPLES only once on each function.
+        stack = set(callchain)
+        for function in stack:
+            function[TOTAL_SAMPLES] += count
+
+
+    def parse_callchain(self):
+        callchain = []
+        count = 0
+        while self.lookahead():
+            function, count = self.parse_call()
+            if function is None:
+                break
+            callchain.append(function)
+        return callchain, count
+
+    call_re = re.compile(r'^\s+(?P<module>.*)`(?P<symbol>.*)')
+    addr2_re = re.compile(r'\+0x[0-9a-fA-F]+$')
+
+    def parse_call(self):
+        line = self.consume()
+        mo = self.call_re.match(line)
+        if not mo:
+            # The line must be the stack count
+            return None, int(line.strip())
+
+        function_name = mo.group('symbol')
+
+        # If present, amputate program counter from function name.
+        if function_name:
+            function_name = re.sub(self.addr2_re, '', function_name)
+
+        # if not function_name or function_name == '[unknown]':
+        #     function_name = mo.group('address')
+
+        module = mo.group('module')
+
+        function_id = function_name + ':' + module
+
+        try:
+            function = self.profile.functions[function_id]
+        except KeyError:
+            function = Function(function_id, function_name)
+            function.module = os.path.basename(module)
+            function[SAMPLES] = 0
+            function[TOTAL_SAMPLES] = 0
+            self.profile.add_function(function)
+
+        return function, None
 
 formats = {
     "axe": AXEParser,
@@ -2763,6 +2908,7 @@ formats = {
     "sleepy": SleepyParser,
     "sysprof": SysprofParser,
     "xperf": XPerfParser,
+    "dtrace": DtraceParser,
 }
 
 
