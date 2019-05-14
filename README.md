@@ -15,6 +15,7 @@ It can:
     * [python profilers](http://docs.python.org/2/library/profile.html#profile-stats)
     * [Java's HPROF](http://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html)
     * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
+    * [DTrace](https://en.wikipedia.org/wiki/DTrace)
   * prune nodes and edges below a certain threshold;
   * use an heuristic to propagate time inside mutually recursive functions;
   * use color efficiently to draw attention to hot-spots;
@@ -189,6 +190,16 @@ See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/201
     gprof2dot.py -f hprof java.hprof.txt | dot -Tpng -o output.png
 
 See [Russell Power's blog post](http://rjp.io/2012/07/03/java-profiling/) for details.
+
+### DTrace
+
+    dtrace -x ustackframes=100 -n 'profile-97 /pid == 12345/ { @[ustack()] = count(); } tick-60s { exit(0); }' -o out.user_stacks
+    gprof2dot.py -f dtrace out.user_stacks | dot -Tpng -o output.png
+
+    # Notice: sometimes, the dtrace outputs format may be latin-1, and gprof2dot will fail to parse it.
+    # To solve this problem, you should use iconv to convert to UTF-8 explicitly.
+    # TODO: add an encoding flag to tell gprof2dot how to decode the profile file.
+    iconv -f ISO-8859-1 -t UTF-8 out.user_stacks | gprof2dot.py -f dtrace
 
 ## Output
 

@@ -43,6 +43,7 @@ formats = [
     "sleepy",
     "sysprof",
     "xperf",
+    "dtrace",
 ]
 
 
