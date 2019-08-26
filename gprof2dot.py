@@ -3321,7 +3321,7 @@ def naturalJoin(values):
         return ''.join(values)
 
 
-def main():
+def main(argv=sys.argv[1:]):
     """Main program."""
 
     global totalMethod
@@ -3422,7 +3422,7 @@ def main():
         '-p', '--path', action="append",
         type="string", dest="filter_paths",
         help="Filter all modules not in a specified path")
-    (options, args) = optparser.parse_args(sys.argv[1:])
+    (options, args) = optparser.parse_args(argv)
 
     if len(args) > 1 and options.format != 'pstats':
         optparser.error('incorrect number of arguments')
