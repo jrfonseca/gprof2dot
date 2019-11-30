@@ -14,7 +14,7 @@ from setuptools import setup
 
 setup(
     name='gprof2dot',
-    version='2017.09.19',
+    version='2019.11.30',
     author='Jose Fonseca',
     author_email='jose.r.fonseca@gmail.com',
     url='https://github.com/jrfonseca/gprof2dot',
