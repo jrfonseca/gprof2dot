@@ -2916,9 +2916,105 @@ class DtraceParser(LineParser):
 
         return function, None
 
+
+class CollapseParser(LineParser):
+    """Parser for the output of stackcollapse
+
+    (from https://github.com/brendangregg/FlameGraph)
+    """
+
+    def __init__(self, infile):
+        LineParser.__init__(self, infile)
+        self.profile = Profile()
+
+    def parse(self):
+        profile = self.profile
+        profile[SAMPLES] = 0
+
+        self.readline()
+        while not self.eof():
+            self.parse_event()
+
+        # compute derived data
+        profile.validate()
+        profile.find_cycles()
+        profile.ratio(TIME_RATIO, SAMPLES)
+        profile.call_ratios(SAMPLES2)
+        if totalMethod == "callratios":
+            # Heuristic approach.  TOTAL_SAMPLES is unused.
+            profile.integrate(TOTAL_TIME_RATIO, TIME_RATIO)
+        elif totalMethod == "callstacks":
+            # Use the actual call chains for functions.
+            profile[TOTAL_SAMPLES] = profile[SAMPLES]
+            profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
+            # Then propagate that total time to the calls.
+            for function in compat_itervalues(profile.functions):
+                for call in compat_itervalues(function.calls):
+                    if call.ratio is not None:
+                        callee = profile.functions[call.callee_id]
+                        call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
+        else:
+            assert False
+
+        return profile
+
+    def parse_event(self):
+        line = self.consume()
+
+        stack, count = line.rsplit(' ',maxsplit=1)
+        count=int(count)
+        self.profile[SAMPLES] += count
+
+        calls = stack.split(';')
+        functions = [self._make_function(call) for call in calls]
+
+        functions[-1][SAMPLES] += count
+
+        # TOTAL_SAMPLES excludes loops
+        for func in set(functions):
+            func[TOTAL_SAMPLES] += count
+
+        # add call data
+        callee = functions[-1]
+        for caller in reversed(functions[:-1]):
+            call = caller.calls.get(callee.id)
+            if call is None:
+                call = Call(callee.id)
+                call[SAMPLES2] = 0
+                caller.add_call(call)
+            call[SAMPLES2] += count
+            callee = caller
+
+    call_re = re.compile(r'^(?P<func>[^ ]+) \((?P<file>.*):(?P<line>[0-9]+)\)$')
+
+    def _make_function(self, call):
+        """turn a call str into a Function
+
+        takes a call site, as found between semicolons in the input, and returns
+        a Function definition corresponding to that call site.
+        """
+        mo = self.call_re.match(call)
+        if mo:
+            name, module, line = mo.groups()
+            func_id = "%s:%s" % (module, name)
+        else:
+            name = func_id = call
+            module = None
+
+        func = self.profile.functions.get(func_id)
+        if func is None:
+            func = Function(func_id, name)
+            func.module = module
+            func[SAMPLES] = 0
+            func[TOTAL_SAMPLES] = 0
+            self.profile.add_function(func)
+        return func
+
+
 formats = {
     "axe": AXEParser,
     "callgrind": CallgrindParser,
+    "collapse": CollapseParser,
     "hprof": HProfParser,
     "json": JsonParser,
     "oprofile": OprofileParser,
