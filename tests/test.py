@@ -44,6 +44,7 @@ formats = [
     "sysprof",
     "xperf",
     "dtrace",
+    "dmd",
 ]
 
 

@@ -1,0 +1,33 @@
+------------------
+	   10	_Dmain
+	  266	_D7example3fibFmZm
+_D7example3fibFmZm	276	41256	41256
+	  266	_D7example3fibFmZm
+------------------
+	   10	_Dmain
+_D7example3sumFiiZi	10	12	12
+------------------
+	    1	_Dmain
+	    2	_D7example6child2FiZi
+_D7example6child1FiZi	3	54	54
+------------------
+	    1	_Dmain
+_D7example6child2FiZi	1	418	382
+	    2	_D7example6child1FiZi
+------------------
+_Dmain	0	45712	4008
+	   10	_D7example3fibFmZm
+	   10	_D7example3sumFiiZi
+	    1	_D7example6child1FiZi
+	    1	_D7example6child2FiZi
+
+======== Timer Is 3579545 Ticks/Sec, Times are in Microsecs ========
+
+  Num          Tree        Func        Per
+  Calls        Time        Time        Call
+
+    276       11525       11525          41     ulong example.fib(ulong)
+      1       12770        1119        1119     _Dmain
+      1         116         106         106     int example.child2(int)
+      3          15          15           5     int example.child1(int)
+     10           3           3           0     int example.sum(int, int)
