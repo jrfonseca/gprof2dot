@@ -2116,7 +2116,7 @@ class DmdParser(LineParser):
         """Extract a structure from a match object, while translating the types in the process."""
         attrs = {}
         groupdict = mo.groupdict()
-        for name, value in groupdict.iteritems():
+        for name, value in compat_iteritems(groupdict):
             if value is None:
                 value = None
             elif self._int_re.match(value):
@@ -2288,10 +2288,10 @@ class DmdParser(LineParser):
         # XXX not adapted for dmd yet
 
         cycles = {}
-        for index in self.cycles.iterkeys():
+        for index in self.cycles.keys():
             cycles[index] = Cycle()
 
-        for entry in self.functions.itervalues():
+        for entry in compat_itervalues(self.functions):
             # populate the function
             function = Function(entry.index, entry.name)
             function[TIME] = entry.self
@@ -2333,7 +2333,7 @@ class DmdParser(LineParser):
 
             profile[TIME] = profile[TIME] + function[TIME]
 
-        for cycle in cycles.itervalues():
+        for cycle in compat_itervalues(cycles):
             profile.add_cycle(cycle)
 
         # Compute derived events
