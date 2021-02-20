@@ -2685,7 +2685,7 @@ class PstatsParser:
             self.stats = pstats.Stats(*filename)
         except ValueError:
             if PYTHON_3:
-                sys.stderr.write('error: failed to load %s\n' % ', '.join(filename))
+                sys.stderr.write('error: failed to load %s, maybe they are in python 2 format?\n' % ', '.join(filename))
                 sys.exit(1)
             import hotshot.stats
             self.stats = hotshot.stats.load(filename[0])
