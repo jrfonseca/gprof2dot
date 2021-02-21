@@ -30,7 +30,7 @@ _gprof2dot_ currently fulfills my needs, and I have little or no time for its
 maintenance.  So I'm afraid that any requested features are unlikely to be
 implemented, and I might be slow processing issue reports or pull requests.
 
-[![CircleCI](https://circleci.com/gh/jrfonseca/gprof2dot/tree/master.svg?style=shield)](https://circleci.com/gh/jrfonseca/gprof2dot/tree/master)
+[![Build Status](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml)
 
 
 # Example
