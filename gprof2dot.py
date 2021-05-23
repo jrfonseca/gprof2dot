@@ -268,7 +268,14 @@ class Function(Object):
     def __repr__(self):
         return self.name
 
-
+    def dump(self, sep1=",\n\t", sep2=":=", sep3="\n"):
+        """ Returns as a string all information available in this Function object
+            separators sep1:between entries
+                       sep2:between attribute name and value, 
+                       sep3: inserted at end
+        """
+        return sep1.join("".join(k,sep2,v) for (k,v) in sorted(self.__dict__.items())) + sep3
+    
 class Cycle(Object):
     """A cycle made from recursive function calls."""
 
@@ -393,6 +400,26 @@ class Profile(Object):
                 return f
         return False
 
+    def printFunctionIds(self, selector=None, file=sys.stderr):
+        if selector is None or selector == "+":
+            v = ",\n".join(("%s:\t%s" % (kf,self.functions[kf].name)
+                            for kf in self.functions.keys()))
+        else:
+            if selector[0]=="%":
+                selector=selector[1:]
+                function_info={k:v for (k,v)
+                               in self.functions.items()
+                               if fnmatch.fnmatch(v.name,selector)}
+                v = ",\n".join( ("%s\t({k})\t(%s)::\n\t%s" % (v.name,type(v),v.dump())
+                                 for (k,v) in function_info.items()
+                                  ))
+                
+            else:
+                function_names = (v.name for v in self.functions.values())
+                v = ",\n".join( ( nm for nm in fnmatch.filter(function_names,selector )))
+            
+        file.write(v+"\n")
+        
     class _TarjanData:
         def __init__(self, order):
             self.order = order
@@ -3396,6 +3423,19 @@ def main(argv=sys.argv[1:]):
         dest='node_labels',
         help="measurements to on show the node (can be specified multiple times): %s [default: %s]" % (
             naturalJoin(labelNames), ', '.join(defaultLabelNames)))
+    # add option to show information on available entries ()
+    optparser.add_option(
+        '--list-functions',
+        type="string",
+        dest="list_functions", default=None,
+        help="""\
+list functions available for selection in -z or -l, requires selector argument 
+( use '+' to select all).
+Recall that the selector argument is used with Unix/Bash globbing/pattern matching,
+and that entries are formatted '<pkg>:<linenum>:<function>'. When argument starts 
+with '%', a dump of all available information is performed for selected entries,
+ after removal of leading '%'.
+""")
     # add option to create subtree or show paths
     optparser.add_option(
         '-z', '--root',
@@ -3484,7 +3524,11 @@ def main(argv=sys.argv[1:]):
 
     profile = profile
     profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths, options.color_nodes_by_selftime)
-
+    
+    if options.list_functions:
+        profile.printFunctionIds(selector=options.list_functions)
+        sys.exit(0)
+        
     if options.root:
         rootIds = profile.getFunctionIds(options.root)
         if not rootIds:
