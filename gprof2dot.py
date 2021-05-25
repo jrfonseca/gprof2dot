@@ -274,7 +274,7 @@ class Function(Object):
                        sep2:between attribute name and value, 
                        sep3: inserted at end
         """
-        return sep1.join(f"{k}{sep2}{v}" for (k,v) in sorted(self.__dict__.items())) + sep3
+        return sep1.join("".join(k,sep2,v) for (k,v) in sorted(self.__dict__.items())) + sep3
     
 class Cycle(Object):
     """A cycle made from recursive function calls."""
@@ -402,7 +402,7 @@ class Profile(Object):
 
     def printFunctionIds(self, selector=None, file=sys.stderr):
         if selector is None or selector == "+":
-            v = ",\n".join(( f"{kf}:\t{self.functions[kf].name}"
+            v = ",\n".join(("%s:\t%s" % (kf,self.functions[kf].name)
                             for kf in self.functions.keys()))
         else:
             if selector[0]=="%":
@@ -410,16 +410,15 @@ class Profile(Object):
                 function_info={k:v for (k,v)
                                in self.functions.items()
                                if fnmatch.fnmatch(v.name,selector)}
-                v = ",\n".join( ( f"{v.name}\t({k})\t({type(v)})::\n\t{v.dump()}"
-                                  for (k,v) in function_info.items()
+                v = ",\n".join( ("%s\t({k})\t(%s)::\n\t%s" % (v.name,type(v),v.dump())
+                                 for (k,v) in function_info.items()
                                   ))
                 
             else:
                 function_names = (v.name for v in self.functions.values())
-                v = ",\n".join( ( f"{nm}"
-                                  for nm in fnmatch.filter(function_names,selector )))
+                v = ",\n".join( ( nm for nm in fnmatch.filter(function_names,selector )))
             
-        print(v, file=file)
+        file.write(v+"\n")
         
     class _TarjanData:
         def __init__(self, order):
@@ -3426,9 +3425,9 @@ def main(argv=sys.argv[1:]):
             naturalJoin(labelNames), ', '.join(defaultLabelNames)))
     # add option to show information on available entries ()
     optparser.add_option(
-        '--listFns',
+        '--list-functions',
         type="string",
-        dest="listFns", default=None,
+        dest="list_functions", default=None,
         help="""\
 list functions available for selection in -z or -l, requires selector argument 
 ( use '+' to select all).
@@ -3526,8 +3525,8 @@ with '%', a dump of all available information is performed for selected entries,
     profile = profile
     profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths, options.color_nodes_by_selftime)
     
-    if options.listFns:
-        profile.printFunctionIds(selector=options.listFns)
+    if options.list_functions:
+        profile.printFunctionIds(selector=options.list_functions)
         sys.exit(0)
         
     if options.root:

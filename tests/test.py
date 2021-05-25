@@ -46,14 +46,21 @@ formats = [
     "dtrace",
 ]
 
+NB_RUN_FAILURES = 0
 
 def run(cmd):
+    global NB_RUN_FAILURES 
     sys.stderr.flush()
     sys.stdout.write(' '.join(cmd) + '\n')
     sys.stdout.flush()
     p = subprocess.Popen(cmd)
     try:
-        return p.wait()
+        retcde = p.wait()
+        if retcde !=0:
+            print("Run failed and returned %d" % retcde) 
+            sys.stdout.flush()
+            NB_RUN_FAILURES += 1           
+        return retcde
     except KeyboardInterrupt:
         p.terminate()
         raise
@@ -92,6 +99,15 @@ def main():
         action="store_true",
         dest="force", default=False,
         help="force reference generation")
+    
+    # Added this to avoid failing the test when a (hopefully small) number of formats
+    # result in error. This allows some flexibility in CI testing.
+    optparser.add_option(
+        '--max-acceptable',
+        type=int,
+        dest="max_acceptable",
+        help="max acceptable errors before we return an errcode and fail the test")
+
     (options, args) = optparser.parse_args(sys.argv[1:])
 
     if len(args):
@@ -123,6 +139,11 @@ def main():
                 else:
                     diff(ref_dot, dot)
 
-
+    if NB_RUN_FAILURES: 
+        print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
+        if options.max_acceptable is not None and NB_RUN_FAILURES > options.max_acceptable:
+            print("Too many errors: returning non-zero code")
+            sys.exit(1)
+        
 if __name__ == '__main__':
     main()
