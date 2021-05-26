@@ -401,7 +401,12 @@ class Profile(Object):
         return False
 
     def printFunctionIds(self, selector=None, file=sys.stderr):
-        if selector is None or selector == "+":
+        """ Print to file function entries selected by fnmatch.fnmatch like in 
+            method getFunctionIds, with following extensions:
+             - selector starts with "%": dump all information available
+             - selector is '+' or '-': select all function entries
+        """
+        if selector is None or selector in ("+", "*"):
             v = ",\n".join(("%s:\t%s" % (kf,self.functions[kf].name)
                             for kf in self.functions.keys()))
         else:
