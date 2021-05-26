@@ -1,0 +1,44 @@
+name: testOnly
+  #  This is a workflow that only does tests; a different workflow does
+  #  tests and build
+
+on:
+  workflow_dispatch:
+  #  manual launch only
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [2.7, 3.7]
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: sudo apt-get update -qq
+      - run: sudo apt-get install -qq -y --no-install-recommends graphviz
+      - run: python --version
+      - run: python -m pip install --upgrade pip setuptools wheel
+
+      # using --max-acceptable to reject tests if more error  happen.
+      #   Setting this parameter allows tests to be more stringent than those in
+      #       workflow  'build.yml'
+      #
+      #   On 05/30/21 (test data from commit 8bafa3c34683f of 02/21/21):
+      #   - Python3:allows 2 failures which correspond to the fact that with
+      #            included data, 2 python related tests fail; most probable
+      #            reason is that the data  was prepared with Python2
+      #   - Python2 :require all tests to pass
+      #
+      - run: |
+          if [ "${{ matrix.python-version }}" == '2.7'  ]; then
+             MAX_ACC=0
+          else
+             MAX_ACC=2
+          fi
+          python tests/test.py --max-acceptable=${MAX_ACC}

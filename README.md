@@ -240,24 +240,25 @@ The color of the nodes and edges varies according to the _total time %_ value. I
 ## Listing functions
 
 The flag `--list-functions` permits listing the function entries found in the `gprof` input.
+This is intended as a tool to prepare for utilisations with the `--leaf` (`-l`) 
+or `--root` (`-z`) flags.
 
-    ~~~
-    prof2dot.py -f pstats /tmp/myLog.profile  --list-functions "test_segments:*:*" 
+  ~~~
+  prof2dot.py -f pstats /tmp/myLog.profile  --list-functions "test_segments:*:*" 
     
-    test_segments:5:<module>,
-    test_segments:206:TestSegments,
-    test_segments:46:<lambda>
-    ~~~
+  test_segments:5:<module>,
+  test_segments:206:TestSegments,
+  test_segments:46:<lambda>
+  ~~~
 
-    The selector argument is used with Unix/Bash globbing/pattern matching, in the same
+  - The selector argument is used with Unix/Bash globbing/pattern matching, in the same
     fashion as performed by the `-l` and `-z` flags.
 	  
-    Entries are formatted '\<pkg\>:\<linenum\>:\<function\>'. 
+  - Entries are formatted '\<pkg\>:\<linenum\>:\<function\>'. 
 	
-	When selector argument starts with '%', a dump of all available information is 
+  - When selector argument starts with '%', a dump of all available information is 
 	performed for selected entries,   after removal of selector's leading '%'. If 
 	selector is "+" or "*", the full list of functions is printed.
-
 
 
 ## Frequently Asked Questions
