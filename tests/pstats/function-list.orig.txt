@@ -1,0 +1,40 @@
+0:	:0:execfile,
+1:	<string>:1:<module>,
+3:	pystone:33:<module>,
+4:	:0:range,
+5:	pystone:208:Proc8,
+6:	pystone:79:Proc0,
+7:	pystone:133:Proc1,
+9:	pystone:246:Func3,
+10:	pystone:184:Proc6,
+11:	pystone:149:Proc2,
+13:	profile:0:execfile('/usr/lib/python2.5/test/pystone.py'),
+14:	:0:ord,
+15:	pystone:170:Proc4,
+17:	pystone:67:pystones,
+18:	pystone:60:main,
+19:	pystone:45:__init__,
+20:	pystone:53:copy,
+21:	pystone:160:Proc3,
+23:	pystone:177:Proc5,
+24:	pystone:203:Proc7,
+25:	:0:chr,
+27:	pystone:229:Func2,
+28:	pystone:221:Func1
+
+:0:execfile
+:0:execfile
+
+pystone:208:Proc8,
+pystone:79:Proc0,
+pystone:133:Proc1,
+pystone:184:Proc6,
+pystone:149:Proc2,
+pystone:170:Proc4,
+pystone:160:Proc3,
+pystone:177:Proc5,
+pystone:203:Proc7
+pystone:133:Proc1,
+pystone:149:Proc2,
+pystone:170:Proc4,
+pystone:160:Proc3

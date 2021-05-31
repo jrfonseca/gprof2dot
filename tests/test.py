@@ -22,6 +22,7 @@ import optparse
 import os.path
 import sys
 import subprocess
+from   subprocess import PIPE
 import shutil
 
 
@@ -47,26 +48,29 @@ formats = [
 ]
 
 NB_RUN_FAILURES = 0
+NB_DIFF_FAILURES = 0
 
-def run(cmd):
-    global NB_RUN_FAILURES 
-    sys.stderr.flush()
+def run(cmd, stderr=None):
+    global NB_RUN_FAILURES
+    retcde = 0
     sys.stdout.write(' '.join(cmd) + '\n')
     sys.stdout.flush()
-    p = subprocess.Popen(cmd)
+    p = subprocess.Popen(cmd, stderr=stderr)
     try:
         retcde = p.wait()
         if retcde !=0:
-            print("Run failed and returned %d" % retcde) 
+            print("Run failed and returned %d" % retcde)
             sys.stdout.flush()
-            NB_RUN_FAILURES += 1           
-        return retcde
+            NB_RUN_FAILURES += 1
     except KeyboardInterrupt:
         p.terminate()
         raise
+    return retcde
+
 
 
 def diff(a, b):
+    global NB_DIFF_FAILURES
     if PYTHON_3:
         a_lines = open(a, 'rt', encoding='UTF-8').readlines()
         b_lines = open(b, 'rt', encoding='UTF-8').readlines()
@@ -74,13 +78,19 @@ def diff(a, b):
         a_lines = open(a, 'rt').readlines()
         b_lines = open(b, 'rt').readlines()
     diff_lines = difflib.unified_diff(a_lines, b_lines, fromfile=a, tofile=b)
-    sys.stdout.write(''.join(diff_lines))
+
+    diff_txt= ''.join(diff_lines)
+    if len(diff_txt) > 0:
+        NB_DIFF_FAILURES += 1
+        sys.stdout.write("Non empty diff for files %s and %s" %(a,b))
+    sys.stdout.write(diff_txt)
 
 
 def main():
     """Main program."""
 
     global formats
+    global NB_RUN_FAILURES, NB_DIFF_FAILURES
 
     test_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -99,7 +109,7 @@ def main():
         action="store_true",
         dest="force", default=False,
         help="force reference generation")
-    
+
     # Added this to avoid failing the test when a (hopefully small) number of formats
     # result in error. This allows some flexibility in CI testing.
     optparser.add_option(
@@ -123,7 +133,7 @@ def main():
                 profile = os.path.join(test_subdir, filename)
                 dot = os.path.join(test_subdir, name + '.dot')
                 png = os.path.join(test_subdir, name + '.png')
-                
+
                 ref_dot = os.path.join(test_subdir, name + '.orig.dot')
                 ref_png = os.path.join(test_subdir, name + '.orig.png')
 
@@ -139,11 +149,27 @@ def main():
                 else:
                     diff(ref_dot, dot)
 
-    if NB_RUN_FAILURES: 
+    # test the --list-functions flag only for pstats forma
+    profile = "tests/pstats/profile.pstats"
+    genfileNm = "tests/pstats/function-list.testgen.txt"
+    outfile =  open("%s" % genfileNm,"w")
+    for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*Proc", "*Proc*",
+                    "*Proc[1-4]" ):
+        run([ options.python, options.gprof2dot, '-f', "pstats",
+              "--list-functions="+flagVal, profile],
+            stderr=outfile) != 0
+
+    outfile.close()
+
+    diff(genfileNm, "tests/pstats/function-list.orig.txt")
+
+    if NB_RUN_FAILURES or NB_DIFF_FAILURES:
         print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
-        if options.max_acceptable is not None and NB_RUN_FAILURES > options.max_acceptable:
+        print("Nb diffs showing a difference: %d" % NB_DIFF_FAILURES)
+        if ( options.max_acceptable is not None
+             and NB_RUN_FAILURES + NB_DIFF_FAILURES > options.max_acceptable ):
             print("Too many errors: returning non-zero code")
             sys.exit(1)
-        
+
 if __name__ == '__main__':
     main()
