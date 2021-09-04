@@ -105,6 +105,12 @@ On RedHat/Fedora run
                             root function
       -l LEAF, --leaf=LEAF  prune call graph to show only ancestors of specified
                             leaf function
+	  --list-functions=SELECT list available functions as a help/preparation  for using the 
+	                        -l and -z flags. When selected the program only produces this
+							list. SELECT is used with the same matching syntax
+							as with -z(--root) and -l(--leaf). Special cases SELECT="+"
+							gets the full list, selector starting with "%" cause dump 
+							of all available information. 
       --skew=THEME_SKEW     skew the colorization curve.  Values < 1.0 give more
                             variety to lower percentages.  Values > 1.0 give less
                             variety to lower percentages
@@ -230,6 +236,30 @@ Where:
 Note that in recursive cycles, the _total time %_ in the node is the same for the whole functions in the cycle, and there is no _total time %_ figure in the edges inside the cycle, since such figure would make no sense.
 
 The color of the nodes and edges varies according to the _total time %_ value. In the default _temperature-like_ color-map, functions where most time is spent (hot-spots) are marked as saturated red, and functions where little time is spent are marked as dark blue. Note that functions where negligible or no time is spent do not appear in the graph by default.
+
+## Listing functions
+
+The flag `--list-functions` permits listing the function entries found in the `gprof` input.
+This is intended as a tool to prepare for utilisations with the `--leaf` (`-l`) 
+or `--root` (`-z`) flags.
+
+  ~~~
+  prof2dot.py -f pstats /tmp/myLog.profile  --list-functions "test_segments:*:*" 
+    
+  test_segments:5:<module>,
+  test_segments:206:TestSegments,
+  test_segments:46:<lambda>
+  ~~~
+
+  - The selector argument is used with Unix/Bash globbing/pattern matching, in the same
+    fashion as performed by the `-l` and `-z` flags.
+	  
+  - Entries are formatted '\<pkg\>:\<linenum\>:\<function\>'. 
+	
+  - When selector argument starts with '%', a dump of all available information is 
+	performed for selected entries,   after removal of selector's leading '%'. If 
+	selector is "+" or "*", the full list of functions is printed.
+
 
 ## Frequently Asked Questions
 
