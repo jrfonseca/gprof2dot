@@ -44,4 +44,5 @@ jobs:
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
         python -m build
+        twine check --strict dist/*
         twine upload dist/*
