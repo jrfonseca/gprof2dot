@@ -12,7 +12,7 @@ It can:
     * [xperf](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/test/wpt/index)
     * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
     * [Very Sleepy](http://www.codersnotes.com/sleepy/)
-    * [python profilers](http://docs.python.org/2/library/profile.html#profile-stats)
+    * [python profilers](http://docs.python.org/3/library/profile.html#profile-stats)
     * [Java's HPROF](http://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html)
     * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
     * [DTrace](https://en.wikipedia.org/wiki/DTrace)
@@ -31,6 +31,7 @@ maintenance.  So I'm afraid that any requested features are unlikely to be
 implemented, and I might be slow processing issue reports or pull requests.
 
 [![Build Status](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/jrfonseca/gprof2dot/branch/master/graph/badge.svg?token=pBvnAuazx0)](https://codecov.io/gh/jrfonseca/gprof2dot)
 
 
 # Example
