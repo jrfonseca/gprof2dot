@@ -2970,9 +2970,6 @@ class Theme:
     def graph_fontcolor(self):
         return self.fontcolor
 
-    def graph_fontsize(self):
-        return self.minfontsize
-
     def node_bgcolor(self, weight):
         return self.color(weight)
 
