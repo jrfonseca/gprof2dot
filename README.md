@@ -1,19 +1,19 @@
 # About _gprof2dot_
 
-This is a Python script to convert the output from many profilers into a [dot graph](http://www.graphviz.org/doc/info/lang.html).
+This is a Python script to convert the output from many profilers into a [dot graph](https://www.graphviz.org/doc/info/lang.html).
 
 It can:
 
   * read output from:
-    * [Linux perf](http://perf.wiki.kernel.org/)
-    * [Valgrind's callgrind tool](http://valgrind.org/docs/manual/cl-manual.html)
-    * [oprofile](http://oprofile.sourceforge.net/)
-    * [sysprof](http://www.daimi.au.dk/~sandmann/sysprof/)
-    * [xperf](https://msdn.microsoft.com/en-us/windows/hardware/commercialize/test/wpt/index)
-    * [VTune Amplifier XE](http://software.intel.com/en-us/intel-vtune-amplifier-xe)
-    * [Very Sleepy](http://www.codersnotes.com/sleepy/)
-    * [python profilers](http://docs.python.org/3/library/profile.html#profile-stats)
-    * [Java's HPROF](http://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html)
+    * [Linux perf](https://perf.wiki.kernel.org/)
+    * [Valgrind's callgrind tool](https://valgrind.org/docs/manual/cl-manual.html)
+    * [oprofile](https://oprofile.sourceforge.net/)
+    * [sysprof](http://www.sysprof.com/)
+    * [xperf](https://learn.microsoft.com/en-us/windows-hardware/test/wpt/)
+    * [VTune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html)
+    * [Very Sleepy](https://www.codersnotes.com/sleepy/)
+    * [python profilers](https://docs.python.org/3/library/profile.html#profile-stats)
+    * [Java's HPROF](https://docs.oracle.com/javase/7/docs/technotes/samples/hprof.html)
     * prof, [gprof](https://sourceware.org/binutils/docs/gprof/)
     * [DTrace](https://en.wikipedia.org/wiki/DTrace)
   * prune nodes and edges below a certain threshold;
@@ -36,20 +36,20 @@ implemented, and I might be slow processing issue reports or pull requests.
 
 # Example
 
-This is the result from the [example data](http://linuxgazette.net/100/misc/vinayak/overall-profile.txt) in the [Linux Gazette article](http://linuxgazette.net/100/vinayak.html) with the default settings:
+This is the result from the [example data](https://linuxgazette.net/100/misc/vinayak/overall-profile.txt) in the [Linux Gazette article](https://linuxgazette.net/100/vinayak.html) with the default settings:
 
 <!-- pngquant --speed=1 --ordered  --quality 0-85 ... -->
 ![Sample](https://raw.githubusercontent.com/jrfonseca/gprof2dot/cf98cc0b5eae9fcb896a6f92e9bc2bcb27666515/sample.png)
 
 # Requirements
 
-  * [Python](http://www.python.org/download/): known to work with version 2.7 and 3.3; it will most likely _not_ work with earlier releases.
-  * [Graphviz](http://www.graphviz.org/Download.php): tested with version 2.26.3, but should work fine with other versions.
+  * [Python](https://www.python.org/download/): known to work with version 2.7 and 3.3; it will most likely _not_ work with earlier releases.
+  * [Graphviz](https://www.graphviz.org/Download.php): tested with version 2.26.3, but should work fine with other versions.
 
 ## Windows users
 
-  * Download and install [Python for Windows](http://www.python.org/download/)
-  * Download and install [Graphviz for Windows](http://www.graphviz.org/Download_windows.php)
+  * Download and install [Python for Windows](https://www.python.org/download/)
+  * Download and install [Graphviz for Windows](https://www.graphviz.org/Download_windows.php)
 
 ## Linux users
 
@@ -134,7 +134,7 @@ On RedHat/Fedora run
 
 ### xperf
 
-If you're not familiar with xperf then read [this excellent article](http://blogs.msdn.com/b/pigscanfly/archive/2009/08/06/stack-walking-in-xperf.aspx) first. Then do:
+If you're not familiar with xperf then read [this excellent article](https://blogs.msdn.com/b/pigscanfly/archive/2009/08/06/stack-walking-in-xperf.aspx) first. Then do:
 
   * Start xperf as
 
@@ -173,7 +173,7 @@ If you're not familiar with xperf then read [this excellent article](http://blog
         amplxe-cl -report gprof-cc -result-dir output -format text -report-output output.txt
         gprof2dot.py -f axe output.txt | dot -Tpng -o output.png
 
-See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/2013/04/05/making-visualized-call-graph-from-intel-vtune-amplifier-xe-results).
+See also [Kirill Rogozhin's blog post](http://web.archive.org/web/20130506045856/http://software.intel.com:80/en-us/blogs/2013/04/05/making-visualized-call-graph-from-intel-vtune-amplifier-xe-results).
 
 ### gprof
 
@@ -195,7 +195,7 @@ See also [Kirill Rogozhin's blog post](http://software.intel.com/en-us/blogs/201
     java -agentlib:hprof=cpu=samples ...
     gprof2dot.py -f hprof java.hprof.txt | dot -Tpng -o output.png
 
-See [Russell Power's blog post](http://rjp.io/2012/07/03/java-profiling/) for details.
+See [Russell Power's blog post](http://web.archive.org/web/20220122110828/http://rjp.io/2012/07/03/java-profiling/) for details.
 
 ### DTrace
 
@@ -321,7 +321,7 @@ If the granularity is still too low, you _may_ pass these options to achieve fin
   * **`-fno-inline`** : do not pay attention to the inline keyword
 Note however that with these last options the timings of functions called many times will be distorted due to the function call overhead. This is particularly true for typical C++ code which _expects_ that these optimizations to be done for decent performance.
 
-See the [full list of gcc optimization options](http://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more information.
+See the [full list of gcc optimization options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more information.
 
 # Links
 
