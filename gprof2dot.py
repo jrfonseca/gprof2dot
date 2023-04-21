@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# Copyright 2008-2017 Jose Fonseca
+# Copyright 2008-2023 Jose Fonseca
 #
 # This program is free software: you can redistribute it and/or modify it
 # under the terms of the GNU Lesser General Public License as published
@@ -33,28 +33,14 @@ import locale
 import json
 import fnmatch
 
-# Python 2.x/3.x compatibility
-if sys.version_info[0] >= 3:
-    PYTHON_3 = True
-    def compat_iteritems(x): return x.items()  # No iteritems() in Python 3
-    def compat_itervalues(x): return x.values()  # No itervalues() in Python 3
-    def compat_keys(x): return list(x.keys())  # keys() is a generator in Python 3
-    basestring = str  # No class basestring in Python 3
-    unichr = chr # No unichr in Python 3
-    xrange = range # No xrange in Python 3
-else:
-    PYTHON_3 = False
-    def compat_iteritems(x): return x.iteritems()
-    def compat_itervalues(x): return x.itervalues()
-    def compat_keys(x): return x.keys()
-
+assert sys.version_info[0] >= 3
 
 
 ########################################################################
 # Model
 
 
-MULTIPLICATION_SIGN = unichr(0xd7)
+MULTIPLICATION_SIGN = chr(0xd7)
 
 
 def times(x):
@@ -312,8 +298,8 @@ class Profile(Object):
     def validate(self):
         """Validate the edges."""
 
-        for function in compat_itervalues(self.functions):
-            for callee_id in compat_keys(function.calls):
+        for function in self.functions.values():
+            for callee_id in list(function.calls.keys()):
                 assert function.calls[callee_id].callee_id == callee_id
                 if callee_id not in self.functions:
                     sys.stderr.write('warning: call to undefined function %s from function %s\n' % (str(callee_id), function.name))
@@ -326,10 +312,10 @@ class Profile(Object):
         stack = []
         data = {}
         order = 0
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             order = self._tarjan(function, order, stack, data)
         cycles = []
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             if function.cycle is not None and function.cycle not in cycles:
                 cycles.append(function.cycle)
         self.cycles = cycles
@@ -449,7 +435,7 @@ class Profile(Object):
         pos = len(stack)
         stack.append(function)
         func_data.onstack = True
-        for call in compat_itervalues(function.calls):
+        for call in function.calls.values():
             try:
                 callee_data = data[call.callee_id]
                 if callee_data.onstack:
@@ -479,14 +465,14 @@ class Profile(Object):
         for cycle in self.cycles:
             cycle_totals[cycle] = 0.0
         function_totals = {}
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             function_totals[function] = 0.0
 
         # Pass 1:  function_total gets the sum of call[event] for all
         #          incoming arrows.  Same for cycle_total for all arrows
         #          that are coming into the *cycle* but are not part of it.
-        for function in compat_itervalues(self.functions):
-            for call in compat_itervalues(function.calls):
+        for function in self.functions.values():
+            for call in function.calls.values():
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
                     if event in call.events:
@@ -499,8 +485,8 @@ class Profile(Object):
         # Pass 2:  Compute the ratios.  Each call[event] is scaled by the
         #          function_total of the callee.  Calls into cycles use the
         #          cycle_total, but not calls within cycles.
-        for function in compat_itervalues(self.functions):
-            for call in compat_itervalues(function.calls):
+        for function in self.functions.values():
+            for call in function.calls.values():
                 assert call.ratio is None
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
@@ -525,10 +511,10 @@ class Profile(Object):
 
         # Sanity checking
         assert outevent not in self
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             assert outevent not in function
             assert inevent in function
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 assert outevent not in call
                 if call.callee_id != function.id:
                     assert call.ratio is not None
@@ -536,13 +522,13 @@ class Profile(Object):
         # Aggregate the input for each cycle
         for cycle in self.cycles:
             total = inevent.null()
-            for function in compat_itervalues(self.functions):
+            for function in self.functions.values():
                 total = inevent.aggregate(total, function[inevent])
             self[inevent] = total
 
         # Integrate along the edges
         total = inevent.null()
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             total = inevent.aggregate(total, function[inevent])
             self._integrate_function(function, outevent, inevent)
         self[outevent] = total
@@ -553,7 +539,7 @@ class Profile(Object):
         else:
             if outevent not in function:
                 total = function[inevent]
-                for call in compat_itervalues(function.calls):
+                for call in function.calls.values():
                     if call.callee_id != function.id:
                         total += self._integrate_call(call, outevent, inevent)
                 function[outevent] = total
@@ -574,7 +560,7 @@ class Profile(Object):
             total = inevent.null()
             for member in cycle.functions:
                 subtotal = member[inevent]
-                for call in compat_itervalues(member.calls):
+                for call in member.calls.values():
                     callee = self.functions[call.callee_id]
                     if callee.cycle is not cycle:
                         subtotal += self._integrate_call(call, outevent, inevent)
@@ -583,9 +569,9 @@ class Profile(Object):
 
             # Compute the time propagated to callers of this cycle
             callees = {}
-            for function in compat_itervalues(self.functions):
+            for function in self.functions.values():
                 if function.cycle is not cycle:
-                    for call in compat_itervalues(function.calls):
+                    for call in function.calls.values():
                         callee = self.functions[call.callee_id]
                         if callee.cycle is cycle:
                             try:
@@ -596,7 +582,7 @@ class Profile(Object):
             for member in cycle.functions:
                 member[outevent] = outevent.null()
 
-            for callee, call_ratio in compat_iteritems(callees):
+            for callee, call_ratio in callees.items():
                 ranks = {}
                 call_ratios = {}
                 partials = {}
@@ -626,7 +612,7 @@ class Profile(Object):
         visited = set([function])
 
         ranks[function] = 0
-        for call in compat_itervalues(function.calls):
+        for call in function.calls.values():
             if call.callee_id != function.id:
                 callee = self.functions[call.callee_id]
                 if callee.cycle is cycle:
@@ -640,7 +626,7 @@ class Profile(Object):
             if member not in visited:
                 p[member]= parent
                 visited.add(member)
-                for call in compat_itervalues(member.calls):
+                for call in member.calls.values():
                     if call.callee_id != member.id:
                         callee = self.functions[call.callee_id]
                         if callee.cycle is cycle:
@@ -664,7 +650,7 @@ class Profile(Object):
     def _call_ratios_cycle(self, cycle, function, ranks, call_ratios, visited):
         if function not in visited:
             visited.add(function)
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
                     if callee.cycle is cycle:
@@ -675,7 +661,7 @@ class Profile(Object):
     def _integrate_cycle_function(self, cycle, function, partial_ratio, partials, ranks, call_ratios, outevent, inevent):
         if function not in partials:
             partial = partial_ratio*function[inevent]
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 if call.callee_id != function.id:
                     callee = self.functions[call.callee_id]
                     if callee.cycle is not cycle:
@@ -702,7 +688,7 @@ class Profile(Object):
         """Aggregate an event for the whole profile."""
 
         total = event.null()
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             try:
                 total = event.aggregate(total, function[event])
             except UndefinedEvent:
@@ -712,11 +698,11 @@ class Profile(Object):
     def ratio(self, outevent, inevent):
         assert outevent not in self
         assert inevent in self
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             assert outevent not in function
             assert inevent in function
             function[outevent] = ratio(function[inevent], self[inevent])
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 assert outevent not in call
                 if inevent in call:
                     call[outevent] = ratio(call[inevent], self[inevent])
@@ -726,13 +712,13 @@ class Profile(Object):
         """Prune the profile"""
 
         # compute the prune ratios
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             try:
                 function.weight = function[TOTAL_TIME_RATIO]
             except UndefinedEvent:
                 pass
 
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 callee = self.functions[call.callee_id]
 
                 if TOTAL_TIME_RATIO in call:
@@ -746,14 +732,14 @@ class Profile(Object):
                         pass
 
         # prune the nodes
-        for function_id in compat_keys(self.functions):
+        for function_id in list(self.functions.keys()):
             function = self.functions[function_id]
             if function.weight is not None:
                 if function.weight < node_thres:
                     del self.functions[function_id]
 
         # prune file paths
-        for function_id in compat_keys(self.functions):
+        for function_id in list(self.functions.keys()):
             function = self.functions[function_id]
             if paths and function.filename and not any(function.filename.startswith(path) for path in paths):
                 del self.functions[function_id]
@@ -761,15 +747,15 @@ class Profile(Object):
                 del self.functions[function_id]
 
         # prune the edges
-        for function in compat_itervalues(self.functions):
-            for callee_id in compat_keys(function.calls):
+        for function in self.functions.values():
+            for callee_id in list(function.calls.keys()):
                 call = function.calls[callee_id]
                 if callee_id not in self.functions or call.weight is not None and call.weight < edge_thres:
                     del function.calls[callee_id]
 
         if color_nodes_by_selftime:
             weights = []
-            for function in compat_itervalues(self.functions):
+            for function in self.functions.values():
                 try:
                     weights.append(function[TIME_RATIO])
                 except UndefinedEvent:
@@ -777,17 +763,17 @@ class Profile(Object):
             max_ratio = max(weights or [1])
 
             # apply rescaled weights for coloriung
-            for function in compat_itervalues(self.functions):
+            for function in self.functions.values():
                 try:
                     function.weight = function[TIME_RATIO] / max_ratio
                 except (ZeroDivisionError, UndefinedEvent):
                     pass
 
     def dump(self):
-        for function in compat_itervalues(self.functions):
+        for function in self.functions.values():
             sys.stderr.write('Function %s:\n' % (function.name,))
             self._dump_events(function.events)
-            for call in compat_itervalues(function.calls):
+            for call in function.calls.values():
                 callee = self.functions[call.callee_id]
                 sys.stderr.write('  Call %s:\n' % (callee.name,))
                 self._dump_events(call.events)
@@ -798,7 +784,7 @@ class Profile(Object):
                 sys.stderr.write('  Function %s\n' % (function.name,))
 
     def _dump_events(self, events):
-        for event, value in compat_iteritems(events):
+        for event, value in events.items():
             sys.stderr.write('    %s: %s\n' % (event.name, event.format(value)))
 
 
@@ -954,11 +940,6 @@ class LineParser(Parser):
         else:
             self.line_no += 1
         line = line.rstrip('\r\n')
-        if not PYTHON_3:
-            encoding = self._stream.encoding
-            if encoding is None:
-                encoding = locale.getpreferredencoding()
-            line = line.decode(encoding)
         self.__line = line
 
     def lookahead(self):
@@ -1153,7 +1134,7 @@ class GprofParser(Parser):
         """Extract a structure from a match object, while translating the types in the process."""
         attrs = {}
         groupdict = mo.groupdict()
-        for name, value in compat_iteritems(groupdict):
+        for name, value in groupdict.items():
             if value is None:
                 value = None
             elif self._int_re.match(value):
@@ -1329,7 +1310,7 @@ class GprofParser(Parser):
         for index in self.cycles:
             cycles[index] = Cycle()
 
-        for entry in compat_itervalues(self.functions):
+        for entry in self.functions.values():
             # populate the function
             function = Function(entry.index, entry.name)
             function[TIME] = entry.self
@@ -1371,7 +1352,7 @@ class GprofParser(Parser):
 
             profile[TIME] = profile[TIME] + function[TIME]
 
-        for cycle in compat_itervalues(cycles):
+        for cycle in cycles.values():
             profile.add_cycle(cycle)
 
         # Compute derived events
@@ -1426,7 +1407,7 @@ class AXEParser(Parser):
         """Extract a structure from a match object, while translating the types in the process."""
         attrs = {}
         groupdict = mo.groupdict()
-        for name, value in compat_iteritems(groupdict):
+        for name, value in groupdict.items():
             if value is None:
                 value = None
             elif self._int_re.match(value):
@@ -1607,7 +1588,7 @@ class AXEParser(Parser):
         for index in self.cycles:
             cycles[index] = Cycle()
 
-        for entry in compat_itervalues(self.functions):
+        for entry in self.functions.values():
             # populate the function
             function = Function(entry.index, entry.name)
             function[TIME] = entry.self
@@ -1644,7 +1625,7 @@ class AXEParser(Parser):
 
             profile[TIME] = profile[TIME] + function[TIME]
 
-        for cycle in compat_itervalues(cycles):
+        for cycle in cycles.values():
             profile.add_cycle(cycle)
 
         # Compute derived events.
@@ -1654,8 +1635,8 @@ class AXEParser(Parser):
         profile.call_ratios(TOTAL_TIME_RATIO)
         # The TOTAL_TIME_RATIO of functions is already set.  Propagate that
         # total time to the calls.  (TOTAL_TIME is neither set nor used.)
-        for function in compat_itervalues(profile.functions):
-            for call in compat_itervalues(function.calls):
+        for function in profile.functions.values():
+            for call in function.calls.values():
                 if call.ratio is not None:
                     callee = profile.functions[call.callee_id]
                     call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
@@ -2023,8 +2004,8 @@ class PerfParser(LineParser):
             profile[TOTAL_SAMPLES] = profile[SAMPLES]
             profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
             # Then propagate that total time to the calls.
-            for function in compat_itervalues(profile.functions):
-                for call in compat_itervalues(function.calls):
+            for function in profile.functions.values():
+                for call in function.calls.values():
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
@@ -2144,7 +2125,7 @@ class OprofileParser(LineParser):
             self.update_subentries_dict(callees_total, callees)
 
     def update_subentries_dict(self, totals, partials):
-        for partial in compat_itervalues(partials):
+        for partial in partials.values():
             try:
                 total = totals[partial.id]
             except KeyError:
@@ -2166,7 +2147,7 @@ class OprofileParser(LineParser):
 
         # populate the profile
         profile[SAMPLES] = 0
-        for _callers, _function, _callees in compat_itervalues(self.entries):
+        for _callers, _function, _callees in self.entries.values():
             function = Function(_function.id, _function.name)
             function[SAMPLES] = _function.samples
             profile.add_function(function)
@@ -2178,10 +2159,10 @@ class OprofileParser(LineParser):
                 function.module = os.path.basename(_function.image)
 
             total_callee_samples = 0
-            for _callee in compat_itervalues(_callees):
+            for _callee in _callees.values():
                 total_callee_samples += _callee.samples
 
-            for _callee in compat_itervalues(_callees):
+            for _callee in _callees.values():
                 if not _callee.self:
                     call = Call(_callee.id)
                     call[SAMPLES2] = _callee.samples
@@ -2314,7 +2295,7 @@ class HProfParser(LineParser):
         functions = {}
 
         # build up callgraph
-        for id, trace in compat_iteritems(self.traces):
+        for id, trace in self.traces.items():
             if not id in self.samples: continue
             mtime = self.samples[id][0]
             last = None
@@ -2443,7 +2424,7 @@ class SysprofParser(XmlParser):
         profile = Profile()
 
         profile[SAMPLES] = 0
-        for id, object in compat_iteritems(objects):
+        for id, object in objects.items():
             # Ignore fake objects (process names, modules, "Everything", "kernel", etc.)
             if object['self'] == 0:
                 continue
@@ -2453,7 +2434,7 @@ class SysprofParser(XmlParser):
             profile.add_function(function)
             profile[SAMPLES] += function[SAMPLES]
 
-        for id, node in compat_iteritems(nodes):
+        for id, node in nodes.items():
             # Ignore fake calls
             if node['self'] == 0:
                 continue
@@ -2543,7 +2524,7 @@ class XPerfParser(Parser):
 
     def parse_row(self, row):
         fields = {}
-        for name, column in compat_iteritems(self.column):
+        for name, column in self.column.items():
             value = row[column]
             for factory in int, float:
                 try:
@@ -2717,11 +2698,8 @@ class PstatsParser:
         try:
             self.stats = pstats.Stats(*filename)
         except ValueError:
-            if PYTHON_3:
-                sys.stderr.write('error: failed to load %s, maybe they are generated by different python version?\n' % ', '.join(filename))
-                sys.exit(1)
-            import hotshot.stats
-            self.stats = hotshot.stats.load(filename[0])
+            sys.stderr.write('error: failed to load %s, maybe they are generated by different python version?\n' % ', '.join(filename))
+            sys.exit(1)
         self.profile = Profile()
         self.function_ids = {}
 
@@ -2748,18 +2726,18 @@ class PstatsParser:
     def parse(self):
         self.profile[TIME] = 0.0
         self.profile[TOTAL_TIME] = self.stats.total_tt
-        for fn, (cc, nc, tt, ct, callers) in compat_iteritems(self.stats.stats):
+        for fn, (cc, nc, tt, ct, callers) in self.stats.stats.items():
             callee = self.get_function(fn)
             callee.called = nc
             callee[TOTAL_TIME] = ct
             callee[TIME] = tt
             self.profile[TIME] += tt
             self.profile[TOTAL_TIME] = max(self.profile[TOTAL_TIME], ct)
-            for fn, value in compat_iteritems(callers):
+            for fn, value in callers.items():
                 caller = self.get_function(fn)
                 call = Call(callee.id)
                 if isinstance(value, tuple):
-                    for i in xrange(0, len(value), 4):
+                    for i in range(0, len(value), 4):
                         nc, cc, tt, ct = value[i:i+4]
                         if CALLS in call:
                             call[CALLS] += cc
@@ -2850,8 +2828,8 @@ class DtraceParser(LineParser):
             profile[TOTAL_SAMPLES] = profile[SAMPLES]
             profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
             # Then propagate that total time to the calls.
-            for function in compat_itervalues(profile.functions):
-                for call in compat_itervalues(function.calls):
+            for function in profile.functions.values():
+                for call in function.calls.values():
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
@@ -3134,7 +3112,7 @@ themes = {
 
 def sorted_iteritems(d):
     # Used mostly for result reproducibility (while testing.)
-    keys = compat_keys(d)
+    keys = list(d.keys())
     keys.sort()
     for key in keys:
         value = d[key]
@@ -3204,7 +3182,7 @@ class DotWriter:
             MAX_FUNCTION_NAME = 4096
             if len(function_name) >= MAX_FUNCTION_NAME:
                 sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
-                function_name = function_name[:MAX_FUNCTION_NAME - 1] + unichr(0x2026)
+                function_name = function_name[:MAX_FUNCTION_NAME - 1] + chr(0x2026)
 
             if self.wrap:
                 function_name = self.wrap_function_name(function_name)
@@ -3307,7 +3285,7 @@ class DotWriter:
     def id(self, id):
         if isinstance(id, (int, float)):
             s = str(id)
-        elif isinstance(id, basestring):
+        elif isinstance(id, str):
             if id.isalnum() and not id.startswith('0x'):
                 s = id
             else:
@@ -3329,8 +3307,6 @@ class DotWriter:
         return "#" + "".join(["%02x" % float2int(c) for c in (r, g, b)])
 
     def escape(self, s):
-        if not PYTHON_3:
-            s = s.encode('utf-8')
         s = s.replace('\\', r'\\')
         s = s.replace('\n', r'\n')
         s = s.replace('\t', r'\t')
@@ -3492,10 +3468,8 @@ with '%', a dump of all available information is performed for selected entries,
     if Format.stdinInput:
         if not args:
             fp = sys.stdin
-        elif PYTHON_3:
-            fp = open(args[0], 'rt', encoding='UTF-8')
         else:
-            fp = open(args[0], 'rt')
+            fp = open(args[0], 'rt', encoding='UTF-8')
         parser = Format(fp)
     elif Format.multipleInput:
         if not args:
@@ -3509,15 +3483,9 @@ with '%', a dump of all available information is performed for selected entries,
     profile = parser.parse()
 
     if options.output is None:
-        if PYTHON_3:
-            output = open(sys.stdout.fileno(), mode='wt', encoding='UTF-8', closefd=False)
-        else:
-            output = sys.stdout
+        output = open(sys.stdout.fileno(), mode='wt', encoding='UTF-8', closefd=False)
     else:
-        if PYTHON_3:
-            output = open(options.output, 'wt', encoding='UTF-8')
-        else:
-            output = open(options.output, 'wt')
+        output = open(options.output, 'wt', encoding='UTF-8')
 
     dot = DotWriter(output)
     dot.strip = options.strip

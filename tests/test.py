@@ -26,10 +26,7 @@ from   subprocess import PIPE
 import shutil
 
 
-if sys.version_info[0] >= 3:
-    PYTHON_3 = True
-else:
-    PYTHON_3 = False
+assert sys.version_info[0] >= 3
 
 
 formats = [
@@ -71,12 +68,8 @@ def run(cmd, stderr=None):
 
 def diff(a, b):
     global NB_DIFF_FAILURES
-    if PYTHON_3:
-        a_lines = open(a, 'rt', encoding='UTF-8').readlines()
-        b_lines = open(b, 'rt', encoding='UTF-8').readlines()
-    else:
-        a_lines = open(a, 'rt').readlines()
-        b_lines = open(b, 'rt').readlines()
+    a_lines = open(a, 'rt', encoding='UTF-8').readlines()
+    b_lines = open(b, 'rt', encoding='UTF-8').readlines()
     diff_lines = difflib.unified_diff(a_lines, b_lines, fromfile=a, tofile=b)
 
     diff_txt= ''.join(diff_lines)
@@ -150,11 +143,10 @@ def main():
                     diff(ref_dot, dot)
 
     # test the --list-functions flag only for pstats format
-    profile = os.path.join(test_dir, 'pstats', 'profile.pstats')
+    profile = os.path.join(test_dir, 'pstats', 'memtrail.pstats')
     genfileNm = os.path.join(test_dir, 'pstats', 'function-list.testgen.txt')
     outfile =  open(genfileNm, "w")
-    for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*Proc", "*Proc*",
-                    "*Proc[1-4]"):
+    for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*parse", "*parse_*"):
         run([options.python, options.gprof2dot, '-f', "pstats", "--list-functions="+flagVal, profile],
             stderr=outfile)
 
