@@ -102,7 +102,7 @@ def main():
         help="path to python executable [default: %default]")
     optparser.add_option(
         '-g', '--gprof2dot', metavar='PATH',
-        type="string", dest="gprof2dot", default=os.path.join(test_dir, os.path.pardir, 'gprof2dot.py'),
+        type="string", dest="gprof2dot", default=os.path.abspath(os.path.join(test_dir, os.path.pardir, 'gprof2dot.py')),
         help="path to gprof2dot.py script [default: %default]")
     optparser.add_option(
         '-f', '--force',
@@ -137,7 +137,7 @@ def main():
                 ref_dot = os.path.join(test_subdir, name + '.orig.dot')
                 ref_png = os.path.join(test_subdir, name + '.orig.png')
 
-                if run([ options.python, options.gprof2dot, '-f', format, '-o', dot, profile]) != 0:
+                if run([options.python, options.gprof2dot, '-f', format, '-o', dot, profile]) != 0:
                     continue
 
                 if run(['dot', '-Tpng', '-o', png, dot]) != 0:
@@ -149,19 +149,18 @@ def main():
                 else:
                     diff(ref_dot, dot)
 
-    # test the --list-functions flag only for pstats forma
-    profile = "tests/pstats/profile.pstats"
-    genfileNm = "tests/pstats/function-list.testgen.txt"
-    outfile =  open("%s" % genfileNm,"w")
+    # test the --list-functions flag only for pstats format
+    profile = os.path.join(test_dir, 'pstats', 'profile.pstats')
+    genfileNm = os.path.join(test_dir, 'pstats', 'function-list.testgen.txt')
+    outfile =  open(genfileNm, "w")
     for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*Proc", "*Proc*",
-                    "*Proc[1-4]" ):
-        run([ options.python, options.gprof2dot, '-f', "pstats",
-              "--list-functions="+flagVal, profile],
-            stderr=outfile) != 0
+                    "*Proc[1-4]"):
+        run([options.python, options.gprof2dot, '-f', "pstats", "--list-functions="+flagVal, profile],
+            stderr=outfile)
 
     outfile.close()
 
-    diff(genfileNm, "tests/pstats/function-list.orig.txt")
+    diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
 
     if NB_RUN_FAILURES or NB_DIFF_FAILURES:
         print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
