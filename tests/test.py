@@ -44,8 +44,10 @@ formats = [
     "dtrace",
 ]
 
+
 NB_RUN_FAILURES = 0
 NB_DIFF_FAILURES = 0
+
 
 def run(cmd, stderr=None):
     global NB_RUN_FAILURES
@@ -65,6 +67,22 @@ def run(cmd, stderr=None):
     return retcde
 
 
+coverage_append = False
+
+def run_gprof2dot(args, stderr=None):
+    global coverage_append
+    cmd = [options.python]
+    if options.coverage:
+        cmd += ['-m', 'coverage', 'run']
+        if coverage_append:
+            cmd += ['-a']
+        else:
+            coverage_append = True
+        cmd += ['--']
+    cmd += [options.gprof2dot]
+    cmd += args
+    return run(cmd, stderr=stderr)
+
 
 def diff(a, b):
     global NB_DIFF_FAILURES
@@ -82,6 +100,7 @@ def diff(a, b):
 def main():
     """Main program."""
 
+    global options
     global formats
     global NB_RUN_FAILURES, NB_DIFF_FAILURES
 
@@ -102,6 +121,11 @@ def main():
         action="store_true",
         dest="force", default=False,
         help="force reference generation")
+    optparser.add_option(
+        '-c', '--coverage',
+        action="store_true",
+        dest="coverage", default=False,
+        help="code coverage")
 
     # Added this to avoid failing the test when a (hopefully small) number of formats
     # result in error. This allows some flexibility in CI testing.
@@ -130,7 +154,7 @@ def main():
                 ref_dot = os.path.join(test_subdir, name + '.orig.dot')
                 ref_png = os.path.join(test_subdir, name + '.orig.png')
 
-                if run([options.python, options.gprof2dot, '-f', format, '-o', dot, profile]) != 0:
+                if run_gprof2dot(['-f', format, '-o', dot, profile]) != 0:
                     continue
 
                 if run(['dot', '-Tpng', '-o', png, dot]) != 0:
@@ -147,12 +171,17 @@ def main():
     genfileNm = os.path.join(test_dir, 'pstats', 'function-list.testgen.txt')
     outfile =  open(genfileNm, "w")
     for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*parse", "*parse_*"):
-        run([options.python, options.gprof2dot, '-f', "pstats", "--list-functions="+flagVal, profile],
-            stderr=outfile)
+        run_gprof2dot(['-f', "pstats", "--list-functions="+flagVal, profile], stderr=outfile)
 
     outfile.close()
 
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
+
+    if options.coverage:
+        if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
+            run([options.python, '-m', 'coverage', 'html'])
+        else:
+            run([options.python, '-m', 'coverage', 'xml'])
 
     if NB_RUN_FAILURES or NB_DIFF_FAILURES:
         print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
@@ -161,6 +190,7 @@ def main():
              and NB_RUN_FAILURES + NB_DIFF_FAILURES > options.max_acceptable ):
             print("Too many errors: returning non-zero code")
             sys.exit(1)
+
 
 if __name__ == '__main__':
     main()

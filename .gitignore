@@ -1,4 +1,5 @@
 .*.sw?
+.coverage
 *.dot
 *.egg-info
 *.orig
