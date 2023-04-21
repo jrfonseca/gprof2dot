@@ -262,6 +262,7 @@ class Function(Object):
         """
         return sep1.join("".join(k,sep2,v) for (k,v) in sorted(self.__dict__.items())) + sep3
 
+
 class Cycle(Object):
     """A cycle made from recursive function calls."""
 
