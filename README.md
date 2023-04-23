@@ -38,8 +38,7 @@ implemented, and I might be slow processing issue reports or pull requests.
 
 This is the result from the [example data](https://linuxgazette.net/100/misc/vinayak/overall-profile.txt) in the [Linux Gazette article](https://linuxgazette.net/100/vinayak.html) with the default settings:
 
-<!-- pngquant --speed=1 --ordered  --quality 0-85 ... -->
-![Sample](https://raw.githubusercontent.com/jrfonseca/gprof2dot/cf98cc0b5eae9fcb896a6f92e9bc2bcb27666515/sample.png)
+![Sample](./sample.svg)
 
 # Requirements
 
