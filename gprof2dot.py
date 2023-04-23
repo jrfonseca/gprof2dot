@@ -95,6 +95,9 @@ class Event(object):
         self._aggregator = aggregator
         self._formatter = formatter
 
+    def __repr__(self):
+        return self.name
+
     def __eq__(self, other):
         return self is other
 
@@ -260,7 +263,7 @@ class Function(Object):
                        sep2:between attribute name and value,
                        sep3: inserted at end
         """
-        return sep1.join("".join(k,sep2,v) for (k,v) in sorted(self.__dict__.items())) + sep3
+        return sep1.join(sep2.join([k,str(v)]) for (k,v) in sorted(self.__dict__.items())) + sep3
 
 
 class Cycle(Object):
@@ -1649,7 +1652,7 @@ class CallgrindParser(LineParser):
     """Parser for valgrind's callgrind tool.
 
     See also:
-    - http://valgrind.org/docs/manual/cl-format.html
+    - https://valgrind.org/docs/manual/cl-format.html
     """
 
     _call_re = re.compile(r'^calls=\s*(\d+)\s+((\d+|\+\d+|-\d+|\*)\s+)+$')
