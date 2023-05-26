@@ -77,8 +77,8 @@ On RedHat/Fedora run
 ## Usage
 
 ```
-Usage:
-        gprof2dot.py [options] [file] ...
+Usage: 
+	gprof2dot.py [options] [file] ...
 
 Options:
   -h, --help            show this help message and exit
@@ -89,32 +89,46 @@ Options:
   -e PERCENTAGE, --edge-thres=PERCENTAGE
                         eliminate edges below this threshold [default: 0.1]
   -f FORMAT, --format=FORMAT
-                        profile format: axe, callgrind, hprof, json, oprofile,
-                        perf, prof, pstats, sleepy, sysprof or xperf [default:
-                        prof]
+                        profile format: axe, callgrind, dtrace, hprof, json,
+                        oprofile, perf, prof, pstats, sleepy, sysprof or xperf
+                        [default: prof]
   --total=TOTALMETHOD   preferred method of calculating total time: callratios
                         or callstacks (currently affects only perf format)
                         [default: callratios]
   -c THEME, --colormap=THEME
-                        color map: color, pink, gray, bw, or print [default:
+                        color map: bw, color, gray, pink or print [default:
                         color]
   -s, --strip           strip function parameters, template parameters, and
                         const modifiers from demangled C++ function names
+  --color-nodes-by-selftime
+                        color nodes by self time, rather than by total time
+                        (sum of self and descendants)
   -w, --wrap            wrap function names
   --show-samples        show function samples
+  --node-label=MEASURE  measurements to on show the node (can be specified
+                        multiple times): self-time, self-time-percentage,
+                        total-time or total-time-percentage [default: total-
+                        time-percentage, self-time-percentage]
+  --list-functions=LIST_FUNCTIONS
+                        list functions available for selection in -z or -l,
+                        requires selector argument ( use '+' to select all).
+                        Recall that the selector argument is used with
+                        Unix/Bash globbing/pattern matching, and that entries
+                        are formatted '<pkg>:<linenum>:<function>'. When
+                        argument starts with '%', a dump of all available
+                        information is performed for selected entries,  after
+                        removal of leading '%'.
   -z ROOT, --root=ROOT  prune call graph to show only descendants of specified
                         root function
   -l LEAF, --leaf=LEAF  prune call graph to show only ancestors of specified
                         leaf function
-	  --list-functions=SELECT list available functions as a help/preparation  for using the 
-	                        -l and -z flags. When selected the program only produces this
-							list. SELECT is used with the same matching syntax
-							as with -z(--root) and -l(--leaf). Special cases SELECT="+"
-							gets the full list, selector starting with "%" cause dump 
-							of all available information. 
+  --depth=DEPTH         prune call graph to show only descendants or ancestors
+                        until specified depth
   --skew=THEME_SKEW     skew the colorization curve.  Values < 1.0 give more
                         variety to lower percentages.  Values > 1.0 give less
                         variety to lower percentages
+  -p FILTER_PATHS, --path=FILTER_PATHS
+                        Filter all modules not in a specified path
 ```
 
 ## Examples
