@@ -114,6 +114,8 @@ On RedHat/Fedora run
       --skew=THEME_SKEW     skew the colorization curve.  Values < 1.0 give more
                             variety to lower percentages.  Values > 1.0 give less
                             variety to lower percentages
+      --color-nodes-by-selftime, --colour-nodes-by-selftime
+                            colors nodes by self-time rather than total-time
 
 ## Examples
 
