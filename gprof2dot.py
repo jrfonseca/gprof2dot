@@ -3497,7 +3497,6 @@ with '%', a dump of all available information is performed for selected entries,
     if options.show_samples:
         dot.show_function_events.append(SAMPLES)
 
-    profile = profile
     profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths, options.color_nodes_by_selftime)
 
     if options.list_functions:
