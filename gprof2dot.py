@@ -1154,7 +1154,7 @@ class GprofParser(Parser):
         r'^index\s+%time\s+self\s+descendents\s+called\+self\s+name\s+index\s*$|' +
         r'^\s+called/total\s+children\s*$|' +
         # GNU gprof header
-        r'^index\s+%\s+time\s+self\s+children\s+called\s+name\s*$'
+        r'^index\s+%\s+(time\s+)?self\s+children\s+called\s+name\s*$'
     )
 
     _cg_ignore_re = re.compile(

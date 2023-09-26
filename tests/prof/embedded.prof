@@ -1,0 +1,458 @@
+Flat profile:
+                                         self      total          
+     cumulative       self             cycles     cycles          
+  %      cycles     cycles    calls     /call      /call  name    
+           (K)        (K)                (K)        (K)           
+24.38  15200.01   15200.01   100000      0.15       0.40  __sfvwrite_r
+16.36  25400.03   10200.02   150000      0.07       0.08  memchr
+12.59  33250.17    7850.13    50000      0.16       0.68  _vfprintf_r
+ 7.14  37700.18    4450.01   150000      0.03       0.03  memmove
+ 7.06  42100.18    4400.01   100000      0.04       0.05  strlen
+ 6.74  46300.34    4200.16   300011      0.01       0.01  _WindowUnderflow8
+ 5.85  49950.54    3650.20   300011      0.01       0.01  _WindowOverflow8
+ 3.37  52050.54    2100.00    50000      0.04       0.51  puts
+ 2.89  53850.64    1800.09    50003      0.04       0.11  __sflush_r
+ 2.65  55500.64    1650.01    50000      0.03       0.45  __sprint_r
+ 2.41  57000.64    1500.00    50000      0.03       0.06  __swrite
+ 2.33  58450.73    1450.08    50003      0.03       0.16  _fflush_r
+ 2.33  59900.73    1450.00    50000      0.03       0.72  printf
+ 1.76  61000.74    1100.01    50000      0.02       0.02  _write_r
+ 1.68  62050.76    1050.02        1   1050.02   62351.11  main
+ 0.48  62350.78     300.02    50000      0.01       0.01  _localeconv_r
+ 0.01  62354.95       4.17                                _ResetHandler
+ 0.00  62355.80       0.84        1      0.84       0.84  xthal_dcache_all_writeback
+ 0.00  62356.09       0.29        1      0.29       0.43  _malloc_r
+ 0.00  62356.32       0.23        3      0.08       0.32  _fclose_r
+ 0.00  62356.49       0.18        3      0.06       0.06  memset
+ 0.00  62356.65       0.16        1      0.16   62353.83  _start
+ 0.00  62356.78       0.13        1      0.13       0.26  __clibrary_init
+ 0.00  62356.90       0.12        1      0.12       0.30  __sinit
+ 0.00  62357.01       0.11        2      0.05       0.06  _sbrk_r
+ 0.00  62357.11       0.10        1      0.10       0.20  __call_exitprocs
+ 0.00  62357.20       0.09        1      0.09       1.19  _fwalk
+ 0.00  62357.29       0.09        1      0.09       0.63  __smakebuf_r
+ 0.00  62357.37       0.08        3      0.03       0.36  fclose
+ 0.00  62357.44       0.07        1      0.07       0.71  __swsetup_r
+ 0.00  62357.50       0.07        3      0.02       0.02  _close_r
+ 0.00  62357.57       0.07        1      0.07       0.07  _atexit
+ 0.00  62357.63       0.06        1      0.06       0.07  _free_r
+ 0.00  62357.68       0.05        2      0.03       0.03  _fstat_r
+ 0.00  62357.72       0.04        1      0.04       0.06  __do_global_dtors_aux
+ 0.00  62357.77       0.04                                unpackdone
+ 0.00  62357.80       0.03        3      0.01       0.03  __sclose
+ 0.00  62357.83       0.03        1      0.03       0.03  __do_global_ctors_aux
+ 0.00  62357.86       0.03        1      0.03       0.06  _isatty_r
+ 0.00  62357.89       0.03        1      0.03       2.30  exit
+ 0.00  62357.91       0.02        1      0.02       0.06  _init
+ 0.00  62357.93       0.02        1      0.02       0.86  _exit
+ 0.00  62357.95       0.02        1      0.02       0.08  _fini
+ 0.00  62357.97       0.02        1      0.02       1.22  _cleanup_r
+ 0.00  62357.98       0.01        3      0.01       0.01  __sfp_lock_acquire
+ 0.00  62358.00       0.01        3      0.01       0.01  __sfp_lock_release
+ 0.00  62358.01       0.01        2      0.01       0.01  _WindowOverflow4
+ 0.00  62358.02       0.01        1      0.01       0.01  frame_dummy
+ 0.00  62358.03       0.01        2      0.01       0.01  __malloc_lock
+ 0.00  62358.04       0.01        2      0.01       0.01  __malloc_unlock
+ 0.00  62358.05       0.01                                _ResetVector
+ 0.00  62358.06       0.01        1      0.01       0.01  _WindowUnderflow4
+
+%            the percentage of the total cycles of the
+cycles       program accounted for by this function.
+
+cumulative   a running sum of the number of cycles accounted
+cycles       for by this function and those listed above it.
+
+self         the number of cycles accounted for by this
+cycles       function alone.  This is the major sort for this
+             listing.
+
+calls        the number of times this function was invoked, if
+             this function is profiled, else blank.
+
+self         the average number of cycles spent in this
+cycles       function per call, if this function is profiled,
+/call        else blank.
+
+total        the average number of cycles spent in this
+cycles       function and its descendents per call, if this
+/call        function is profiled, else blank.
+
+name         the name of the function.  This is the minor sort
+             for this listing.  The index shows the location of
+             the function in the gprof listing.  If the index is
+             in parenthesis it shows where it would appear in
+             the gprof listing if it were to be printed.
+
+		     Call graph (explanation follows)
+
+index    %      self  children    called     name
+                (K)     (K) 
+                                                 <spontaneous>
+[1]    100.0    0.04 62353.83                 unpackdone [1]
+                0.16 62353.68       1/1           _start [2]
+-----------------------------------------------
+                0.16 62353.68       1/1           unpackdone [1]
+[2]    100.0    0.16 62353.68       1         _start [2]
+             1050.02 61301.09       1/1           main [3]
+                0.03    2.28       1/1           exit [20]
+                0.13    0.13       1/1           __clibrary_init [31]
+-----------------------------------------------
+             1050.02 61301.09       1/1           _start [2]
+[3]    100.0 1050.02 61301.09       1         main [3]
+             1450.00 34476.13   50000/50000       printf [5]
+             2100.00 23274.95   50000/50000       puts [7]
+                0.01    0.00       1/1           _WindowUnderflow4 [52]
+-----------------------------------------------
+             7600.01 12470.76   50000/100000      puts [7]
+             7600.01 12470.76   50000/100000      __sprint_r [8]
+[4]     64.4 15200.01 24941.53  100000         __sfvwrite_r [4]
+             10200.02 1216.69  150000/150000      memchr [9]
+             1450.00 6316.48   50000/50003       _fflush_r [10]
+             4450.01    0.00  150000/150000      memmove [13]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+              608.33    0.00   49999/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+             1450.00 34476.13   50000/50000       main [3]
+[5]     57.6 1450.00 34476.13   50000         printf [5]
+             7850.13 25925.99   50000/50000       _vfprintf_r [6]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+             7850.13 25925.99   50000/50000       printf [5]
+[6]     54.2 7850.13 25925.99   50000         _vfprintf_r [6]
+             1650.01 20770.77   50000/50000       __sprint_r [8]
+             2200.00  304.18   50000/100000      strlen [12]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+              300.02    0.00   50000/50000       _localeconv_r [18]
+                0.07    0.65       1/1           __swsetup_r [27]
+                0.12    0.18       1/1           __sinit [30]
+-----------------------------------------------
+             2100.00 23274.95   50000/50000       main [3]
+[7]     40.7 2100.00 23274.95   50000         puts [7]
+             7600.01 12470.76   50000/100000      __sfvwrite_r [4]
+             2200.00  304.18   50000/100000      strlen [12]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+             1650.01 20770.77   50000/50000       _vfprintf_r [6]
+[8]     36.0 1650.01 20770.77   50000         __sprint_r [8]
+             7600.01 12470.76   50000/100000      __sfvwrite_r [4]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+             10200.02 1216.69  150000/150000      __sfvwrite_r [4]
+[9]     18.3 10200.02 1216.69  150000         memchr [9]
+             1216.69    0.00  100000/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+                0.09    0.38       3/50003       _fclose_r [24]
+             1450.00 6316.48   50000/50003       __sfvwrite_r [4]
+[10]    12.5 1450.08 6316.86   50003         _fflush_r [10]
+             1800.09 3816.73   50003/50003       __sflush_r [11]
+              700.00    0.00   50000/300011      _WindowUnderflow8 [14]
+                0.04    0.00       3/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+             1800.09 3816.73   50003/50003       _fflush_r [10]
+[11]     9.0 1800.09 3816.73   50003         __sflush_r [11]
+             1500.00 1708.35   50000/50000       __swrite [16]
+              608.38    0.00   50003/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+             2200.00  304.18   50000/100000      puts [7]
+             2200.00  304.18   50000/100000      _vfprintf_r [6]
+[12]     8.0 4400.01  608.35  100000         strlen [12]
+              608.34    0.00   50000/300011      _WindowOverflow8 [15]
+                0.01    0.00       1/2           _WindowOverflow4 [47]
+-----------------------------------------------
+             4450.01    0.00  150000/150000      __sfvwrite_r [4]
+[13]     7.1 4450.01    0.00  150000         memmove [13]
+-----------------------------------------------
+                0.01    0.00       1/300011      __swsetup_r [27]
+                0.01    0.00       1/300011      __call_exitprocs [32]
+                0.01    0.00       1/300011      _cleanup_r [21]
+                0.01    0.00       1/300011      __smakebuf_r [28]
+                0.01    0.00       1/300011      _fwalk [22]
+                0.04    0.00       3/300011      _fclose_r [24]
+                0.04    0.00       3/300011      fclose [23]
+              700.00    0.00   50000/300011      printf [5]
+              700.00    0.00   50000/300011      puts [7]
+              700.00    0.00   50000/300011      _vfprintf_r [6]
+              700.00    0.00   50000/300011      _fflush_r [10]
+              700.00    0.00   50000/300011      __sfvwrite_r [4]
+              700.00    0.00   50000/300011      __sprint_r [8]
+[14]     6.7 4200.16    0.00  300011         _WindowUnderflow8 [14]
+-----------------------------------------------
+                0.01    0.00       1/300011      __do_global_dtors_aux [40]
+                0.01    0.00       1/300011      __smakebuf_r [28]
+                0.01    0.00       1/300011      _malloc_r [29]
+                0.01    0.00       1/300011      _fclose_r [24]
+                0.01    0.00       1/300011      fclose [23]
+                0.01    0.00       1/300011      _sbrk_r [34]
+                0.04    0.00       3/300011      _fflush_r [10]
+              608.33    0.00   49999/300011      __sfvwrite_r [4]
+              608.34    0.00   50000/300011      strlen [12]
+              608.34    0.00   50000/300011      __swrite [16]
+              608.38    0.00   50003/300011      __sflush_r [11]
+             1216.69    0.00  100000/300011      memchr [9]
+[15]     5.9 3650.20    0.00  300011         _WindowOverflow8 [15]
+-----------------------------------------------
+             1500.00 1708.35   50000/50000       __sflush_r [11]
+[16]     5.1 1500.00 1708.35   50000         __swrite [16]
+             1100.01    0.00   50000/50000       _write_r [17]
+              608.34    0.00   50000/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+             1100.01    0.00   50000/50000       __swrite [16]
+[17]     1.8 1100.01    0.00   50000         _write_r [17]
+-----------------------------------------------
+              300.02    0.00   50000/50000       _vfprintf_r [6]
+[18]     0.5  300.02    0.00   50000         _localeconv_r [18]
+-----------------------------------------------
+                                                 <spontaneous>
+[19]     0.0    4.17    0.00                 _ResetHandler [19]
+-----------------------------------------------
+                0.03    2.28       1/1           _start [2]
+[20]     0.0    0.03    2.28       1         exit [20]
+                0.02    1.20       1/1           _cleanup_r [21]
+                0.02    0.84       1/1           _exit [25]
+                0.10    0.10       1/1           __call_exitprocs [32]
+-----------------------------------------------
+                0.02    1.20       1/1           exit [20]
+[21]     0.0    0.02    1.20       1         _cleanup_r [21]
+                0.09    1.09       1/1           _fwalk [22]
+                0.01    0.00       1/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+                0.09    1.09       1/1           _cleanup_r [21]
+[22]     0.0    0.09    1.09       1         _fwalk [22]
+                0.08    1.00       3/3           fclose [23]
+                0.01    0.00       1/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+                0.08    1.00       3/3           _fwalk [22]
+[23]     0.0    0.08    1.00       3         fclose [23]
+                0.23    0.72       3/3           _fclose_r [24]
+                0.04    0.00       3/300011      _WindowUnderflow8 [14]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+                0.23    0.72       3/3           fclose [23]
+[24]     0.0    0.23    0.72       3         _fclose_r [24]
+                0.09    0.38       3/50003       _fflush_r [10]
+                0.03    0.07       3/3           __sclose [35]
+                0.06    0.01       1/1           _free_r [37]
+                0.04    0.00       3/300011      _WindowUnderflow8 [14]
+                0.01    0.00       3/3           __sfp_lock_acquire [45]
+                0.01    0.00       3/3           __sfp_lock_release [46]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+                0.02    0.84       1/1           exit [20]
+[25]     0.0    0.02    0.84       1         _exit [25]
+                0.84    0.00       1/1           xthal_dcache_all_writeback [26]
+-----------------------------------------------
+                0.84    0.00       1/1           _exit [25]
+[26]     0.0    0.84    0.00       1         xthal_dcache_all_writeback [26]
+-----------------------------------------------
+                0.07    0.65       1/1           _vfprintf_r [6]
+[27]     0.0    0.07    0.65       1         __swsetup_r [27]
+                0.09    0.54       1/1           __smakebuf_r [28]
+                0.01    0.00       1/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+                0.09    0.54       1/1           __swsetup_r [27]
+[28]     0.0    0.09    0.54       1         __smakebuf_r [28]
+                0.29    0.14       1/1           _malloc_r [29]
+                0.03    0.03       1/1           _isatty_r [42]
+                0.03    0.00       1/2           _fstat_r [43]
+                0.01    0.00       1/300011      _WindowUnderflow8 [14]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+                0.29    0.14       1/1           __smakebuf_r [28]
+[29]     0.0    0.29    0.14       1         _malloc_r [29]
+                0.11    0.01       2/2           _sbrk_r [34]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+                0.01    0.00       1/2           __malloc_lock [49]
+                0.01    0.00       1/2           __malloc_unlock [50]
+-----------------------------------------------
+                0.12    0.18       1/1           _vfprintf_r [6]
+[30]     0.0    0.12    0.18       1         __sinit [30]
+                0.18    0.00       3/3           memset [33]
+-----------------------------------------------
+                0.13    0.13       1/1           _start [2]
+[31]     0.0    0.13    0.13       1         __clibrary_init [31]
+                0.07    0.00       1/1           _atexit [39]
+                0.02    0.04       1/1           _init [41]
+-----------------------------------------------
+                0.10    0.10       1/1           exit [20]
+[32]     0.0    0.10    0.10       1         __call_exitprocs [32]
+                0.02    0.06       1/1           _fini [36]
+                0.01    0.00       1/300011      _WindowUnderflow8 [14]
+-----------------------------------------------
+                0.18    0.00       3/3           __sinit [30]
+[33]     0.0    0.18    0.00       3         memset [33]
+-----------------------------------------------
+                0.11    0.01       2/2           _malloc_r [29]
+[34]     0.0    0.11    0.01       2         _sbrk_r [34]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+-----------------------------------------------
+                0.03    0.07       3/3           _fclose_r [24]
+[35]     0.0    0.03    0.07       3         __sclose [35]
+                0.07    0.00       3/3           _close_r [38]
+-----------------------------------------------
+                0.02    0.06       1/1           __call_exitprocs [32]
+[36]     0.0    0.02    0.06       1         _fini [36]
+                0.04    0.02       1/1           __do_global_dtors_aux [40]
+-----------------------------------------------
+                0.06    0.01       1/1           _fclose_r [24]
+[37]     0.0    0.06    0.01       1         _free_r [37]
+                0.01    0.00       1/2           __malloc_lock [49]
+                0.01    0.00       1/2           __malloc_unlock [50]
+-----------------------------------------------
+                0.07    0.00       3/3           __sclose [35]
+[38]     0.0    0.07    0.00       3         _close_r [38]
+-----------------------------------------------
+                0.07    0.00       1/1           __clibrary_init [31]
+[39]     0.0    0.07    0.00       1         _atexit [39]
+-----------------------------------------------
+                0.04    0.02       1/1           _fini [36]
+[40]     0.0    0.04    0.02       1         __do_global_dtors_aux [40]
+                0.01    0.00       1/300011      _WindowOverflow8 [15]
+                0.01    0.00       1/2           _WindowOverflow4 [47]
+-----------------------------------------------
+                0.02    0.04       1/1           __clibrary_init [31]
+[41]     0.0    0.02    0.04       1         _init [41]
+                0.03    0.00       1/1           __do_global_ctors_aux [44]
+                0.01    0.00       1/1           frame_dummy [48]
+-----------------------------------------------
+                0.03    0.03       1/1           __smakebuf_r [28]
+[42]     0.0    0.03    0.03       1         _isatty_r [42]
+                0.03    0.00       1/2           _fstat_r [43]
+-----------------------------------------------
+                0.03    0.00       1/2           __smakebuf_r [28]
+                0.03    0.00       1/2           _isatty_r [42]
+[43]     0.0    0.05    0.00       2         _fstat_r [43]
+-----------------------------------------------
+                0.03    0.00       1/1           _init [41]
+[44]     0.0    0.03    0.00       1         __do_global_ctors_aux [44]
+-----------------------------------------------
+                0.01    0.00       3/3           _fclose_r [24]
+[45]     0.0    0.01    0.00       3         __sfp_lock_acquire [45]
+-----------------------------------------------
+                0.01    0.00       3/3           _fclose_r [24]
+[46]     0.0    0.01    0.00       3         __sfp_lock_release [46]
+-----------------------------------------------
+                0.01    0.00       1/2           __do_global_dtors_aux [40]
+                0.01    0.00       1/2           strlen [12]
+[47]     0.0    0.01    0.00       2         _WindowOverflow4 [47]
+-----------------------------------------------
+                0.01    0.00       1/1           _init [41]
+[48]     0.0    0.01    0.00       1         frame_dummy [48]
+-----------------------------------------------
+                0.01    0.00       1/2           _free_r [37]
+                0.01    0.00       1/2           _malloc_r [29]
+[49]     0.0    0.01    0.00       2         __malloc_lock [49]
+-----------------------------------------------
+                0.01    0.00       1/2           _free_r [37]
+                0.01    0.00       1/2           _malloc_r [29]
+[50]     0.0    0.01    0.00       2         __malloc_unlock [50]
+-----------------------------------------------
+                                                 <spontaneous>
+[51]     0.0    0.01    0.00                 _ResetVector [51]
+-----------------------------------------------
+                0.01    0.00       1/1           main [3]
+[52]     0.0    0.01    0.00       1         _WindowUnderflow4 [52]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total number of cycles for each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index      A unique number given to each element of the table.
+                Index numbers are sorted numerically.
+                The index number is printed next to every function name so
+                it is easier to look up the function is in the table.
+
+     %          This is the percentage of the `total' cycles that were
+                attributed to this function and its children.  Note that due
+                to different viewpoints, functions excluded by options, etc,
+                these numbers will NOT add up to 100%.
+
+     self       This is the total number of cycles in this function.
+
+     children   This is the total number of cycles propagated into this
+                function by its children.
+
+     called     This is the number of times the function was called.
+                If the function called itself recursively, the number
+                only includes non-recursive calls, and is followed by
+                a `+' and the number of recursive calls.
+
+     name       The name of the current function.  The index number is
+                printed after it.  If the function is a member of a
+                cycle, the cycle number is printed between the
+                function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self       This is the number of cycles that were propagated directly
+                from the function into this parent.
+
+     children   This is the number of cycles that were propagated from
+                the function's children into this parent.
+
+     called     This is the number of times this parent called the
+                function `/' the total number of times the function
+                was called.  Recursive calls to the function are not
+                included in the number after the `/'.
+
+     name       This is the name of the parent.  The parent's index
+                number is printed after it.  If the parent is a
+                member of a cycle, the cycle number is printed between
+                the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self       This is the number of cycles that were propagated directly
+                from the child into the function.
+
+     children   This is the number of cycles that weres propagated from the
+                child's children to the function.
+
+     called     This is the number of times the function called
+                this child `/' the total number of times the child
+                was called.  Recursive calls by the child are not
+                listed in the number after the `/'.
+
+     name       This is the name of the child.  The child's index
+                number is printed after it.  If the child is a
+                member of a cycle, the cycle number is printed
+                between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+
+Index by function name
+
+  [19] _ResetHandler          [28] __smakebuf_r           [34] _sbrk_r
+  [51] _ResetVector            [8] __sprint_r              [2] _start
+  [47] _WindowOverflow4       [16] __swrite                [6] _vfprintf_r
+  [15] _WindowOverflow8       [27] __swsetup_r            [17] _write_r
+  [52] _WindowUnderflow4      [39] _atexit                [20] exit
+  [14] _WindowUnderflow8      [21] _cleanup_r             [23] fclose
+  [32] __call_exitprocs       [38] _close_r               [48] frame_dummy
+  [31] __clibrary_init        [25] _exit                   [3] main
+  [44] __do_global_ctors_aux  [24] _fclose_r               [9] memchr
+  [40] __do_global_dtors_aux  [10] _fflush_r              [13] memmove
+  [49] __malloc_lock          [36] _fini                  [33] memset
+  [50] __malloc_unlock        [37] _free_r                 [5] printf
+  [35] __sclose               [43] _fstat_r                [7] puts
+  [11] __sflush_r             [22] _fwalk                 [12] strlen
+  [45] __sfp_lock_acquire     [41] _init                   [1] unpackdone (reset-vector-xea2.S)
+  [46] __sfp_lock_release     [42] _isatty_r              [26] xthal_dcache_all_writeback
+   [4] __sfvwrite_r           [18] _localeconv_r
+  [30] __sinit                [29] _malloc_r
