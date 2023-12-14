@@ -179,9 +179,9 @@ def main():
 
     if options.coverage:
         if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
-            run([options.python, '-m', 'coverage', 'html'])
-        else:
             run([options.python, '-m', 'coverage', 'xml'])
+        else:
+            run([options.python, '-m', 'coverage', 'html'])
 
     if NB_RUN_FAILURES or NB_DIFF_FAILURES:
         print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
