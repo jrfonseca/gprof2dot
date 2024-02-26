@@ -56,6 +56,23 @@ def fail(a, b):
     assert False
 
 
+def round_difference(difference, tolerance):
+    n = int(str(tolerance).split('-')[1]) if '-' in str(tolerance) else len(str(tolerance).split('.')[1])
+    return round(difference, 2 + n)
+
+
+def rescale_difference(x, min_val, max_val):
+    return ((x - min_val) / (max_val - min_val)) * 100
+
+
+def min_max_difference(profile1, profile2):
+    f1_events = [f1[TOTAL_TIME_RATIO] for _, f1 in sorted_iteritems(profile1.functions)]
+    f2_events = [f2[TOTAL_TIME_RATIO] for _, f2 in sorted_iteritems(profile2.functions)]
+    differences = [abs(f1_events[i] - f2_events[i]) * 100 for i in range(len(f1_events))]
+
+    return min(differences), max(differences)
+
+
 tol = 2 ** -23
 
 def ratio(numerator, denominator):
@@ -3154,6 +3171,119 @@ class DotWriter:
     show_function_events = [TOTAL_TIME_RATIO, TIME_RATIO]
     show_edge_events = [TOTAL_TIME_RATIO, CALLS]
 
+    def graphs_compare(self, profile1, profile2, theme, options):
+        self.begin_graph()
+
+        fontname = theme.graph_fontname()
+        fontcolor = theme.graph_fontcolor()
+        nodestyle = theme.node_style()
+
+        tolerance, only_slower, only_faster, color_by_difference = (
+            options.tolerance, options.only_slower, options.only_faster, options.color_by_difference)
+        self.attr('graph', fontname=fontname, ranksep=0.25, nodesep=0.125)
+        self.attr('node', fontname=fontname, style=nodestyle, fontcolor=fontcolor, width=0, height=0)
+        self.attr('edge', fontname=fontname)
+
+        functions2 = {function.stripped_name(): function
+                      for _, function in sorted_iteritems(profile2.functions)}
+        if color_by_difference:
+            min_diff, max_diff = min_max_difference(profile1, profile2)
+        for _, function1 in sorted_iteritems(profile1.functions):
+            labels = []
+
+            stripped_name = function1.stripped_name()
+            function2 = functions2[stripped_name]
+            if self.wrap:
+                stripped_name = self.wrap_function_name(stripped_name)
+            labels.append(stripped_name)
+            weight_difference = 0
+            shape = 'box'
+            orientation = '0'
+            for event in self.show_function_events:
+                if event in function1.events:
+                    event1 = function1[event]
+                    event2 = function2[event]
+
+                    difference = abs(event1 - event2) * 100
+
+                    if event == TOTAL_TIME_RATIO:
+                        weight_difference = difference
+                        if difference >= tolerance:
+                            if event2 > event1 and not only_faster:
+                                shape = 'cds'
+                                label = (f'{event.format(event1)} +'
+                                         f' {round_difference(difference, tolerance)}%')
+                            elif event2 < event1 and not only_slower:
+                                orientation = "90"
+                                shape = 'cds'
+                                label = (f'{event.format(event1)} - '
+                                         f'{round_difference(difference, tolerance)}%')
+                            else:
+                                # protection to not color by difference if we choose to show only_faster/only_slower
+                                weight_difference = 0
+                                label = event.format(function1[event])
+                        else:
+                            weight_difference = 0
+                            label = event.format(function1[event])
+                    else:
+                        if difference >= tolerance:
+                            if event2 > event1:
+                                label = (f'{event.format(event1)} +'
+                                         f' {round_difference(difference, tolerance)}%')
+                            elif event2 < event1:
+                                label = (f'{event.format(event1)} - '
+                                         f'{round_difference(difference, tolerance)}%')
+                        else:
+                            label = event.format(function1[event])
+
+                    labels.append(label)
+
+            if function1.called is not None:
+                #  czy sprawdzamy ile razy funkcja była wywołana w obu przypadkach,
+                #  czy wypisujemy tylko z jednej?
+                labels.append(f"{function1.called} {MULTIPLICATION_SIGN}")
+
+            if color_by_difference and weight_difference:
+                # weight = rescale_difference(weight_difference, min_diff, max_diff)
+                weight = weight_difference * 100
+
+            elif function1.weight is not None and not color_by_difference:
+                weight = function1.weight
+            else:
+                weight = 0.0
+
+            label = '\n'.join(labels)
+            self.node(function1.id,
+                      label=label,
+                      orientation=orientation,
+                      color=self.color(theme.node_bgcolor(weight)),
+                      shape=shape,
+                      fontcolor=self.color(theme.node_fgcolor(weight)),
+                      # fontsize="%f" % theme.node_fontsize(weight),
+                      tooltip=function1.filename,
+                      )
+
+            calls2 = {call.callee_id: call for _, call in sorted_iteritems(function2.calls)}
+            for _, call1 in sorted_iteritems(function1.calls):
+                call2 = calls2[call1.callee_id]
+                labels = []
+                for event in self.show_edge_events:
+                    if event in call1.events:
+                        label = f'{event.format(call1[event])} / {event.format(call2[event])}'
+                        labels.append(label)
+                weight = 0 if color_by_difference else call1.weight
+                label = '\n'.join(labels)
+                self.edge(function1.id, call1.callee_id,
+                          label=label,
+                          color=self.color(theme.edge_color(weight)),
+                          fontcolor=self.color(theme.edge_color(weight)),
+                          fontsize="%.2f" % theme.edge_fontsize(weight),
+                          penwidth="%.2f" % theme.edge_penwidth(weight),
+                          labeldistance="%.2f" % theme.edge_penwidth(weight),
+                          arrowsize="%.2f" % theme.edge_arrowsize(weight),
+                          )
+        self.end_graph()
+
     def graph(self, profile, theme):
         self.begin_graph()
 
@@ -3445,9 +3575,33 @@ with '%', a dump of all available information is performed for selected entries,
         '-p', '--path', action="append",
         type="string", dest="filter_paths",
         help="Filter all modules not in a specified path")
+    # 0 = false, 1 = true
+    optparser.add_option(
+        '--compare',
+        type="int", dest="compare", default=0,
+        help="If true program will compare two graphs")
+    optparser.add_option(
+        '--tolerance',
+        type="float", dest="tolerance", default=0.001,
+        help="Tolerance threshold for node difference (only with --compare option)")
+    optparser.add_option(
+        '--only-slower',
+        action="store_true",
+        dest="only_slower", default=False,
+        help="Show comparison only for function which are slower in second graph")
+    optparser.add_option(
+        '--only-faster',
+        action="store_true",
+        dest="only_faster", default=False,
+        help="Show comparison only for function which are faster in second graph")
+    optparser.add_option(
+        '--color-by-difference',
+        action="store_true",
+        dest="color_by_difference", default=False,
+        help="Colors by the value of difference abs(node in first graph - node in second graph)")
     (options, args) = optparser.parse_args(argv)
 
-    if len(args) > 1 and options.format != 'pstats':
+    if len(args) > 1 and options.format != 'pstats' and not options.compare:
         optparser.error('incorrect number of arguments')
 
     try:
@@ -3470,18 +3624,32 @@ with '%', a dump of all available information is performed for selected entries,
         if not args:
             fp = sys.stdin
         else:
-            fp = open(args[0], 'rt', encoding='UTF-8')
-        parser = Format(fp)
+            if options.compare:
+                fp1 = open(args[0], 'rt', encoding='UTF-8')
+                fp2 = open(args[1], 'rt', encoding='UTF-8')
+                parser1 = Format(fp1)
+                parser2 = Format(fp2)
+            else:
+                fp = open(args[0], 'rt', encoding='UTF-8')
+                parser = Format(fp)
     elif Format.multipleInput:
         if not args:
             optparser.error('at least a file must be specified for %s input' % options.format)
-        parser = Format(*args)
+        if options.compare:
+            parser1 = Format(args.file1)
+            parser2 = Format(args.file2)
+        else:
+            parser = Format(*args)
     else:
         if len(args) != 1:
             optparser.error('exactly one file must be specified for %s input' % options.format)
         parser = Format(args[0])
 
-    profile = parser.parse()
+    if options.compare:
+        profile1 = parser1.parse()
+        profile2 = parser2.parse()
+    else:
+        profile = parser.parse()
 
     if options.output is None:
         output = open(sys.stdout.fileno(), mode='wt', encoding='UTF-8', closefd=False)
@@ -3497,7 +3665,14 @@ with '%', a dump of all available information is performed for selected entries,
     if options.show_samples:
         dot.show_function_events.append(SAMPLES)
 
-    profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths, options.color_nodes_by_selftime)
+    if options.compare:
+        profile1.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
+                      options.color_nodes_by_selftime)
+        profile2.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
+                      options.color_nodes_by_selftime)
+    else:
+        profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
+                      options.color_nodes_by_selftime)
 
     if options.list_functions:
         profile.printFunctionIds(selector=options.list_functions)
@@ -3516,7 +3691,11 @@ with '%', a dump of all available information is performed for selected entries,
             sys.exit(1)
         profile.prune_leaf(leafIds, options.depth)
 
-    dot.graph(profile, theme)
+    if options.compare:
+        #  może by przekazywać tylko options
+        dot.graphs_compare(profile1, profile2, theme, options)
+    else:
+        dot.graph(profile, theme)
 
 
 if __name__ == '__main__':
