@@ -58,16 +58,18 @@ def fail(a, b):
 
 def round_difference(difference, tolerance):
     n = int(str(tolerance).split('-')[1]) if '-' in str(tolerance) else len(str(tolerance).split('.')[1])
-    return round(difference, 2 + n)
+    return round(difference, 1 + n)
 
 
 def rescale_difference(x, min_val, max_val):
-    return ((x - min_val) / (max_val - min_val)) * 100
+    return (x - min_val) / (max_val - min_val)
 
 
 def min_max_difference(profile1, profile2):
     f1_events = [f1[TOTAL_TIME_RATIO] for _, f1 in sorted_iteritems(profile1.functions)]
     f2_events = [f2[TOTAL_TIME_RATIO] for _, f2 in sorted_iteritems(profile2.functions)]
+    if len(f1_events) != len(f2_events):
+        raise Exception('Number od nodes in provided profiles are not equal')
     differences = [abs(f1_events[i] - f2_events[i]) * 100 for i in range(len(f1_events))]
 
     return min(differences), max(differences)
@@ -3184,18 +3186,22 @@ class DotWriter:
         self.attr('node', fontname=fontname, style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
-        functions2 = {function.stripped_name(): function
+        functions2 = {function.name: function
                       for _, function in sorted_iteritems(profile2.functions)}
         if color_by_difference:
             min_diff, max_diff = min_max_difference(profile1, profile2)
         for _, function1 in sorted_iteritems(profile1.functions):
             labels = []
 
-            stripped_name = function1.stripped_name()
-            function2 = functions2[stripped_name]
+            name = function1.name
+            try:
+                function2 = functions2[name]
+            except KeyError:
+                raise Exception(f'Provided profiles does not have identical '
+                                f'structure, function that differ {name}')
             if self.wrap:
-                stripped_name = self.wrap_function_name(stripped_name)
-            labels.append(stripped_name)
+                name = self.wrap_function_name(name)
+            labels.append(name)
             weight_difference = 0
             shape = 'box'
             orientation = '0'
@@ -3239,13 +3245,11 @@ class DotWriter:
                     labels.append(label)
 
             if function1.called is not None:
-                #  czy sprawdzamy ile razy funkcja była wywołana w obu przypadkach,
-                #  czy wypisujemy tylko z jednej?
-                labels.append(f"{function1.called} {MULTIPLICATION_SIGN}")
+                labels.append(f"{function1.called} {MULTIPLICATION_SIGN}/ {function2.called} {MULTIPLICATION_SIGN}")
 
             if color_by_difference and weight_difference:
-                # weight = rescale_difference(weight_difference, min_diff, max_diff)
-                weight = weight_difference * 100
+                # min and max is calculated whe color_by_difference is true
+                weight = rescale_difference(weight_difference, min_diff, max_diff)
 
             elif function1.weight is not None and not color_by_difference:
                 weight = function1.weight
@@ -3253,13 +3257,14 @@ class DotWriter:
                 weight = 0.0
 
             label = '\n'.join(labels)
+
             self.node(function1.id,
                       label=label,
                       orientation=orientation,
                       color=self.color(theme.node_bgcolor(weight)),
                       shape=shape,
                       fontcolor=self.color(theme.node_fgcolor(weight)),
-                      # fontsize="%f" % theme.node_fontsize(weight),
+                      fontsize="%f" % theme.node_fontsize(weight),
                       tooltip=function1.filename,
                       )
 
@@ -3575,11 +3580,11 @@ with '%', a dump of all available information is performed for selected entries,
         '-p', '--path', action="append",
         type="string", dest="filter_paths",
         help="Filter all modules not in a specified path")
-    # 0 = false, 1 = true
     optparser.add_option(
         '--compare',
-        type="int", dest="compare", default=0,
-        help="If true program will compare two graphs")
+        action="store_true",
+        dest="compare", default=False,
+        help="compare two graphs with identical structure")
     optparser.add_option(
         '--tolerance',
         type="float", dest="tolerance", default=0.001,
@@ -3588,17 +3593,17 @@ with '%', a dump of all available information is performed for selected entries,
         '--only-slower',
         action="store_true",
         dest="only_slower", default=False,
-        help="Show comparison only for function which are slower in second graph")
+        help="Display comparison only for function which are slower in second graph")
     optparser.add_option(
         '--only-faster',
         action="store_true",
         dest="only_faster", default=False,
-        help="Show comparison only for function which are faster in second graph")
+        help="Display comparison only for function which are faster in second graph")
     optparser.add_option(
         '--color-by-difference',
         action="store_true",
         dest="color_by_difference", default=False,
-        help="Colors by the value of difference abs(node in first graph - node in second graph)")
+        help="Color nodes based on the value of the difference.")
     (options, args) = optparser.parse_args(argv)
 
     if len(args) > 1 and options.format != 'pstats' and not options.compare:
@@ -3636,8 +3641,8 @@ with '%', a dump of all available information is performed for selected entries,
         if not args:
             optparser.error('at least a file must be specified for %s input' % options.format)
         if options.compare:
-            parser1 = Format(args.file1)
-            parser2 = Format(args.file2)
+            parser1 = Format(args[-2])
+            parser2 = Format(args[-1])
         else:
             parser = Format(*args)
     else:
@@ -3692,7 +3697,6 @@ with '%', a dump of all available information is performed for selected entries,
         profile.prune_leaf(leafIds, options.depth)
 
     if options.compare:
-        #  może by przekazywać tylko options
         dot.graphs_compare(profile1, profile2, theme, options)
     else:
         dot.graph(profile, theme)
