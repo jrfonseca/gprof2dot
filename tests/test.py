@@ -32,6 +32,7 @@ assert sys.version_info[0] >= 3
 formats = [
     "axe",
     "callgrind",
+    "collapse",
     "hprof",
     "json",
     "oprofile",
