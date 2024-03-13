@@ -44,6 +44,10 @@ formats = [
     "xperf",
     "dtrace",
 ]
+formats_compare = [
+    "callgrind",
+    "pstats"
+]
 
 
 NB_RUN_FAILURES = 0
@@ -91,7 +95,7 @@ def diff(a, b):
     b_lines = open(b, 'rt', encoding='UTF-8').readlines()
     diff_lines = difflib.unified_diff(a_lines, b_lines, fromfile=a, tofile=b)
 
-    diff_txt= ''.join(diff_lines)
+    diff_txt = ''.join(diff_lines)
     if len(diff_txt) > 0:
         NB_DIFF_FAILURES += 1
         sys.stdout.write("Non empty diff for files %s and %s" %(a,b))
@@ -167,10 +171,41 @@ def main():
                 else:
                     diff(ref_dot, dot)
 
+    for format_compare in formats_compare:
+        subdir = os.path.join(test_dir, 'compare', format_compare)
+        for dirname in os.listdir(subdir):
+            test_subdir = os.path.join(subdir, dirname)
+            name1 = dirname + '1.'
+            name2 = dirname + '2.'
+            filename1 = name1 + format_compare
+            filename2 = name2 + format_compare
+
+            sys.stdout.write(filename1 + '\n')
+
+            profile1 = os.path.join(test_subdir, filename1)
+            profile2 = os.path.join(test_subdir, filename2)
+            dot = os.path.join(test_subdir, name1 + '.dot')
+            png = os.path.join(test_subdir, name1 + '.png')
+
+            ref_dot = os.path.join(test_subdir, name1 + '.orig.dot')
+            ref_png = os.path.join(test_subdir, name1 + '.orig.png')
+
+            if run_gprof2dot(['-f', format_compare, '-o', dot, '--compare', profile1, profile2]) != 0:
+                continue
+
+            if run(['dot', '-Tpng', '-o', png, dot]) != 0:
+                continue
+
+            if options.force or not os.path.exists(ref_dot):
+                shutil.copy(dot, ref_dot)
+                shutil.copy(png, ref_png)
+            else:
+                diff(ref_dot, dot)
+
     # test the --list-functions flag only for pstats format
     profile = os.path.join(test_dir, 'pstats', 'memtrail.pstats')
     genfileNm = os.path.join(test_dir, 'pstats', 'function-list.testgen.txt')
-    outfile =  open(genfileNm, "w")
+    outfile = open(genfileNm, "w")
     for flagVal in ("+", "execfile", "*execfile", "*:execfile", "*parse", "*parse_*"):
         run_gprof2dot(['-f', "pstats", "--list-functions="+flagVal, profile], stderr=outfile)
 
@@ -187,7 +222,7 @@ def main():
     if NB_RUN_FAILURES or NB_DIFF_FAILURES:
         print("Nb runs ending in error: %d" % NB_RUN_FAILURES)
         print("Nb diffs showing a difference: %d" % NB_DIFF_FAILURES)
-        if ( options.max_acceptable is not None
+        if (options.max_acceptable is not None
              and NB_RUN_FAILURES + NB_DIFF_FAILURES > options.max_acceptable ):
             print("Too many errors: returning non-zero code")
             sys.exit(1)
