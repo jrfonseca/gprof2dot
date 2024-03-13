@@ -129,23 +129,24 @@ Options:
                         variety to lower percentages.  Values > 1.0 give less
                         variety to lower percentages
   -p FILTER_PATHS, --path=FILTER_PATHS
-                        Filter all modules not in a specified path
-  --compare             Compare two graphs with identical structure.
-                        With this option two files should be provided.
-                        gprof2dot.py [options] --compare [file1] [file2] ...
-  
-  Following option can be used only when comparing two graphs (with --compare).
-  
-  --tolerance=NUMBER    Tolerance threshold for node difference (default=0.001%). 
-                        If the difference is below this value the nodes are 
-                        considered identical.                      
-  --only-slower         Display comparision only for functions which are 
-                        slower in second graph.  
-  --only-faster         Display comparision only for functions which are 
-                        faster in second graph.  
-  --color-by-difference Color nodes based on the value of the difference. 
-                        Nodes with the largest differences represent the hot spots.
-  
+                       Filter all modules not in a specified path
+  --compare             Compare two graphs with identical structure. With this
+                        option two files should be provided.gprof2dot.py
+                        [options] --compare [file1] [file2] ...
+  --compare-tolerance=TOLERANCE
+                        Tolerance threshold for node difference
+                        (default=0.001%).If the difference is below this value
+                        the nodes are considered identical.
+  --compare-only-slower
+                        Display comparison only for function which are slower
+                        in second graph.
+  --compare-only-faster
+                        Display comparison only for function which are faster
+                        in second graph.
+  --compare-color-by-difference
+                        Color nodes based on the value of the difference.
+                        Nodes with the largest differences represent the hot
+                        spots.
 ```
 
 ## Examples
@@ -242,7 +243,7 @@ See [Russell Power's blog post](http://web.archive.org/web/20220122110828/http:/
 
 ## Compare Example
 
-This image illustrates an example usage of the `--compare` and `--color-by-difference` options.
+This image illustrates an example usage of the `--compare` and `--compare-color-by-difference` options.
 
 ![Compare](./images/compare_diff.png)
 

@@ -55,10 +55,11 @@ def add(a, b):
 def fail(a, b):
     assert False
 
-
+# To enhance readability, labels are rounded to the number of decimal
+# places corresponding to the tolerance value.
 def round_difference(difference, tolerance):
-    n = int(str(tolerance).split('-')[1]) if '-' in str(tolerance) else len(str(tolerance).split('.')[1])
-    return round(difference, 1 + n)
+    n = -math.floor(math.log10(tolerance))
+    return round(difference, n)
 
 
 def rescale_difference(x, min_val, max_val):
@@ -69,7 +70,7 @@ def min_max_difference(profile1, profile2):
     f1_events = [f1[TOTAL_TIME_RATIO] for _, f1 in sorted_iteritems(profile1.functions)]
     f2_events = [f2[TOTAL_TIME_RATIO] for _, f2 in sorted_iteritems(profile2.functions)]
     if len(f1_events) != len(f2_events):
-        raise Exception('Number od nodes in provided profiles are not equal')
+        raise Exception('Number of nodes in provided profiles are not equal')
     differences = [abs(f1_events[i] - f2_events[i]) * 100 for i in range(len(f1_events))]
 
     return min(differences), max(differences)
@@ -3584,26 +3585,29 @@ with '%', a dump of all available information is performed for selected entries,
         '--compare',
         action="store_true",
         dest="compare", default=False,
-        help="compare two graphs with identical structure")
+        help="Compare two graphs with identical structure. With this option two files should be provided."
+             "gprof2dot.py [options] --compare [file1] [file2] ...")
     optparser.add_option(
-        '--tolerance',
+        '--compare-tolerance',
         type="float", dest="tolerance", default=0.001,
-        help="Tolerance threshold for node difference (only with --compare option)")
+        help="Tolerance threshold for node difference (default=0.001%)."
+             "If the difference is below this value the nodes are considered identical.")
     optparser.add_option(
-        '--only-slower',
+        '--compare-only-slower',
         action="store_true",
         dest="only_slower", default=False,
-        help="Display comparison only for function which are slower in second graph")
+        help="Display comparison only for function which are slower in second graph.")
     optparser.add_option(
-        '--only-faster',
+        '--compare-only-faster',
         action="store_true",
         dest="only_faster", default=False,
-        help="Display comparison only for function which are faster in second graph")
+        help="Display comparison only for function which are faster in second graph.")
     optparser.add_option(
-        '--color-by-difference',
+        '--compare-color-by-difference',
         action="store_true",
         dest="color_by_difference", default=False,
-        help="Color nodes based on the value of the difference.")
+        help="Color nodes based on the value of the difference. "
+             "Nodes with the largest differences represent the hot spots.")
     (options, args) = optparser.parse_args(argv)
 
     if len(args) > 1 and options.format != 'pstats' and not options.compare:
