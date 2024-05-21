@@ -32,6 +32,8 @@ import collections
 import locale
 import json
 import fnmatch
+import codecs
+import io
 
 assert sys.version_info[0] >= 3
 
@@ -3566,7 +3568,15 @@ with '%', a dump of all available information is performed for selected entries,
         if not args:
             fp = sys.stdin
         else:
-            fp = open(args[0], 'rt', encoding='UTF-8')
+            fp = open(args[0], 'rb')
+            bom = fp.read(2)
+            if bom == codecs.BOM_UTF16_LE:
+                # Default on Windows PowerShell (https://github.com/jrfonseca/gprof2dot/issues/88)
+                encoding = 'utf-16le'
+            else:
+                encoding = 'utf-8'
+            fp.seek(0)
+            fp = io.TextIOWrapper(fp, encoding=encoding)
         parser = Format(fp)
     elif Format.multipleInput:
         if not args:
