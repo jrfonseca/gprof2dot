@@ -3,6 +3,9 @@ name: testOnly
   #  tests and build
 
 on:
+  push:
+    paths:
+      - .github/workflows/testOnly.yml
   workflow_dispatch:
   #  manual launch only
 
