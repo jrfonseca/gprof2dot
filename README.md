@@ -268,7 +268,7 @@ An edge represents the calls between two functions and has the following layout:
 
 Where:
 
-  * _total time %_ is the percentage of the running time transfered from the children to this parent (if available);
+  * _total time %_ is the percentage of the running time transferred from the children to this parent (if available);
   * _calls_ is the number of calls the parent function called the children.
 
 Note that in recursive cycles, the _total time %_ in the node is the same for the whole functions in the cycle, and there is no _total time %_ figure in the edges inside the cycle, since such figure would make no sense.
