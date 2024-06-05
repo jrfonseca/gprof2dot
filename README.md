@@ -43,7 +43,7 @@ This is the result from the [example data](https://linuxgazette.net/100/misc/vin
 
 # Requirements
 
-  * [Python](https://www.python.org/download/): known to work with version 2.7 and 3.3; it will most likely _not_ work with earlier releases.
+  * [Python](https://www.python.org/download/): known to work with version >=3.8; it will most likely _not_ work with earlier releases.
   * [Graphviz](https://www.graphviz.org/Download.php): tested with version 2.26.3, but should work fine with other versions.
 
 ## Windows users
