@@ -286,7 +286,7 @@ Where
 - `total time %` and `self time %` come from the first profile
 - `diff` is calculated as the absolute value of `time in the first profile - time in the second profile`.
 
-> **Note** The compare option has been tested for pstats and callgrind profiles.
+> **Note** The compare option has been tested for pstats, axe and callgrind profiles.
 
 ## Output
 
