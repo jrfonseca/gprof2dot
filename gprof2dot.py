@@ -32,8 +32,6 @@ import collections
 import locale
 import json
 import fnmatch
-import codecs
-import io
 
 assert sys.version_info[0] >= 3
 
@@ -71,9 +69,12 @@ def rescale_difference(x, min_val, max_val):
 def min_max_difference(profile1, profile2):
     f1_events = [f1[TOTAL_TIME_RATIO] for _, f1 in sorted_iteritems(profile1.functions)]
     f2_events = [f2[TOTAL_TIME_RATIO] for _, f2 in sorted_iteritems(profile2.functions)]
-    if len(f1_events) != len(f2_events):
-        raise Exception('Number of nodes in provided profiles are not equal')
-    differences = [abs(f1_events[i] - f2_events[i]) * 100 for i in range(len(f1_events))]
+    differences = []
+    for i in range(len(f1_events)):
+        try:
+            differences.append(abs(f1_events[i] - f2_events[i]) * 100)
+        except IndexError:
+            differences.append(0)
 
     return min(differences), max(differences)
 
@@ -429,7 +430,7 @@ class Profile(Object):
                                if fnmatch.fnmatch(v.name,selector)}
                 v = ",\n".join( ("%s\t({k})\t(%s)::\n\t%s" % (v.name,type(v),v.dump())
                                  for (k,v) in function_info.items()
-                                  ))
+                                 ))
 
             else:
                 function_names = (v.name for v in self.functions.values())
@@ -1732,13 +1733,13 @@ class CallgrindParser(LineParser):
 
     def parse_header_line(self):
         return \
-            self.parse_empty() or \
-            self.parse_comment() or \
-            self.parse_part_detail() or \
-            self.parse_description() or \
-            self.parse_event_specification() or \
-            self.parse_cost_line_def() or \
-            self.parse_cost_summary()
+                self.parse_empty() or \
+                self.parse_comment() or \
+                self.parse_part_detail() or \
+                self.parse_description() or \
+                self.parse_event_specification() or \
+                self.parse_cost_line_def() or \
+                self.parse_cost_summary()
 
     _detail_keys = set(('cmd', 'pid', 'thread', 'part'))
 
@@ -1777,17 +1778,17 @@ class CallgrindParser(LineParser):
 
     def parse_body_line(self):
         return \
-            self.parse_empty() or \
-            self.parse_comment() or \
-            self.parse_cost_line() or \
-            self.parse_position_spec() or \
-            self.parse_association_spec()
+                self.parse_empty() or \
+                self.parse_comment() or \
+                self.parse_cost_line() or \
+                self.parse_position_spec() or \
+                self.parse_association_spec()
 
     __subpos_re = r'(0x[0-9a-fA-F]+|\d+|\+\d+|-\d+|\*)'
     _cost_re = re.compile(r'^' +
-        __subpos_re + r'( +' + __subpos_re + r')*' +
-        r'( +\d+)*' +
-    '$')
+                          __subpos_re + r'( +' + __subpos_re + r')*' +
+                          r'( +\d+)*' +
+                          '$')
 
     def parse_cost_line(self, calls=None):
         line = self.lookahead().rstrip()
@@ -3057,18 +3058,18 @@ formats = {
 class Theme:
 
     def __init__(self,
-            bgcolor = (0.0, 0.0, 1.0),
-            mincolor = (0.0, 0.0, 0.0),
-            maxcolor = (0.0, 0.0, 1.0),
-            fontname = "Arial",
-            fontcolor = "white",
-            nodestyle = "filled",
-            minfontsize = 10.0,
-            maxfontsize = 10.0,
-            minpenwidth = 0.5,
-            maxpenwidth = 4.0,
-            gamma = 2.2,
-            skew = 1.0):
+                 bgcolor = (0.0, 0.0, 1.0),
+                 mincolor = (0.0, 0.0, 0.0),
+                 maxcolor = (0.0, 0.0, 1.0),
+                 fontname = "Arial",
+                 fontcolor = "white",
+                 nodestyle = "filled",
+                 minfontsize = 10.0,
+                 maxfontsize = 10.0,
+                 minpenwidth = 0.5,
+                 maxpenwidth = 4.0,
+                 gamma = 2.2,
+                 skew = 1.0):
         self.bgcolor = bgcolor
         self.mincolor = mincolor
         self.maxcolor = maxcolor
@@ -3287,64 +3288,96 @@ class DotWriter:
 
         functions2 = {function.name: function
                       for _, function in sorted_iteritems(profile2.functions)}
-        if color_by_difference:
-            min_diff, max_diff = min_max_difference(profile1, profile2)
+
         for _, function1 in sorted_iteritems(profile1.functions):
             labels = []
 
             name = function1.name
             try:
                 function2 = functions2[name]
-            except KeyError:
-                raise Exception(f'Provided profiles does not have identical '
-                                f'structure, function that differ {name}')
-            if self.wrap:
-                name = self.wrap_function_name(name)
-            labels.append(name)
-            weight_difference = 0
-            shape = 'box'
-            orientation = '0'
-            for event in self.show_function_events:
-                if event in function1.events:
-                    event1 = function1[event]
-                    event2 = function2[event]
+                if self.wrap:
+                    name = self.wrap_function_name(name)
+                if color_by_difference:
+                    min_diff, max_diff = min_max_difference(profile1, profile2)
+                labels.append(name)
+                weight_difference = 0
+                shape = 'box'
+                orientation = '0'
+                for event in self.show_function_events:
+                    if event in function1.events:
+                        event1 = function1[event]
+                        event2 = function2[event]
 
-                    difference = abs(event1 - event2) * 100
+                        difference = abs(event1 - event2) * 100
 
-                    if event == TOTAL_TIME_RATIO:
-                        weight_difference = difference
-                        if difference >= tolerance:
-                            if event2 > event1 and not only_faster:
-                                shape = 'cds'
-                                label = (f'{event.format(event1)} +'
-                                         f' {round_difference(difference, tolerance)}%')
-                            elif event2 < event1 and not only_slower:
-                                orientation = "90"
-                                shape = 'cds'
-                                label = (f'{event.format(event1)} - '
-                                         f'{round_difference(difference, tolerance)}%')
+                        if event == TOTAL_TIME_RATIO:
+                            weight_difference = difference
+                            if difference >= tolerance:
+                                if event2 > event1 and not only_faster:
+                                    shape = 'cds'
+                                    label = (f'{event.format(event1)} +'
+                                             f' {round_difference(difference, tolerance)}%')
+                                elif event2 < event1 and not only_slower:
+                                    orientation = "90"
+                                    shape = 'cds'
+                                    label = (f'{event.format(event1)} - '
+                                             f'{round_difference(difference, tolerance)}%')
+                                else:
+                                    # protection to not color by difference if we choose to show only_faster/only_slower
+                                    weight_difference = 0
+                                    label = event.format(function1[event])
                             else:
-                                # protection to not color by difference if we choose to show only_faster/only_slower
                                 weight_difference = 0
                                 label = event.format(function1[event])
                         else:
-                            weight_difference = 0
-                            label = event.format(function1[event])
-                    else:
-                        if difference >= tolerance:
-                            if event2 > event1:
-                                label = (f'{event.format(event1)} +'
-                                         f' {round_difference(difference, tolerance)}%')
-                            elif event2 < event1:
-                                label = (f'{event.format(event1)} - '
-                                         f'{round_difference(difference, tolerance)}%')
-                        else:
-                            label = event.format(function1[event])
+                            if difference >= tolerance:
+                                if event2 > event1:
+                                    label = (f'{event.format(event1)} +'
+                                             f' {round_difference(difference, tolerance)}%')
+                                elif event2 < event1:
+                                    label = (f'{event.format(event1)} - '
+                                             f'{round_difference(difference, tolerance)}%')
+                            else:
+                                label = event.format(function1[event])
 
-                    labels.append(label)
+                        labels.append(label)
+                        if function1.called is not None:
+                            labels.append(f"{function1.called} {MULTIPLICATION_SIGN}/ {function2.called} {MULTIPLICATION_SIGN}")
 
-            if function1.called is not None:
-                labels.append(f"{function1.called} {MULTIPLICATION_SIGN}/ {function2.called} {MULTIPLICATION_SIGN}")
+            except KeyError:
+                shape = 'box'
+                orientation = '0'
+                weight_difference = 0
+                if function1.process is not None:
+                    labels.append(function1.process)
+                if function1.module is not None:
+                    labels.append(function1.module)
+
+                if self.strip:
+                    function_name = function1.stripped_name()
+                else:
+                    function_name = function1.name
+                if color_by_difference:
+                    min_diff, max_diff = 0, 0
+
+                # dot can't parse quoted strings longer than YY_BUF_SIZE, which
+                # defaults to 16K. But some annotated C++ functions (e.g., boost,
+                # https://github.com/jrfonseca/gprof2dot/issues/30) can exceed that
+                MAX_FUNCTION_NAME = 4096
+                if len(function_name) >= MAX_FUNCTION_NAME:
+                    sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
+                    function_name = function_name[:MAX_FUNCTION_NAME - 1] + chr(0x2026)
+
+                if self.wrap:
+                    function_name = self.wrap_function_name(function_name)
+                labels.append(function_name)
+
+                for event in self.show_function_events:
+                    if event in function1.events:
+                        label = event.format(function1[event])
+                        labels.append(label)
+                if function1.called is not None:
+                    labels.append("%u%s" % (function1.called, MULTIPLICATION_SIGN))
 
             if color_by_difference and weight_difference:
                 # min and max is calculated whe color_by_difference is true
@@ -3369,12 +3402,19 @@ class DotWriter:
 
             calls2 = {call.callee_id: call for _, call in sorted_iteritems(function2.calls)}
             for _, call1 in sorted_iteritems(function1.calls):
-                call2 = calls2[call1.callee_id]
                 labels = []
-                for event in self.show_edge_events:
-                    if event in call1.events:
-                        label = f'{event.format(call1[event])} / {event.format(call2[event])}'
-                        labels.append(label)
+                try:
+                    call2 = calls2[call1.callee_id]
+                    for event in self.show_edge_events:
+                        if event in call1.events:
+                            label = f'{event.format(call1[event])} / {event.format(call2[event])}'
+                            labels.append(label)
+                except KeyError:
+                    for event in self.show_edge_events:
+                        if event in call1.events:
+                            label = f'{event.format(call1[event])}'
+                            labels.append(label)
+
                 weight = 0 if color_by_difference else call1.weight
                 label = '\n'.join(labels)
                 self.edge(function1.id, call1.callee_id,
@@ -3437,12 +3477,12 @@ class DotWriter:
 
             label = '\n'.join(labels)
             self.node(function.id,
-                label = label,
-                color = self.color(theme.node_bgcolor(weight)),
-                fontcolor = self.color(theme.node_fgcolor(weight)),
-                fontsize = "%.2f" % theme.node_fontsize(weight),
-                tooltip = function.filename,
-            )
+                      label = label,
+                      color = self.color(theme.node_bgcolor(weight)),
+                      fontcolor = self.color(theme.node_fgcolor(weight)),
+                      fontsize = "%.2f" % theme.node_fontsize(weight),
+                      tooltip = function.filename,
+                      )
 
             for _, call in sorted_iteritems(function.calls):
                 callee = profile.functions[call.callee_id]
@@ -3463,14 +3503,14 @@ class DotWriter:
                 label = '\n'.join(labels)
 
                 self.edge(function.id, call.callee_id,
-                    label = label,
-                    color = self.color(theme.edge_color(weight)),
-                    fontcolor = self.color(theme.edge_color(weight)),
-                    fontsize = "%.2f" % theme.edge_fontsize(weight),
-                    penwidth = "%.2f" % theme.edge_penwidth(weight),
-                    labeldistance = "%.2f" % theme.edge_penwidth(weight),
-                    arrowsize = "%.2f" % theme.edge_arrowsize(weight),
-                )
+                          label = label,
+                          color = self.color(theme.edge_color(weight)),
+                          fontcolor = self.color(theme.edge_color(weight)),
+                          fontsize = "%.2f" % theme.edge_fontsize(weight),
+                          penwidth = "%.2f" % theme.edge_penwidth(weight),
+                          labeldistance = "%.2f" % theme.edge_penwidth(weight),
+                          arrowsize = "%.2f" % theme.edge_arrowsize(weight),
+                          )
 
         self.end_graph()
 
@@ -3730,22 +3770,15 @@ with '%', a dump of all available information is performed for selected entries,
     if Format.stdinInput:
         if not args:
             fp = sys.stdin
-        elif options.compare:
-            fp1 = open(args[0], 'rt', encoding='UTF-8')
-            fp2 = open(args[1], 'rt', encoding='UTF-8')
-            parser1 = Format(fp1)
-            parser2 = Format(fp2)
         else:
-            fp = open(args[0], 'rb')
-            bom = fp.read(2)
-            if bom == codecs.BOM_UTF16_LE:
-                # Default on Windows PowerShell (https://github.com/jrfonseca/gprof2dot/issues/88)
-                encoding = 'utf-16le'
+            if options.compare:
+                fp1 = open(args[0], 'rt', encoding='UTF-8')
+                fp2 = open(args[1], 'rt', encoding='UTF-8')
+                parser1 = Format(fp1)
+                parser2 = Format(fp2)
             else:
-                encoding = 'utf-8'
-            fp.seek(0)
-            fp = io.TextIOWrapper(fp, encoding=encoding)
-            parser = Format(fp)
+                fp = open(args[0], 'rt', encoding='UTF-8')
+                parser = Format(fp)
     elif Format.multipleInput:
         if not args:
             optparser.error('at least a file must be specified for %s input' % options.format)
@@ -3781,23 +3814,27 @@ with '%', a dump of all available information is performed for selected entries,
 
     if options.compare:
         profile1.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
-                      options.color_nodes_by_selftime)
+                       options.color_nodes_by_selftime)
         profile2.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
-                      options.color_nodes_by_selftime)
+                       options.color_nodes_by_selftime)
+
+        if options.root:
+            profile1.prune_root(profile1.getFunctionIds(options.root), options.depth)
+            profile2.prune_root(profile2.getFunctionIds(options.root), options.depth)
     else:
         profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
                       options.color_nodes_by_selftime)
+        if options.root:
+            rootIds = profile.getFunctionIds(options.root)
+            if not rootIds:
+                sys.stderr.write('root node ' + options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
+                sys.exit(1)
+            profile.prune_root(rootIds, options.depth)
 
     if options.list_functions:
         profile.printFunctionIds(selector=options.list_functions)
         sys.exit(0)
 
-    if options.root:
-        rootIds = profile.getFunctionIds(options.root)
-        if not rootIds:
-            sys.stderr.write('root node ' + options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
-            sys.exit(1)
-        profile.prune_root(rootIds, options.depth)
     if options.leaf:
         leafIds = profile.getFunctionIds(options.leaf)
         if not leafIds:
