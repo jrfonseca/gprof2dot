@@ -3730,6 +3730,7 @@ with '%', a dump of all available information is performed for selected entries,
     if Format.stdinInput:
         if not args:
             fp = sys.stdin
+            parser = Format(fp)
         elif options.compare:
             fp1 = open(args[0], 'rt', encoding='UTF-8')
             fp2 = open(args[1], 'rt', encoding='UTF-8')
