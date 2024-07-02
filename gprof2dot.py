@@ -3286,8 +3286,7 @@ class DotWriter:
         self.attr('node', fontname=fontname, style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
-        functions2 = {function.name: function
-                      for _, function in sorted_iteritems(profile2.functions)}
+        functions2 = {function.name: function for _, function in sorted_iteritems(profile2.functions)}
 
         for _, function1 in sorted_iteritems(profile1.functions):
             labels = []
@@ -3401,10 +3400,16 @@ class DotWriter:
                       )
 
             calls2 = {call.callee_id: call for _, call in sorted_iteritems(function2.calls)}
+            functions_by_id1 = {function.id: function for _, function in sorted_iteritems(profile1.functions)}
+
             for _, call1 in sorted_iteritems(function1.calls):
                 labels = []
                 try:
-                    call2 = calls2[call1.callee_id]
+                    # if profiles do not have identical setups, callee_id will not be identical either
+                    call_id1 = call1.callee_id
+                    call_name = functions_by_id1[call_id1].name
+                    call_id2 = functions2[call_name].id
+                    call2 = calls2[call_id2]
                     for event in self.show_edge_events:
                         if event in call1.events:
                             label = f'{event.format(call1[event])} / {event.format(call2[event])}'
@@ -3723,7 +3728,7 @@ with '%', a dump of all available information is performed for selected entries,
         '--compare',
         action="store_true",
         dest="compare", default=False,
-        help="Compare two graphs with identical structure. With this option two files should be provided."
+        help="Compare two graphs with almost identical structure. With this option two files should be provided."
              "gprof2dot.py [options] --compare [file1] [file2] ...")
     optparser.add_option(
         '--compare-tolerance',
