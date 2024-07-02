@@ -32,6 +32,8 @@ import collections
 import locale
 import json
 import fnmatch
+import codecs
+import io
 
 assert sys.version_info[0] >= 3
 
@@ -430,7 +432,7 @@ class Profile(Object):
                                if fnmatch.fnmatch(v.name,selector)}
                 v = ",\n".join( ("%s\t({k})\t(%s)::\n\t%s" % (v.name,type(v),v.dump())
                                  for (k,v) in function_info.items()
-                                 ))
+                                  ))
 
             else:
                 function_names = (v.name for v in self.functions.values())
@@ -1733,13 +1735,13 @@ class CallgrindParser(LineParser):
 
     def parse_header_line(self):
         return \
-                self.parse_empty() or \
-                self.parse_comment() or \
-                self.parse_part_detail() or \
-                self.parse_description() or \
-                self.parse_event_specification() or \
-                self.parse_cost_line_def() or \
-                self.parse_cost_summary()
+            self.parse_empty() or \
+            self.parse_comment() or \
+            self.parse_part_detail() or \
+            self.parse_description() or \
+            self.parse_event_specification() or \
+            self.parse_cost_line_def() or \
+            self.parse_cost_summary()
 
     _detail_keys = set(('cmd', 'pid', 'thread', 'part'))
 
@@ -1778,17 +1780,17 @@ class CallgrindParser(LineParser):
 
     def parse_body_line(self):
         return \
-                self.parse_empty() or \
-                self.parse_comment() or \
-                self.parse_cost_line() or \
-                self.parse_position_spec() or \
-                self.parse_association_spec()
+            self.parse_empty() or \
+            self.parse_comment() or \
+            self.parse_cost_line() or \
+            self.parse_position_spec() or \
+            self.parse_association_spec()
 
     __subpos_re = r'(0x[0-9a-fA-F]+|\d+|\+\d+|-\d+|\*)'
     _cost_re = re.compile(r'^' +
-                          __subpos_re + r'( +' + __subpos_re + r')*' +
-                          r'( +\d+)*' +
-                          '$')
+        __subpos_re + r'( +' + __subpos_re + r')*' +
+        r'( +\d+)*' +
+    '$')
 
     def parse_cost_line(self, calls=None):
         line = self.lookahead().rstrip()
@@ -3058,18 +3060,18 @@ formats = {
 class Theme:
 
     def __init__(self,
-                 bgcolor = (0.0, 0.0, 1.0),
-                 mincolor = (0.0, 0.0, 0.0),
-                 maxcolor = (0.0, 0.0, 1.0),
-                 fontname = "Arial",
-                 fontcolor = "white",
-                 nodestyle = "filled",
-                 minfontsize = 10.0,
-                 maxfontsize = 10.0,
-                 minpenwidth = 0.5,
-                 maxpenwidth = 4.0,
-                 gamma = 2.2,
-                 skew = 1.0):
+            bgcolor = (0.0, 0.0, 1.0),
+            mincolor = (0.0, 0.0, 0.0),
+            maxcolor = (0.0, 0.0, 1.0),
+            fontname = "Arial",
+            fontcolor = "white",
+            nodestyle = "filled",
+            minfontsize = 10.0,
+            maxfontsize = 10.0,
+            minpenwidth = 0.5,
+            maxpenwidth = 4.0,
+            gamma = 2.2,
+            skew = 1.0):
         self.bgcolor = bgcolor
         self.mincolor = mincolor
         self.maxcolor = maxcolor
@@ -3482,12 +3484,12 @@ class DotWriter:
 
             label = '\n'.join(labels)
             self.node(function.id,
-                      label = label,
-                      color = self.color(theme.node_bgcolor(weight)),
-                      fontcolor = self.color(theme.node_fgcolor(weight)),
-                      fontsize = "%.2f" % theme.node_fontsize(weight),
-                      tooltip = function.filename,
-                      )
+                label = label,
+                color = self.color(theme.node_bgcolor(weight)),
+                fontcolor = self.color(theme.node_fgcolor(weight)),
+                fontsize = "%.2f" % theme.node_fontsize(weight),
+                tooltip = function.filename,
+            )
 
             for _, call in sorted_iteritems(function.calls):
                 callee = profile.functions[call.callee_id]
@@ -3508,14 +3510,14 @@ class DotWriter:
                 label = '\n'.join(labels)
 
                 self.edge(function.id, call.callee_id,
-                          label = label,
-                          color = self.color(theme.edge_color(weight)),
-                          fontcolor = self.color(theme.edge_color(weight)),
-                          fontsize = "%.2f" % theme.edge_fontsize(weight),
-                          penwidth = "%.2f" % theme.edge_penwidth(weight),
-                          labeldistance = "%.2f" % theme.edge_penwidth(weight),
-                          arrowsize = "%.2f" % theme.edge_arrowsize(weight),
-                          )
+                    label = label,
+                    color = self.color(theme.edge_color(weight)),
+                    fontcolor = self.color(theme.edge_color(weight)),
+                    fontsize = "%.2f" % theme.edge_fontsize(weight),
+                    penwidth = "%.2f" % theme.edge_penwidth(weight),
+                    labeldistance = "%.2f" % theme.edge_penwidth(weight),
+                    arrowsize = "%.2f" % theme.edge_arrowsize(weight),
+                )
 
         self.end_graph()
 
@@ -3775,15 +3777,23 @@ with '%', a dump of all available information is performed for selected entries,
     if Format.stdinInput:
         if not args:
             fp = sys.stdin
+            parser = Format(fp)
+        elif options.compare:
+            fp1 = open(args[0], 'rt', encoding='UTF-8')
+            fp2 = open(args[1], 'rt', encoding='UTF-8')
+            parser1 = Format(fp1)
+            parser2 = Format(fp2)
         else:
-            if options.compare:
-                fp1 = open(args[0], 'rt', encoding='UTF-8')
-                fp2 = open(args[1], 'rt', encoding='UTF-8')
-                parser1 = Format(fp1)
-                parser2 = Format(fp2)
+            fp = open(args[0], 'rb')
+            bom = fp.read(2)
+            if bom == codecs.BOM_UTF16_LE:
+                # Default on Windows PowerShell (https://github.com/jrfonseca/gprof2dot/issues/88)
+                encoding = 'utf-16le'
             else:
-                fp = open(args[0], 'rt', encoding='UTF-8')
-                parser = Format(fp)
+                encoding = 'utf-8'
+            fp.seek(0)
+            fp = io.TextIOWrapper(fp, encoding=encoding)
+            parser = Format(fp)
     elif Format.multipleInput:
         if not args:
             optparser.error('at least a file must be specified for %s input' % options.format)
