@@ -45,6 +45,7 @@ formats = [
     "dtrace",
 ]
 formats_compare = [
+    "axe",
     "callgrind",
     "pstats"
 ]
@@ -177,8 +178,8 @@ def main():
             test_subdir = os.path.join(subdir, dirname)
             name1 = dirname + '1.'
             name2 = dirname + '2.'
-            filename1 = name1 + format_compare
-            filename2 = name2 + format_compare
+            filename1 = name1 + 'txt' if format_compare == 'axe' else name1 + format_compare
+            filename2 = name2 + 'txt' if format_compare == 'axe' else name2 + format_compare
 
             sys.stdout.write(filename1 + '\n')
 

@@ -1,0 +1,47 @@
+Index  % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                 Index
+-----  ----------------  -------------  -----------------  -------------------  -----
+                         0.0            3.120                _start             [2]  
+[1]    100.0             0.0            3.120              __libc_start_main    [1]  
+                         0.0            3.120                main               [3]  
+                                                                                     
+                                                             <spontaneous>           
+[2]    100.0             0.0            3.120              _start               [2]  
+                         0.0            3.120                __libc_start_main  [1]  
+                                                                                     
+                         0.0            3.120                __libc_start_main  [1]  
+[3]    100.0             0.0            3.120              main                 [3]  
+                         0.010          0.170                print_matrix       [7]  
+                         0.0            2.940                matrix_multiply    [5]  
+                                                                                     
+                         2.050          0.890                matrix_multiply    [5]  
+[4]    94.23             2.050          0.890              add_elements         [4]  
+                         0.890          0.0                  elements_multiply  [6]  
+                                                                                     
+                         0.0            2.940                main               [3]  
+[5]    94.23             0.0            2.940              matrix_multiply      [5]  
+                         2.050          0.890                add_elements       [4]  
+                                                                                     
+                         0.890          0.0                  add_elements       [4]  
+[6]    28.53             0.890          0.0                elements_multiply    [6]  
+                                                                                     
+                         0.010          0.170                main               [3]  
+[7]    5.77              0.010          0.170              print_matrix         [7]  
+                         0.170          0.0                  printf             [8]  
+                                                                                     
+                         0.170          0.0                  print_matrix       [7]  
+[8]    5.45              0.170          0.0                printf               [8]  
+                                                                                     
+
+
+Index by function name
+
+Index  Function         
+-----  -----------------
+[1]    __libc_start_main
+[2]    _start           
+[4]    add_elements     
+[6]    elements_multiply
+[3]    main             
+[5]    matrix_multiply  
+[7]    print_matrix     
+[8]    printf           
