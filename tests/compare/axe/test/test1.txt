@@ -1,57 +1,57 @@
 Index  % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                      Index
 -----  ----------------  -------------  -----------------  ------------------------  -----
-                         0.0            25.960               _start                  [2]  
-[1]    100.0             0.0            25.960             __libc_start_main_impl    [1]  
-                         0.0            25.960               main                    [3]  
-                                                                                          
-                                                             <spontaneous>                
-[2]    100.0             0.0            25.960             _start                    [2]  
-                         0.0            25.960               __libc_start_main_impl  [1]  
-                                                                                          
-                         0.0            25.960               __libc_start_main_impl  [1]  
-[3]    100.0             0.0            25.960             main                      [3]  
-                         0.020          25.450               matrix_multiply         [4]  
-                         0.010          0.0                  initialize_tables       [10] 
-                         0.0            0.480                print_matrix            [7]  
-                                                                                          
-                         0.020          25.450               main                    [3]  
-[4]    98.11             0.020          25.450             matrix_multiply           [4]  
-                         22.649         2.801                add_elements            [5]  
-                                                                                          
-                         22.649         2.801                matrix_multiply         [4]  
-[5]    98.04             22.649         2.801              add_elements              [5]  
-                         2.801          0.0                  elements_multiply       [6]  
-                                                                                          
-                         2.801          0.0                  add_elements            [5]  
-[6]    10.79             2.801          0.0                elements_multiply         [6]  
-                                                                                          
-                         0.0            0.480                main                    [3]  
-[7]    1.85              0.0            0.480              print_matrix              [7]  
-                         0.010          0.470                print_raw               [8]  
-                                                                                          
-                         0.010          0.470                print_matrix            [7]  
-[8]    1.85              0.010          0.470              print_raw                 [8]  
-                         0.470          0.0                  __printf                [9]  
-                                                                                          
-                         0.470          0.0                  print_raw               [8]  
-[9]    1.81              0.470          0.0                __printf                  [9]  
-                                                                                          
-                         0.010          0.0                  main                    [3]  
-[10]   0.04              0.010          0.0                initialize_tables         [10] 
-                                                                                          
+                         0.0            25.960               _start                  [2]
+[1]    100.0             0.0            25.960             __libc_start_main_impl    [1]
+                         0.0            25.960               main                    [3]
+
+                                                             <spontaneous>
+[2]    100.0             0.0            25.960             _start                    [2]
+                         0.0            25.960               __libc_start_main_impl  [1]
+
+                         0.0            25.960               __libc_start_main_impl  [1]
+[3]    100.0             0.0            25.960             main                      [3]
+                         0.020          25.450               matrix_multiply         [4]
+                         0.010          0.0                  initialize_tables       [10]
+                         0.0            0.480                print_matrix            [7]
+
+                         0.020          25.450               main                    [3]
+[4]    98.11             0.020          25.450             matrix_multiply           [4]
+                         22.649         2.801                add_elements            [5]
+
+                         22.649         2.801                matrix_multiply         [4]
+[5]    98.04             22.649         2.801              add_elements              [5]
+                         2.801          0.0                  elements_multiply       [6]
+
+                         2.801          0.0                  add_elements            [5]
+[6]    10.79             2.801          0.0                elements_multiply         [6]
+
+                         0.0            0.480                main                    [3]
+[7]    1.85              0.0            0.480              print_matrix              [7]
+                         0.010          0.470                print_raw               [8]
+
+                         0.010          0.470                print_matrix            [7]
+[8]    1.85              0.010          0.470              print_raw                 [8]
+                         0.470          0.0                  __printf                [9]
+
+                         0.470          0.0                  print_raw               [8]
+[9]    1.81              0.470          0.0                __printf                  [9]
+
+                         0.010          0.0                  main                    [3]
+[10]   0.04              0.010          0.0                initialize_tables         [10]
+
 
 
 Index by function name
 
-Index  Function              
+Index  Function
 -----  ----------------------
 [1]    __libc_start_main_impl
-[9]    __printf              
-[2]    _start                
-[5]    add_elements          
-[6]    elements_multiply     
-[10]   initialize_tables     
-[3]    main                  
-[4]    matrix_multiply       
-[7]    print_matrix          
-[8]    print_raw             
+[9]    __printf
+[2]    _start
+[5]    add_elements
+[6]    elements_multiply
+[10]   initialize_tables
+[3]    main
+[4]    matrix_multiply
+[7]    print_matrix
+[8]    print_raw
