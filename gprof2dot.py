@@ -34,6 +34,7 @@ import json
 import fnmatch
 import codecs
 import io
+import hashlib
 
 assert sys.version_info[0] >= 3
 
@@ -3535,15 +3536,15 @@ class DotWriter:
 
     def node(self, node, **attrs):
         self.write("\t")
-        self.id(node)
+        self.node_id(node)
         self.attr_list(attrs)
         self.write(";\n")
 
     def edge(self, src, dst, **attrs):
         self.write("\t")
-        self.id(src)
+        self.node_id(src)
         self.write(" -> ")
-        self.id(dst)
+        self.node_id(dst)
         self.attr_list(attrs)
         self.write(";\n")
 
@@ -3559,10 +3560,21 @@ class DotWriter:
                 first = False
             else:
                 self.write(", ")
-            self.id(name)
+            assert isinstance(name, str)
+            assert name.isidentifier()
+            self.write(name)
             self.write('=')
             self.id(value)
         self.write(']')
+
+    def node_id(self, id):
+        # Node IDs need to be unique (can't be truncated) but dot doesn't allow
+        # IDs longer than 16384 characters, so use an hash instead for the huge
+        # C++ symbols that can arise, as seen in
+        # https://github.com/jrfonseca/gprof2dot/issues/99
+        if isinstance(id, str) and len(id) > 1024:
+            id = '_' + hashlib.sha1(id.encode('utf-8'), usedforsecurity=False).hexdigest()
+        self.id(id)
 
     def id(self, id):
         if isinstance(id, (int, float)):
