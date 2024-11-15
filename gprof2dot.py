@@ -3524,6 +3524,11 @@ class DotWriter:
 
     def begin_graph(self):
         self.write('digraph {\n')
+        # Work-around graphviz bug[1]: unnamed graphs have "%3" tooltip in SVG
+        # output. The bug was fixed upstream, but graphviz shipped in recent
+        # Linux distros (for example, Ubuntu 24.04) still has the bug.
+        # [1] https://gitlab.com/graphviz/graphviz/-/issues/1376
+        self.write('\ttooltip=" "\n')
 
     def end_graph(self):
         self.write('}\n')
