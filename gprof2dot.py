@@ -44,6 +44,7 @@ assert sys.version_info[0] >= 3
 
 
 MULTIPLICATION_SIGN = chr(0xd7)
+timeFormat = "%.7g"
 
 
 def times(x):
@@ -51,6 +52,9 @@ def times(x):
 
 def percentage(p):
     return "%.02f%%" % (p*100.0,)
+
+def fmttime(t):
+    return timeFormat % t
 
 def add(a, b):
     return a + b
@@ -112,7 +116,7 @@ class UndefinedEvent(Exception):
         return 'unspecified event %s' % self.event.name
 
 
-class Event(object):
+class Event:
     """Describe a kind of event, and its basic operations."""
 
     def __init__(self, name, null, aggregator, formatter = str):
@@ -123,12 +127,6 @@ class Event(object):
 
     def __repr__(self):
         return self.name
-
-    def __eq__(self, other):
-        return self is other
-
-    def __hash__(self):
-        return id(self)
 
     def null(self):
         return self._null
@@ -159,9 +157,9 @@ SAMPLES2 = Event("Samples", 0, add, times)
 # Used only when totalMethod == callstacks
 TOTAL_SAMPLES = Event("Samples", 0, add, times)
 
-TIME = Event("Time", 0.0, add, lambda x: '(' + str(x) + ')')
+TIME = Event("Time", 0.0, add, lambda x: '(' + fmttime(x) + ')')
 TIME_RATIO = Event("Time ratio", 0.0, add, lambda x: '(' + percentage(x) + ')')
-TOTAL_TIME = Event("Total time", 0.0, fail)
+TOTAL_TIME = Event("Total time", 0.0, fail, fmttime)
 TOTAL_TIME_RATIO = Event("Total time ratio", 0.0, fail, percentage)
 
 labels = {
@@ -175,7 +173,7 @@ defaultLabelNames = ['total-time-percentage', 'self-time-percentage']
 totalMethod = 'callratios'
 
 
-class Object(object):
+class Object:
     """Base class for all objects in profile which can store events."""
 
     def __init__(self, events=None):
@@ -183,12 +181,6 @@ class Object(object):
             self.events = {}
         else:
             self.events = events
-
-    def __hash__(self):
-        return id(self)
-
-    def __eq__(self, other):
-        return self is other
 
     def __lt__(self, other):
         return id(self) < id(other)
@@ -3632,7 +3624,7 @@ def naturalJoin(values):
 def main(argv=sys.argv[1:]):
     """Main program."""
 
-    global totalMethod
+    global totalMethod, timeFormat
 
     formatNames = list(formats.keys())
     formatNames.sort()
@@ -3697,6 +3689,10 @@ def main(argv=sys.argv[1:]):
         action="store_true",
         dest="show_samples", default=False,
         help="show function samples")
+    optparser.add_option(
+        '--time-format',
+        default=timeFormat,
+        help="format to use for showing time values [default: %default]")
     optparser.add_option(
         '--node-label', metavar='MEASURE',
         type='choice', choices=labelNames,
@@ -3785,6 +3781,7 @@ with '%', a dump of all available information is performed for selected entries,
         theme.skew = options.theme_skew
 
     totalMethod = options.totalMethod
+    timeFormat = options.time_format
 
     try:
         Format = formats[options.format]
