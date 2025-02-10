@@ -32,8 +32,8 @@ _gprof2dot_ currently fulfills my needs, and I have little or no time for its
 maintenance.  So I'm afraid that any requested features are unlikely to be
 implemented, and I might be slow processing issue reports or pull requests.
 
-[![Build Status](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml)
-[![codecov](https://codecov.io/gh/jrfonseca/gprof2dot/branch/master/graph/badge.svg?token=pBvnAuazx0)](https://codecov.io/gh/jrfonseca/gprof2dot)
+[![Build Status](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/jrfonseca/gprof2dot/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/jrfonseca/gprof2dot/branch/main/graph/badge.svg?token=pBvnAuazx0)](https://codecov.io/gh/jrfonseca/gprof2dot)
 
 
 # Example
@@ -69,7 +69,7 @@ On RedHat/Fedora run
 
         pip install gprof2dot
 
-  * [Standalone script](https://raw.githubusercontent.com/jrfonseca/gprof2dot/master/gprof2dot.py)
+  * [Standalone script](https://raw.githubusercontent.com/jrfonseca/gprof2dot/main/gprof2dot.py)
 
   * [Git repository](https://github.com/jrfonseca/gprof2dot)
 
