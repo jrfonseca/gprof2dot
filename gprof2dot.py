@@ -26,7 +26,7 @@ import math
 import os.path
 import re
 import textwrap
-import optparse
+import argparse
 import xml.parsers.expat
 import collections
 import locale
@@ -3635,146 +3635,143 @@ def main(argv=sys.argv[1:]):
     labelNames = list(labels.keys())
     labelNames.sort()
 
-    optparser = optparse.OptionParser(
-        usage="\n\t%prog [options] [file] ...")
-    optparser.add_option(
+    argparser = argparse.ArgumentParser(
+        usage="\n  %(prog)s [options] [file] ...")
+    argparser.add_argument(
         '-o', '--output', metavar='FILE',
-        type="string", dest="output",
+        dest="output",
         help="output filename [stdout]")
-    optparser.add_option(
+    argparser.add_argument(
         '-n', '--node-thres', metavar='PERCENTAGE',
-        type="float", dest="node_thres", default=0.5,
-        help="eliminate nodes below this threshold [default: %default]")
-    optparser.add_option(
+        type=float, dest="node_thres", default=0.5,
+        help="eliminate nodes below this threshold [default: %(default)s]")
+    argparser.add_argument(
         '-e', '--edge-thres', metavar='PERCENTAGE',
-        type="float", dest="edge_thres", default=0.1,
-        help="eliminate edges below this threshold [default: %default]")
-    optparser.add_option(
+        type=float, dest="edge_thres", default=0.1,
+        help="eliminate edges below this threshold [default: %(default)s]")
+    argparser.add_argument(
         '-f', '--format',
-        type="choice", choices=formatNames,
+        choices=formatNames,
         dest="format", default="prof",
-        help="profile format: %s [default: %%default]" % naturalJoin(formatNames))
-    optparser.add_option(
+        help="profile format: %s [default: %%(default)s]" % naturalJoin(formatNames))
+    argparser.add_argument(
         '--total',
-        type="choice", choices=('callratios', 'callstacks'),
+        choices=('callratios', 'callstacks'),
         dest="totalMethod", default=totalMethod,
-        help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %default]")
-    optparser.add_option(
+        help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %(default)s]")
+    argparser.add_argument(
         '-c', '--colormap',
-        type="choice", choices=themeNames,
+        choices=themeNames,
         dest="theme", default="color",
-        help="color map: %s [default: %%default]" % naturalJoin(themeNames))
-    optparser.add_option(
+        help="color map: %s [default: %%(default)s]" % naturalJoin(themeNames))
+    argparser.add_argument(
         '-s', '--strip',
         action="store_true",
         dest="strip", default=False,
         help="strip function parameters, template parameters, and const modifiers from demangled C++ function names")
-    optparser.add_option(
+    argparser.add_argument(
         '--color-nodes-by-selftime',
         action="store_true",
         dest="color_nodes_by_selftime", default=False,
         help="color nodes by self time, rather than by total time (sum of self and descendants)")
-    optparser.add_option(
+    argparser.add_argument(
         '--colour-nodes-by-selftime',
         action="store_true",
         dest="color_nodes_by_selftime",
-        help=optparse.SUPPRESS_HELP)
-    optparser.add_option(
+        help=argparse.SUPPRESS)
+    argparser.add_argument(
         '-w', '--wrap',
         action="store_true",
         dest="wrap", default=False,
         help="wrap function names")
-    optparser.add_option(
+    argparser.add_argument(
         '--show-samples',
         action="store_true",
         dest="show_samples", default=False,
         help="show function samples")
-    optparser.add_option(
+    argparser.add_argument(
         '--time-format',
         default=timeFormat,
-        help="format to use for showing time values [default: %default]")
-    optparser.add_option(
+        help="format to use for showing time values [default: %(default)s]")
+    argparser.add_argument(
         '--node-label', metavar='MEASURE',
-        type='choice', choices=labelNames,
+        choices=labelNames,
         action='append',
         dest='node_labels',
         help="measurements to on show the node (can be specified multiple times): %s [default: %s]" % (
             naturalJoin(labelNames), ', '.join(defaultLabelNames)))
     # add option to show information on available entries ()
-    optparser.add_option(
+    argparser.add_argument(
         '--list-functions',
-        type="string",
         dest="list_functions", default=None,
         help="""\
 list functions available for selection in -z or -l, requires selector argument
 ( use '+' to select all).
 Recall that the selector argument is used with Unix/Bash globbing/pattern matching,
 and that entries are formatted '<pkg>:<linenum>:<function>'. When argument starts
-with '%', a dump of all available information is performed for selected entries,
- after removal of leading '%'.
+with '%%', a dump of all available information is performed for selected entries,
+ after removal of leading '%%'.
 """)
     # add option to create subtree or show paths
-    optparser.add_option(
+    argparser.add_argument(
         '-z', '--root',
-        type="string",
         dest="root", default="",
         help="prune call graph to show only descendants of specified root function")
-    optparser.add_option(
+    argparser.add_argument(
         '-l', '--leaf',
-        type="string",
         dest="leaf", default="",
         help="prune call graph to show only ancestors of specified leaf function")
-    optparser.add_option(
+    argparser.add_argument(
         '--depth',
-        type="int",
+        type=int,
         dest="depth", default=-1,
         help="prune call graph to show only descendants or ancestors until specified depth")
     # add a new option to control skew of the colorization curve
-    optparser.add_option(
+    argparser.add_argument(
         '--skew',
-        type="float", dest="theme_skew", default=1.0,
+        type=float, dest="theme_skew", default=1.0,
         help="skew the colorization curve.  Values < 1.0 give more variety to lower percentages.  Values > 1.0 give less variety to lower percentages")
     # add option for filtering by file path
-    optparser.add_option(
+    argparser.add_argument(
         '-p', '--path', action="append",
-        type="string", dest="filter_paths",
+        dest="filter_paths",
         help="Filter all modules not in a specified path")
-    optparser.add_option(
+    argparser.add_argument(
         '--compare',
         action="store_true",
         dest="compare", default=False,
         help="Compare two graphs with almost identical structure. With this option two files should be provided."
              "gprof2dot.py [options] --compare [file1] [file2] ...")
-    optparser.add_option(
+    argparser.add_argument(
         '--compare-tolerance',
-        type="float", dest="tolerance", default=0.001,
-        help="Tolerance threshold for node difference (default=0.001%)."
+        type=float, dest="tolerance", default=0.001,
+        help="Tolerance threshold for node difference (default=0.001%%)."
              "If the difference is below this value the nodes are considered identical.")
-    optparser.add_option(
+    argparser.add_argument(
         '--compare-only-slower',
         action="store_true",
         dest="only_slower", default=False,
         help="Display comparison only for function which are slower in second graph.")
-    optparser.add_option(
+    argparser.add_argument(
         '--compare-only-faster',
         action="store_true",
         dest="only_faster", default=False,
         help="Display comparison only for function which are faster in second graph.")
-    optparser.add_option(
+    argparser.add_argument(
         '--compare-color-by-difference',
         action="store_true",
         dest="color_by_difference", default=False,
         help="Color nodes based on the value of the difference. "
              "Nodes with the largest differences represent the hot spots.")
-    (options, args) = optparser.parse_args(argv)
+    (options, args) = argparser.parse_args(argv)
 
     if len(args) > 1 and options.format != 'pstats' and not options.compare:
-        optparser.error('incorrect number of arguments')
+        argparser.error('incorrect number of arguments')
 
     try:
         theme = themes[options.theme]
     except KeyError:
-        optparser.error('invalid colormap \'%s\'' % options.theme)
+        argparser.error('invalid colormap \'%s\'' % options.theme)
 
     # set skew on the theme now that it has been picked.
     if options.theme_skew:
@@ -3786,7 +3783,7 @@ with '%', a dump of all available information is performed for selected entries,
     try:
         Format = formats[options.format]
     except KeyError:
-        optparser.error('invalid format \'%s\'' % options.format)
+        argparser.error('invalid format \'%s\'' % options.format)
 
     if Format.stdinInput:
         if not args:
@@ -3810,7 +3807,7 @@ with '%', a dump of all available information is performed for selected entries,
             parser = Format(fp)
     elif Format.multipleInput:
         if not args:
-            optparser.error('at least a file must be specified for %s input' % options.format)
+            argparser.error('at least a file must be specified for %s input' % options.format)
         if options.compare:
             parser1 = Format(args[-2])
             parser2 = Format(args[-1])
@@ -3818,7 +3815,7 @@ with '%', a dump of all available information is performed for selected entries,
             parser = Format(*args)
     else:
         if len(args) != 1:
-            optparser.error('exactly one file must be specified for %s input' % options.format)
+            argparser.error('exactly one file must be specified for %s input' % options.format)
         parser = Format(args[0])
 
     if options.compare:
