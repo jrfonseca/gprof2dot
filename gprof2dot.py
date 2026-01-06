@@ -3735,33 +3735,33 @@ with '%%', a dump of all available information is performed for selected entries
     argparser.add_argument(
         '-p', '--path', action="append",
         dest="filter_paths",
-        help="Filter all modules not in a specified path")
+        help="filter all modules not in a specified path")
     argparser.add_argument(
         '--compare',
         action="store_true",
         dest="compare", default=False,
-        help="Compare two graphs with almost identical structure. With this option two files should be provided."
+        help="compare two graphs with almost identical structure. With this option two files should be provided."
              "gprof2dot.py [options] --compare [file1] [file2] ...")
     argparser.add_argument(
         '--compare-tolerance',
         type=float, dest="tolerance", default=0.001,
-        help="Tolerance threshold for node difference (default=0.001%%)."
+        help="tolerance threshold for node difference (default=0.001%%)."
              "If the difference is below this value the nodes are considered identical.")
     argparser.add_argument(
         '--compare-only-slower',
         action="store_true",
         dest="only_slower", default=False,
-        help="Display comparison only for function which are slower in second graph.")
+        help="display comparison only for function which are slower in second graph.")
     argparser.add_argument(
         '--compare-only-faster',
         action="store_true",
         dest="only_faster", default=False,
-        help="Display comparison only for function which are faster in second graph.")
+        help="display comparison only for function which are faster in second graph.")
     argparser.add_argument(
         '--compare-color-by-difference',
         action="store_true",
         dest="color_by_difference", default=False,
-        help="Color nodes based on the value of the difference. "
+        help="color nodes based on the value of the difference. "
              "Nodes with the largest differences represent the hot spots.")
     (options, args) = argparser.parse_args(argv)
 
