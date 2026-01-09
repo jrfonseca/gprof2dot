@@ -3636,9 +3636,9 @@ def main(argv=sys.argv[1:]):
     labelNames.sort()
 
     argparser = argparse.ArgumentParser(
-        usage="\n  %(prog)s [options] [file] ...")
+        usage="\n  %(prog)s [options] [INPUT] ...")
     argparser.add_argument(
-        '-o', '--output', metavar='FILE',
+        '-o', '--output', metavar='OUTPUT',
         dest="output",
         help="output filename [stdout]")
     argparser.add_argument(
@@ -3763,7 +3763,9 @@ with '%%', a dump of all available information is performed for selected entries
         dest="color_by_difference", default=False,
         help="color nodes based on the value of the difference. "
              "Nodes with the largest differences represent the hot spots.")
-    (options, args) = argparser.parse_args(argv)
+    argparser.add_argument('input', nargs='+', metavar='INPUT', help='input stats')
+    options = argparser.parse_args(argv)
+    args = options.input
 
     if len(args) > 1 and options.format != 'pstats' and not options.compare:
         argparser.error('incorrect number of arguments')
