@@ -3763,7 +3763,7 @@ with '%%', a dump of all available information is performed for selected entries
         dest="color_by_difference", default=False,
         help="color nodes based on the value of the difference. "
              "Nodes with the largest differences represent the hot spots.")
-    argparser.add_argument('input', nargs='+', metavar='INPUT', help='input stats')
+    argparser.add_argument('input', nargs='*', metavar='INPUT', help='input stats')
     options = argparser.parse_args(argv)
     args = options.input
 
