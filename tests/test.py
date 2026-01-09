@@ -117,11 +117,11 @@ def main():
     argparser.add_argument(
         '-p', '--python', metavar='PATH',
         dest="python", default=sys.executable,
-        help="path to python executable [default: %default]")
+        help="path to python executable [default: %(default)s]")
     argparser.add_argument(
         '-g', '--gprof2dot', metavar='PATH',
         dest="gprof2dot", default=os.path.abspath(os.path.join(test_dir, os.path.pardir, 'gprof2dot.py')),
-        help="path to gprof2dot.py script [default: %default]")
+        help="path to gprof2dot.py script [default: %(default)s]")
     argparser.add_argument(
         '-f', '--force',
         action="store_true",
