@@ -18,7 +18,7 @@
 
 
 import difflib
-import optparse
+import argparse
 import os.path
 import sys
 import subprocess
@@ -112,22 +112,22 @@ def main():
 
     test_dir = os.path.dirname(os.path.abspath(__file__))
 
-    optparser = optparse.OptionParser(
-        usage="\n\t%prog [options] [format] ...")
-    optparser.add_option(
+    argparser = argparse.ArgumentParser(
+        usage="\n\t%(prog)s [options] [format] ...")
+    argparser.add_argument(
         '-p', '--python', metavar='PATH',
-        type="string", dest="python", default=sys.executable,
+        dest="python", default=sys.executable,
         help="path to python executable [default: %default]")
-    optparser.add_option(
+    argparser.add_argument(
         '-g', '--gprof2dot', metavar='PATH',
-        type="string", dest="gprof2dot", default=os.path.abspath(os.path.join(test_dir, os.path.pardir, 'gprof2dot.py')),
+        dest="gprof2dot", default=os.path.abspath(os.path.join(test_dir, os.path.pardir, 'gprof2dot.py')),
         help="path to gprof2dot.py script [default: %default]")
-    optparser.add_option(
+    argparser.add_argument(
         '-f', '--force',
         action="store_true",
         dest="force", default=False,
         help="force reference generation")
-    optparser.add_option(
+    argparser.add_argument(
         '-c', '--coverage',
         action="store_true",
         dest="coverage", default=False,
@@ -135,16 +135,18 @@ def main():
 
     # Added this to avoid failing the test when a (hopefully small) number of formats
     # result in error. This allows some flexibility in CI testing.
-    optparser.add_option(
+    argparser.add_argument(
         '--max-acceptable',
         type=int,
         dest="max_acceptable",
         help="max acceptable errors before we return an errcode and fail the test")
 
-    (options, args) = optparser.parse_args(sys.argv[1:])
+    options = argparser.add_argument('formats', nargs='*')
 
-    if len(args):
-        formats = args
+    options = argparser.parse_args(sys.argv[1:])
+
+    if len(options.formats):
+        formats = options.formats
 
     for format in formats:
         test_subdir = os.path.join(test_dir, format)
