@@ -7,7 +7,6 @@ It can:
   * read output from:
     * [Linux perf](https://perf.wiki.kernel.org/)
     * [Valgrind's callgrind tool](https://valgrind.org/docs/manual/cl-manual.html)
-    * [OProfile](https://oprofile.sourceforge.net/)
     * [Sysprof](http://www.sysprof.com/)
     * [Xperf](https://learn.microsoft.com/en-us/windows-hardware/test/wpt/)
     * [VTune](https://www.intel.com/content/www/us/en/developer/tools/oneapi/vtune-profiler.html)
@@ -92,7 +91,7 @@ Options:
                         eliminate edges below this threshold [default: 0.1]
   -f FORMAT, --format=FORMAT
                         profile format: axe, callgrind, collapse, dtrace,
-                        hprof, json, oprofile, perf, prof, pstats, sleepy,
+                        hprof, json, perf, prof, pstats, sleepy,
                         sysprof or xperf [default: prof]
   --total=TOTALMETHOD   preferred method of calculating total time: callratios
                         or callstacks (currently affects only perf format)
@@ -156,15 +155,6 @@ Options:
 
     perf record -g -- /path/to/your/executable
     perf script | c++filt | gprof2dot.py -f perf | dot -Tpng -o output.png
-
-### oprofile
-
-    opcontrol --callgraph=16
-    opcontrol --start
-    /path/to/your/executable arg1 arg2
-    opcontrol --stop
-    opcontrol --dump
-    opreport -cgf | gprof2dot.py -f oprofile | dot -Tpng -o output.png
 
 ### xperf
 

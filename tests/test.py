@@ -35,7 +35,6 @@ formats = [
     "collapse",
     "hprof",
     "json",
-    "oprofile",
     "perf",
     "prof",
     "pstats",

@@ -9,7 +9,6 @@ recursive-include tests *.hprof
 recursive-include tests *.json
 recursive-include tests *.leaked.json
 recursive-include tests *.maximum.json
-recursive-include tests *.oprofile
 recursive-include tests *.perf
 recursive-include tests *.prof
 recursive-include tests *.skorupski.prof
