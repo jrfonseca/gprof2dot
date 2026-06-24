@@ -1791,6 +1791,15 @@ class CallgrindParser(LineParser):
         if not mo:
             return False
 
+        values = line.split()
+
+        # Costs are non-negative integer event counts.  Position columns may
+        # be relative (signed) or hexadecimal, but cost columns may not, so a
+        # line that smuggles such a token into a cost column is malformed and
+        # must not be allowed to skew the totals.
+        if not all(value.isdigit() for value in values[self.num_positions:]):
+            return False
+
         function = self.get_function()
 
         if calls is None:
@@ -1802,7 +1811,6 @@ class CallgrindParser(LineParser):
             except KeyError:
                 pass
 
-        values = line.split()
         assert len(values) <= self.num_positions + self.num_events
 
         positions = values[0 : self.num_positions]
@@ -1851,6 +1859,10 @@ class CallgrindParser(LineParser):
 
         _, values = line.split('=', 1)
         values = values.strip().split()
+        # The call count is a non-negative integer; reject a malformed or
+        # negative count rather than letting it through as a bogus tally.
+        if not values or not values[0].isdigit():
+            return False
         calls = int(values[0])
         call_position = values[1:]
         self.consume()
