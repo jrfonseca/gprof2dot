@@ -876,9 +876,21 @@ class JsonParser(Parser):
         Parser.__init__(self)
         self.stream = stream
 
+    @staticmethod
+    def _reject_constant(token):
+        # NaN/Infinity are not valid JSON (schema.json defines costs as finite
+        # numbers), but Python's json module accepts them as an extension. A
+        # non-finite cost poisons the SAMPLES total and every derived ratio, so
+        # refuse the tokens instead of accepting them.
+        raise ValueError('invalid JSON token %r' % token)
+
     def parse(self):
 
-        obj = json.load(self.stream)
+        try:
+            obj = json.load(self.stream, parse_constant=self._reject_constant)
+        except ValueError as ex:
+            sys.stderr.write('error: %s\n' % ex)
+            sys.exit(1)
 
         assert obj['version'] == 0
 
