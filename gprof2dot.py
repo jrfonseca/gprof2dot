@@ -3405,11 +3405,14 @@ class DotWriter:
             id = '_' + hashlib.sha1(id.encode('utf-8'), usedforsecurity=False).hexdigest()
         self.id(id)
 
+    # dot keywords, which must be quoted when used as ordinary identifiers.
+    _keywords = frozenset(('node', 'edge', 'graph', 'digraph', 'subgraph', 'strict'))
+
     def id(self, id):
         if isinstance(id, (int, float)):
             s = str(id)
         elif isinstance(id, str):
-            if id.isalnum() and not id.startswith('0x'):
+            if id.isalnum() and not id.startswith('0x') and id.lower() not in self._keywords:
                 s = id
             else:
                 s = self.escape(id)

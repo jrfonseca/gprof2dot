@@ -1,0 +1,4 @@
+main;graph;node 30
+main;graph;edge 20
+main;graph;subgraph 10
+main;strict 5
