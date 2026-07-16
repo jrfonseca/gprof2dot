@@ -3129,6 +3129,7 @@ class DotWriter:
 
         for _, function1 in sorted_iteritems(profile1.functions):
             labels = []
+            function2 = None
 
             name = function1.name
             try:
@@ -3238,7 +3239,10 @@ class DotWriter:
                       tooltip=function1.filename,
                       )
 
-            calls2 = {call.callee_id: call for _, call in sorted_iteritems(function2.calls)}
+            if function2 is not None:
+                calls2 = {call.callee_id: call for _, call in sorted_iteritems(function2.calls)}
+            else:
+                calls2 = {}
             functions_by_id1 = {function.id: function for _, function in sorted_iteritems(profile1.functions)}
 
             for _, call1 in sorted_iteritems(function1.calls):
