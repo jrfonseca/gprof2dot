@@ -1,0 +1,14 @@
+# callgrind format
+version: 1
+creator: test
+positions: line
+events: Ir
+
+fn=extra_helper
+0 10
+cfn=main
+calls=1 0
+0 4
+
+fn=main
+0 7

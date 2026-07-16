@@ -1,0 +1,8 @@
+# callgrind format
+version: 1
+creator: test
+positions: line
+events: Ir
+
+fn=main
+0 7
