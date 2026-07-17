@@ -3424,7 +3424,7 @@ class DotWriter:
         if isinstance(id, (int, float)):
             s = str(id)
         elif isinstance(id, str):
-            if id.isalnum() and not id.startswith('0x') and id.lower() not in self._keywords:
+            if id.isalnum() and not id[0].isdigit() and id.lower() not in self._keywords:
                 s = id
             else:
                 s = self.escape(id)
