@@ -3468,6 +3468,20 @@ def naturalJoin(values):
         return ''.join(values)
 
 
+def openInput(path):
+    """Open a text profile, consuming the byte order mark when there is one."""
+
+    fp = open(path, 'rb')
+    bom = fp.read(2)
+    if bom in (codecs.BOM_UTF16_LE, codecs.BOM_UTF16_BE):
+        # Default on Windows PowerShell (https://github.com/jrfonseca/gprof2dot/issues/88)
+        encoding = 'utf-16'
+    else:
+        encoding = 'utf-8-sig'
+    fp.seek(0)
+    return io.TextIOWrapper(fp, encoding=encoding)
+
+
 def main(argv=sys.argv[1:]):
     """Main program."""
 
@@ -3639,20 +3653,12 @@ with '%%', a dump of all available information is performed for selected entries
             fp = sys.stdin
             parser = Format(fp)
         elif options.compare:
-            fp1 = open(args[0], 'rt', encoding='UTF-8')
-            fp2 = open(args[1], 'rt', encoding='UTF-8')
+            fp1 = openInput(args[0])
+            fp2 = openInput(args[1])
             parser1 = Format(fp1)
             parser2 = Format(fp2)
         else:
-            fp = open(args[0], 'rb')
-            bom = fp.read(2)
-            if bom == codecs.BOM_UTF16_LE:
-                # Default on Windows PowerShell (https://github.com/jrfonseca/gprof2dot/issues/88)
-                encoding = 'utf-16le'
-            else:
-                encoding = 'utf-8'
-            fp.seek(0)
-            fp = io.TextIOWrapper(fp, encoding=encoding)
+            fp = openInput(args[0])
             parser = Format(fp)
     elif Format.multipleInput:
         if not args:
