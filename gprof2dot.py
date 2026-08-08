@@ -1367,8 +1367,8 @@ class GprofParser(Parser):
                     # static call graph analysis dont have a call graph entry so we need
                     # to add them here
                     missing = Function(child.index, child.name)
-                    function[TIME] = 0.0
-                    function.called = 0
+                    missing[TIME] = 0.0
+                    missing.called = 0
                     profile.add_function(missing)
 
                 function.add_call(call)
@@ -1641,7 +1641,8 @@ class AXEParser(Parser):
                     # to add them here
                     # FIXME: Is this applicable?
                     missing = Function(child.index, child.name)
-                    function[TIME] = 0.0
+                    missing[TIME] = 0.0
+                    missing[TOTAL_TIME_RATIO] = 0.0
                     profile.add_function(missing)
 
                 function.add_call(call)
