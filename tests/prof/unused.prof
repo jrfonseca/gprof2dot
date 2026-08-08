@@ -1,0 +1,15 @@
+		Call graph (explanation follows)
+
+
+granularity: each sample hit covers 4 byte(s) for 1.52% of 0.66 seconds
+
+index  % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.00    0.16     0.50        1         main [1]
+                0.50     0.00        1/1         helper [2]
+                0.00     0.00        1/1         unused [9]
+----------------------------------------
+                0.50     0.00        1/1         main [1]
+[2]     75.76    0.50     0.00        1         helper [2]
+----------------------------------------
+

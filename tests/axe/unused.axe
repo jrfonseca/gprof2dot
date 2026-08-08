@@ -1,0 +1,10 @@
+Index   % CPU Time:Total  CPU Time:Self  CPU Time:Children  Name                     Index
+------  ----------------  -------------  -----------------  -----------------------  ------
+[0]     100.0             10.0           90.0               <spontaneous>            [0]
+                          10.0           90.0                 main                   [1]
+                    
+                          10.0           90.0                 <spontaneous>          [0]
+[1]     100.0             10.0           90.0               main                     [1]
+                          0.0            90.0                 unused                 [9]
+                    
+Index   Function
