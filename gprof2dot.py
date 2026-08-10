@@ -399,8 +399,8 @@ class Profile(Object):
         self.functions = pathFunctions
 
     def getFunctionIds(self, funcName):
-        function_names = {v.name: k for (k, v) in self.functions.items()}
-        return [function_names[name] for name in fnmatch.filter(function_names.keys(), funcName)]
+        return [id for id, function in self.functions.items()
+                if fnmatch.fnmatch(function.name, funcName)]
 
     def getFunctionId(self, funcName):
         for f in self.functions:
