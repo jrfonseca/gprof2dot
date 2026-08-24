@@ -1,0 +1,2 @@
+main (m.c:1);foo (a.c:10);work_a (w.c:1) 10
+main (m.c:1);foo (b.c:20);work_b (w.c:2) 20

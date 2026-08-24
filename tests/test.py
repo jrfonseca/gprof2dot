@@ -215,6 +215,13 @@ def main():
 
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
 
+    # test that --root keeps every function sharing the selected name
+    profile = os.path.join(test_dir, 'collapse', 'dupnames.collapse')
+    genfileNm = os.path.join(test_dir, 'collapse', 'dupnames-root.testgen.txt')
+    run_gprof2dot(['-f', 'collapse', '-e0', '-n0', '--root=foo', '-o', genfileNm, profile])
+
+    diff(genfileNm, os.path.join(test_dir, 'collapse', 'dupnames-root.orig.txt'))
+
     if options.coverage:
         if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
             run([options.python, '-m', 'coverage', 'xml'])
