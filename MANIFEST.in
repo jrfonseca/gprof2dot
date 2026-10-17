@@ -18,3 +18,4 @@ recursive-include tests *.sysprof
 recursive-include tests *.xperf
 include tests/pstats/function-list.orig.txt
 prune tests/pstats/function-list.testgen.txt
+prune tests/pstats/total-time.testgen.txt

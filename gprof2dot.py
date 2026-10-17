@@ -44,6 +44,7 @@ assert sys.version_info[0] >= 3
 
 
 MULTIPLICATION_SIGN = chr(0xd7)
+MICRO_SIGN = chr(0xb5)
 timeFormat = "%.7g"
 
 
@@ -55,6 +56,33 @@ def percentage(p):
 
 def fmttime(t):
     return timeFormat % t
+
+
+def fmtduration(seconds):
+    """Format a duration in seconds for humans: three significant digits and
+    the largest of s, ms, us or ns that keeps the value at or above 1.
+
+    >>> fmtduration(13.120819)
+    '13.1 s'
+    >>> fmtduration(0.000482) == '482 ' + MICRO_SIGN + 's'
+    True
+    """
+
+    if not math.isfinite(seconds):
+        return str(seconds)
+    if seconds == 0:
+        return '0 s'
+    sign = '-' if seconds < 0 else ''
+    seconds = abs(seconds)
+    for scale, unit in ((1.0, 's'), (1e-3, 'ms'), (1e-6, MICRO_SIGN + 's'), (1e-9, 'ns')):
+        value = seconds / scale
+        # Round to three significant digits first, so that e.g. 999.6 ms
+        # becomes "1.00 s" rather than "1000 ms".
+        value = float('%.3g' % value)
+        if value >= 1.0 or unit == 'ns':
+            break
+    decimals = max(2 - int(math.floor(math.log10(value))), 0) if value > 0 else 0
+    return '%s%.*f %s' % (sign, decimals, value, unit)
 
 def add(a, b):
     return a + b
@@ -3088,6 +3116,12 @@ class DotWriter:
 
     strip = False
     wrap = False
+    show_total_time = False
+
+    # Node id of the optional node showing the program's total running time.
+    # It must never collide with a function id: parsers use either small
+    # integers or function names, and this is neither.
+    TOTAL_TIME_NODE_ID = '[total time]'
 
     def __init__(self, fp):
         self.fp = fp
@@ -3287,6 +3321,9 @@ class DotWriter:
         self.attr('node', fontname=fontname, shape="box", style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
+        if self.show_total_time:
+            self.total_time_node(profile, theme)
+
         for _, function in sorted_iteritems(profile.functions):
             labels = []
             if function.process is not None:
@@ -3361,6 +3398,32 @@ class DotWriter:
                 )
 
         self.end_graph()
+
+    def total_time_node(self, profile, theme):
+        """Emit a standalone node showing the program's total running time.
+
+        The value is the profile-wide TOTAL_TIME recorded by the parser (the
+        total time reported by cProfile for pstats input, or by gprof for prof
+        input), in seconds.  It is shown with three significant digits and an
+        automatically chosen unit, e.g. "13.1 s" or "482 ms".  The node is not
+        connected to any function, so dot places it at the top of the graph.
+        """
+
+        if TOTAL_TIME not in profile.events:
+            sys.stderr.write('warning: total time is not available for this profile; not showing it\n')
+            return
+
+        # The whole program accounts for 100% of the time, so color it as the
+        # hottest node of the theme.
+        weight = 1.0
+        label = 'Total time\n' + fmtduration(profile[TOTAL_TIME])
+        self.node(self.TOTAL_TIME_NODE_ID,
+            label = label,
+            color = self.color(theme.node_bgcolor(weight)),
+            fontcolor = self.color(theme.node_fgcolor(weight)),
+            fontsize = "%.2f" % theme.node_fontsize(weight),
+            tooltip = "total running time of the program",
+        )
 
     def begin_graph(self):
         self.write('digraph {\n')
@@ -3555,6 +3618,11 @@ def main(argv=sys.argv[1:]):
         dest="show_samples", default=False,
         help="show function samples")
     argparser.add_argument(
+        '--show-total-time',
+        action="store_true",
+        dest="show_total_time", default=False,
+        help="add a node showing the program's total running time as reported by the profiler, e.g. \"13.1 s\" or \"482 ms\" (pstats and prof formats)")
+    argparser.add_argument(
         '--time-format',
         default=timeFormat,
         help="format to use for showing time values [default: %(default)s]")
@@ -3691,6 +3759,7 @@ with '%%', a dump of all available information is performed for selected entries
     dot = DotWriter(output)
     dot.strip = options.strip
     dot.wrap = options.wrap
+    dot.show_total_time = options.show_total_time
 
     labelNames = options.node_labels or defaultLabelNames
     dot.show_function_events = [labels[l] for l in labelNames]
@@ -3731,6 +3800,8 @@ with '%%', a dump of all available information is performed for selected entries
         dot.graphs_compare(profile1, profile2, theme, options)
     else:
         dot.graph(profile, theme)
+
+    output.close()
 
 
 if __name__ == '__main__':
