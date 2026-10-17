@@ -106,6 +106,9 @@ Options:
                         (sum of self and descendants)
   -w, --wrap            wrap function names
   --show-samples        show function samples
+  --show-total-time     add a node showing the program's total running time
+                        as reported by the profiler, e.g. "13.1 s" or "482 ms"
+                        (pstats and prof formats)
   --node-label=MEASURE  measurements to on show the node (can be specified
                         multiple times): self-time, self-time-percentage,
                         total-time or total-time-percentage [default: total-
@@ -308,6 +311,21 @@ Where:
 Note that in recursive cycles, the _total time %_ in the node is the same for the whole functions in the cycle, and there is no _total time %_ figure in the edges inside the cycle, since such figure would make no sense.
 
 The color of the nodes and edges varies according to the _total time %_ value. In the default _temperature-like_ color-map, functions where most time is spent (hot-spots) are marked as saturated red, and functions where little time is spent are marked as dark blue. Note that functions where negligible or no time is spent do not appear in the graph by default.
+
+## Total running time
+
+By default the graph only shows percentages, so the absolute running time of
+the program is not visible anywhere.  Pass `--show-total-time` to add a
+standalone node at the top of the graph with the program's total running time
+as reported by the profiler.  For pstats input this is the same figure cProfile
+prints as the "seconds" total:
+
+    python3 -m cProfile -o output.pstats path/to/your/script arg1 arg2
+    gprof2dot.py -f pstats --show-total-time output.pstats | dot -Tpng -o output.png
+
+The time is shown with three significant digits in the largest fitting unit,
+for example `13.1 s`, `482 ms` or `7.50 µs`.  Only the pstats and prof (gprof)
+formats record a total; the other formats print a warning and omit the node.
 
 ## Listing functions
 
