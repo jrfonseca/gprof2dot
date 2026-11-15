@@ -215,13 +215,15 @@ def main():
 
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
 
-    # test that --root keeps every function sharing the selected name
-    # (foo in a.c and b.c)
+    # test that functions sharing a name (foo in a.c and b.c) are kept apart,
+    # both when selected by --root and when matched up by --compare
     if 'collapse' in formats:
         collapse_dir = os.path.join(test_dir, 'collapse')
         profile1 = os.path.join(collapse_dir, 'dupnames.collapse')
+        profile2 = os.path.join(collapse_dir, 'dupnames2.collapse')
         for name, args in [
             ('dupnames-root', ['--root=foo', profile1]),
+            ('dupnames-compare-root', ['--compare', '--root=foo', profile1, profile2]),
         ]:
             sys.stdout.write(name + '\n')
             genfileNm = os.path.join(collapse_dir, name + '.testgen.txt')

@@ -3120,7 +3120,25 @@ class DotWriter:
         self.attr('node', fontname=fontname, style=nodestyle, fontcolor=fontcolor, width=0, height=0)
         self.attr('edge', fontname=fontname)
 
-        functions2 = {function.name: function for _, function in sorted_iteritems(profile2.functions)}
+        # Match functions across profiles by name, since ids are not stable
+        # between profiles.  Names shared by several functions (e.g., static
+        # functions in different modules) are told apart by module too.  The
+        # module is not used otherwise, as some parsers (e.g., callgrind) don't
+        # report it consistently between profiles.
+        duplicate_names = set()
+        for profile in (profile1, profile2):
+            names = set()
+            for function in profile.functions.values():
+                if function.name in names:
+                    duplicate_names.add(function.name)
+                names.add(function.name)
+
+        def function_key(function):
+            if function.name in duplicate_names:
+                return function.module, function.name
+            return function.name
+
+        functions2 = {function_key(function): function for _, function in sorted_iteritems(profile2.functions)}
 
         for _, function1 in sorted_iteritems(profile1.functions):
             labels = []
@@ -3128,7 +3146,7 @@ class DotWriter:
 
             name = function1.name
             try:
-                function2 = functions2[name]
+                function2 = functions2[function_key(function1)]
                 if self.wrap:
                     name = self.wrap_function_name(name)
                 if color_by_difference:
@@ -3245,8 +3263,8 @@ class DotWriter:
                 try:
                     # if profiles do not have identical setups, callee_id will not be identical either
                     call_id1 = call1.callee_id
-                    call_name = functions_by_id1[call_id1].name
-                    call_id2 = functions2[call_name].id
+                    call_key = function_key(functions_by_id1[call_id1])
+                    call_id2 = functions2[call_key].id
                     call2 = calls2[call_id2]
                     for event in self.show_edge_events:
                         if event in call1.events:
