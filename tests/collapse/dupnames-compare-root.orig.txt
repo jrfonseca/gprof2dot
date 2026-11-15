@@ -1,0 +1,12 @@
+digraph {
+	tooltip=" "
+	graph [fontname=Arial, nodesep=0.125, ranksep=0.25];
+	node [fontcolor=white, fontname=Arial, height=0, style=filled, width=0];
+	edge [fontname=Arial];
+	"a.c:foo" [color="#0b9f6e", fontcolor="#ffffff", fontsize="10.000000", label="foo\n33.33% + 33.333%\n(0.00%)", orientation="0", shape=cds];
+	"a.c:foo" -> "w.c:work_a" [arrowsize="0.58", color="#0b9f6e", fontcolor="#0b9f6e", fontsize="10.00", label="33.33% / 66.67%", labeldistance="1.33", penwidth="1.33"];
+	"b.c:foo" [color="#8bcd07", fontcolor="#ffffff", fontsize="10.000000", label="foo\n66.67% - 33.333%\n(0.00%)", orientation="90", shape=cds];
+	"b.c:foo" -> "w.c:work_b" [arrowsize="0.82", color="#8bcd07", fontcolor="#8bcd07", fontsize="10.00", label="66.67% / 33.33%", labeldistance="2.67", penwidth="2.67"];
+	"w.c:work_a" [color="#0b9f6e", fontcolor="#ffffff", fontsize="10.000000", label="work_a\n33.33% + 33.333%\n(33.33%) + 33.333%", orientation="0", shape=cds];
+	"w.c:work_b" [color="#8bcd07", fontcolor="#ffffff", fontsize="10.000000", label="work_b\n66.67% - 33.333%\n(66.67%) - 33.333%", orientation="90", shape=cds];
+}
