@@ -216,11 +216,22 @@ def main():
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
 
     # test that --root keeps every function sharing the selected name
-    profile = os.path.join(test_dir, 'collapse', 'dupnames.collapse')
-    genfileNm = os.path.join(test_dir, 'collapse', 'dupnames-root.testgen.txt')
-    run_gprof2dot(['-f', 'collapse', '-e0', '-n0', '--root=foo', '-o', genfileNm, profile])
-
-    diff(genfileNm, os.path.join(test_dir, 'collapse', 'dupnames-root.orig.txt'))
+    # (foo in a.c and b.c)
+    if 'collapse' in formats:
+        collapse_dir = os.path.join(test_dir, 'collapse')
+        profile1 = os.path.join(collapse_dir, 'dupnames.collapse')
+        for name, args in [
+            ('dupnames-root', ['--root=foo', profile1]),
+        ]:
+            sys.stdout.write(name + '\n')
+            genfileNm = os.path.join(collapse_dir, name + '.testgen.txt')
+            ref = os.path.join(collapse_dir, name + '.orig.txt')
+            if run_gprof2dot(['-f', 'collapse', '-e0', '-n0', '-o', genfileNm] + args) != 0:
+                continue
+            if options.force or not os.path.exists(ref):
+                shutil.copy(genfileNm, ref)
+            else:
+                diff(ref, genfileNm)
 
     if options.coverage:
         if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
