@@ -399,14 +399,8 @@ class Profile(Object):
         self.functions = pathFunctions
 
     def getFunctionIds(self, funcName):
-        return [id for id, function in self.functions.items()
+        return [function_id for function_id, function in self.functions.items()
                 if fnmatch.fnmatch(function.name, funcName)]
-
-    def getFunctionId(self, funcName):
-        for f in self.functions:
-            if self.functions[f].name == funcName:
-                return f
-        return False
 
     def printFunctionIds(self, selector=None, file=sys.stderr):
         """ Print to file function entries selected by fnmatch.fnmatch like in
