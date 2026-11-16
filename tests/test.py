@@ -147,6 +147,9 @@ def main():
     if len(options.formats):
         formats = options.formats
 
+    # unit tests (tests/test_*.py)
+    run([options.python, '-m', 'unittest', 'discover', '-s', test_dir, '-p', 'test_*.py'])
+
     for format in formats:
         test_subdir = os.path.join(test_dir, format)
         for filename in os.listdir(test_subdir):
@@ -214,6 +217,11 @@ def main():
     outfile.close()
 
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
+
+    # test the --show-total-time flag only for pstats format
+    genfileNm = os.path.join(test_dir, 'pstats', 'total-time.testgen.txt')
+    run_gprof2dot(['-f', "pstats", "--show-total-time", '-o', genfileNm, profile])
+    diff(genfileNm, os.path.join(test_dir, 'pstats', 'total-time.orig.txt'))
 
     if options.coverage:
         if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
