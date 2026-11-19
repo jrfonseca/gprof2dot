@@ -102,6 +102,23 @@ def diff(a, b):
     sys.stdout.write(diff_txt)
 
 
+def check_node(filename, name, text, present=True):
+    """Check that the node labelled name has, or has not, text in its attributes."""
+    global NB_DIFF_FAILURES
+    lines = [line for line in open(filename, 'rt', encoding='UTF-8')
+             if ' -> ' not in line and 'label="' + name + '\\n' in line]
+    if len(lines) != 1 or (text in lines[0]) != present:
+        NB_DIFF_FAILURES += 1
+        sys.stdout.write("%s: node %s %s %r\n" % (filename, name, 'lacks' if present else 'has', text))
+
+
+def check_absent(filename, text):
+    global NB_DIFF_FAILURES
+    if text in open(filename, 'rt', encoding='UTF-8').read():
+        NB_DIFF_FAILURES += 1
+        sys.stdout.write("%s contains %r\n" % (filename, text))
+
+
 def main():
     """Main program."""
 
@@ -214,6 +231,31 @@ def main():
     outfile.close()
 
     diff(genfileNm, os.path.join(test_dir, 'pstats', 'function-list.orig.txt'))
+
+    # test the --path-callees modes, filtered on the functions of memtrail: a
+    # direct callee outside the path is kept dashed (show); a function of the
+    # path is marked with the time spent in its calls not shown (summary), and
+    # nothing is marked when nothing is pruned
+    cases = [
+        ('show', ['-p', 'memtrail', '--path-callees=show'],
+         [('posixpath:337:normpath', 'dashed', True),
+          ('memtrail:236:__str__', 'dashed', False)]),
+        ('summary', ['-p', 'memtrail', '--path-callees=summary'],
+         [('memtrail:236:__str__', '+8.45% not shown', True),
+          ('memtrail:236:__str__', 'peripheries=2', True)]),
+        ('unpruned', ['-n', '0', '-e', '0', '--path-callees=summary'], []),
+    ]
+    for name, flags, checks in cases:
+        dot = os.path.join(test_dir, 'pstats', 'memtrail-path-callees-' + name + '.dot')
+        png = os.path.join(test_dir, 'pstats', 'memtrail-path-callees-' + name + '.png')
+        if run_gprof2dot(['-f', 'pstats'] + flags + ['-o', dot, profile]) != 0:
+            continue
+        if run(['dot', '-Tpng', '-o', png, dot]) != 0:
+            continue
+        for node, text, present in checks:
+            check_node(dot, node, text, present)
+        if name == 'unpruned':
+            check_absent(dot, 'not shown')
 
     if options.coverage:
         if os.environ.get('GITHUB_ACTIONS', 'false') == 'true':
