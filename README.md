@@ -130,6 +130,12 @@ Options:
                         variety to lower percentages
   -p FILTER_PATHS, --path=FILTER_PATHS
                        Filter all modules not in a specified path
+  --path-callees={show,summary}
+                        time spent outside --path: show (keep the direct
+                        callees of the functions kept, dashed) or summary
+                        (mark each function with the time, as a share of the
+                        whole profile, spent in its calls not shown, with a
+                        double border); not with --compare [default: neither]
   --compare             Compare two graphs with almost identical structure. With this
                         option two files should be provided.gprof2dot.py
                         [options] --compare [file1] [file2] ...

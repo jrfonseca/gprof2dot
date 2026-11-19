@@ -218,6 +218,11 @@ class Call(Object):
 class Function(Object):
     """A function."""
 
+    # marks of --path-callees, as class attributes so that dump() lists them
+    # only when they are set
+    outside_paths = False
+    not_shown = None
+
     def __init__(self, id, name):
         Object.__init__(self)
         self.id = id
@@ -730,8 +735,13 @@ class Profile(Object):
                     call[outevent] = ratio(call[inevent], self[inevent])
         self[outevent] = 1.0
 
-    def prune(self, node_thres, edge_thres, paths, color_nodes_by_selftime):
-        """Prune the profile"""
+    def prune(self, node_thres, edge_thres, paths, color_nodes_by_selftime, keep_path_callees=False):
+        """Prune the profile
+
+        With paths, keep_path_callees keeps the direct callees of the
+        functions kept, marked as outside the paths, instead of dropping
+        them; their own calls outside the paths are dropped.
+        """
 
         # compute the prune ratios
         for function in self.functions.values():
@@ -761,12 +771,33 @@ class Profile(Object):
                     del self.functions[function_id]
 
         # prune file paths
+        outside = []
         for function_id in list(self.functions.keys()):
             function = self.functions[function_id]
             if paths and function.filename and not any(function.filename.startswith(path) for path in paths):
-                del self.functions[function_id]
+                outside.append(function_id)
             elif paths and function.module and not any((function.module.find(path)>-1) for path in paths):
-                del self.functions[function_id]
+                outside.append(function_id)
+        if keep_path_callees:
+            # keep the direct callees of the functions kept, through calls
+            # above the edge threshold, marked and without their own calls
+            # outside the paths
+            dropped = set(outside)
+            kept_callees = set()
+            for function_id, function in self.functions.items():
+                if function_id not in dropped:
+                    for callee_id, call in function.calls.items():
+                        if callee_id in dropped and (call.weight is None or call.weight >= edge_thres):
+                            kept_callees.add(callee_id)
+            for function_id in kept_callees:
+                function = self.functions[function_id]
+                function.outside_paths = True
+                for callee_id in list(function.calls.keys()):
+                    if callee_id in dropped:
+                        del function.calls[callee_id]
+            outside = [function_id for function_id in outside if function_id not in kept_callees]
+        for function_id in outside:
+            del self.functions[function_id]
 
         # prune the edges
         for function in self.functions.values():
@@ -790,6 +821,26 @@ class Profile(Object):
                     function.weight = function[TIME_RATIO] / max_ratio
                 except (ZeroDivisionError, UndefinedEvent):
                     pass
+
+    def mark_not_shown(self, threshold):
+        """Mark each function with the time spent in its calls not shown.
+
+        The time is a share of the whole profile: the total time of the
+        function less its self time and the total time of the calls shown.
+        Must be called after all pruning. Only shares reaching the threshold,
+        and at least 0.01%, are marked. They are approximate where the time
+        of calls is estimated rather than measured (the axe format,
+        --total=callstacks), or where calls are recursive or in a cycle.
+        """
+        for function in self.functions.values():
+            try:
+                shown = sum(call[TOTAL_TIME_RATIO] for call in function.calls.values()
+                            if TOTAL_TIME_RATIO in call)
+                not_shown = function[TOTAL_TIME_RATIO] - function[TIME_RATIO] - shown
+            except UndefinedEvent:
+                continue
+            if not_shown >= max(threshold, 0.0001):
+                function.not_shown = not_shown
 
     def dump(self):
         for function in self.functions.values():
@@ -3318,11 +3369,20 @@ class DotWriter:
                     labels.append(label)
             if function.called is not None:
                 labels.append("%u%s" % (function.called, MULTIPLICATION_SIGN))
+            if function.not_shown is not None:
+                labels.append("+%s not shown" % percentage(function.not_shown))
 
             if function.weight is not None:
                 weight = function.weight
             else:
                 weight = 0.0
+
+            # a callee kept outside the paths is dashed; a function whose
+            # calls are partly not shown has a double border
+            style = None
+            if function.outside_paths:
+                style = "dashed" if nodestyle == "solid" else nodestyle + ",dashed"
+            peripheries = 2 if function.not_shown is not None else None
 
             label = '\n'.join(labels)
             self.node(function.id,
@@ -3331,6 +3391,8 @@ class DotWriter:
                 fontcolor = self.color(theme.node_fgcolor(weight)),
                 fontsize = "%.2f" % theme.node_fontsize(weight),
                 tooltip = function.filename,
+                style = style,
+                peripheries = peripheries,
             )
 
             for _, call in sorted_iteritems(function.calls):
@@ -3603,6 +3665,11 @@ with '%%', a dump of all available information is performed for selected entries
         dest="filter_paths",
         help="filter all modules not in a specified path")
     argparser.add_argument(
+        '--path-callees',
+        choices=('show', 'summary'),
+        dest="path_callees", default=None,
+        help="time spent outside --path: show (keep the direct callees of the functions kept, dashed) or summary (mark each function with the time, as a share of the whole profile, spent in its calls not shown, with a double border); not with --compare [default: neither]")
+    argparser.add_argument(
         '--compare',
         action="store_true",
         dest="compare", default=False,
@@ -3635,6 +3702,9 @@ with '%%', a dump of all available information is performed for selected entries
 
     if len(args) > 1 and options.format != 'pstats' and not options.compare:
         argparser.error('incorrect number of arguments')
+
+    if options.compare and options.path_callees:
+        argparser.error('--path-callees does not apply to --compare')
 
     try:
         theme = themes[options.theme]
@@ -3709,7 +3779,7 @@ with '%%', a dump of all available information is performed for selected entries
             profile2.prune_root(profile2.getFunctionIds(options.root), options.depth)
     else:
         profile.prune(options.node_thres/100.0, options.edge_thres/100.0, options.filter_paths,
-                      options.color_nodes_by_selftime)
+                      options.color_nodes_by_selftime, options.path_callees == "show")
         if options.root:
             rootIds = profile.getFunctionIds(options.root)
             if not rootIds:
@@ -3731,6 +3801,8 @@ with '%%', a dump of all available information is performed for selected entries
     if options.compare:
         dot.graphs_compare(profile1, profile2, theme, options)
     else:
+        if options.path_callees == "summary":
+            profile.mark_not_shown(options.node_thres/100.0)
         dot.graph(profile, theme)
 
 
