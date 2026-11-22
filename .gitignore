@@ -1,5 +1,7 @@
 .*.sw?
 .coverage
+.pytest_cache/
+coverage.xml
 *.dot
 *.egg-info
 *.orig

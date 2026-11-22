@@ -402,12 +402,14 @@ class Profile(Object):
         return [function_id for function_id, function in self.functions.items()
                 if fnmatch.fnmatch(function.name, funcName)]
 
-    def printFunctionIds(self, selector=None, file=sys.stderr):
+    def printFunctionIds(self, selector=None, file=None):
         """ Print to file function entries selected by fnmatch.fnmatch like in
             method getFunctionIds, with following extensions:
              - selector starts with "%": dump all information available
              - selector is '+' or '-': select all function entries
         """
+        if file is None:
+            file = sys.stderr
         if selector is None or selector in ("+", "*"):
             v = ",\n".join(("%s:\t%s" % (kf,self.functions[kf].name)
                             for kf in self.functions.keys()))
@@ -3749,6 +3751,8 @@ with '%%', a dump of all available information is performed for selected entries
         dot.graphs_compare(profile1, profile2, theme, options)
     else:
         dot.graph(profile, theme)
+
+    output.close()
 
 
 if __name__ == '__main__':
