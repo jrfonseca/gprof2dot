@@ -28,6 +28,7 @@ tests can run in parallel (pytest -n auto).
 import difflib
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -134,6 +135,77 @@ def test_compare(fmt, case_dir, tmp_path, force_refs):
     run_gprof2dot('-f', fmt, '-o', dot, '--compare',
                   case_dir / (name1 + ext), case_dir / (name2 + ext))
     check_graph(dot, case_dir / (name1 + '.orig.dot'), force_refs)
+
+
+# Command line option variants, checked against <stem>.<name>.orig.dot next to
+# the (first) input.
+OPTION_CASES = sorted([
+    ('callgrind', 'xapian', 'strip-wrap', ['-s', '-w']),
+    ('collapse', 'synapse', 'callstacks', ['--total=callstacks']),
+    ('dtrace', 'go', 'callstacks', ['--total=callstacks']),
+    ('perf', 'glxgears', 'callstacks', ['--total=callstacks']),
+    ('perf', 'glxgears', 'path', ['-p', 'libGL']),
+    ('perf', 'glxgears', 'print-skew', ['-c', 'print', '--skew=0.5']),
+    ('perf', 'glxgears', 'selftime', ['--color-nodes-by-selftime']),
+    ('pstats', 'memtrail', 'labels', ['--node-label=self-time',
+                                      '--node-label=total-time',
+                                      '--time-format=%.3fs',
+                                      '--show-samples']),
+    ('pstats', 'memtrail', 'leaf', ['-l', '*read_fmt', '--depth=2']),
+    ('pstats', 'memtrail', 'path', ['-p', 'memtrail']),
+    ('pstats', 'memtrail', 'root-depth', ['-z', '*:main', '--depth=1']),
+])
+
+
+@pytest.mark.parametrize(
+    'fmt,stem,name,args', OPTION_CASES,
+    ids=['%s-%s-%s' % case[:3] for case in OPTION_CASES])
+def test_options(fmt, stem, name, args, tmp_path, force_refs):
+    profile = TESTS_DIR / fmt / (stem + '.' + fmt)
+    dot = tmp_path / ('%s.%s.dot' % (stem, name))
+    run_gprof2dot('-f', fmt, '-o', dot, *args, profile)
+    check_graph(dot, profile.with_name('%s.%s.orig.dot' % (stem, name)), force_refs)
+
+
+# --compare option variants, checked against <dir>1.<name>.orig.dot.
+COMPARE_OPTION_CASES = [
+    ('callgrind', 'test', 'color-by-difference', ['--compare-color-by-difference']),
+    ('callgrind', 'test', 'only-slower', ['--compare-only-slower']),
+    ('callgrind', 'unmatched', 'strip-wrap', ['-s', '-w']),
+]
+
+
+@pytest.mark.parametrize(
+    'fmt,case,name,args', COMPARE_OPTION_CASES,
+    ids=['%s-%s-%s' % case[:3] for case in COMPARE_OPTION_CASES])
+def test_compare_options(fmt, case, name, args, tmp_path, force_refs):
+    case_dir = TESTS_DIR / 'compare' / fmt / case
+    ext = '.' + fmt
+    dot = tmp_path / ('%s1.%s.dot' % (case, name))
+    run_gprof2dot('-f', fmt, '-o', dot, '--compare', *args,
+                  case_dir / (case + '1' + ext), case_dir / (case + '2' + ext))
+    check_graph(dot, case_dir / ('%s1.%s.orig.dot' % (case, name)), force_refs)
+
+
+def test_list_functions_dump(capfd):
+    # The dump includes object addresses, so only smoke test it.
+    profile = TESTS_DIR / 'pstats' / 'memtrail.pstats'
+    capfd.readouterr()
+    run_gprof2dot('-f', 'pstats', '--list-functions=%*:main', profile)
+    err = capfd.readouterr().err
+    assert 'memtrail:950:main' in err
+    assert 'called:=' in err
+
+
+def test_stdin(monkeypatch, tmp_path):
+    profile = TESTS_DIR / 'collapse' / 'synapse.collapse'
+    expected = tmp_path / 'file.dot'
+    run_gprof2dot('-f', 'collapse', '-o', expected, profile)
+    actual = tmp_path / 'stdin.dot'
+    with open(profile, encoding='utf-8-sig') as stdin:
+        monkeypatch.setattr(sys, 'stdin', stdin)
+        run_gprof2dot('-f', 'collapse', '-o', actual)
+    assert actual.read_text(encoding='UTF-8') == expected.read_text(encoding='UTF-8')
 
 
 def test_list_functions(capfd, tmp_path, force_refs):

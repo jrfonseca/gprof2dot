@@ -1,0 +1,19 @@
+# callgrind format
+version: 1
+creator: hand-written
+# Comments are allowed between header lines.
+cmd: ./a.out
+event: Ir : Instructions
+event: Dr : Data reads
+events: Ir Dr
+
+# A comment before the body.
+fl=main.c
+fn=main
+10 2 1
+cfn=helper
+calls=3 20
+11 30 9
+# A comment inside the body.
+fn=helper
+20 30 9
