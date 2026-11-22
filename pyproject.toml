@@ -6,3 +6,8 @@ build-backend = "setuptools.build_meta"
 testpaths = ["tests"]
 pythonpath = ["."]
 addopts = "-ra"
+
+[tool.coverage.run]
+include = [
+    "gprof2dot.py",
+]
