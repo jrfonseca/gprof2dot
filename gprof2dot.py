@@ -3536,7 +3536,7 @@ def main(argv=sys.argv[1:]):
         '--total',
         choices=('callratios', 'callstacks'),
         dest="totalMethod", default=DEFAULT_TOTAL_METHOD,
-        help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %(default)s]")
+        help="preferred method of calculating total time: callratios or callstacks (affects only perf, dtrace and collapse formats) [default: %(default)s]")
     argparser.add_argument(
         '-c', '--colormap',
         choices=themeNames,

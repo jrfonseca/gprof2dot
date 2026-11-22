@@ -94,8 +94,8 @@ Options:
                         hprof, json, perf, prof, pstats, sleepy,
                         sysprof or xperf [default: prof]
   --total=TOTALMETHOD   preferred method of calculating total time: callratios
-                        or callstacks (currently affects only perf format)
-                        [default: callratios]
+                        or callstacks (affects only perf, dtrace and collapse
+                        formats) [default: callratios]
   -c THEME, --colormap=THEME
                         color map: bw, color, gray, pink or print [default:
                         color]
