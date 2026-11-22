@@ -1740,7 +1740,6 @@ class CallgrindParser(LineParser):
     def parse_header_line(self):
         return \
             self.parse_empty() or \
-            self.parse_comment() or \
             self.parse_part_detail() or \
             self.parse_description() or \
             self.parse_event_specification() or \
@@ -1785,7 +1784,6 @@ class CallgrindParser(LineParser):
     def parse_body_line(self):
         return \
             self.parse_empty() or \
-            self.parse_comment() or \
             self.parse_cost_line() or \
             self.parse_position_spec() or \
             self.parse_association_spec()
@@ -1928,13 +1926,6 @@ class CallgrindParser(LineParser):
             return False
         line = self.lookahead()
         if line.strip():
-            return False
-        self.consume()
-        return True
-
-    def parse_comment(self):
-        line = self.lookahead()
-        if not line.startswith('#'):
             return False
         self.consume()
         return True
