@@ -44,7 +44,8 @@ assert sys.version_info[0] >= 3
 
 
 MULTIPLICATION_SIGN = chr(0xd7)
-timeFormat = "%.7g"
+DEFAULT_TIME_FORMAT = "%.7g"
+timeFormat = DEFAULT_TIME_FORMAT
 
 
 def times(x):
@@ -170,7 +171,8 @@ labels = {
 }
 defaultLabelNames = ['total-time-percentage', 'self-time-percentage']
 
-totalMethod = 'callratios'
+DEFAULT_TOTAL_METHOD = 'callratios'
+totalMethod = DEFAULT_TOTAL_METHOD
 
 
 class Object:
@@ -3542,7 +3544,7 @@ def main(argv=sys.argv[1:]):
     argparser.add_argument(
         '--total',
         choices=('callratios', 'callstacks'),
-        dest="totalMethod", default=totalMethod,
+        dest="totalMethod", default=DEFAULT_TOTAL_METHOD,
         help="preferred method of calculating total time: callratios or callstacks (currently affects only perf format) [default: %(default)s]")
     argparser.add_argument(
         '-c', '--colormap',
@@ -3576,7 +3578,7 @@ def main(argv=sys.argv[1:]):
         help="show function samples")
     argparser.add_argument(
         '--time-format',
-        default=timeFormat,
+        default=DEFAULT_TIME_FORMAT,
         help="format to use for showing time values [default: %(default)s]")
     argparser.add_argument(
         '--node-label', metavar='MEASURE',
