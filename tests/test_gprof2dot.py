@@ -197,6 +197,19 @@ def test_list_functions_dump(capfd):
     assert 'called:=' in err
 
 
+def test_cycle_merge():
+    # Adding a function that already belongs to a cycle absorbs that cycle.
+    f1, f2, f3 = (gprof2dot.Function(i, 'f%u' % i) for i in range(3))
+    old = gprof2dot.Cycle()
+    old.add_function(f1)
+    old.add_function(f2)
+    new = gprof2dot.Cycle()
+    new.add_function(f3)
+    new.add_function(f1)
+    assert new.functions == {f1, f2, f3}
+    assert all(f.cycle is new for f in (f1, f2, f3))
+
+
 def test_stdin(monkeypatch, tmp_path):
     profile = TESTS_DIR / 'collapse' / 'synapse.collapse'
     expected = tmp_path / 'file.dot'

@@ -298,7 +298,7 @@ class Cycle(Object):
         self.functions.add(function)
         if function.cycle is not None:
             for other in function.cycle.functions:
-                if function not in self.functions:
+                if other not in self.functions:
                     self.add_function(other)
         function.cycle = self
 
