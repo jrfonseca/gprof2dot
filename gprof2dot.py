@@ -3431,7 +3431,12 @@ class DotWriter:
         # C++ symbols that can arise, as seen in
         # https://github.com/jrfonseca/gprof2dot/issues/99
         if isinstance(id, str) and len(id) > 1024:
-            id = '_' + hashlib.sha1(id.encode('utf-8'), usedforsecurity=False).hexdigest()
+            data = id.encode('utf-8')
+            if sys.version_info >= (3, 9):
+                digest = hashlib.sha1(data, usedforsecurity=False)
+            else:
+                digest = hashlib.sha1(data)
+            id = '_' + digest.hexdigest()
         self.id(id)
 
     # dot keywords, which must be quoted when used as ordinary identifiers.
