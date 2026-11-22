@@ -421,7 +421,7 @@ class Profile(Object):
                 function_info={k:v for (k,v)
                                in self.functions.items()
                                if fnmatch.fnmatch(v.name,selector)}
-                v = ",\n".join( ("%s\t({k})\t(%s)::\n\t%s" % (v.name,type(v),v.dump())
+                v = ",\n".join( (f"{v.name}\t({k})\t({type(v)})::\n\t{v.dump()}"
                                  for (k,v) in function_info.items()
                                   ))
 

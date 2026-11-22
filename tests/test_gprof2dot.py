@@ -26,6 +26,7 @@ tests can run in parallel (pytest -n auto).
 """
 
 import difflib
+import re
 import shutil
 import subprocess
 import sys
@@ -193,7 +194,7 @@ def test_list_functions_dump(capfd):
     capfd.readouterr()
     run_gprof2dot('-f', 'pstats', '--list-functions=%*:main', profile)
     err = capfd.readouterr().err
-    assert 'memtrail:950:main' in err
+    assert re.search(r'^memtrail:950:main\t\(\d+\)\t', err, re.MULTILINE)
     assert 'called:=' in err
 
 
