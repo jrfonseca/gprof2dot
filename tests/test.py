@@ -177,10 +177,11 @@ def main():
         subdir = os.path.join(test_dir, 'compare', format_compare)
         for dirname in os.listdir(subdir):
             test_subdir = os.path.join(subdir, dirname)
-            name1 = dirname + '1.'
-            name2 = dirname + '2.'
-            filename1 = name1 + 'txt' if format_compare == 'axe' else name1 + format_compare
-            filename2 = name2 + 'txt' if format_compare == 'axe' else name2 + format_compare
+            name1 = dirname + '1'
+            name2 = dirname + '2'
+            ext = '.txt' if format_compare == 'axe' else '.' + format_compare
+            filename1 = name1 + ext
+            filename2 = name2 + ext
 
             sys.stdout.write(filename1 + '\n')
 
