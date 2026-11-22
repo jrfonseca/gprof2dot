@@ -2808,8 +2808,8 @@ class CollapseParser(LineParser):
             profile[TOTAL_SAMPLES] = profile[SAMPLES]
             profile.ratio(TOTAL_TIME_RATIO, TOTAL_SAMPLES)
             # Then propagate that total time to the calls.
-            for function in compat_itervalues(profile.functions):
-                for call in compat_itervalues(function.calls):
+            for function in profile.functions.values():
+                for call in function.calls.values():
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
