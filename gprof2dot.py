@@ -2957,9 +2957,8 @@ class Theme:
         hmin, smin, lmin = self.mincolor
         hmax, smax, lmax = self.maxcolor
 
-        if self.skew < 0:
-            raise ValueError("Skew must be greater than 0")
-        elif self.skew == 1.0:
+        assert self.skew >= 0.0
+        if self.skew == 1.0:
             h = hmin + weight*(hmax - hmin)
             s = smin + weight*(smax - smin)
             l = lmin + weight*(lmax - lmin)
@@ -3641,8 +3640,9 @@ with '%%', a dump of all available information is performed for selected entries
         argparser.error('invalid colormap \'%s\'' % options.theme)
 
     # set skew on the theme now that it has been picked.
-    if options.theme_skew:
-        theme.skew = options.theme_skew
+    if not options.theme_skew >= 0.0:
+        argparser.error('skew must be non-negative')
+    theme.skew = options.theme_skew
 
     totalMethod = options.totalMethod
     timeFormat = options.time_format
