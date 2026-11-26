@@ -3099,6 +3099,29 @@ class DotWriter:
 
         return name
 
+    # dot can't parse quoted strings longer than YY_BUF_SIZE, which defaults
+    # to 16K. But some annotated C++ functions (e.g., boost,
+    # https://github.com/jrfonseca/gprof2dot/issues/30) can exceed that.
+    MAX_FUNCTION_NAME = 4096
+
+    def function_name_label(self, function):
+        """Function name as shown in its node: stripped, truncated, and wrapped
+        as requested."""
+
+        if self.strip:
+            name = function.stripped_name()
+        else:
+            name = function.name
+
+        if len(name) >= self.MAX_FUNCTION_NAME:
+            sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(name), name[:32] + '...'))
+            name = name[:self.MAX_FUNCTION_NAME - 1] + chr(0x2026)
+
+        if self.wrap:
+            name = self.wrap_function_name(name)
+
+        return name
+
     show_function_events = [TOTAL_TIME_RATIO, TIME_RATIO]
     show_edge_events = [TOTAL_TIME_RATIO, CALLS]
 
@@ -3139,14 +3162,11 @@ class DotWriter:
             labels = []
             function2 = None
 
-            name = function1.name
             try:
                 function2 = functions2[function_key(function1)]
-                if self.wrap:
-                    name = self.wrap_function_name(name)
                 if color_by_difference:
                     min_diff, max_diff = min_max_difference(profile1, profile2)
-                labels.append(name)
+                labels.append(self.function_name_label(function1))
                 weight_difference = 0
                 shape = 'box'
                 orientation = '0'
@@ -3200,24 +3220,9 @@ class DotWriter:
                 if function1.module is not None:
                     labels.append(function1.module)
 
-                if self.strip:
-                    function_name = function1.stripped_name()
-                else:
-                    function_name = function1.name
                 if color_by_difference:
                     min_diff, max_diff = 0, 0
-
-                # dot can't parse quoted strings longer than YY_BUF_SIZE, which
-                # defaults to 16K. But some annotated C++ functions (e.g., boost,
-                # https://github.com/jrfonseca/gprof2dot/issues/30) can exceed that
-                MAX_FUNCTION_NAME = 4096
-                if len(function_name) >= MAX_FUNCTION_NAME:
-                    sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
-                    function_name = function_name[:MAX_FUNCTION_NAME - 1] + chr(0x2026)
-
-                if self.wrap:
-                    function_name = self.wrap_function_name(function_name)
-                labels.append(function_name)
+                labels.append(self.function_name_label(function1))
 
                 for event in self.show_function_events:
                     if event in function1.events:
@@ -3302,22 +3307,7 @@ class DotWriter:
             if function.module is not None:
                 labels.append(function.module)
 
-            if self.strip:
-                function_name = function.stripped_name()
-            else:
-                function_name = function.name
-
-            # dot can't parse quoted strings longer than YY_BUF_SIZE, which
-            # defaults to 16K. But some annotated C++ functions (e.g., boost,
-            # https://github.com/jrfonseca/gprof2dot/issues/30) can exceed that
-            MAX_FUNCTION_NAME = 4096
-            if len(function_name) >= MAX_FUNCTION_NAME:
-                sys.stderr.write('warning: truncating function name with %u chars (%s)\n' % (len(function_name), function_name[:32] + '...'))
-                function_name = function_name[:MAX_FUNCTION_NAME - 1] + chr(0x2026)
-
-            if self.wrap:
-                function_name = self.wrap_function_name(function_name)
-            labels.append(function_name)
+            labels.append(self.function_name_label(function))
 
             for event in self.show_function_events:
                 if event in function.events:
