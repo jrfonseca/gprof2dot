@@ -2,6 +2,19 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[project]
+name = "gprof2dot"
+requires-python = ">=3.10"
+# The remaining metadata lives in setup.cfg
+dynamic = ["version", "description", "readme", "authors", "urls", "license", "classifiers", "scripts"]
+
+[dependency-groups]
+dev = [
+    "pytest",
+    "pytest-xdist",
+    "pytest-cov",
+]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["."]

@@ -12,17 +12,14 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 1
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v7
+    - name: Set up uv and Python ${{ matrix.python-version }}
+      uses: astral-sh/setup-uv@v7
       with:
         python-version: ${{ matrix.python-version }}
     - run: sudo apt-get update -qq
     - run: sudo apt-get install -qq -y --no-install-recommends graphviz
-    - run: python --version
-    - run: |
-        python -m pip install --upgrade pip
-        pip install pytest pytest-xdist pytest-cov
-    - run: python -m pytest -n auto --cov --cov-report=xml
+    - run: uv run python --version
+    - run: ./test.sh --cov --cov-report=xml
     - uses: codecov/codecov-action@v7
       if: github.repository == 'jrfonseca/gprof2dot'
       with:
@@ -37,22 +34,18 @@ jobs:
     - uses: actions/checkout@v7
       with:
         fetch-depth: 1
-    - name: Set up Python
-      uses: actions/setup-python@v7
+    - name: Set up uv and Python
+      uses: astral-sh/setup-uv@v7
       with:
         python-version: '3.10'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install build twine
     - name: Build and publish
       env:
         TWINE_USERNAME: ${{ secrets.PYPI_USERNAME }}
         TWINE_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        python -m build
-        twine check --strict dist/*
-        twine upload dist/*
+        uv build
+        uvx twine check --strict dist/*
+        uvx twine upload dist/*
     - name: Create release
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

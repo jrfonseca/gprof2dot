@@ -9,3 +9,4 @@ coverage.xml
 *.pyc
 /dist
 /htmlcov
+/uv.lock
