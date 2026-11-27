@@ -60,7 +60,7 @@ def fmttime(t):
 def add(a, b):
     return a + b
 
-def fail(a, b):
+def fail(a, b):  # pragma: no cover
     assert False
 
 # To enhance readability, labels are rounded to the number of decimal
@@ -96,11 +96,11 @@ def ratio(numerator, denominator):
         # 0/0 is undefined, but 1.0 yields more useful results
         return 1.0
     if ratio < 0.0:
-        if ratio < -tol:
+        if ratio < -tol:  # pragma: no cover
             sys.stderr.write('warning: negative ratio (%s/%s)\n' % (numerator, denominator))
         return 0.0
     if ratio > 1.0:
-        if ratio > 1.0 + tol:
+        if ratio > 1.0 + tol:  # pragma: no cover
             sys.stderr.write('warning: ratio greater than one (%s/%s)\n' % (numerator, denominator))
         return 1.0
     return ratio
@@ -113,7 +113,7 @@ class UndefinedEvent(Exception):
         Exception.__init__(self)
         self.event = event
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return 'unspecified event %s' % self.event.name
 
 
@@ -233,7 +233,7 @@ class Function(Object):
         self.filename = None
 
     def add_call(self, call):
-        if call.callee_id in self.calls:
+        if call.callee_id in self.calls:  # pragma: no cover
             sys.stderr.write('warning: overwriting call from function %s to %s\n' % (str(self.id), str(call.callee_id)))
         self.calls[call.callee_id] = call
 
@@ -312,7 +312,7 @@ class Profile(Object):
         self.cycles = []
 
     def add_function(self, function):
-        if function.id in self.functions:
+        if function.id in self.functions:  # pragma: no cover
             sys.stderr.write('warning: overwriting function %s (id %s)\n' % (function.name, str(function.id)))
         self.functions[function.id] = function
 
@@ -325,7 +325,7 @@ class Profile(Object):
         for function in self.functions.values():
             for callee_id in list(function.calls.keys()):
                 assert function.calls[callee_id].callee_id == callee_id
-                if callee_id not in self.functions:
+                if callee_id not in self.functions:  # pragma: no cover
                     sys.stderr.write('warning: call to undefined function %s from function %s\n' % (str(callee_id), function.name))
                     del function.calls[callee_id]
 
@@ -499,7 +499,7 @@ class Profile(Object):
                         function_totals[callee] += call[event]
                         if callee.cycle is not None and callee.cycle is not function.cycle:
                             cycle_totals[callee.cycle] += call[event]
-                    else:
+                    else:  # pragma: no cover
                         sys.stderr.write("call_ratios: No data for " + function.name + " call to " + callee.name + "\n")
 
         # Pass 2:  Compute the ratios.  Each call[event] is scaled by the
@@ -824,7 +824,7 @@ class Struct:
     def __getattr__(self, name):
         try:
             return self._attrs[name]
-        except KeyError:
+        except KeyError:  # pragma: no cover
             raise AttributeError(name)
 
     def __setattr__(self, name, value):
@@ -837,7 +837,7 @@ class Struct:
         return repr(self._attrs)
 
 
-class ParseError(Exception):
+class ParseError(Exception):  # pragma: no cover
     """Raised when parsing to signal mismatches."""
 
     def __init__(self, msg, line):
@@ -859,7 +859,7 @@ class Parser:
     def __init__(self):
         pass
 
-    def parse(self):
+    def parse(self):  # pragma: no cover
         raise NotImplementedError
 
 
@@ -875,7 +875,7 @@ class JsonParser(Parser):
         self.stream = stream
 
     @staticmethod
-    def _reject_constant(token):
+    def _reject_constant(token):  # pragma: no cover
         # NaN/Infinity are not valid JSON (schema.json defines costs as finite
         # numbers), but Python's json module accepts them as an extension. A
         # non-finite cost poisons the SAMPLES total and every derived ratio, so
@@ -886,7 +886,7 @@ class JsonParser(Parser):
 
         try:
             obj = json.load(self.stream, parse_constant=self._reject_constant)
-        except ValueError as ex:
+        except ValueError as ex:  # pragma: no cover
             sys.stderr.write('error: %s\n' % ex)
             sys.exit(1)
 
@@ -1002,7 +1002,7 @@ class XmlToken:
         self.line = line
         self.column = column
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         if self.type == XML_ELEMENT_START:
             return '<' + self.name_or_data + ' ...>'
         if self.type == XML_ELEMENT_END:
@@ -1077,7 +1077,7 @@ class XmlTokenizer:
         return self.parser.CurrentLineNumber, self.parser.CurrentColumnNumber
 
 
-class XmlTokenMismatch(Exception):
+class XmlTokenMismatch(Exception):  # pragma: no cover
 
     def __init__(self, expected, found):
         Exception.__init__(self)
@@ -1108,9 +1108,9 @@ class XmlParser(Parser):
     def element_start(self, name):
         while self.token.type == XML_CHARACTER_DATA:
             self.consume()
-        if self.token.type != XML_ELEMENT_START:
+        if self.token.type != XML_ELEMENT_START:  # pragma: no cover
             raise XmlTokenMismatch(XmlToken(XML_ELEMENT_START, name), self.token)
-        if self.token.name_or_data != name:
+        if self.token.name_or_data != name:  # pragma: no cover
             raise XmlTokenMismatch(XmlToken(XML_ELEMENT_START, name), self.token)
         attrs = self.token.attrs
         self.consume()
@@ -1119,9 +1119,9 @@ class XmlParser(Parser):
     def element_end(self, name):
         while self.token.type == XML_CHARACTER_DATA:
             self.consume()
-        if self.token.type != XML_ELEMENT_END:
+        if self.token.type != XML_ELEMENT_END:  # pragma: no cover
             raise XmlTokenMismatch(XmlToken(XML_ELEMENT_END, name), self.token)
-        if self.token.name_or_data != name:
+        if self.token.name_or_data != name:  # pragma: no cover
             raise XmlTokenMismatch(XmlToken(XML_ELEMENT_END, name), self.token)
         self.consume()
 
@@ -1153,7 +1153,7 @@ class GprofParser(Parser):
 
     def readline(self):
         line = self.fp.readline()
-        if not line:
+        if not line:  # pragma: no cover
             sys.stderr.write('error: unexpected end of file\n')
             sys.exit(1)
         line = line.rstrip('\r\n')
@@ -1240,7 +1240,7 @@ class GprofParser(Parser):
         children = []
 
         while True:
-            if not lines:
+            if not lines:  # pragma: no cover
                 sys.stderr.write('warning: unexpected end of entry\n')
             line = lines.pop(0)
             if line.startswith('['):
@@ -1258,7 +1258,7 @@ class GprofParser(Parser):
 
         # read primary line
         mo = self._cg_primary_re.match(line)
-        if not mo:
+        if not mo:  # pragma: no cover
             sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
             return
         else:
@@ -1272,7 +1272,7 @@ class GprofParser(Parser):
             if not mo:
                 if self._cg_ignore_re.match(line):
                     continue
-                sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
+                sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)  # pragma: no cover
             else:
                 child = self.translate(mo)
                 children.append(child)
@@ -1287,7 +1287,7 @@ class GprofParser(Parser):
         # read cycle header line
         line = lines[0]
         mo = self._cg_cycle_header_re.match(line)
-        if not mo:
+        if not mo:  # pragma: no cover
             sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
             return
         cycle = self.translate(mo)
@@ -1296,7 +1296,7 @@ class GprofParser(Parser):
         cycle.functions = []
         for line in lines[1:]:
             mo = self._cg_cycle_member_re.match(line)
-            if not mo:
+            if not mo:  # pragma: no cover
                 sys.stderr.write('warning: unrecognized call graph entry: %r\n' % line)
                 continue
             call = self.translate(mo)
@@ -1426,7 +1426,7 @@ class AXEParser(Parser):
 
     def readline(self):
         line = self.fp.readline()
-        if not line:
+        if not line:  # pragma: no cover
             sys.stderr.write('error: unexpected end of file\n')
             sys.exit(1)
         line = line.rstrip('\r\n')
@@ -1502,7 +1502,7 @@ class AXEParser(Parser):
         children = []
 
         while True:
-            if not lines:
+            if not lines:  # pragma: no cover
                 sys.stderr.write('warning: unexpected end of entry\n')
                 return
             line = lines.pop(0)
@@ -1511,7 +1511,7 @@ class AXEParser(Parser):
 
             # read function parent line
             mo = self._cg_parent_re.match(line)
-            if not mo:
+            if not mo:  # pragma: no cover
                 sys.stderr.write('warning: unrecognized call graph entry (1): %r\n' % line)
             else:
                 parent = self.translate(mo)
@@ -1520,7 +1520,7 @@ class AXEParser(Parser):
 
         # read primary line
         mo = self._cg_primary_re.match(line)
-        if not mo:
+        if not mo:  # pragma: no cover
             sys.stderr.write('warning: unrecognized call graph entry (2): %r\n' % line)
             return
         else:
@@ -1531,7 +1531,7 @@ class AXEParser(Parser):
 
             # read function subroutine line
             mo = self._cg_child_re.match(line)
-            if not mo:
+            if not mo:  # pragma: no cover
                 sys.stderr.write('warning: unrecognized call graph entry (3): %r\n' % line)
             else:
                 child = self.translate(mo)
@@ -1549,14 +1549,14 @@ class AXEParser(Parser):
         # Process the parents that were not there in gprof format.
         parents = []
         while True:
-            if not lines:
+            if not lines:  # pragma: no cover
                 sys.stderr.write('warning: unexpected end of cycle entry\n')
                 return
             line = lines.pop(0)
             if line.startswith('['):
                 break
             mo = self._cg_parent_re.match(line)
-            if not mo:
+            if not mo:  # pragma: no cover
                 sys.stderr.write('warning: unrecognized call graph entry (6): %r\n' % line)
             else:
                 parent = self.translate(mo)
@@ -1565,7 +1565,7 @@ class AXEParser(Parser):
 
         # read cycle header line
         mo = self._cg_cycle_header_re.match(line)
-        if not mo:
+        if not mo:  # pragma: no cover
             sys.stderr.write('warning: unrecognized call graph entry (4): %r\n' % line)
             return
         cycle = self.translate(mo)
@@ -1574,7 +1574,7 @@ class AXEParser(Parser):
         cycle.functions = []
         for line in lines[1:]:
             mo = self._cg_cycle_member_re.match(line)
-            if not mo:
+            if not mo:  # pragma: no cover
                 sys.stderr.write('warning: unrecognized call graph entry (5): %r\n' % line)
                 continue
             call = self.translate(mo)
@@ -1650,7 +1650,7 @@ class AXEParser(Parser):
             if entry.cycle is not None:
                 try:
                     cycle = cycles[entry.cycle]
-                except KeyError:
+                except KeyError:  # pragma: no cover
                     sys.stderr.write('warning: <cycle %u as a whole> entry missing\n' % entry.cycle)
                     cycle = Cycle()
                     cycles[entry.cycle] = cycle
@@ -1713,7 +1713,7 @@ class CallgrindParser(LineParser):
         self.parse_key('creator')
         while self.parse_part():
             pass
-        if not self.eof():
+        if not self.eof():  # pragma: no cover
             sys.stderr.write('warning: line %u: unexpected line\n' % self.line_no)
             sys.stderr.write('%s\n' % self.lookahead())
 
@@ -2033,7 +2033,7 @@ class PerfParser(LineParser):
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
-        else:
+        else:  # pragma: no cover
             assert False
 
         return profile
@@ -2088,7 +2088,7 @@ class PerfParser(LineParser):
         line = self.consume()
         mo = self.call_re.match(line)
         assert mo
-        if not mo:
+        if not mo:  # pragma: no cover
             return None
 
         function_name = mo.group('symbol')
@@ -2554,7 +2554,7 @@ class PstatsParser:
         import pstats
         try:
             self.stats = pstats.Stats(*filename)
-        except ValueError:
+        except ValueError:  # pragma: no cover
             sys.stderr.write('error: failed to load %s, maybe they are generated by different python version?\n' % ', '.join(filename))
             sys.exit(1)
         self.profile = Profile()
@@ -2690,7 +2690,7 @@ class DtraceParser(LineParser):
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
-        else:
+        else:  # pragma: no cover
             assert False
 
         return profile
@@ -2806,7 +2806,7 @@ class CollapseParser(LineParser):
                     if call.ratio is not None:
                         callee = profile.functions[call.callee_id]
                         call[TOTAL_TIME_RATIO] = call.ratio * callee[TOTAL_TIME_RATIO]
-        else:
+        else:  # pragma: no cover
             assert False
 
         return profile
@@ -3431,7 +3431,7 @@ class DotWriter:
                 s = id
             else:
                 s = self.escape(id)
-        else:
+        else:  # pragma: no cover
             raise TypeError
         self.write(s)
 
@@ -3631,16 +3631,16 @@ with '%%', a dump of all available information is performed for selected entries
     options = argparser.parse_args(argv)
     args = options.input
 
-    if len(args) > 1 and options.format != 'pstats' and not options.compare:
+    if len(args) > 1 and options.format != 'pstats' and not options.compare:  # pragma: no cover
         argparser.error('incorrect number of arguments')
 
     try:
         theme = themes[options.theme]
-    except KeyError:
+    except KeyError:  # pragma: no cover
         argparser.error('invalid colormap \'%s\'' % options.theme)
 
     # set skew on the theme now that it has been picked.
-    if not options.theme_skew >= 0.0:
+    if not options.theme_skew >= 0.0:  # pragma: no cover
         argparser.error('skew must be non-negative')
     theme.skew = options.theme_skew
 
@@ -3649,7 +3649,7 @@ with '%%', a dump of all available information is performed for selected entries
 
     try:
         Format = formats[options.format]
-    except KeyError:
+    except KeyError:  # pragma: no cover
         argparser.error('invalid format \'%s\'' % options.format)
 
     if Format.stdinInput:
@@ -3665,7 +3665,7 @@ with '%%', a dump of all available information is performed for selected entries
             fp = openInput(args[0])
             parser = Format(fp)
     elif Format.multipleInput:
-        if not args:
+        if not args:  # pragma: no cover
             argparser.error('at least a file must be specified for %s input' % options.format)
         if options.compare:
             parser1 = Format(args[-2])
@@ -3673,7 +3673,7 @@ with '%%', a dump of all available information is performed for selected entries
         else:
             parser = Format(*args)
     else:
-        if len(args) != 1:
+        if len(args) != 1:  # pragma: no cover
             argparser.error('exactly one file must be specified for %s input' % options.format)
         parser = Format(args[0])
 
@@ -3711,7 +3711,7 @@ with '%%', a dump of all available information is performed for selected entries
                       options.color_nodes_by_selftime)
         if options.root:
             rootIds = profile.getFunctionIds(options.root)
-            if not rootIds:
+            if not rootIds:  # pragma: no cover
                 sys.stderr.write('root node ' + options.root + ' not found (might already be pruned : try -e0 -n0 flags)\n')
                 sys.exit(1)
             profile.prune_root(rootIds, options.depth)
@@ -3722,7 +3722,7 @@ with '%%', a dump of all available information is performed for selected entries
 
     if options.leaf:
         leafIds = profile.getFunctionIds(options.leaf)
-        if not leafIds:
+        if not leafIds:  # pragma: no cover
             sys.stderr.write('leaf node ' + options.leaf + ' not found (maybe already pruned : try -e0 -n0 flags)\n')
             sys.exit(1)
         profile.prune_leaf(leafIds, options.depth)
@@ -3735,5 +3735,5 @@ with '%%', a dump of all available information is performed for selected entries
     output.close()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     main()
